@@ -1,0 +1,1 @@
+export ApplicationNavigator from './ApplicationNavigator';

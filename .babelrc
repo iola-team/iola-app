@@ -1,0 +1,11 @@
+{
+  "presets": [
+    "react-native",
+    "stage-3"
+  ],
+  "plugins": [
+    "transform-export-extensions",
+    "transform-function-bind"
+  ]
+}
+
