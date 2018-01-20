@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 
-import getRoot from './root';
+import Navigator from './navigation';
 
 export const REDUCER_NAME = 'navigation';
+export * from './navigation';
 
-const Navigator = getRoot();
 const initialState = Navigator.router.getStateForAction(NavigationActions.init());
 
 export const reducer = (state = initialState, action) => {

@@ -1,1 +1,0 @@
-export MessengerNavigator from './MessengerNavigator';

@@ -1,1 +1,0 @@
-export AuthenticationNavigator from './AuthenticationNavigator';
