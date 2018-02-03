@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "storybook": "storybook start -p 7007"
+    "run:android": "node node_modules/react-native/local-cli/cli.js run-android",
+    "test": "jest"
   },
   "dependencies": {
     "apollo-client": "^1.9.2",
@@ -17,7 +17,6 @@
     "react": "16.0.0",
     "react-apollo": "^1.4.15",
     "react-native": "0.48.4",
-    "react-native-gifted-chat": "^0.2.7",
     "react-navigation": "^1.0.0-beta.11",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
@@ -32,15 +31,9 @@
     "babel-jest": "21.2.0",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-function-bind": "^6.22.0",
+    "babel-preset-react-native-stage-0": "^1.0.1",
     "babel-preset-stage-3": "^6.24.1",
-    "jest": "21.2.1",
-    "react-test-renderer": "16.0.0",
-    "@storybook/react-native": "^3.3.10",
-    "@storybook/addon-actions": "^3.3.10",
-    "@storybook/addon-links": "^3.3.10",
-    "@storybook/addons": "^3.3.10",
-    "babel-core": "^6.26.0",
-    "react-dom": "16.0.0"
+    "jest": "21.2.1"
   },
   "jest": {
     "preset": "react-native"

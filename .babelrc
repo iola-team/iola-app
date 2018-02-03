@@ -1,7 +1,6 @@
 {
   "presets": [
-    "react-native",
-    "stage-3"
+    "react-native-stage-0"
   ],
   "plugins": [
     "transform-export-extensions",

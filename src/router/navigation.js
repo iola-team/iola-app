@@ -1,7 +1,7 @@
 import { StackNavigator } from 'react-navigation';
 
 // Screens
-import { LaunchScreen } from '../modules/application/index';
+import { LaunchScreen } from '../components';
 
 // Rout names
 export const LAUNCH_ROUT = 'launch';

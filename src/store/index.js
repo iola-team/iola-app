@@ -4,4 +4,4 @@ export * from './actions';
 export * from './reducers';
 export * from './actionTypes';
 
-export default rootReducer;
+export default from './configureStore';

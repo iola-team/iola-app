@@ -2,7 +2,7 @@ import React from 'react';
 import { AppRegistry } from 'react-native';
 
 import App from './src';
-import configureStore from './src/_store';
+import configureStore from './src/store';
 
 const store = configureStore();
 
