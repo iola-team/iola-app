@@ -25,7 +25,7 @@ export default (initialState) => {
 
 	if (module.hot) {
 		module.hot.accept(() => {
-			const nextCreateRootReducer = require('../reducers/index').default;
+      const nextCreateRootReducer = require('./createRootReducer').default;
 			store.replaceReducer(nextCreateRootReducer());
 		});
 	}
