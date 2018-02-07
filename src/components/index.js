@@ -1,1 +1,0 @@
-export LaunchScreen from './LaunchScreen';

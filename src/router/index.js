@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 
-import Navigator from './navigation';
+import Navigator from '../screens';
 
 export const REDUCER_NAME = 'navigation';
-export * from './navigation';
+export * from '../screens';
 
 const initialState = Navigator.router.getStateForAction(NavigationActions.init());
 
