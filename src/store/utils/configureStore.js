@@ -1,34 +1,36 @@
-import { applyMiddleware, createStore } from 'redux';
+import {applyMiddleware, createStore} from 'redux';
 import thunk from 'redux-thunk';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import {composeWithDevTools} from 'redux-devtools-extension';
 
-import apiClient from '../../api/index';
+import { middleware as navMiddleware } from '../../router';
 import createRootReducer from './createRootReducer';
 
-const compose = composeWithDevTools({ name: 'Messenger' });
+const compose = composeWithDevTools({
+  name: 'Messenger',
+});
 
 export default (initialState) => {
-	const middleware = [
-		thunk,
-		apiClient.middleware(),
-	];
-	const enhancers = [];
+  const middleware = [
+    thunk,
+    navMiddleware,
+  ];
+  const enhancers = [];
 
-	const store = createStore(
-		createRootReducer(),
-		initialState,
-		compose(
-			applyMiddleware(...middleware),
-			...enhancers
-		)
-	);
+  const store = createStore(
+    createRootReducer(),
+    initialState,
+    compose(
+      applyMiddleware(...middleware),
+      ...enhancers
+    )
+  );
 
-	if (module.hot) {
-		module.hot.accept(() => {
+  if (module.hot) {
+    module.hot.accept(() => {
       const nextCreateRootReducer = require('./createRootReducer').default;
-			store.replaceReducer(nextCreateRootReducer());
-		});
-	}
+      store.replaceReducer(nextCreateRootReducer());
+    });
+  }
 
-	return store
+  return store
 };

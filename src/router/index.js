@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
+import {
+  createReduxBoundAddListener,
+  createReactNavigationReduxMiddleware,
+} from 'react-navigation-redux-helpers';
 
 import Navigator from './routes';
 
+export * from './routes';
 export const REDUCER_NAME = 'navigation';
-export * from '../screens';
 
 const initialState = Navigator.router.getStateForAction(NavigationActions.init());
 
@@ -14,6 +18,13 @@ export const reducer = (state = initialState, action) => {
 
   return nextState || state;
 };
+
+export const middleware = createReactNavigationReduxMiddleware(
+  "root",
+  state => state[REDUCER_NAME],
+);
+
+const addListener = createReduxBoundAddListener("root");
 
 const getCurrentScreenState = (state) => {
   if (!state) {
@@ -44,6 +55,7 @@ class AppNavigator extends Component {
         navigation={addNavigationHelpers({
           dispatch,
           state,
+          addListener,
         })}
       />
     );
