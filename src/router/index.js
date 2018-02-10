@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers, NavigationActions } from 'react-navigation';
 
-import Navigator from '../screens';
+import Navigator from './routes';
 
 export const REDUCER_NAME = 'navigation';
 export * from '../screens';

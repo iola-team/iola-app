@@ -1,11 +1,5 @@
-import React from 'react';
 import { AppRegistry } from 'react-native';
 
-import App from './src';
-import configureStore from './src/store';
+import appFactory from './src';
 
-AppRegistry.registerComponent('ApolloMessenger', () => {
-  const store = configureStore();
-
-  return () => <App store={store} />
-});
+AppRegistry.registerComponent('ApolloMessenger', appFactory);
