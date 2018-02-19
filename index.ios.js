@@ -1,5 +1,5 @@
 import { AppRegistry } from 'react-native';
 
-import appFactory from './src';
+import Application from './src';
 
-AppRegistry.registerComponent('ApolloMessenger', appFactory);
+AppRegistry.registerComponent('ApolloMessenger', () => Application);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Container, View, Text, Button } from 'native-base';
 import styled from 'styled-components/native';
 
@@ -14,23 +14,38 @@ const Padder = styled(View)`
   padding: 10px;
 `;
 
-export default ({ counter = 0, incrementCounter = () => {}, navigation: { navigate } }) => (
-  <Container>
-    <Wrap>
-      <View>
-        <Text>Hello World: {counter}</Text>
-        <Padder>
-          <Button onPress={() => incrementCounter(counter + 1)}>
-            <Text>+</Text>
-          </Button>
-        </Padder>
+export default class extends Component {
 
-        <Padder>
-          <Button onPress={() => navigate(USER, { id: 'cj6jd78alka9o0111x41jhjex' })}>
-            <Text>Show user</Text>
-          </Button>
-        </Padder>
-      </View>
-    </Wrap>
-  </Container>
-);
+  state = {
+    counter: 0,
+  }
+
+  increment() {
+    this.setState({ counter: this.state.counter + 1 });
+  }
+
+  render() {
+    const { navigation: { navigate } } = this.props;
+
+    return (
+      <Container>
+        <Wrap>
+          <View>
+            <Text>Hello World: {this.state.counter}</Text>
+            <Padder>
+              <Button onPress={::this.increment}>
+                <Text>+</Text>
+              </Button>
+            </Padder>
+
+            <Padder>
+              <Button onPress={() => navigate(USER, { id: 'cj6jd78alka9o0111x41jhjex' })}>
+                <Text>Show user</Text>
+              </Button>
+            </Padder>
+          </View>
+        </Wrap>
+      </Container>
+    );
+  }
+}
