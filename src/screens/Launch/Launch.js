@@ -14,38 +14,27 @@ const Padder = styled(View)`
   padding: 10px;
 `;
 
-export default class extends Component {
+export default (props) => {
+  const { increment, data: { counter }, navigation: { navigate } } = props;
 
-  state = {
-    counter: 0,
-  }
+  return (
+    <Container>
+      <Wrap>
+        <View>
+          <Text>Hello World: {counter}</Text>
+          <Padder>
+            <Button onPress={() => increment()}>
+              <Text>+</Text>
+            </Button>
+          </Padder>
 
-  increment() {
-    this.setState({ counter: this.state.counter + 1 });
-  }
-
-  render() {
-    const { navigation: { navigate } } = this.props;
-
-    return (
-      <Container>
-        <Wrap>
-          <View>
-            <Text>Hello World: {this.state.counter}</Text>
-            <Padder>
-              <Button onPress={::this.increment}>
-                <Text>+</Text>
-              </Button>
-            </Padder>
-
-            <Padder>
-              <Button onPress={() => navigate(USER, { id: 'cj6jd78alka9o0111x41jhjex' })}>
-                <Text>Show user</Text>
-              </Button>
-            </Padder>
-          </View>
-        </Wrap>
-      </Container>
-    );
-  }
+          <Padder>
+            <Button onPress={() => navigate(USER, { id: 'cj6jd78alka9o0111x41jhjex' })}>
+              <Text>Show user</Text>
+            </Button>
+          </Padder>
+        </View>
+      </Wrap>
+    </Container>
+  );
 }

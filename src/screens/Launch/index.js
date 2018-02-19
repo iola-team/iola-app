@@ -1,9 +1,22 @@
-import { compose, withState } from 'recompose';
+import { compose } from 'recompose';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import Launch from './Launch';
 
-const state = withState('counter', 'incrementCounter', 0);
+const query = graphql(gql`
+  query {
+    counter @client
+  }
+`)
+
+const mutation = graphql(gql`
+  mutation {
+    incrementCounter @client
+  }
+`, { name: 'increment' });
 
 export default compose(
-  state,
+  query,
+  mutation,
 )(Launch);

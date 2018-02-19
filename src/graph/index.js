@@ -4,9 +4,12 @@ import { BatchHttpLink } from "apollo-link-batch-http";
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 
+import resolvers from './resolvers';
+
 export default () => {
   const cache = new InMemoryCache();
   const stateLink = withClientState({
+    ...resolvers,
     cache,
   });
 
