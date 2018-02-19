@@ -1,10 +1,8 @@
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
-import { Provider } from 'react-redux';
 
-import Router from './router';
-import configureStore from './store';
-import configureApiClient from './api';
+import Navigator from './screens';
+import configureApiClient from './graph';
 
 /**
  * Application factory
@@ -13,14 +11,11 @@ import configureApiClient from './api';
  * @returns function
  */
 export default () => {
-  const store = configureStore();
   const apiClient = configureApiClient();
 
   return () => (
     <ApolloProvider client={apiClient}>
-      <Provider store={store}>
-        <Router />
-      </Provider>
+      <Navigator />
     </ApolloProvider>
   );
 }

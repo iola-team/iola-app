@@ -1,26 +1,26 @@
 import { StackNavigator } from 'react-navigation';
 
 // Screens
-import { Launch, User } from '../screens';
+import Launch from './Launch';
+import User from './User';
 
 // Rout names
-export const LAUNCH = 'launch';
-export const USER = 'user';
+import * as routes from './roteNames';
 
 // Navigator
 export default StackNavigator({
-  [LAUNCH]: {
+  [routes.LAUNCH]: {
     screen: Launch,
     navigationOptions: {
       header: null,
     },
   },
-  [USER]: {
+  [routes.USER]: {
     screen: User,
     navigationOptions: {
       title: "User",
     },
   }
 }, {
-  initialRouteName: LAUNCH,
+  initialRouteName: routes.LAUNCH,
 });

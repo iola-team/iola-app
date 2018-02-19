@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, View, Text, Button } from 'native-base';
 import styled from 'styled-components/native';
 
-import { USER } from '../../router';
+import { USER } from '../roteNames';
 
 const Wrap = styled(View)`
   flex: 1;
@@ -14,13 +14,13 @@ const Padder = styled(View)`
   padding: 10px;
 `;
 
-export default ({ counter, incrementCounter, navigation: { navigate } }) => (
+export default ({ counter = 0, incrementCounter = () => {}, navigation: { navigate } }) => (
   <Container>
     <Wrap>
       <View>
         <Text>Hello World: {counter}</Text>
         <Padder>
-          <Button onPress={incrementCounter}>
+          <Button onPress={() => incrementCounter(counter + 1)}>
             <Text>+</Text>
           </Button>
         </Padder>
