@@ -1,26 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
-import { Provider } from 'react-redux';
 
-import Router from './router';
-import configureStore from './store';
-import configureApiClient from './api';
+import Navigator from './screens';
+import configureApiClient from './graph';
 
-/**
- * Application factory
- * This function will be run once on the application start and will not be executed during HMR
- *
- * @returns function
- */
-export default () => {
-  const store = configureStore();
-  const apiClient = configureApiClient();
+export default class Application extends Component {
+  constructor(props) {
+    super(props);
 
-  return () => (
-    <ApolloProvider client={apiClient}>
-      <Provider store={store}>
-        <Router />
-      </Provider>
-    </ApolloProvider>
-  );
+    this.apiClient = configureApiClient();
+  }
+
+  render() {
+    return (
+      <ApolloProvider client={this.apiClient}>
+        <Navigator />
+      </ApolloProvider>
+    );
+  }
 }

@@ -1,15 +1,31 @@
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import { compose } from 'recompose';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
-import { getCounter, incrementCounter } from '../../store';
 import Launch from './Launch';
 
-const mapStateToProps = createStructuredSelector({
-  counter: getCounter
+const query = graphql(gql`
+  query {
+    counter { 
+      count @client
+    }
+  }
+`, {
+  props: ({ data }) => ({
+    count: data.counter.count,
+  }),
+});
+const mutation = graphql(gql`
+  mutation increment($by: Int) {
+    incrementCounter(by: $by) @client
+  }
+`, {
+  props: ({ mutate }) => ({
+    increment: (by = 1) => mutate({ variables: { by } }),
+  }),
 });
 
-const mapDispatchToProps = {
-  incrementCounter,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Launch);
+export default compose(
+  query,
+  mutation,
+)(Launch);

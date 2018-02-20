@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, View, Text, Button } from 'native-base';
+import { Container, View, Text } from 'native-base';
 import styled from 'styled-components/native';
 
 const Wrap = styled(View)`
@@ -7,7 +7,6 @@ const Wrap = styled(View)`
   justify-content: center;
   align-items: center;
 `;
-
 const Line = styled(Text)`
   padding: 10px;
 `;
