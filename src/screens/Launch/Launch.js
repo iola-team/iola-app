@@ -15,15 +15,15 @@ const Padder = styled(View)`
 `;
 
 export default (props) => {
-  const { increment, data: { counter }, navigation: { navigate } } = props;
+  const { increment, count, navigation: { navigate } } = props;
 
   return (
     <Container>
       <Wrap>
         <View>
-          <Text>Hello World: {counter}</Text>
+          <Text>Hello World: {count}</Text>
           <Padder>
-            <Button onPress={() => increment()}>
+            <Button onPress={() => increment(1)}>
               <Text>+</Text>
             </Button>
           </Padder>

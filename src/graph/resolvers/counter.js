@@ -1,32 +1,56 @@
 import gql from 'graphql-tag';
 
+const typeDefs = [`
+  type Counter {
+    count: Int!
+  }
+  
+  type Query {
+    counter: Counter!
+  }
+  
+  type Mutation {
+    incrementCounter(by: Int = 1): Counter!
+  }
+`];
+
 const resolvers = {
   Mutation: {
-    incrementCounter(_, vars, { cache }) {
+    incrementCounter(_, { by }, { cache }) {
       const query = gql`
         query {
-            counter
+            counter {
+                count
+            }
         }
       `;
 
       const { counter } = cache.readQuery({ query });
+      const newCounter = {
+      ...counter,
+          count: counter.count + by,
+      };
 
       cache.writeQuery({
         query,
         data: {
-          counter: counter + 1,
+          counter: newCounter,
         },
       });
 
-      return null;
+      return newCounter;
     }
   }
 };
 const defaults = {
-  counter: 0
+  counter: {
+    __typename: 'Counter',
+    count: 0,
+  }
 };
 
 export default {
   resolvers,
   defaults,
+  typeDefs,
 }

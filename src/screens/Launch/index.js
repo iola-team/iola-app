@@ -6,15 +6,25 @@ import Launch from './Launch';
 
 const query = graphql(gql`
   query {
-    counter @client
+    counter { 
+        count @client
+    }
   }
-`)
+`, {
+  props: ({ data }) => ({
+    count: data.counter.count,
+  }),
+})
 
 const mutation = graphql(gql`
-  mutation {
-    incrementCounter @client
+  mutation increment($by: Int) {
+    incrementCounter(by: $by) @client
   }
-`, { name: 'increment' });
+`, {
+  props: ({ mutate }) => ({
+    increment: (by = 1) => mutate({ variables: { by } }),
+  }),
+});
 
 export default compose(
   query,
