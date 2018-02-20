@@ -9,7 +9,6 @@ const Wrap = styled(View)`
   justify-content: center;
   align-items: center;
 `;
-
 const Padder = styled(View)`
   padding: 10px;
 `;
@@ -27,7 +26,6 @@ export default (props) => {
               <Text>+</Text>
             </Button>
           </Padder>
-
           <Padder>
             <Button onPress={() => navigate(USER, { id: 'cj6jd78alka9o0111x41jhjex' })}>
               <Text>Show user</Text>
@@ -37,4 +35,4 @@ export default (props) => {
       </Wrap>
     </Container>
   );
-}
+};

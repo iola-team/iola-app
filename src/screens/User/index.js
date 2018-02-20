@@ -19,6 +19,6 @@ const withUser = graphql(gql`
       id: params.id,
     }
   }),
-})
+});
 
 export default withUser(User);

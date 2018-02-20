@@ -9,5 +9,5 @@ const { resolvers = {}, defaults = {}, typeDefs = [] } = merge(
 export default {
   resolvers,
   defaults,
-  typeDefs
-}
+  typeDefs,
+};

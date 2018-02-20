@@ -26,7 +26,7 @@ export default () => {
   }
 
   const httpLink = new BatchHttpLink({
-    uri: 'https://api.graph.cool/simple/v1/cj6jbzcmn00zz0191mq94xnua'
+    uri: 'https://api.graph.cool/simple/v1/cj6jbzcmn00zz0191mq94xnua',
   });
 
   return new ApolloClient({

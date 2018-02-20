@@ -1,11 +1,11 @@
 import { StackNavigator } from 'react-navigation';
 
+// Rout names
+import * as routes from './roteNames';
+
 // Screens
 import Launch from './Launch';
 import User from './User';
-
-// Rout names
-import * as routes from './roteNames';
 
 // Navigator
 export default StackNavigator({
@@ -20,7 +20,7 @@ export default StackNavigator({
     navigationOptions: {
       title: "User",
     },
-  }
+  },
 }, {
   initialRouteName: routes.LAUNCH,
 });
