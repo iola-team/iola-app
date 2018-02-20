@@ -1,3 +1,4 @@
+import { assign } from 'lodash';
 import { ApolloClient } from 'apollo-client';
 import { from } from 'apollo-link';
 import { BatchHttpLink } from "apollo-link-batch-http";
@@ -12,6 +13,17 @@ export default () => {
     ...resolvers,
     cache,
   });
+
+  /**
+   * Reload resolvers if module.hot is available
+   */
+  if (module.hot) {
+    module.hot.accept(() => {
+      const newResolvers = require('./resolvers').default;
+
+      assign(resolvers.resolvers, newResolvers.resolvers);
+    });
+  }
 
   const httpLink = new BatchHttpLink({
     uri: 'https://api.graph.cool/simple/v1/cj6jbzcmn00zz0191mq94xnua'
