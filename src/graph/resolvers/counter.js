@@ -28,7 +28,7 @@ const resolvers = {
       const { counter } = cache.readQuery({ query });
       const newCounter = {
       ...counter,
-          count: counter.count + 1,
+          count: counter.count + by,
       };
 
       cache.writeQuery({
