@@ -3,9 +3,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start": "REACT_DEBUGGER=\"npm run debugger\" node node_modules/react-native/local-cli/cli.js start",
     "run:android": "node node_modules/react-native/local-cli/cli.js run-android",
-    "test": "jest"
+    "test": "jest",
+    "debugger": "rndebugger-open --open --port 8081"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.7",
@@ -33,7 +34,8 @@
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-function-bind": "^6.22.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
-    "jest": "22.2.2"
+    "jest": "22.2.2",
+    "react-native-debugger-open": "^0.3.17"
   },
   "jest": {
     "preset": "react-native"
