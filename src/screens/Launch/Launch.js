@@ -27,7 +27,7 @@ export default (props) => {
             </Button>
           </Padder>
           <Padder>
-            <Button onPress={() => navigate(USER, { id: 'cj6jd78alka9o0111x41jhjex' })}>
+            <Button onPress={() => navigate(USER, { id: 'User:449' })}>
               <Text>Show user</Text>
             </Button>
           </Padder>

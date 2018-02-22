@@ -1,13 +1,22 @@
 {
   "schema": {
     "request": {
-      "url": "https://api.graph.cool/simple/v1/cj6jbzcmn00zz0191mq94xnua",
+      "url": "http://localhost/ow/oxwall/everywhere/api/graphql/",
       "method": "POST",
-      "postIntrospectionQuery": true
+      "postIntrospectionQuery": true,
+      "options" : {
+        "headers": {
+          "user-agent" : "GraphQL"
+        }
+      }
     }
   },
 
   "endpoints": [
+    {
+      "name": "Oxwall",
+      "url": "http://localhost/ow/oxwall/everywhere/api/graphql"
+    },
     {
       "name": "GraphCool",
       "url": "https://api.graph.cool/simple/v1/cj6jbzcmn00zz0191mq94xnua"

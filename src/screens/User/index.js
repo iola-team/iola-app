@@ -5,9 +5,7 @@ import User from './User';
 
 const withUser = graphql(gql`
   query getUsers($id: ID!) {
-    allUsers(filter: {
-      id: $id
-    }) {
+    user(id: $id) {
       id
       name
       email

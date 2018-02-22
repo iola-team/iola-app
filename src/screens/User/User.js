@@ -20,10 +20,14 @@ export default ({ data }) => {
         <View>
           {
             data.loading ? <Text>Loading...</Text> : (
-              <View>
-                <Line>{data.allUsers[0].name}</Line>
-                <Line>{data.allUsers[0].email}</Line>
-              </View>
+              data.user ? (
+                <View>
+                  <Line>{data.user.name}</Line>
+                  <Line>{data.user.email}</Line>
+                </View>
+              ) : (
+                <Line>Not found</Line>
+              )
             )
           }
         </View>

@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "REACT_DEBUGGER=\"npm run debugger\" node node_modules/react-native/local-cli/cli.js start",
-    "run:android": "node node_modules/react-native/local-cli/cli.js run-android",
+    "start": "REACT_DEBUGGER=\"npm run debugger\" react-native start",
+    "run:android": "react-native run-android",
     "test": "jest",
     "debugger": "rndebugger-open --open --port 8081"
   },
