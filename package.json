@@ -6,7 +6,10 @@
     "start": "REACT_DEBUGGER=\"npm run debugger\" react-native start",
     "run:android": "react-native run-android",
     "test": "jest",
-    "debugger": "rndebugger-open --open --port 8081"
+    "debugger": "rndebugger-open --open --port 8081",
+    "schema:load": "graphql get-schema",
+    "schema:watch": "babel-node ./scripts/watchSchemas.js",
+    "schema:generate": "babel-node ./scripts/generateSchema.js"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.7",
@@ -30,14 +33,23 @@
     "styled-components": "^3.1.6"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-jest": "22.2.2",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-function-bind": "^6.22.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
+    "child-process-promise": "^2.2.1",
+    "glob-watcher": "^5.0.1",
+    "graphql-cli": "^2.14.3",
+    "graphql-tools": "^2.21.0",
     "jest": "22.2.2",
+    "merge-graphql-schemas": "^1.4.0",
     "react-native-debugger-open": "^0.3.17"
   },
   "jest": {
     "preset": "react-native"
+  },
+  "resolutions": {
+    "graphql": "^0.13.0"
   }
 }

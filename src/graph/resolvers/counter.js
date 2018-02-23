@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const typeDefs = [`
+const typeDefs = [gql`
   type Counter {
     count: Int!
   }
@@ -8,11 +8,12 @@ const typeDefs = [`
   type Query {
     counter: Counter!
   }
-  
+
   type Mutation {
     incrementCounter(by: Int = 1): Counter!
   }
 `];
+
 const resolvers = {
   Mutation: {
     incrementCounter(_, { by }, { cache }) {

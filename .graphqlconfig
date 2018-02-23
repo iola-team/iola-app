@@ -1,0 +1,8 @@
+{
+  "schemaPath": ".tmp/schemas/server.graphql",
+  "extensions": {
+    "endpoints": {
+      "default": "http://localhost/ow/oxwall/everywhere/api/graphql"
+    }
+  }
+}
