@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-const typeDefs = [gql`
+const typeDefs = gql`
   type Counter {
     count: Int!
   }
@@ -12,7 +12,7 @@ const typeDefs = [gql`
   type Mutation {
     incrementCounter(by: Int = 1): Counter!
   }
-`];
+`;
 
 const resolvers = {
   Mutation: {
