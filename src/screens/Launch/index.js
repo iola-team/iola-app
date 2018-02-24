@@ -2,7 +2,7 @@ import { compose } from 'recompose';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import Launch from './Launch';
+import Screen from './Launch';
 
 const query = graphql(gql`
   query {
@@ -29,4 +29,4 @@ const mutation = graphql(gql`
 export default compose(
   query,
   mutation,
-)(Launch);
+)(Screen);

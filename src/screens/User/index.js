@@ -1,7 +1,7 @@
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import User from './User';
+import Screen from './User';
 
 const withUser = graphql(gql`
   query getUsers($id: ID!) {
@@ -19,4 +19,4 @@ const withUser = graphql(gql`
   }),
 });
 
-export default withUser(User);
+export default withUser(Screen);

@@ -4,17 +4,26 @@ import { StackNavigator } from 'react-navigation';
 import * as routes from './roteNames';
 
 // Screens
+import SignIn from './SignIn';
 import Launch from './Launch';
 import User from './User';
 
 // Navigator
 export default StackNavigator({
+  [routes.SIGN_IN]: {
+    screen: SignIn,
+    navigationOptions: {
+      header: null,
+    },
+  },
+
   [routes.LAUNCH]: {
     screen: Launch,
     navigationOptions: {
       header: null,
     },
   },
+
   [routes.USER]: {
     screen: User,
     navigationOptions: {
@@ -22,5 +31,5 @@ export default StackNavigator({
     },
   },
 }, {
-  initialRouteName: routes.LAUNCH,
+  initialRouteName: routes.SIGN_IN,
 });
