@@ -3,13 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "poststart": "npm run schema:generate",
+    "prestart": "npm run schema:generate",
     "start": "concurrently -p name -n \"schemas,server\" \"npm run schema:watch\" \"npm run server:start\"",
     "server:start": "REACT_DEBUGGER=\"npm run debugger\" react-native start",
     "run:android": "react-native run-android",
     "test": "jest",
     "debugger": "rndebugger-open --open --port 8081",
-    "schema:load": "graphql get-schema && npm run schema:generate",
+    "schema:load": "graphql get-schema",
     "schema:watch": "babel-node ./scripts/watchSchemas.js",
     "schema:generate": "babel-node ./scripts/generateSchema.js"
   },
