@@ -3,7 +3,9 @@ import { Image } from 'react-native';
 import styled from 'styled-components/native';
 import { Button, Container, Form, Input, Item, Label, Text, View } from 'native-base';
 
-export default ({ navigation }) => {
+import { SIGN_UP } from '../roteNames';
+
+export default ({ navigation: { navigate } }) => {
   const Background = styled(View)`
     position: absolute;
     top: 0;
@@ -13,23 +15,34 @@ export default ({ navigation }) => {
   `;
   const Content = styled(View)`
     flex: 1;
+    align-self: center;
     justify-content: center;
+    width: 100%;
+    max-width: 400px;
     margin: 50px 10%;
     background-color: transparent;
   `;
   const Title = styled(Text)`
     margin-bottom: 20%;
     font-size: 36px;
+    font-weight: 500;
     text-align: center;
     color: white;
   `;
-  const FormButtonFacebook = styled(Button).attrs({ block: true })`
+  const disableShadowOnAndroid = {
+    shadowColor: 'transparent',
+    shadowOffset: { height: 0, width: 0 },
+    shadowOpacity: 0,
+    elevation: 0,
+  };
+  const FormButtonFacebook = styled(Button).attrs({ block: true, ...disableShadowOnAndroid })`
     height: 50px;
     border-radius: 10px;
-    background-color: ${props => props.theme.accent};
+    background-color: #6D83CC;
   `;
   const TextBold = styled(Text)`
-    font-weight: bold;
+    font-weight: 500;
+    font-size: 16px;
   `;
   const FormContent = styled(View)`
     justify-content: center;
@@ -63,6 +76,7 @@ export default ({ navigation }) => {
     border-color: rgba(255, 255, 255, .6);
   `;
   const FormInput = styled(Input).attrs({ placeholderTextColor: 'white' })`
+    font-size: 16px;
     color: white;
   `;
   const FormButtonForgotPassword = styled(Button).attrs({ transparent: true })`
@@ -73,7 +87,7 @@ export default ({ navigation }) => {
     font-size: 12px;
     color: white;
   `;
-  const FormButtonSignIn = styled(Button).attrs({ block: true })`
+  const FormButtonSignIn = styled(Button).attrs({ block: true, ...disableShadowOnAndroid })`
     width: 55%;
     height: 50px;
     margin-top: 10%;
@@ -81,7 +95,7 @@ export default ({ navigation }) => {
     border-radius: 10px;
     background-color: ${props => props.theme.accent};
   `;
-  const FormButtonSignUp = styled(Button).attrs({ block: true })`
+  const FormButtonSignUp = styled(Button).attrs({ block: true, ...disableShadowOnAndroid })`
     width: 55%;
     height: 50px;
     margin-top: 15px;
@@ -122,7 +136,7 @@ export default ({ navigation }) => {
               <TextBold>Sign in</TextBold>
             </FormButtonSignIn>
           </Form>
-          <FormButtonSignUp onPress={() => navigation.navigate('SignUp')}>
+          <FormButtonSignUp onPress={() => navigate(SIGN_UP)}>
             <TextBold>Sign up</TextBold>
           </FormButtonSignUp>
         </FormContent>

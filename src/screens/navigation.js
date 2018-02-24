@@ -5,6 +5,7 @@ import * as routes from './roteNames';
 
 // Screens
 import SignIn from './SignIn';
+import SignUp from './SignUp';
 import Launch from './Launch';
 import User from './User';
 
@@ -12,6 +13,13 @@ import User from './User';
 export default StackNavigator({
   [routes.SIGN_IN]: {
     screen: SignIn,
+    navigationOptions: {
+      header: null,
+    },
+  },
+
+  [routes.SIGN_UP]: {
+    screen: SignUp,
     navigationOptions: {
       header: null,
     },
