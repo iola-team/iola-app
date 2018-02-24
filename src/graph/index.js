@@ -10,7 +10,13 @@ import resolvers from './resolvers';
 export default () => {
   const cache = new InMemoryCache();
   const stateLink = withClientState({
-    ...resolvers,
+    resolvers: resolvers.resolvers,
+    defaults: resolvers.defaults,
+
+    /**
+     * TODO: Uncomment when it will support gql AST or typeDefs will be required by Apollo Client
+     */
+    //typeDefs: resolvers.typeDefs,
     cache,
   });
 
