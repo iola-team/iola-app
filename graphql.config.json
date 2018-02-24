@@ -1,15 +1,6 @@
 {
   "schema": {
-    "request": {
-      "url": "http://localhost/ow/oxwall/everywhere/api/graphql/",
-      "method": "POST",
-      "postIntrospectionQuery": true,
-      "options" : {
-        "headers": {
-          "user-agent" : "GraphQL"
-        }
-      }
-    }
+    "file": ".tmp/schema.graphqls"
   },
 
   "endpoints": [

@@ -6,7 +6,7 @@ import Launch from './Launch';
 
 const query = graphql(gql`
   query {
-    counter { 
+    counter {
       count @client
     }
   }
@@ -15,6 +15,7 @@ const query = graphql(gql`
     count: data.counter.count,
   }),
 });
+
 const mutation = graphql(gql`
   mutation increment($by: Int) {
     incrementCounter(by: $by) @client

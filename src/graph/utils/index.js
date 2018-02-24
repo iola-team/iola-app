@@ -1,0 +1,1 @@
+export composeResovers from './composeResolvers';

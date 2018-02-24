@@ -1,13 +1,8 @@
-import { merge } from 'lodash';
+import { composeResovers } from '../utils'
 
+// Resolvers
 import counter from './counter';
 
-const { resolvers = {}, defaults = {}, typeDefs = [] } = merge(
-  counter,
+export default composeResovers(
+  counter
 );
-
-export default {
-  resolvers,
-  defaults,
-  typeDefs,
-};

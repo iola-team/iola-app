@@ -51,3 +51,9 @@ buck-out/
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
+
+# TMP
+.tmp/*
+!.tmp/schemas
+.tmp/schemas/*
+!.tmp/schemas/.gitkeep
