@@ -5,7 +5,7 @@ import { Button, Container, Form, Input, Item, Label, Text, View } from 'native-
 
 import { SIGN_IN } from '../roteNames';
 
-export default ({ navigation: { navigate } }) => {
+export default ({ navigation: { navigate, goBack } }) => {
   const Background = styled(View)`
     position: absolute;
     top: 0;
@@ -103,7 +103,7 @@ export default ({ navigation: { navigate } }) => {
           </Form>
           <BottomTextContainer>
             <BottomText>Already have an account?</BottomText>
-            <ButtonSignIn onPress={() => navigate(SIGN_IN)}>
+            <ButtonSignIn onPress={() => goBack()}>
               <ButtonSignInText>Sign in</ButtonSignInText>
             </ButtonSignIn>
           </BottomTextContainer>

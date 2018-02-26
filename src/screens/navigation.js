@@ -1,4 +1,4 @@
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator } from 'react-navigation';
 
 // Rout names
 import * as routes from './roteNames';
@@ -11,19 +11,35 @@ import User from './User';
 
 // Navigator
 export default StackNavigator({
-  [routes.SIGN_IN]: {
-    screen: SignIn,
-    navigationOptions: {
-      header: null,
+  [routes.AUTHENTICATION]: StackNavigator({
+    [routes.SIGN_IN]: {
+      screen: SignIn,
+      navigationOptions: {
+        header: null,
+      },
     },
-  },
 
-  [routes.SIGN_UP]: {
-    screen: SignUp,
-    navigationOptions: {
-      header: null,
+    [routes.SIGN_UP]: {
+      screen: SignUp,
+      navigationOptions: {
+        header: null,
+      },
     },
-  },
+  }, {
+    initialRouteName: routes.SIGN_IN,
+  }),
+
+  [routes.APPLICATION]: TabNavigator({
+    [routes.USER]: {
+      screen: User,
+      navigationOptions: {
+        header: null,
+      },
+    },
+  }, {
+    initialRouteName: routes.USER,
+    tabBarPosition: 'bottom',
+  }),
 
   [routes.LAUNCH]: {
     screen: Launch,
@@ -31,13 +47,6 @@ export default StackNavigator({
       header: null,
     },
   },
-
-  [routes.USER]: {
-    screen: User,
-    navigationOptions: {
-      title: "User",
-    },
-  },
 }, {
-  initialRouteName: routes.SIGN_IN,
+  initialRouteName: routes.LAUNCH,
 });

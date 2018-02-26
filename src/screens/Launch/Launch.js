@@ -1,38 +1,55 @@
 import React, { Component } from 'react';
-import { Container, View, Text, Button } from 'native-base';
+import { NavigationActions } from 'react-navigation';
+import { Container, View, Text, Button, Spinner } from 'native-base';
 import styled from 'styled-components/native';
 
-import { USER } from '../roteNames';
+import * as routes from '../roteNames';
 
 const Wrap = styled(View)`
   flex: 1;
   justify-content: center;
   align-items: center;
 `;
-const Padder = styled(View)`
-  padding: 10px;
-`;
 
-export default (props) => {
-  const { increment, count, navigation: { navigate } } = props;
+export default class LaunchScreen extends Component {
+  componentWillReceiveProps(newProps) {
+    const {
+      navigation: { dispatch },
+      data: { loading, me },
+    } = newProps;
 
-  return (
-    <Container>
-      <Wrap>
-        <View>
-          <Text>Hello World: {count}</Text>
-          <Padder>
-            <Button onPress={() => increment(1)}>
-              <Text>+</Text>
-            </Button>
-          </Padder>
-          <Padder>
-            <Button onPress={() => navigate(USER, { id: 'User:449' })}>
-              <Text>Show user</Text>
-            </Button>
-          </Padder>
-        </View>
-      </Wrap>
-    </Container>
-  );
-};
+    if (loading) {
+      return;
+    }
+
+    if (me) {
+      dispatch(NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: routes.APPLICATION })
+        ],
+      }));
+    } else {
+      dispatch(NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: routes.AUTHENTICATION })
+        ],
+      }));
+    }
+  }
+
+  shouldComponentUpdate() {
+    return false;
+  }
+
+  render() {
+    return (
+      <Container>
+        <Wrap>
+          <Spinner />
+        </Wrap>
+      </Container>
+    );
+  }
+}

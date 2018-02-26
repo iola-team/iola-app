@@ -16,7 +16,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Mutation: {
-    incrementCounter(_, { by }, { cache }) {
+    incrementCounter(root, { by }, { cache }) {
       const query = gql`
         query {
           counter {
