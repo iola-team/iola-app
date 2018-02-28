@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="splash_background">#FFFFFF</color>
+
+    <!--
+    We need it to prevent the app crash.
+    This is a bug in react-native-splash-screen and may be fixed in a future release.
+    -->
+    <color name="primary_dark">#4F6D7A</color>
+</resources>

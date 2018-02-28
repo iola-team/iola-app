@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SplashScreen from 'react-native-splash-screen';
 import { ApolloProvider } from 'react-apollo';
 import { ThemeProvider } from 'styled-components/native';
 
@@ -11,6 +12,10 @@ export default class Application extends Component {
     super(props);
 
     this.apiClient = configureApiClient();
+  }
+
+  componentDidMount() {
+    SplashScreen.hide();
   }
 
   render() {
