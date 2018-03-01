@@ -4,7 +4,8 @@
   ],
   "plugins": [
     "transform-export-extensions",
-    "transform-function-bind"
+    "transform-function-bind",
+    "transform-decorators-legacy"
   ]
 }
 
