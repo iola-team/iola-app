@@ -71,7 +71,7 @@ class LoginForm extends Component {
             placeholder="Login"
             onChangeText={text => setFieldValue('login', text)}
             onBlur={() => setFieldTouched('login')}
-            values={values.login}
+            value={values.login}
           />
         </FormItem>
 
@@ -80,7 +80,7 @@ class LoginForm extends Component {
             placeholder="Password"
             onChangeText={text => setFieldValue('password', text)}
             onBlur={() => setFieldTouched('password')}
-            values={values.password}
+            value={values.password}
           />
 
           <ForgotPasswordButton onPress={() => onForgotPasswordPress()}>
@@ -88,7 +88,7 @@ class LoginForm extends Component {
           </ForgotPasswordButton>
         </FormItem>
 
-        <SignInButton disabled={!isValid} onPress={handleSubmit}>
+        <SignInButton onPress={handleSubmit}>
           <Bold>Submit</Bold>
         </SignInButton>
 
@@ -103,6 +103,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
+  mapPropsToValues: props => ({ login: 'demo', password: 'demo1986' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(LoginForm);

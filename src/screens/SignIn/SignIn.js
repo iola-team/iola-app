@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 
 import { Button, Container, Content, Form, Input, Item, Label, Text, View } from 'native-base';
 
-import { SIGN_UP } from '../roteNames';
+import { SIGN_UP, LAUNCH } from '../roteNames';
 import LoginForm from './Form';
 
 const disableShadowOnAndroid = {
@@ -120,7 +120,7 @@ export default class SignInScreen extends Component {
   };
 
   render() {
-    const { navigation: { navigate } } = this.props;
+    const { authenticate, navigation: { navigate } } = this.props;
     const { keyboardHeight } = this.state;
 
     return (
@@ -150,8 +150,12 @@ export default class SignInScreen extends Component {
             </HeadSection>
 
             <LoginForm
-              onSubmit={(values) => {
-                alert(`Login: ${values.login}/${values.password}`);
+              onSubmit={async (values) => {
+                const success = await authenticate(values.login, values.password);
+
+                if (success) {
+                  navigate(LAUNCH);
+                }
               }}
               onForgotPasswordPress={() => {
                 alert('Forgot password?');
