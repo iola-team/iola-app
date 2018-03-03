@@ -7,7 +7,7 @@ const tmpDir = join(__dirname, '..', '.tmp');
 const outputFile = join(tmpDir, 'schema.graphqls');
 
 const defaultTypeDefs = [`
-  directive @client on FIELD
+  directive @client on FIELD | FIELD_DEFINITION
 `];
 
 const generate = async () => {

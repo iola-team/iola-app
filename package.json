@@ -10,8 +10,8 @@
     "test": "jest",
     "debugger": "rndebugger-open --open --port 8081",
     "schema:load": "graphql get-schema",
-    "schema:watch": "babel-node ./scripts/watchSchemas.js",
-    "schema:generate": "babel-node ./scripts/generateSchema.js"
+    "schema:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchSchemas.js",
+    "schema:generate": "babel-node $NODE_DEBUG_OPTION ./scripts/generateSchema.js"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.7",
