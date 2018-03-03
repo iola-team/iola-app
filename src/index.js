@@ -6,8 +6,9 @@ import { ThemeProvider } from 'styled-components/native';
 import Navigator from './screens';
 import configureApiClient from './graph';
 import theme from './theme';
+import Application from './application';
 
-export default class Application extends Component {
+export default class Root extends Component {
   constructor(props) {
     super(props);
 
@@ -22,7 +23,9 @@ export default class Application extends Component {
     return (
       <ApolloProvider client={this.apiClient}>
         <ThemeProvider theme={theme}>
-          <Navigator />
+          <Application>
+            <Navigator />
+          </Application>
         </ThemeProvider>
       </ApolloProvider>
     );
