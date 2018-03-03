@@ -12,8 +12,6 @@ const Line = styled(Text)`
 `;
 
 export default ({ data }) => {
-  console.log(data);
-
   return (
     <Container>
       <Wrap>
@@ -22,8 +20,8 @@ export default ({ data }) => {
             data.loading ? <Text>Loading...</Text> : (
               data.user ? (
                 <View>
-                  <Line>{data.user.name}</Line>
-                  <Line>{data.user.email}</Line>
+                  <Line>Name: {data.user.name}</Line>
+                  <Line>Email: {data.user.email}</Line>
                 </View>
               ) : (
                 <Line>Not found</Line>
