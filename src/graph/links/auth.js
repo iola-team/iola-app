@@ -1,5 +1,6 @@
-import { setContext } from 'apollo-link-context/lib/index'
+import { setContext } from 'apollo-link-context'
 import gql from 'graphql-tag'
+import { AUTHORIZATION } from 'http-header-fields';
 
 const query = gql`
   query {
@@ -15,7 +16,7 @@ export default () => setContext((request, { cache, headers }) => {
   return {
     headers: {
       ...headers,
-      Authorization: token ? `Bearer ${token}` : "",
+      [AUTHORIZATION]: token ? `Bearer ${token}` : "",
     },
   };
 });

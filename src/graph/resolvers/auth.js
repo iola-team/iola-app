@@ -14,18 +14,19 @@ const typeDefs = gql`
   }
 `;
 
+const query = gql`
+  query {
+    auth {
+      token
+    }
+  }
+`;
+
 const resolvers = {
   Mutation: {
     storeAuthToken(root, { token }, { cache }) {
-      const query = gql`
-        query {
-          auth {
-            token
-          }
-        }
-      `;
-
       const { auth } = cache.readQuery({ query });
+
       cache.writeQuery({
         query,
         data: {

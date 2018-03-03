@@ -11,8 +11,6 @@ import { AuthLink } from './links';
 export default () => {
   const cache = new InMemoryCache({
     dataIdFromObject: (object) => {
-      console.log('', object);
-
       return object.id || null;
     }
   });
