@@ -129,12 +129,7 @@ export default class SignInScreen extends Component {
           <Image style={{ resizeMode: 'cover', width: null, height: '100%' }} source={{ uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' }} />
         </Background>
 
-        <Content
-          padder
-          contentContainerStyle={{
-            flex: 1,
-          }}
-        >
+        <Content padder contentContainerStyle={{ flex: 1 }}>
           <Wrapper bottomOffset={keyboardHeight}>
             <HeadSection visible={!keyboardHeight}>
               <Title>Sign in</Title>

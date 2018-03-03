@@ -47,7 +47,7 @@ const defaults = {
     __typename: 'Auth',
     token: null,
   },
-}
+};
 
 export default {
   resolvers,

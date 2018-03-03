@@ -1,4 +1,4 @@
-import {AppRegistry, NativeModules} from 'react-native';
+import { AppRegistry, NativeModules } from 'react-native';
 
 import Application from './src';
 

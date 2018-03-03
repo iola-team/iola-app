@@ -16,7 +16,7 @@ export default () => setContext((request, { cache, headers }) => {
   return {
     headers: {
       ...headers,
-      [AUTHORIZATION]: token ? `Bearer ${token}` : "",
+      [AUTHORIZATION]: token ? `Bearer ${token}` : '',
     },
   };
 });
