@@ -1,4 +1,5 @@
 const main = {
+  error: 'red',
   accent: '#5F96F2',
   background: 'white',
   text: '#5F96F2',

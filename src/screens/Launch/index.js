@@ -4,14 +4,19 @@ import gql from 'graphql-tag';
 
 import Launch from './Launch';
 
-const withMe = graphql(gql`
+const withData = graphql(gql`
   query {
     me {
       id
+      name
     }
   }
-`);
+`, {
+  options: {
+    fetchPolicy: 'cache-and-network',
+  },
+});
 
 export default compose(
-  withMe,
+  withData,
 )(Launch);

@@ -5,7 +5,7 @@ import Screen from './User';
 
 const withUser = graphql(gql`
   query getUsers {
-    user(id: "User:449") {
+    user: me {
       id
       name
       email

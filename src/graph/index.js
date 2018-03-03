@@ -6,9 +6,13 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 
 import resolvers from './resolvers';
+import { AuthLink } from './links';
 
 export default () => {
-  const cache = new InMemoryCache();
+  const cache = new InMemoryCache({
+    dataIdFromObject: object => object.id || null,
+  });
+
   const stateLink = withClientState({
     resolvers: resolvers.resolvers,
     defaults: resolvers.defaults,
@@ -31,6 +35,7 @@ export default () => {
     });
   }
 
+  const authLink = new AuthLink();
   const httpLink = new BatchHttpLink({
     uri: 'http://localhost/ow/oxwall/everywhere/api/graphql',
   });
@@ -38,6 +43,7 @@ export default () => {
   return new ApolloClient({
     link: from([
       stateLink,
+      authLink,
       httpLink,
     ]),
     cache,
