@@ -1,4 +1,4 @@
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import { SwitchNavigator, StackNavigator, TabNavigator } from 'react-navigation';
 
 // Rout names
 import * as routes from './roteNames';
@@ -10,7 +10,7 @@ import Launch from './Launch';
 import User from './User';
 
 // Navigator
-export default StackNavigator({
+export default SwitchNavigator({
   [routes.AUTHENTICATION]: StackNavigator({
     [routes.SIGN_IN]: {
       screen: SignIn,

@@ -1,0 +1,12 @@
+query ApplicationQuery($isAuthenticated: Boolean!) {
+
+  users {
+    id
+  }
+
+  me @include(if: $isAuthenticated) {
+    id
+    name
+    email
+  }
+}

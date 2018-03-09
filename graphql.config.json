@@ -6,7 +6,7 @@
   "endpoints": [
     {
       "name": "Oxwall",
-      "url": "http://localhost/ow/oxwall/everywhere/api/graphql"
+      "url": "http://0.0.0.0/ow/oxwall/everywhere/api/graphql"
     },
     {
       "name": "GraphCool",
