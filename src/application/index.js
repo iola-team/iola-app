@@ -1,8 +1,9 @@
 import { graphql } from 'react-apollo';
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
+import SplashScreen from "react-native-splash-screen"
 
-import applicationQuery from './application.graphql';
+import { ROOT_QUERY } from '../graph';
 
 @graphql(gql`
   query {
@@ -15,7 +16,7 @@ import applicationQuery from './application.graphql';
     isAuthenticated: !!auth,
   }),
 })
-@graphql(applicationQuery, {
+@graphql(ROOT_QUERY, {
   options: ({ isAuthenticated }) => ({
     variables: {
       isAuthenticated,
@@ -23,6 +24,10 @@ import applicationQuery from './application.graphql';
   }),
 })
 export default class Application extends Component {
+  componentDidMount() {
+    SplashScreen.hide();
+  }
+
   render() {
     const { children, data } = this.props;
 

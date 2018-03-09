@@ -14,7 +14,7 @@ const Wrap = styled(View)`
 export default class LaunchScreen extends Component {
   componentWillReceiveProps(newProps) {
     const {
-      navigation: { dispatch },
+      navigation: { navigate },
       data: { loading, me },
     } = newProps;
 
@@ -23,19 +23,9 @@ export default class LaunchScreen extends Component {
     }
 
     if (me) {
-      dispatch(NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: routes.APPLICATION })
-        ],
-      }));
+      navigate(routes.APPLICATION);
     } else {
-      dispatch(NavigationActions.reset({
-        index: 0,
-        actions: [
-          NavigationActions.navigate({ routeName: routes.AUTHENTICATION })
-        ],
-      }));
+      navigate(routes.AUTHENTICATION);
     }
   }
 

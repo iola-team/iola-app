@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import SplashScreen from 'react-native-splash-screen';
 import { ApolloProvider } from 'react-apollo';
 import { ThemeProvider } from 'styled-components/native';
 
 import Navigator from './screens';
-import configureApiClient from './graph';
+import createApiClient from './graph';
 import theme from './theme';
 import Application from './application';
 
@@ -12,11 +11,7 @@ export default class Root extends Component {
   constructor(props) {
     super(props);
 
-    this.apiClient = configureApiClient();
-  }
-
-  componentDidMount() {
-    SplashScreen.hide();
+    this.apiClient = createApiClient();
   }
 
   render() {
