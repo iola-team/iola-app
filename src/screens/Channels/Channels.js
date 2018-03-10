@@ -3,11 +3,11 @@ import { Container, Content, Text, Icon } from 'native-base';
 
 export default class Channels extends Component {
   static navigationOptions = {
-    title: "Channels",
+    title: 'Chats',
     tabBarIcon: ({ focused, tintColor }) => (
       <Icon
         style={{ color: tintColor }}
-        name={"ios-chatbubbles-outline"}
+        name={'ios-chatbubbles-outline'}
       />
     ),
   };

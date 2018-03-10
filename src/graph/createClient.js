@@ -37,7 +37,7 @@ export default () => {
 
   const authLink = new AuthLink();
   const httpLink = new BatchHttpLink({
-    uri: 'http://0.0.0.0/ow/oxwall/everywhere/api/graphql',
+    uri: 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql',
   });
 
   return new ApolloClient({

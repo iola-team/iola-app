@@ -2,7 +2,7 @@
   "schemaPath": ".tmp/schemas/server.graphql",
   "extensions": {
     "endpoints": {
-      "default": "http://0.0.0.0/ow/oxwall/everywhere/api/graphql"
+      "default": "http://172.27.0.74/ow/oxwall/everywhere/api/graphql"
     }
   }
 }

@@ -3,11 +3,11 @@ import { Container, Content, Text, Icon } from 'native-base';
 
 export default class Dashboard extends Component {
   static navigationOptions = {
-    title: "Dashboard",
+    title: 'Dashboard',
     tabBarIcon: ({ focused, tintColor }) => (
       <Icon
         style={{ color: tintColor }}
-        name={"ios-settings-outline"}
+        name={'ios-settings-outline'}
       />
     ),
   };
