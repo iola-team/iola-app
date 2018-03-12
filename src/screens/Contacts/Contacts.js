@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Moment from 'react-moment';
 import { Container, Content, Icon, List, ListItem, Thumbnail, Text, Body, Right, Left } from 'native-base';
 
 export default class Contacts extends Component {
@@ -30,7 +31,9 @@ export default class Contacts extends Component {
                     <Text note>{" "}</Text>
                   </Body>
                   <Right>
-                    <Text note>3:43 pm</Text>
+                    <Moment note fromNow>
+                      {user.activityTime}
+                    </Moment>
                   </Right>
                 </ListItem>
               ))

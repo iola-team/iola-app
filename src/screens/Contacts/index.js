@@ -8,6 +8,7 @@ const withUsers = graphql(gql`
     users {
       id
       name
+      activityTime
       avatar {
         id
         url
