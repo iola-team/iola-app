@@ -35,8 +35,6 @@ export default class Application extends Component {
   render() {
     const { children, data } = this.props;
 
-    console.log(data);
-
     return (
       children
     );

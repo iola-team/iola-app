@@ -4,8 +4,11 @@ import { ThemeProvider } from 'styled-components/native';
 
 import Navigator from './screens';
 import createApiClient from './graph';
-import theme from './theme';
+import theme from './theme/_styled';
+import Theme from './theme';
 import Application from './application';
+import { assign } from "lodash"
+import resolvers from './graph/resolvers'
 
 export default class Root extends Component {
   constructor(props) {
@@ -18,9 +21,11 @@ export default class Root extends Component {
     return (
       <ApolloProvider client={this.apiClient}>
         <ThemeProvider theme={theme}>
-          <Application>
-            <Navigator />
-          </Application>
+          <Theme>
+            <Application>
+              <Navigator />
+            </Application>
+          </Theme>
         </ThemeProvider>
       </ApolloProvider>
     );
