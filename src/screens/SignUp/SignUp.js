@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Image } from 'react-native';
 import styled from 'styled-components/native';
 import { Button, Container, Form, Input, Item, Label, Text, View } from 'native-base';
 
+import { withStyleSheet as styleSheet } from '../../theme';
+
 import { SIGN_IN } from '../roteNames';
+
+// export default SignUpScreen extends Component {
+//
+// }
 
 export default ({ navigation: { navigate, goBack } }) => {
   const Background = styled(View)`

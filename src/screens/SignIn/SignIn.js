@@ -3,9 +3,9 @@ import { Image, Keyboard, Platform } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import styled from 'styled-components/native';
 import { withProps } from 'recompose';
-import { connectStyle, Title, Button, Container, Content, Form, Input, Item, Label, Text, View, H1 } from 'native-base';
+import { Title, Button, Container, Content, Form, Input, Item, Label, Text, View, H1 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from '../../theme';
+import { withStyleSheet as styleSheet } from 'theme';
 
 import { SIGN_UP, LAUNCH } from '../roteNames';
 import LoginForm from './Form';

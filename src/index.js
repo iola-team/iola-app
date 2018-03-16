@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import { ThemeProvider } from 'styled-components/native';
 
-import Navigator from './screens';
-import createApiClient from './graph';
-import theme from './theme/_styled';
-import Theme from './theme';
-import Application from './application';
-import { assign } from "lodash"
-import resolvers from './graph/resolvers'
+import Navigator from 'screens';
+import createApiClient from 'graph';
+import theme from 'theme/_styled';
+import Theme from 'theme';
+import Application from 'application';
 
 export default class Root extends Component {
   constructor(props) {

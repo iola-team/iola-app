@@ -6,6 +6,10 @@
     "transform-export-extensions",
     "transform-function-bind",
     "transform-decorators-legacy",
-    "inline-import-graphql-ast"
+    "inline-import-graphql-ast",
+
+    ["module-resolver", {
+      "root": ["./src"]
+    }]
   ]
 }

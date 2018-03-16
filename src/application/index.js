@@ -5,7 +5,7 @@ import SplashScreen from "react-native-splash-screen"
 import Moment from 'react-moment';
 import { Text } from 'native-base';
 
-import { ROOT_QUERY } from '../graph';
+import { ROOT_QUERY } from 'graph';
 
 Moment.globalElement = Text;
 

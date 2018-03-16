@@ -4,7 +4,7 @@ import { withFormik } from 'formik';
 import yup from 'yup';
 import { Button, Form, Input, Item, Label, Text, View, Icon } from 'native-base';
 
-import { withStyleSheet as styleSheet } from '../../theme';
+import { withStyleSheet as styleSheet } from 'theme';
 
 @styleSheet('Sparkle.SignInForm', {
   root: {

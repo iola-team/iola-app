@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { connectStyle, Text, View } from 'native-base';
 
-import { withStyleSheet as styleSheet } from '../../theme';
+import { withStyleSheet as styleSheet } from 'theme';
 
 @styleSheet('Sparkle.Divider', {
   root: {
