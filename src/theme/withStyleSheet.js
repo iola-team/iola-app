@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { isArray, identity } from 'lodash';
-import { compose, mapProps, branch } from 'recompose';
+import { compose, mapProps, branch, toClass, getDisplayName } from 'recompose';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import { connectStyle } from 'native-base';
-import { ThemeShape } from '@shoutem/theme/src/Theme'
 
-const componentName = Cmp => (Cmp.displayName || Cmp.name || "Component");
-
-const withProps = (mapProps) => (WrappedComponent) => {
+const withStyleSheet = () => (WrappedComponent) => {
   class StyleSheet extends Component {
-    static displayName = `StyleSheet(${componentName(WrappedComponent)})`;
+    static displayName = `StyleSheet(${getDisplayName(WrappedComponent)})`;
 
     wrappedInstance = null;
 
@@ -25,28 +22,28 @@ const withProps = (mapProps) => (WrappedComponent) => {
       }
     }
 
-    setWrappedInstance(component) {
-      this._root = component && component._root
-        ? component._root
-        : component;
-
-      this.wrappedInstance = this._root;
-    }
-
     render() {
-      return (
-        <WrappedComponent
-          {...mapProps(this.props)}
-          ref={::this.setWrappedInstance}
-        />
-      );
+      const [styleSheet, ...style] = isArray(this.props.style)
+        ? this.props.style
+        : [this.props.style];
+
+      const props = {
+        ...this.props,
+        style,
+        styleSheet,
+        ref: (cmp) => {
+          this.wrappedInstance = cmp;
+        },
+      };
+
+      return <WrappedComponent {...props} />;
     }
   }
 
   return hoistNonReactStatic(StyleSheet, WrappedComponent);
 };
 
-const withHotReload = (componentName) => (WrappedComponent) => (
+const withHotReload = componentName => (WrappedComponent) => {
   class HotReload extends WrappedComponent {
     getOrSetStylesInCache(context, props, styleNames, path) {
       return this.resolveStyle(context, props, styleNames);
@@ -56,8 +53,8 @@ const withHotReload = (componentName) => (WrappedComponent) => (
       const theme = this.context.theme;
 
       /**
-      * Clear internal cache
-      */
+       * Clear internal cache
+       */
       delete theme['@@shoutem.theme/themeCachedStyle'][componentName];
 
       const style = this.getFinalStyle(
@@ -72,19 +69,13 @@ const withHotReload = (componentName) => (WrappedComponent) => (
       });
     }
   }
-);
+
+  return hoistNonReactStatic(HotReload, WrappedComponent);
+};
 
 export default (name, defaultStyle, mapPropsToVariant) => compose(
-  module.hot ? withHotReload(name, defaultStyle) : identity,
+  module.hot ? withHotReload(name) : identity,
 
   connectStyle(name, defaultStyle, mapPropsToVariant),
-  withProps(({ style: styleProp, ...props }) => {
-    const [styleSheet, ...style] = isArray(styleProp) ? styleProp : [styleProp]
-
-    return {
-      ...props,
-      style,
-      styleSheet,
-    };
-  })
+  withStyleSheet(),
 );
