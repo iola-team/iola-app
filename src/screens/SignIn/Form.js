@@ -58,7 +58,7 @@ class LoginForm extends Component {
 
     return (
       <Form style={[styleSheet.root, style]}>
-        <Item regular style={styleSheet.inputContainer}>
+        <Item style={styleSheet.inputContainer} regular>
           <Input style={styleSheet.input}
             placeholder="Login"
             onChangeText={text => setFieldValue('login', text)}
@@ -67,7 +67,7 @@ class LoginForm extends Component {
           />
         </Item>
 
-        <Item regular style={styleSheet.inputContainer}>
+        <Item style={styleSheet.inputContainer} regular>
           <Input style={styleSheet.input}
             secureTextEntry
             placeholder="Password"
@@ -76,12 +76,12 @@ class LoginForm extends Component {
             value={values.password}
           />
 
-          <Button transparent small style={styleSheet.forgotPassword} onPress={() => onForgotPasswordPress()}>
+          <Button style={styleSheet.forgotPassword} transparent small onPress={() => onForgotPasswordPress()}>
             <Text style={styleSheet.forgotPasswordText}>Forgot password?</Text>
           </Button>
         </Item>
 
-        <Button block style={styleSheet.submit} onPress={handleSubmit}>
+        <Button style={styleSheet.submit} block onPress={handleSubmit}>
           <Text>Submit</Text>
         </Button>
 

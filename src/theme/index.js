@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleProvider, connectStyle } from 'native-base';
+import { StyleProvider } from 'native-base';
 import getTheme from './components';
 import themeVariables from './variables';
 
-export withStyleSheet from './withStyleSheet';
-export const withStyle = connectStyle;
+export * from './styleSheet';
 
 export default class ThemeProvider extends Component {
   static propTypes = {

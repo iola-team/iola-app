@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Image, Keyboard, Platform } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import styled from 'styled-components/native';
 import { withProps } from 'recompose';
 import { Title, Button, Container, Content, Form, Input, Item, Label, Text, View, H1 } from 'native-base';
 
@@ -82,19 +81,18 @@ export default class SignInScreen extends Component {
     const { authenticate, navigation: { navigate }, styleSheet } = this.props;
     const { keyboardHeight } = this.state;
 
+    const backgroundUri = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
+
     return (
       <Container>
         <View style={styleSheet.background}>
-          <Image
-            style={styleSheet.backgroundImage}
-            source={{ uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' }}
-          />
+          <Image style={styleSheet.backgroundImage} source={{ uri: backgroundUri }} />
         </View>
 
         <Content padder contentContainerStyle={styleSheet.content}>
           <H1 style={styleSheet.title}>Sign in</H1>
 
-          <Button block style={styleSheet.facebookButton} onPress={() => alert('Log in via Facebook')}>
+          <Button style={styleSheet.facebookButton} block onPress={() => alert('Log in via Facebook')}>
             <Text>Log in via Facebook</Text>
           </Button>
 
@@ -113,7 +111,7 @@ export default class SignInScreen extends Component {
             }}
           />
 
-          <Button block bordered light style={styleSheet.button} onPress={() => navigate(SIGN_UP)}>
+          <Button style={styleSheet.button} block bordered light onPress={() => navigate(SIGN_UP)}>
             <Text>Sign up</Text>
           </Button>
         </Content>
