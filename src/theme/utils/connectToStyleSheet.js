@@ -3,28 +3,10 @@ import { compose, getContext, mapProps, withProps } from 'recompose'
 
 import { contextShape } from './withStyleSheet'
 import normalizeStyle from './normalizeStyle';
-
-const marshalExtraStyles = (styles) => {
-  return styles.reduce((s, item) => {
-    if (isFunction(item)) {
-      const prev = s.getDynamicStyles;
-      s.getDynamicStyles = (...args) => ({
-        ...(prev(...args) || {}),
-        ...(item(...args) || {}),
-      });
-    } else {
-      s.staticStyles = merge(s.staticStyles || {}, item);
-    }
-
-    return s;
-  }, {
-    staticStyles: null,
-    getDynamicStyles: () => (null),
-  });
-};
+import composeStyles from './composeStyles';
 
 export default (connector, WrappedComponent, ...componentStyles) => {
-  const { staticStyles, getDynamicStyles } = marshalExtraStyles(componentStyles);
+  const { staticStyles, getDynamicStyles } = composeStyles(componentStyles);
 
   const ConnectedComponent = compose(
     getContext(contextShape),
@@ -65,7 +47,7 @@ export default (connector, WrappedComponent, ...componentStyles) => {
   )(WrappedComponent);
 
   /**
-   * Add custom static methods to connected component, like `attrs`
+   * Add custom static methods to connected component, like `withProps`
    */
   ConnectedComponent.withProps = (props) => withProps(props)(ConnectedComponent);
 

@@ -4,6 +4,7 @@ import { isArray, identity } from 'lodash';
 import { compose, getDisplayName } from 'recompose';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import { connectStyle } from 'native-base';
+import mapPropsToStyleNames from 'native-base/src/Utils/mapPropsToStyleNames';
 
 import normalizeStyle from './normalizeStyle';
 
@@ -99,9 +100,9 @@ const withHotReload = componentName => (WrappedComponent) => {
   return HotReload;
 };
 
-export default (name, defaultStyle, mapPropsToVariant) => compose(
+export default (name, defaultStyle) => compose(
   module.hot ? withHotReload(name) : identity,
 
-  connectStyle(name, defaultStyle, mapPropsToVariant),
+  connectStyle(name, defaultStyle, mapPropsToStyleNames),
   wrapToStyleSheet(),
 );
