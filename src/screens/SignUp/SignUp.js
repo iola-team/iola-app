@@ -103,6 +103,10 @@ const ButtonSignInText = connectToStyleSheet('signInButtonText', Text, {
 @styleSheet('Sparkle.SignUpScreen')
 export default class SignUpScreen extends Component {
   render() {
+    const { navigation: {
+      goBack
+    }} = this.props;
+
     return (
       <Container>
         <Background>

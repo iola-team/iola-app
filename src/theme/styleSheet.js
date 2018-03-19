@@ -5,7 +5,15 @@ import { compose, mapProps, branch, toClass, getDisplayName, getContext, withPro
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import { connectStyle } from 'native-base';
 
-const normalizeStyle = style => style.length === 1 ? style[0] : style;
+const normalizeStyle = (rawStyle) => {
+  if (isObject(rawStyle)) {
+    return rawStyle;
+  }
+
+  const style = rawStyle.filter(item => isArray(item) ? item.length : item);
+
+  return style.length === 1 ? style[0] : style;
+};
 
 const contextShape = {
   styleSheet: PropTypes.object,
@@ -117,29 +125,54 @@ const withHotReload = componentName => (WrappedComponent) => {
 // Exports
 
 export const withStyle = connectStyle;
-export const connectToStyleSheet = (connector, WrappedComponent, defaultStyle, dynamicStyles = null) => {
+
+const marshalExtraStyles = (styles) => {
+  return styles.reduce((s, item) => {
+    if (isFunction(item)) {
+      const prev = s.getDynamicStyles;
+      s.getDynamicStyles = (...args) => ({
+        ...(prev(...args) || {}),
+        ...(item(...args) || {}),
+      });
+    } else {
+      s.staticStyles = merge(s.staticStyles || {}, item);
+    }
+
+    return s;
+  }, {
+    staticStyles: null,
+    getDynamicStyles: () => (null),
+  });
+};
+
+export const connectToStyleSheet = (connector, WrappedComponent, ...componentStyles) => {
+  const { staticStyles, getDynamicStyles } = marshalExtraStyles(componentStyles);
+
   const ConnectedComponent = compose(
     getContext(contextShape),
 
     mapProps(({ styleSheet, ...props }) => {
       const styleList = [];
-      const style = isFunction(connector) ? connector(styleSheet, props) : get(styleSheet, connector);
+      let connectedProps = {};
+      const dynamicStyles = getDynamicStyles(props);
 
-      styleList.push(merge({}, defaultStyle, style || {}));
-
-      if (dynamicStyles) {
-        styleList.push(
-          isFunction(dynamicStyles) ? dynamicStyles(props) : dynamicStyles
-        );
+      if (isFunction(connector)) {
+        connectedProps = connector(styleSheet, props, {
+          dynamicStyles,
+          staticStyles,
+        });
+      } else if (isString(connector)) {
+        styleList.push(staticStyles);
+        styleList.push(get(styleSheet, connector));
+        styleList.push(dynamicStyles);
       }
 
-      if (props.style) {
-        styleList.push(props.style);
-      }
+      styleList.push(props.style);
 
       return identity({
         ...props,
         style: normalizeStyle(styleList),
+        ...connectedProps,
       });
     }),
   )(WrappedComponent);
