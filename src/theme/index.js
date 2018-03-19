@@ -4,7 +4,7 @@ import { StyleProvider } from 'native-base';
 import getTheme from './components';
 import themeVariables from './variables';
 
-export * from './styleSheet';
+export * from './utils';
 
 export default class ThemeProvider extends Component {
   static propTypes = {
