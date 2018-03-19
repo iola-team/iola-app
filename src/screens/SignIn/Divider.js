@@ -5,7 +5,7 @@ import { withStyleSheet as styleSheet, connectToStyleSheet, withStyle } from 'th
 
 const Root = connectToStyleSheet('root', View);
 const Line = connectToStyleSheet('line', View);
-const Label = connectToStyleSheet('label', Text);
+const Label = connectToStyleSheet(() => 'label', Text);
 
 @styleSheet('Sparkle.Divider', {
   root: {
