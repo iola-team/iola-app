@@ -154,7 +154,7 @@ export const connectToStyleSheet = (connector, WrappedComponent, ...componentSty
     mapProps(({ styleSheet, ...props }) => {
       const styleList = [];
       let connectedProps = {};
-      const dynamicStyles = getDynamicStyles(props);
+      const dynamicStyles = getDynamicStyles(props, styleSheet);
 
       if (isFunction(connector)) {
         connectedProps = connector(styleSheet, props, {
