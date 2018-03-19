@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StyleProvider } from 'native-base';
-import getTheme from './components';
-import themeVariables from './variables';
+import getTheme from './default/components';
+import themeVariables from './default/variables';
 
 export * from './utils';
 
