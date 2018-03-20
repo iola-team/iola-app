@@ -1,20 +1,25 @@
 import React from 'react';
-import { Container, View, Text } from 'native-base';
-import styled from 'styled-components/native';
+import { Container, Content, View, Text } from 'native-base';
 
-const Wrap = styled(View)`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-const Line = styled(Text)`
-  padding: 10px;
-`;
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
+const Line = connectToStyleSheet('line', View);
+
+@styleSheet('Sparkle.UserScreen', {
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  line: {
+    padding: 10,
+  }
+})
 export default ({ data }) => {
   return (
     <Container>
-      <Wrap>
+      <Content contentContainerStyle={styleSheet.content}>
         <View>
           {
             data.loading ? <Text>Loading...</Text> : (
@@ -29,7 +34,7 @@ export default ({ data }) => {
             )
           }
         </View>
-      </Wrap>
+      </Content>
     </Container>
   );
 };

@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
-import { ThemeProvider } from 'styled-components/native';
 
-import Navigator from './screens';
-import createApiClient from './graph';
-import theme from './theme';
-import Application from './application';
+import Navigator from 'screens';
+import createApiClient from 'graph';
+import Theme from 'theme';
+import Application from 'application';
 
 export default class Root extends Component {
   constructor(props) {
@@ -17,11 +16,11 @@ export default class Root extends Component {
   render() {
     return (
       <ApolloProvider client={this.apiClient}>
-        <ThemeProvider theme={theme}>
+        <Theme>
           <Application>
             <Navigator />
           </Application>
-        </ThemeProvider>
+        </Theme>
       </ApolloProvider>
     );
   }

@@ -2,52 +2,42 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { withFormik } from 'formik';
 import yup from 'yup';
-import styled from 'styled-components/native';
 import { Button, Form, Input, Item, Label, Text, View, Icon } from 'native-base';
 
-const disableShadowOnAndroid = {
-  shadowColor: 'transparent',
-  shadowOffset: { height: 0, width: 0 },
-  shadowOpacity: 0,
-  elevation: 0,
-};
+import { withStyleSheet as styleSheet } from 'theme';
 
-const FormItem = styled(Item).attrs({ regular: true })`
-  margin-bottom: 15px;
-  padding: 0 10px;
-  border-radius: 10px;
-  border-color: rgba(255, 255, 255, .6);
-`;
+@styleSheet('Sparkle.SignInForm', {
+  root: {
 
-const FormInput = styled(Input).attrs({ placeholderTextColor: 'white' })`
-  font-size: 16px;
-  color: white;
-`;
+  },
 
-const SignInButton = styled(Button).attrs({ block: true, ...disableShadowOnAndroid })`
-  width: 55%;
-  height: 50px;
-  margin-top: 10%;
-  align-self: center;
-  border-radius: 10px;
-  background-color: ${props => props.theme.accent};
-`;
+  inputContainer: {
+    paddingLeft: 10,
+    paddingRight: 2,
+    marginBottom: 15,
+    borderRadius: 10,
+    borderColor: 'rgba(255, 255, 255, .6)',
+  },
 
-const ForgotPasswordButton = styled(Button).attrs({ transparent: true })`
-  height: 50px;
-  margin-right: -8px;
-`;
+  input: {
+    color: '#FFFFFF',
+  },
 
-const ForgotPasswordText = styled(Text)`
-  font-size: 12px;
-  color: white;
-`;
+  submit: {
+    marginTop: 40,
+    width: '55%',
+    alignSelf: 'center',
+  },
 
-const Bold = styled(Text)`
-  font-weight: 500;
-  font-size: 16px;
-`;
+  forgotPassword: {
+    marginRight: -8,
+    alignSelf: 'center',
+  },
 
+  forgotPasswordText: {
+    color: '#FFFFFF',
+  }
+})
 class LoginForm extends Component {
   static propTypes = {
     onSubmit: propTypes.func.isRequired,
@@ -62,35 +52,38 @@ class LoginForm extends Component {
       setFieldTouched,
       handleSubmit,
       isValid,
+      styleSheet,
+      style,
     } = this.props;
 
     return (
-      <Form>
-        <FormItem>
-          <FormInput
+      <Form style={[styleSheet.root, style]}>
+        <Item style={styleSheet.inputContainer} regular>
+          <Input style={styleSheet.input}
             placeholder="Login"
             onChangeText={text => setFieldValue('login', text)}
             onBlur={() => setFieldTouched('login')}
             value={values.login}
           />
-        </FormItem>
+        </Item>
 
-        <FormItem>
-          <FormInput secureTextEntry
+        <Item style={styleSheet.inputContainer} regular>
+          <Input style={styleSheet.input}
+            secureTextEntry
             placeholder="Password"
             onChangeText={text => setFieldValue('password', text)}
             onBlur={() => setFieldTouched('password')}
             value={values.password}
           />
 
-          <ForgotPasswordButton onPress={() => onForgotPasswordPress()}>
-            <ForgotPasswordText>Forgot password?</ForgotPasswordText>
-          </ForgotPasswordButton>
-        </FormItem>
+          <Button style={styleSheet.forgotPassword} transparent small onPress={() => onForgotPasswordPress()}>
+            <Text style={styleSheet.forgotPasswordText}>Forgot password?</Text>
+          </Button>
+        </Item>
 
-        <SignInButton onPress={handleSubmit}>
-          <Bold>Submit</Bold>
-        </SignInButton>
+        <Button style={styleSheet.submit} block onPress={handleSubmit}>
+          <Text>Submit</Text>
+        </Button>
 
       </Form>
     );

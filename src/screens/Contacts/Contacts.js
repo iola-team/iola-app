@@ -24,7 +24,7 @@ export default class Contacts extends Component {
               users && users.map(user => (
                 <ListItem key={user.id} avatar>
                   <Left>
-                    <Thumbnail square source={{ uri: user.avatar.url }} />
+                    <Thumbnail source={{ uri: user.avatar.url }} />
                   </Left>
                   <Body>
                     <Text>{user.name}</Text>

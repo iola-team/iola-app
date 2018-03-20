@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
-import { Container, View, Text, Button, Spinner } from 'native-base';
-import styled from 'styled-components/native';
+import { Container, Content as RNContent, View, Text, Button, Spinner } from 'native-base';
 
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import * as routes from '../roteNames';
 
-const Wrap = styled(View)`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
+const Content = connectToStyleSheet((styleSheet) => ({
+  contentContainerStyle: styleSheet.content,
+}), RNContent);
 
+@styleSheet('Sparkle.LaunchScreen', {
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+})
 export default class LaunchScreen extends Component {
   componentWillReceiveProps(newProps) {
     const {
@@ -34,11 +39,13 @@ export default class LaunchScreen extends Component {
   }
 
   render() {
+    const { styleSheet } = this.props;
+
     return (
       <Container>
-        <Wrap>
+        <Content>
           <Spinner />
-        </Wrap>
+        </Content>
       </Container>
     );
   }
