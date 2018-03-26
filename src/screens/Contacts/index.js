@@ -6,16 +6,20 @@ import Contacts from './Contacts';
 const withUsers = graphql(gql`
   query {
     users {
-      id
-      name
-      activityTime
-      avatar {
-        id
-        url
+      edges {
+        node {
+          id
+          name
+          activityTime
+          avatar {
+            id
+            url
+          }
+        }
       }
     }
   }
-`)
+`);
 
 export default compose(
   withUsers,

@@ -5,7 +5,7 @@
   "scripts": {
     "prestart": "npm run schema:generate",
     "start": "concurrently -p name -n \"schemas,server\" \"npm run schema:watch\" \"npm run server:start\"",
-    "server:start": "REACT_DEBUGGER=\"npm run debugger\" react-native start",
+    "server:start": "REACT_DEBUGGER=\"npm run debugger\" react-native start -- --reset-cache",
     "run:android": "react-native run-android",
     "test": "jest",
     "debugger": "rndebugger-open --open --port 8081",
