@@ -21,8 +21,6 @@ export default class ThemeProvider extends Component {
       ...this.props.variables,
     }
 
-    console.log('Rerender Theme');
-
     return (
       <StyleProvider style={getTheme(variables)}>
         {this.props.children}
