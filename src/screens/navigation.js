@@ -46,12 +46,12 @@ export default SwitchNavigator({
       screen: Dashboard,
     },
   }, {
-    initialRouteName: routes.CHANNELS,
+    initialRouteName: routes.CONTACTS,
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     tabBarOptions: {
       style: {
-        backgroundColor: '#ffffff',
+        backgroundColor: 'transparent',
         height: 70,
         paddingBottom: 10,
         paddingTop: 10,

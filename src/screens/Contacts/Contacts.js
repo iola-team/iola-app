@@ -6,6 +6,9 @@ import { NetworkStatus } from 'apollo-client';
 import {
   Container,
   Content,
+  Header,
+  Body,
+  Title,
   Icon,
   View,
 } from 'native-base';
@@ -29,7 +32,6 @@ export default class Contacts extends PureComponent {
   };
 
   onSearch(searchPhrase) {
-    console.log('on search');
     this.setState({
       searchPhrase,
     });
@@ -40,7 +42,12 @@ export default class Contacts extends PureComponent {
 
     return (
       <Container>
-        <SearchBar onSearch={::this.onSearch}/>
+        <Header noShadow>
+          <Body>
+            <Title>Users</Title>
+          </Body>
+        </Header>
+        <SearchBar onSearch={::this.onSearch} />
         <UserList search={searchPhrase} />
       </Container>
     );

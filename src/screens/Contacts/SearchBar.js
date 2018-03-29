@@ -5,6 +5,7 @@ import {
   Icon,
   Text,
   Item,
+  ListItem,
   Header,
   Input,
   Button,
@@ -34,11 +35,12 @@ export default class SearchBar extends PureComponent {
     const { phrase } = this.state;
 
     return (
-      <Header searchBar rounded>
+      <ListItem searchBar noBorder>
         <Item>
           <Icon name="ios-search" />
           <Input
-            placeholder="Search"
+            placeholder="Search for contacts"
+            placeholderTextColor={"#BDC0CB"}
             value={phrase}
             onChangeText={::this.onPhraseChange}
           />
@@ -46,7 +48,7 @@ export default class SearchBar extends PureComponent {
         <Button transparent>
           <Text>Search</Text>
         </Button>
-      </Header>
+      </ListItem>
     );
   }
 }

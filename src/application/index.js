@@ -16,9 +16,11 @@ Moment.globalElement = Text;
     }
   }
 `, {
-  props: ({ data: { auth } }) => ({
-    isAuthenticated: !!auth,
-  }),
+  props: ({ data: { auth } }) => {
+    return {
+      isAuthenticated: !!auth.token,
+    };
+  },
 })
 @graphql(ROOT_QUERY, {
   options: ({ isAuthenticated }) => ({
