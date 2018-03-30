@@ -1,7 +1,0 @@
-query ApplicationQuery($isAuthenticated: Boolean!) {
-  me @include(if: $isAuthenticated) {
-    id
-    name
-    email
-  }
-}

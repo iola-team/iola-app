@@ -63,6 +63,7 @@
     "preset": "react-native"
   },
   "resolutions": {
-    "graphql": "^0.13.1"
+    "graphql": "^0.13.1",
+    "native-base-shoutem-theme": "github:greyexpert/theme#master"
   }
 }

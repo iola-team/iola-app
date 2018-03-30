@@ -1,16 +1,16 @@
 import { debounce } from 'lodash';
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from "react-native";
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import UserListItem from './UserListItem'
+import UserListItem, { ITEM_HEIGHT } from './UserListItem'
 
 @graphql(gql`
   query allUsers($search: String = "", $cursor: Cursor) {
-    users(search: $search first: 50 after: $cursor) {
+    users(search: $search first: 20 after: $cursor) {
       edges {
         node {
           id
@@ -29,7 +29,7 @@ import UserListItem from './UserListItem'
     }
   }
 `)
-export default class UserList extends PureComponent {
+export default class UserList extends Component {
   static propTypes = {
     search: PropTypes.string,
   };
@@ -38,6 +38,12 @@ export default class UserList extends PureComponent {
     search: "",
   };
 
+  shouldComponentUpdate({ data }) {
+    const { users, networkStatus } = data;
+    const prev = this.props.data;
+
+    return prev.users !== users || prev.networkStatus !== networkStatus;
+  }
 
   renderItem({ item }) {
     return (
@@ -88,6 +94,15 @@ export default class UserList extends PureComponent {
     return node.id;
   }
 
+  getItemLayout(data, index) {
+
+    return {
+      length: ITEM_HEIGHT,
+      offset: ITEM_HEIGHT * index,
+      index,
+    }
+  }
+
   render() {
     const { data: { users, networkStatus } } = this.props;
     const reFetching = networkStatus === NetworkStatus.refetch;
@@ -100,6 +115,8 @@ export default class UserList extends PureComponent {
         onRefresh={::this.refresh}
         refreshing={reFetching}
         onEndReached={::this.loadMore}
+        getItemLayout={::this.getItemLayout}
+        initialNumToRender={10}
       />
     );
   }

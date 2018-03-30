@@ -9,6 +9,8 @@ import {
   Right
 } from 'native-base';
 
+export const ITEM_HEIGHT = 66;
+
 export default class UserListItem extends PureComponent {
   render() {
     const { item: { node } } = this.props;
