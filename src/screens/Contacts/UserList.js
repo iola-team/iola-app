@@ -9,7 +9,7 @@ import { graphql } from 'react-apollo';
 import UserListItem, { ITEM_HEIGHT } from './UserListItem'
 
 @graphql(gql`
-  query allUsers($search: String = "", $cursor: Cursor) {
+  query allUsers($search: String = "", $cursor: Cursor = null) {
     users(search: $search first: 20 after: $cursor) {
       edges {
         node {
