@@ -1,8 +1,22 @@
-import React, { Component } from 'react';
+import { debounce } from 'lodash';
+import React, { PureComponent } from 'react';
 import Moment from 'react-moment';
-import { Container, Content, Icon, List, ListItem, Thumbnail, Text, Body, Right, Left } from 'native-base';
+import { FlatList } from "react-native";
+import { NetworkStatus } from 'apollo-client';
+import {
+  Container,
+  Content,
+  Header,
+  Body,
+  Title,
+  Icon,
+  View,
+} from 'native-base';
 
-export default class Contacts extends Component {
+import UserList from './UserList';
+import SearchBar from './SearchBar';
+
+export default class Contacts extends PureComponent {
   static navigationOptions = {
     title: 'Users',
     tabBarIcon: ({ focused, tintColor }) => (
@@ -13,33 +27,28 @@ export default class Contacts extends Component {
     ),
   };
 
+  state =  {
+    searchPhrase: '',
+  };
+
+  onSearch(searchPhrase) {
+    this.setState({
+      searchPhrase,
+    });
+  }
+
   render() {
-    const { data: { users, loading } } = this.props;
+    const { searchPhrase } = this.state;
 
     return (
       <Container>
-        <Content>
-          <List>
-            {
-              users && users.map(user => (
-                <ListItem key={user.id} avatar>
-                  <Left>
-                    <Thumbnail source={{ uri: user.avatar.url }} />
-                  </Left>
-                  <Body>
-                    <Text>{user.name}</Text>
-                    <Text note>{" "}</Text>
-                  </Body>
-                  <Right>
-                    <Moment note fromNow>
-                      {user.activityTime}
-                    </Moment>
-                  </Right>
-                </ListItem>
-              ))
-            }
-          </List>
-        </Content>
+        <Header noShadow>
+          <Body>
+            <Title>Users</Title>
+          </Body>
+        </Header>
+        <SearchBar onSearch={::this.onSearch} />
+        <UserList search={searchPhrase} />
       </Container>
     );
   }

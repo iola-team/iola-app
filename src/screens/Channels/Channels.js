@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Content, Text, Icon } from 'native-base';
+import {
+  Container,
+  Content,
+  Header,
+  Body,
+  Title,
+  Text,
+  Icon
+} from 'native-base';
 
 export default class Channels extends Component {
   static navigationOptions = {
@@ -15,6 +23,11 @@ export default class Channels extends Component {
   render() {
     return (
       <Container>
+        <Header noShadow>
+          <Body>
+            <Title>Chats</Title>
+          </Body>
+        </Header>
         <Content padder>
           <Text>Channels</Text>
         </Content>

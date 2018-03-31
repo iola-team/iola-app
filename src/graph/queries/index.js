@@ -1,1 +1,11 @@
-export ROOT_QUERY from './root.graphql';
+import gql from 'graphql-tag';
+
+export const ROOT_QUERY = gql`
+  query ApplicationQuery($isAuthenticated: Boolean!) {
+    me @include(if: $isAuthenticated) {
+      id
+      name
+      email
+    }
+  }
+`;

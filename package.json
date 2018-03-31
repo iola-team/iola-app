@@ -3,10 +3,11 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "prestart": "npm run schema:generate",
-    "start": "concurrently -p name -n \"schemas,server\" \"npm run schema:watch\" \"npm run server:start\"",
-    "server:start": "REACT_DEBUGGER=\"npm run debugger\" react-native start",
+    "prestart": "yarn run schema:generate",
+    "start": "concurrently -p name -n \"schemas,server\" \"yarn run schema:watch\" \"yarn run server:start\"",
+    "server:start": "REACT_DEBUGGER=\"yarn run debugger\" react-native start -- --reset-cache",
     "run:android": "react-native run-android",
+    "log:android": "react-native log-android",
     "test": "jest",
     "debugger": "rndebugger-open --open --port 8081",
     "schema:load": "graphql get-schema",
@@ -63,6 +64,7 @@
     "preset": "react-native"
   },
   "resolutions": {
-    "graphql": "^0.13.1"
+    "graphql": "^0.13.1",
+    "native-base-shoutem-theme": "github:greyexpert/theme#master"
   }
 }
