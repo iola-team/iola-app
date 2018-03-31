@@ -6,7 +6,7 @@ import normalizeStyle from './normalizeStyle';
 import composeStyles from './composeStyles';
 
 export default (connector, WrappedComponent, ...componentStyles) => {
-  const { staticStyles, getDynamicStyles } = composeStyles(componentStyles);
+  const { staticStyles, getDynamicStyles } = composeStyles(...componentStyles);
 
   const ConnectedComponent = compose(
     getContext(contextShape),
