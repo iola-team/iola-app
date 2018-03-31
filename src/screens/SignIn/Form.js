@@ -16,7 +16,7 @@ const itemStyle = {
 };
 const ButtonForgotPassword = connectToStyleSheet('buttonForgotPassword', Button);
 const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button);
-const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
+const TextForgotPassword = connectToStyleSheet('textForgotPassword', Text);
 
 @styleSheet('Sparkle.SignInForm', {
   root: {
@@ -45,7 +45,7 @@ const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
     alignSelf: 'center',
   },
 
-  forgotPasswordText: {
+  textForgotPassword: {
     fontSize: 12,
     color: 'white',
   },
@@ -94,7 +94,7 @@ class LoginForm extends Component {
           />
 
           <ButtonForgotPassword transparent small onPress={() => onForgotPasswordPress()}>
-            <ForgotPasswordText>Forgot password?</ForgotPasswordText>
+            <TextForgotPassword>Forgot password?</TextForgotPassword>
           </ButtonForgotPassword>
         </ItemPassword>
 
