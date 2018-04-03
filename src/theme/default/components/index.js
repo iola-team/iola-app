@@ -19,6 +19,10 @@ export default (variables => ({
     },
 
     'NativeBase.Thumbnail': {
+      '.small': {
+        borderRadius: 4,
+      },
+
       borderRadius: 10,
     },
 

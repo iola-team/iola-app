@@ -17,6 +17,9 @@ import {
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import Head from './Head';
+import AboutCard from './AboutCard';
+import FriendsCard from './FriendsCard';
+import PhotosCard from './PhotosCard';
 
 const propsToVariables = props => ({
   id: props.navigation.state.params.id,
@@ -27,16 +30,16 @@ const propsToVariables = props => ({
     user: node(id: $id) {
       id
       ...Head_user
-      ...on User {
-        info {
-          location
-          about
-        }
-      }
+      ...AboutCard_user
+      ...FriendsCard_user
+      ...PhotosCard_user
     }
   }
 
   ${Head.fragments.user}
+  ${AboutCard.fragments.user}
+  ${FriendsCard.fragments.user}
+  ${PhotosCard.fragments.user}
 `, {
   options: (props) => ({
     variables: propsToVariables(props),
@@ -72,33 +75,9 @@ export default class UserScreen extends Component {
                   onBackPress={() => goBack()}
                 />
                 <View horizontalPadder>
-                  <Card transparent>
-                    <CardItem header>
-                      <Icon name={"ios-pricetag-outline"} />
-                      <Text>{user.info.location}</Text>
-                    </CardItem>
-                    <CardItem>
-                      <Text>{user.info.about}</Text>
-                    </CardItem>
-                  </Card>
-
-                  <Card transparent topBorder>
-                    <CardItem header>
-                      <Text>Friends 12</Text>
-                    </CardItem>
-                    <CardItem>
-                      <Text>Friend list here...</Text>
-                    </CardItem>
-                  </Card>
-
-                  <Card transparent topBorder>
-                    <CardItem header>
-                      <Text>Photos 12</Text>
-                    </CardItem>
-                    <CardItem>
-                      <Text>Photo list here...</Text>
-                    </CardItem>
-                  </Card>
+                  <AboutCard user={user} />
+                  <FriendsCard user={user} />
+                  <PhotosCard user={user} />
                 </View>
               </View>
             ) : (
