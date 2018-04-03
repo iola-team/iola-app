@@ -11,4 +11,6 @@ export default assign(defaultVariables, {
   titleFontColor: '#45474F',
   toolbarInputColor: '#F8F9FB',
   inputFontSize: 14,
+  textColor: '#585A61',
+  contentPadding: 16,
 });

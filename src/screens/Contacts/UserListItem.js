@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import {
   ListItem,
@@ -12,12 +13,21 @@ import {
 export const ITEM_HEIGHT = 66;
 
 export default class UserListItem extends PureComponent {
+  static propTypes = {
+    onPress: PropTypes.func,
+  };
+
+  static defaultProps = {
+    onPress: () => {},
+  };
+
   render() {
-    const { item: { node } } = this.props;
+    const { item, onPress } = this.props;
+    const { node } = item;
     const avatarUrl = node.avatar ? node.avatar.url : 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg';
 
     return (
-      <ListItem avatar>
+      <ListItem button avatar onPress={() => onPress(item)}>
         <Left>
           <Thumbnail source={{ uri: avatarUrl }} />
         </Left>

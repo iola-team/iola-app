@@ -32,10 +32,12 @@ import UserListItem, { ITEM_HEIGHT } from './UserListItem'
 export default class UserList extends Component {
   static propTypes = {
     search: PropTypes.string,
+    onItemPress: PropTypes.func,
   };
 
   static defaultProps = {
     search: "",
+    onItemPress: () => {},
   };
 
   shouldComponentUpdate({ data }) {
@@ -46,8 +48,10 @@ export default class UserList extends Component {
   }
 
   renderItem({ item }) {
+    const { onItemPress } = this.props;
+
     return (
-      <UserListItem item={item} />
+      <UserListItem item={item} onPress={onItemPress} />
     );
   }
 

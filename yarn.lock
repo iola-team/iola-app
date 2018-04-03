@@ -726,8 +726,8 @@ babel-plugin-external-helpers@^6.18.0:
     babel-runtime "^6.22.0"
 
 babel-plugin-inline-import-graphql-ast@^2.3.3:
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/babel-plugin-inline-import-graphql-ast/-/babel-plugin-inline-import-graphql-ast-2.3.5.tgz#f57acb747604ceaf87445d3938bfc2f7a93f0eb0"
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/babel-plugin-inline-import-graphql-ast/-/babel-plugin-inline-import-graphql-ast-2.3.6.tgz#1b4bd618e255f30d5550a62dfbd1905880397188"
   dependencies:
     "@babel/core" "7.0.0-beta.42"
     graphql-tag "^2.8.0"
@@ -2128,10 +2128,6 @@ decode-uri-component@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.2.0.tgz#eb3913333458775cb84cd1a1fae062106bb87545"
 
-deep-diff@^0.3.8:
-  version "0.3.8"
-  resolved "https://registry.yarnpkg.com/deep-diff/-/deep-diff-0.3.8.tgz#c01de63efb0eec9798801d40c7e0dae25b582c84"
-
 deep-extend@~0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
@@ -3090,7 +3086,7 @@ graphcool-yml@0.4.15:
     scuid "^1.0.2"
     yaml-ast-parser "^0.0.40"
 
-graphql-anywhere@^4.1.0-alpha.0, graphql-anywhere@^4.1.6, graphql-anywhere@^4.1.8:
+graphql-anywhere@^4.1.0-alpha.0, graphql-anywhere@^4.1.8:
   version "4.1.8"
   resolved "https://registry.yarnpkg.com/graphql-anywhere/-/graphql-anywhere-4.1.8.tgz#23882e6a16ec824febbe5bca40937cdd76c5acdc"
   dependencies:
@@ -4894,8 +4890,8 @@ mixin-deep@^1.2.0:
     minimist "0.0.8"
 
 moment@^2.21.0:
-  version "2.21.0"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
+  version "2.22.0"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.0.tgz#7921ade01017dd45186e7fee5f424f0b8663a730"
 
 morgan@~1.6.1:
   version "1.6.1"
@@ -5748,6 +5744,12 @@ react-native-keyboard-aware-scroll-view@0.4.2:
   dependencies:
     prop-types "^15.6.0"
     react-native-iphone-x-helper "^1.0.1"
+
+react-native-linear-gradient@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.4.0.tgz#51d8ea12bb72a59bede9edc87b694b16b64cf435"
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-safe-area-view@^0.7.0:
   version "0.7.0"
@@ -7174,9 +7176,13 @@ whatwg-encoding@^1.0.1, whatwg-encoding@^1.0.3:
   dependencies:
     iconv-lite "0.4.19"
 
-whatwg-fetch@2.0.3, whatwg-fetch@>=0.10.0:
+whatwg-fetch@2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz#9c84ec2dcf68187ff00bc64e1274b442176e1c84"
+
+whatwg-fetch@>=0.10.0:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-2.0.4.tgz#dde6a5df315f9d39991aa17621853d720b85566f"
 
 whatwg-fetch@^1.0.0:
   version "1.1.1"
