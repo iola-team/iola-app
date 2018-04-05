@@ -16,10 +16,8 @@ import {
 } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import Head from './Head';
-import AboutCard from './AboutCard';
-import FriendsCard from './FriendsCard';
-import PhotosCard from './PhotosCard';
+import { UserHeading, UserBriefCard, UserFriendsCard, UserPhotosCard } from 'components';
+import { USER } from '../roteNames';
 
 const propsToVariables = props => ({
   id: props.navigation.state.params.id,
@@ -29,17 +27,17 @@ const propsToVariables = props => ({
   query UserDetailsQuery($id: ID!) {
     user: node(id: $id) {
       id
-      ...Head_user
-      ...AboutCard_user
-      ...FriendsCard_user
-      ...PhotosCard_user
+      ...UserHeading_user
+      ...UserBriefCard_user
+      ...UserFriendsCard_user
+      ...UserPhotosCard_user
     }
   }
 
-  ${Head.fragments.user}
-  ${AboutCard.fragments.user}
-  ${FriendsCard.fragments.user}
-  ${PhotosCard.fragments.user}
+  ${UserHeading.fragments.user}
+  ${UserBriefCard.fragments.user}
+  ${UserFriendsCard.fragments.user}
+  ${UserPhotosCard.fragments.user}
 `, {
   options: (props) => ({
     variables: propsToVariables(props),
@@ -61,7 +59,7 @@ export default class UserScreen extends Component {
   };
 
   render() {
-    const { styleSheet, data: { user }, navigation: { goBack } } = this.props;
+    const { styleSheet, data: { user }, navigation: { goBack, navigate } } = this.props;
 
     return (
       <Container>
@@ -69,15 +67,15 @@ export default class UserScreen extends Component {
           {
             user ? (
               <View>
-                <Head
+                <UserHeading
                   style={styleSheet.head}
                   user={user}
                   onBackPress={() => goBack()}
                 />
                 <View horizontalPadder>
-                  <AboutCard user={user} />
-                  <FriendsCard user={user} />
-                  <PhotosCard user={user} />
+                  <UserBriefCard user={user} />
+                  <UserFriendsCard user={user} onItemPress={id => navigate(USER, { id })} />
+                  <UserPhotosCard user={user} />
                 </View>
               </View>
             ) : (

@@ -18,23 +18,21 @@ const Gradient = connectToStyleSheet('overlay', LinearGradient).withProps({
   colors: [ 'rgba(0, 0, 0, 0.35)', 'rgba(0, 0, 0, 0.5)' ],
 });
 
-const fragments = {
-  user: gql`
-    fragment Head_user on User {
+const userFragment = gql`
+  fragment UserHeading_user on User {
+    id
+    avatar {
       id
-      avatar {
-        id
-        url(size: MEDIUM)
-      }
-      info {
-        line1
-        line2
-      }
+      url(size: MEDIUM)
     }
-  `
-};
+    info {
+      line1
+      line2
+    }
+  }
+`;
 
-@styleSheet('Sparkle.UserViewHead', {
+@styleSheet('Sparkle.UserHeading', {
   overlay: {
     flex: 1,
     paddingVertical: 30,
@@ -78,10 +76,13 @@ const fragments = {
     color: '#BDC0CB',
   },
 })
-export default class Head extends PureComponent {
-  static fragments = fragments;
+export default class UserHeading extends PureComponent {
+  static fragments = {
+    user: userFragment,
+  };
+
   static propTypes = {
-    user: fragmentProp(fragments.user).isRequired,
+    user: fragmentProp(userFragment).isRequired,
     onBackPress: PropTypes.func.isRequired,
   }
 
@@ -96,7 +97,7 @@ export default class Head extends PureComponent {
       <ImageBackground source={{ uri: avatarUrl }} style={[styleSheet.root, style]} imageStyle={styleSheet.backgroundImage}>
         <Gradient>
           <View style={styleSheet.navigation}>
-            <Button light transparent onPress={onBackPress}>
+            <Button rounded light transparent onPress={onBackPress}>
               <Icon style={styleSheet.backIcon} name={'ios-arrow-back'} />
             </Button>
           </View>

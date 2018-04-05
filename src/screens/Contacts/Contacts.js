@@ -13,9 +13,9 @@ import {
   View,
 } from 'native-base';
 
+import { SearchBar } from 'components';
 import { USER } from '../roteNames';
-import UserList from './UserList';
-import SearchBar from './SearchBar';
+import UsersConnection from './UsersConnection';
 
 export default class Contacts extends PureComponent {
   static navigationOptions = {
@@ -58,7 +58,7 @@ export default class Contacts extends PureComponent {
           </Body>
         </Header>
         <SearchBar onSearch={::this.onSearch} />
-        <UserList search={searchPhrase} onItemPress={::this.onItemPress} />
+        <UsersConnection search={searchPhrase} onItemPress={::this.onItemPress} />
       </Container>
     );
   }

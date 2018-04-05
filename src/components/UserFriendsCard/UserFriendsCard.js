@@ -7,31 +7,28 @@ import {
   CardItem,
   Icon,
   Text,
-  Thumbnail,
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
+import UserAvatar from '../UserAvatar';
 
-const fragments = {
-  user: gql`
-    fragment FriendsCard_user on User {
-      friends {
-        totalCount
-        edges {
-          node {
-            id
-            avatar {
-              id
-              url
-            }
-          }
+const userFragment = gql`
+  fragment UserFriendsCard_user on User {
+    friends {
+      totalCount
+      edges {
+        node {
+          id
+          ...UserAvatar_user
         }
       }
     }
-  `
-};
+  }
 
-@styleSheet('Sparkle.UserFriendCard', {
+  ${UserAvatar.fragments.user}
+`;
+
+@styleSheet('Sparkle.UserFriendsCard', {
   list: {
     flexDirection: 'row',
   },
@@ -40,27 +37,40 @@ const fragments = {
     marginRight: 8,
   }
 })
-export default class FriendsCard extends PureComponent {
-  static fragments = fragments;
-  static propTypes = {
-    user: fragmentProp(fragments.data),
+export default class UserFriendsCard extends PureComponent {
+  static fragments = {
+    user: userFragment,
   };
 
-  renderEdge({ node }) {
-    const { styleSheet } = this.props;
+  static propTypes = {
+    user: fragmentProp(userFragment).isRequired,
+    onItemPress: PropTypes.func,
+  };
 
-    const uri = node.avatar
-      ? node.avatar.url
-      : 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg';
+  static defaultProps = {
+    onItemPress: () => {}
+  }
+
+  renderEdge({ node }) {
+    const { styleSheet, onItemPress  } = this.props;
 
     return (
-      <Thumbnail style={styleSheet.item} key={node.id} source={{ uri }} />
+      <UserAvatar
+        key={node.id}
+        style={styleSheet.item}
+        user={node}
+        onPress={() => onItemPress(node.id)}
+      />
     );
   }
 
   render() {
     const { user: { friends }, styleSheet } = this.props;
     const { totalCount, edges } = friends;
+
+    if (!totalCount) {
+      return null;
+    }
 
     return (
       <Card transparent topBorder>

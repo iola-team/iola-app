@@ -6,21 +6,13 @@ import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import UserListItem, { ITEM_HEIGHT } from './UserListItem'
+import { UserList } from 'components'
 
 @graphql(gql`
   query allUsers($search: String = "", $cursor: Cursor = null) {
     users(search: $search first: 20 after: $cursor) {
       edges {
-        node {
-          id
-          name
-          activityTime
-          avatar {
-            id
-            url
-          }
-        }
+        ...UserList_edge
       }
       pageInfo {
         hasNextPage
@@ -28,8 +20,10 @@ import UserListItem, { ITEM_HEIGHT } from './UserListItem'
       }
     }
   }
+  
+  ${UserList.fragments.edge}
 `)
-export default class UserList extends Component {
+export default class UsersConnection extends Component {
   static propTypes = {
     search: PropTypes.string,
     onItemPress: PropTypes.func,
@@ -45,14 +39,6 @@ export default class UserList extends Component {
     const prev = this.props.data;
 
     return prev.users !== users || prev.networkStatus !== networkStatus;
-  }
-
-  renderItem({ item }) {
-    const { onItemPress } = this.props;
-
-    return (
-      <UserListItem item={item} onPress={onItemPress} />
-    );
   }
 
   refresh(vars = {}) {
@@ -94,33 +80,17 @@ export default class UserList extends Component {
     });
   }
 
-  extractItemKey({ node }) {
-    return node.id;
-  }
-
-  getItemLayout(data, index) {
-
-    return {
-      length: ITEM_HEIGHT,
-      offset: ITEM_HEIGHT * index,
-      index,
-    }
-  }
-
   render() {
-    const { data: { users, networkStatus } } = this.props;
+    const { data: { users, networkStatus }, onItemPress } = this.props;
     const reFetching = networkStatus === NetworkStatus.refetch;
 
     return !users ? null : (
-      <FlatList
-        data={users.edges}
-        keyExtractor={::this.extractItemKey}
-        renderItem={::this.renderItem}
+      <UserList
+        edges={users.edges}
+        onItemPress={onItemPress}
         onRefresh={::this.refresh}
         refreshing={reFetching}
         onEndReached={::this.loadMore}
-        getItemLayout={::this.getItemLayout}
-        initialNumToRender={10}
       />
     );
   }

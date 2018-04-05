@@ -9,21 +9,25 @@ import {
   Text,
 } from 'native-base';
 
-const fragments = {
-  user: gql`
-    fragment AboutCard_user on User {
-      info {
-        location
-        about
-      }
-    }
-  `
-};
+import { withStyleSheet as styleSheet } from 'theme'
 
-export default class AboutCard extends PureComponent {
-  static fragments = fragments;
+const userFragment = gql`
+  fragment UserBriefCard_user on User {
+    info {
+      location
+      about
+    }
+  }
+`;
+
+@styleSheet('Sparkle.UserBriefCard')
+export default class UserBriefCard extends PureComponent {
+  static fragments = {
+    user: userFragment,
+  };
+
   static propTypes = {
-    user: fragmentProp(fragments.data),
+    user: fragmentProp(userFragment).isRequired,
   };
 
   render() {
