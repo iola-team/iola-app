@@ -27,6 +27,8 @@ import { BackButton } from 'components';
   },
 
   title: {
+    fontWeight: '600',
+    fontSize: 16,
     color: '#585A61',
     textAlign: 'center',
     position: 'absolute',
