@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import PropTypes from 'prop-types';
+import { ScrollView } from 'react-native';
 import {
   Card,
   CardItem,
@@ -78,9 +79,11 @@ export default class UserFriendsCard extends PureComponent {
           <Text>Friends {totalCount}</Text>
         </CardItem>
         <CardItem style={styleSheet.list}>
-          {
-            edges.map(::this.renderEdge)
-          }
+          <ScrollView horizontal>
+            {
+              edges.map(::this.renderEdge)
+            }
+          </ScrollView>
         </CardItem>
       </Card>
     );

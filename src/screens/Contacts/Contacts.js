@@ -52,11 +52,6 @@ export default class Contacts extends PureComponent {
 
     return (
       <Container>
-        <Header noShadow>
-          <Body>
-            <Title>Users</Title>
-          </Body>
-        </Header>
         <SearchBar onSearch={::this.onSearch} />
         <UsersConnection search={searchPhrase} onItemPress={::this.onItemPress} />
       </Container>

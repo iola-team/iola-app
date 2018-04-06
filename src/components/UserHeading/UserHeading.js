@@ -13,6 +13,7 @@ import {
 } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { BackButton } from 'components';
 
 const Gradient = connectToStyleSheet('overlay', LinearGradient).withProps({
   colors: [ 'rgba(0, 0, 0, 0.35)', 'rgba(0, 0, 0, 0.5)' ],
@@ -21,13 +22,13 @@ const Gradient = connectToStyleSheet('overlay', LinearGradient).withProps({
 const userFragment = gql`
   fragment UserHeading_user on User {
     id
+    name
     avatar {
       id
       url(size: MEDIUM)
     }
     info {
-      line1
-      line2
+      headline
     }
   }
 `;
@@ -70,11 +71,6 @@ const userFragment = gql`
   backgroundImage: {
     resizeMode: 'cover',
   },
-
-  backIcon: {
-    fontSize: 35,
-    color: '#BDC0CB',
-  },
 })
 export default class UserHeading extends PureComponent {
   static fragments = {
@@ -84,10 +80,11 @@ export default class UserHeading extends PureComponent {
   static propTypes = {
     user: fragmentProp(userFragment).isRequired,
     onBackPress: PropTypes.func.isRequired,
+    onChatPress: PropTypes.func.isRequired,
   }
 
   render() {
-    const { style, styleSheet, user, onBackPress } = this.props;
+    const { style, styleSheet, user, onBackPress, onChatPress } = this.props;
 
     const avatarUrl = user.avatar
       ? user.avatar.url
@@ -97,21 +94,19 @@ export default class UserHeading extends PureComponent {
       <ImageBackground source={{ uri: avatarUrl }} style={[styleSheet.root, style]} imageStyle={styleSheet.backgroundImage}>
         <Gradient>
           <View style={styleSheet.navigation}>
-            <Button rounded light transparent onPress={onBackPress}>
-              <Icon style={styleSheet.backIcon} name={'ios-arrow-back'} />
-            </Button>
+            <BackButton onPress={onBackPress} />
           </View>
 
           <View style={styleSheet.info}>
             <H2 inverse style={[styleSheet.infoLine, styleSheet.infoLine1]}>
-              {user.info.line1}
+              {user.name}
             </H2>
             <Text note style={[styleSheet.infoLine, styleSheet.infoLine2]}>
-              {user.info.line2}
+              {user.info.headline}
             </Text>
           </View>
 
-          <Button block bordered light style={styleSheet.chatButton}>
+          <Button block bordered light style={styleSheet.chatButton} onPress={onChatPress}>
             <Text>Chat</Text>
           </Button>
         </Gradient>

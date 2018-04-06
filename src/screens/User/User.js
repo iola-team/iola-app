@@ -17,7 +17,7 @@ import {
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import { UserHeading, UserBriefCard, UserFriendsCard, UserPhotosCard } from 'components';
-import { USER } from '../roteNames';
+import * as routes from '../roteNames';
 
 const propsToVariables = props => ({
   id: props.navigation.state.params.id,
@@ -71,10 +71,13 @@ export default class UserScreen extends Component {
                   style={styleSheet.head}
                   user={user}
                   onBackPress={() => goBack()}
+                  onChatPress={() => navigate(routes.CHANNEL, {
+                    userId: user.id,
+                  })}
                 />
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
-                  <UserFriendsCard user={user} onItemPress={id => navigate(USER, { id })} />
+                  <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
                   <UserPhotosCard user={user} />
                 </View>
               </View>

@@ -23,7 +23,9 @@ export default (variables => ({
         borderRadius: 4,
       },
 
-      borderRadius: 10,
+      width: 40,
+      height: 40,
+      borderRadius: 8,
     },
 
     'NativeBase.Button': {

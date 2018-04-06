@@ -6,3 +6,5 @@ export UserBriefCard from './UserBriefCard';
 export UserPhotosCard from './UserPhotosCard';
 export UserFriendsCard from './UserFriendsCard';
 export UserHeading from './UserHeading';
+export ScreenHeader from './ScreenHeader';
+export BackButton from './BackButton';
