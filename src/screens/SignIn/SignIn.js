@@ -34,7 +34,7 @@ const ButtonSignup = connectToStyleSheet('buttonSignup', Button);
     marginVertical: 34,
     alignSelf: 'center',
     fontSize: 30,
-    color: '#FFFFFF',
+    color: 'white',
   },
 
   textBold: {

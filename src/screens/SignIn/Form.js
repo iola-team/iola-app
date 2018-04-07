@@ -9,8 +9,7 @@ const ItemLogin = connectToStyleSheet('itemLogin', Item).withProps({ regular: tr
 const ItemPassword = connectToStyleSheet('itemPassword', Item).withProps({ regular: true });
 const InputTransparent = connectToStyleSheet('inputTransparent', Input);
 const itemStyle = {
-  paddingLeft: 10,
-  paddingRight: 2,
+  paddingHorizontal: 10,
   borderRadius: 8,
   borderColor: 'rgba(255, 255, 255, .6)',
 };
@@ -32,11 +31,15 @@ const TextForgotPassword = connectToStyleSheet('textForgotPassword', Text);
 
   itemPassword: {
     ...itemStyle,
+    paddingRight: 5,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
   },
 
   inputTransparent: {
+    //fontFamily: "SF Pro Text";
+    //fontSize: 16,
+    //lineHeight: 17,
     color: 'white',
   },
 
@@ -52,7 +55,6 @@ const TextForgotPassword = connectToStyleSheet('textForgotPassword', Text);
 
   buttonSubmit: {
     marginTop: 48,
-    width: '100%',
   },
 })
 class LoginForm extends Component {
