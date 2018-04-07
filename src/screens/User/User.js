@@ -55,7 +55,7 @@ const propsToVariables = props => ({
 })
 export default class UserScreen extends Component {
   static navigationOptions = {
-    header: null,
+    headerTransparent: true,
   };
 
   render() {

@@ -11,6 +11,7 @@ import {
   Right
 } from 'native-base';
 
+import { withStyle } from 'theme';
 import UserAvatar from '../UserAvatar';
 
 const userFragment = gql`
@@ -25,8 +26,9 @@ const userFragment = gql`
   ${UserAvatar.fragments.user}
 `;
 
+@withStyle('Sparkle.UserListItem')
 export default class UserListItem extends PureComponent {
-  static ITEM_HEIGHT = 66;
+  static ITEM_HEIGHT = 70;
 
   static propTypes = {
     user: fragmentProp(userFragment),
@@ -42,16 +44,20 @@ export default class UserListItem extends PureComponent {
   };
 
   render() {
-    const { user, onPress } = this.props;
+    const { user, onPress, style } = this.props;
 
     return (
-      <ListItem button avatar onPress={() => onPress(user)}>
+      <ListItem
+        style={style}
+        button
+        avatar
+        onPress={() => onPress(user)}
+      >
         <Left>
           <UserAvatar user={user} />
         </Left>
         <Body>
-        <Text>{user.name}</Text>
-        <Text note>{" "}</Text>
+          <Text>{user.name}</Text>
         </Body>
         <Right>
           <Moment note fromNow>

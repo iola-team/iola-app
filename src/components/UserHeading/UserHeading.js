@@ -13,7 +13,6 @@ import {
 } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { BackButton } from 'components';
 
 const Gradient = connectToStyleSheet('overlay', LinearGradient).withProps({
   colors: [ 'rgba(0, 0, 0, 0.35)', 'rgba(0, 0, 0, 0.5)' ],
@@ -38,10 +37,6 @@ const userFragment = gql`
     flex: 1,
     paddingVertical: 30,
     paddingHorizontal: 10,
-  },
-
-  navigation: {
-
   },
 
   info: {
@@ -93,10 +88,6 @@ export default class UserHeading extends PureComponent {
     return (
       <ImageBackground source={{ uri: avatarUrl }} style={[styleSheet.root, style]} imageStyle={styleSheet.backgroundImage}>
         <Gradient>
-          <View style={styleSheet.navigation}>
-            <BackButton onPress={onBackPress} />
-          </View>
-
           <View style={styleSheet.info}>
             <H2 inverse style={[styleSheet.infoLine, styleSheet.infoLine1]}>
               {user.name}

@@ -122,5 +122,17 @@ export default (variables => ({
     },
 
     'Sparkle.Divider': {},
+
+    'Sparkle.UserListItem': {
+      'NativeBase.ListItem': {
+        'NativeBase.Body': {
+          height: 68,
+          justifyContent: 'center'
+        },
+        'NativeBase.Right': {
+          justifyContent: 'center'
+        },
+      }
+    }
   }),
 }));
