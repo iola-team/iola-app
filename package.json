@@ -8,6 +8,7 @@
     "server:start": "REACT_DEBUGGER=\"yarn run debugger\" react-native start -- --reset-cache",
     "run:android": "react-native run-android",
     "log:android": "react-native log-android",
+    "run:ios": "react-native run-ios",
     "test": "jest",
     "debugger": "rndebugger-open --open --port 8081",
     "schema:load": "graphql get-schema",

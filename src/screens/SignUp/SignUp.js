@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
-import { Button, Container, Form, Input, Item, Label, Text, View } from 'native-base';
+import { ImageBackground } from 'react-native';
+import { Button, Container, Text, View } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
-import { SIGN_IN } from '../roteNames';
+import SignUpForm from './Form';
 
 const disableShadowOnAndroid = {
   shadowColor: 'transparent',
@@ -12,92 +12,90 @@ const disableShadowOnAndroid = {
   elevation: 0,
 };
 const Title = connectToStyleSheet('title', Text);
-const Background = connectToStyleSheet('background', View);
-const Content = connectToStyleSheet('content', View);
-const TextBold = connectToStyleSheet('textBold', Text);
-const FormContent = connectToStyleSheet('formContent', View);
-const FormItem = connectToStyleSheet('formItem', Item).withProps({ regular: true });
-const FormInput = connectToStyleSheet('formInput', Input).withProps({ placeholderTextColor: 'white' });
-const ButtonSignUp = connectToStyleSheet('buttonSignUp', Button).withProps({
-  block: true,
-  ...disableShadowOnAndroid,
+const Background = connectToStyleSheet('background', ImageBackground).withProps({
+  source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
 });
-const BottomTextContainer = connectToStyleSheet('bottomTextContainer', View);
-const BottomText = connectToStyleSheet('bottomText', Text);
+const Content = connectToStyleSheet('content', View);
+const TermsAndConditionsContainer = connectToStyleSheet('termsAndConditionsContainer', View);
+const TermsAndConditionsText = connectToStyleSheet('termsAndConditionsText', Text);
+const TermsAndConditionsSubcontainer = connectToStyleSheet('termsAndConditionsSubcontainer', View);
+const TermsAndConditionsButton = connectToStyleSheet('termsAndConditionsButton', Button);
+const TermsAndConditionsButtonText = connectToStyleSheet('termsAndConditionsButtonText', Text);
+const AlreadyHaveAnAccountContainer = connectToStyleSheet('alreadyHaveAnAccountContainer', View);
+const AlreadyHaveAnAccountText = connectToStyleSheet('alreadyHaveAnAccountText', Text);
 const ButtonSignIn = connectToStyleSheet('buttonSignIn', Button).withProps({ ...disableShadowOnAndroid });
 const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 
 @styleSheet('Sparkle.SignUpScreen', {
   background: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
+    flex: 1,
   },
 
   content: {
     flex: 1,
     alignSelf: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    marginVertical: 50,
-    paddingHorizontal: '10%',
-    backgroundColor: 'transparent',
+    minWidth: 320,
+    paddingLeft: '5%',
+    paddingRight: '5%',
   },
 
   title: {
     marginVertical: 34,
     alignSelf: 'center',
     fontSize: 30,
-    color: 'white',
-  },
-
-  textBold: {
-    fontWeight: '500',
-    fontSize: 16,
-  },
-
-  formContent: {
-    justifyContent: 'center',
-  },
-
-  formItem: {
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    marginBottom: 8,
-    borderColor: 'rgba(255, 255, 255, .6)',
-  },
-
-  formInput: {
-    fontSize: 16,
     color: '#FFFFFF',
   },
 
-  signUpButton: {
-    height: 50,
-    marginTop: '10%',
-    alignSelf: 'center',
-    borderRadius: 10,
+  termsAndConditionsContainer: {
+    marginTop: 15,
+    alignItems: 'center',
   },
 
-  bottomTextContainer: {
+  termsAndConditionsText: {
+    fontSize: 14,
+    lineHeight: 19,
+    color: '#FFFFFF',
+  },
+
+  termsAndConditionsButton: {
+    height: 29,
+    marginTop: -5,
+    marginHorizontal: -11,
+    backgroundColor: 'transparent',
+  },
+
+  termsAndConditionsButtonText: {
+    fontSize: 14,
+    lineHeight: 19,
+    textDecorationLine: 'underline',
+  },
+
+  termsAndConditionsSubcontainer: {
+    flexDirection: 'row',
+  },
+
+  alreadyHaveAnAccountContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 33,
   },
 
-  bottomText: {
-    color: 'white',
+  alreadyHaveAnAccountText: {
+    fontSize: 14,
+    lineHeight: 19,
+    color: '#FFFFFF',
   },
 
   buttonSignIn: {
     height: 30,
     marginTop: -5,
+    marginHorizontal: -4,
     backgroundColor: 'transparent',
   },
 
   buttonSignInText: {
+    fontSize: 14,
+    lineHeight: 19,
     paddingVertical: 0,
     paddingHorizontal: 10,
     textDecorationLine: 'underline',
@@ -105,40 +103,34 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 })
 export default class SignUpScreen extends Component {
   render() {
-    const { navigation: {
-      goBack
-    }} = this.props;
+    const { navigation: { goBack } } = this.props;
 
     return (
       <Container>
         <Background>
-          <Image style={{ resizeMode: 'cover', width: null, height: '100%' }} source={{ uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' }} />
-        </Background>
-        <Content>
-          <Title>Please sign up</Title>
-          <FormContent>
-            <Form>
-              <FormItem>
-                <FormInput placeholder="Full Name" />
-              </FormItem>
-              <FormItem>
-                <FormInput placeholder="Email" />
-              </FormItem>
-              <FormItem>
-                <FormInput placeholder="Password" secureTextEntry={true} />
-              </FormItem>
-              <ButtonSignUp onPress={() => alert('Sign up')}>
-                <TextBold>Sign up</TextBold>
-              </ButtonSignUp>
-            </Form>
-            <BottomTextContainer>
-              <BottomText>Already have an account?</BottomText>
+          <Content>
+            <Title>Please sign up</Title>
+
+            <SignUpForm onSubmit={() => alert('Sign up')} />
+
+            <TermsAndConditionsContainer>
+              <TermsAndConditionsText>By signing up, you agree</TermsAndConditionsText>
+              <TermsAndConditionsSubcontainer>
+                <TermsAndConditionsText>to the</TermsAndConditionsText>
+                <TermsAndConditionsButton onPress={() => alert('Terms and Conditions')}>
+                  <TermsAndConditionsButtonText>Terms and Conditions</TermsAndConditionsButtonText>
+                </TermsAndConditionsButton>
+              </TermsAndConditionsSubcontainer>
+            </TermsAndConditionsContainer>
+
+            <AlreadyHaveAnAccountContainer>
+              <AlreadyHaveAnAccountText>Already have an account?</AlreadyHaveAnAccountText>
               <ButtonSignIn onPress={() => goBack()}>
                 <ButtonSignInText>Sign in</ButtonSignInText>
               </ButtonSignIn>
-            </BottomTextContainer>
-          </FormContent>
-        </Content>
+            </AlreadyHaveAnAccountContainer>
+          </Content>
+        </Background>
       </Container>
     );
   }

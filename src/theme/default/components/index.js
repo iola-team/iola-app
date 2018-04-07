@@ -33,7 +33,8 @@ export default (variables => ({
       height: 50,
 
       'NativeBase.Text': {
-        fontWeight: '500',
+        fontSize: 16,
+        fontWeight: 'bold',
       },
     },
 
