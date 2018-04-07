@@ -114,7 +114,6 @@ export default (variables => ({
 
       '.topBorder': {
         borderTopWidth: variables.borderWidth,
-        borderTopWidth: 1,
       },
 
       borderWidth: 0,
