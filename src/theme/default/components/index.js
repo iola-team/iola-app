@@ -4,8 +4,28 @@ import getTheme from 'native-base/src/theme/components';
 export default (variables => ({
   ...variables,
   ...merge(getTheme(variables), {
+    'NativeBase.Container': {
+      backgroundColor: '#FFFFFF',
+    },
+
+    'NativeBase.ViewNB': {
+      ".padder": {
+        padding: variables.contentPadding
+      },
+
+      ".horizontalPadder": {
+        paddingHorizontal: variables.contentPadding
+      },
+    },
+
     'NativeBase.Thumbnail': {
-      borderRadius: 10,
+      '.small': {
+        borderRadius: 4,
+      },
+
+      width: 40,
+      height: 40,
+      borderRadius: 8,
     },
 
     'NativeBase.Button': {
@@ -19,6 +39,27 @@ export default (variables => ({
 
     'NativeBase.H1': {
       fontWeight: '500',
+      '.inverse': {
+        color: variables.inverseTextColor,
+      }
+    },
+
+    'NativeBase.H2': {
+      '.inverse': {
+        color: variables.inverseTextColor,
+      }
+    },
+
+    'NativeBase.H3': {
+      '.inverse': {
+        color: variables.inverseTextColor,
+      }
+    },
+
+    'NativeBase.Text': {
+      '.inverse': {
+        color: variables.inverseTextColor,
+      }
     },
 
     'NativeBase.Header': {
@@ -51,6 +92,46 @@ export default (variables => ({
       },
     },
 
+    'NativeBase.Card': {
+      'NativeBase.CardItem': {
+        padding: 0,
+
+        '.header': {
+          'NativeBase.Text': {
+            fontWeight: null,
+            color: '#BDC0CB',
+          },
+
+          'NativeBase.Icon': {
+            color: '#BDC0CB',
+            fontSize: 20,
+            width: 30,
+          },
+
+          alignItems: 'center',
+        }
+      },
+
+      '.topBorder': {
+        borderTopWidth: variables.borderWidth,
+      },
+
+      borderWidth: 0,
+      marginBottom: 16,
+    },
+
     'Sparkle.Divider': {},
+
+    'Sparkle.UserListItem': {
+      'NativeBase.ListItem': {
+        'NativeBase.Body': {
+          height: 68,
+          justifyContent: 'center'
+        },
+        'NativeBase.Right': {
+          justifyContent: 'center'
+        },
+      }
+    }
   }),
 }));

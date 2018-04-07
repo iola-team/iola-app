@@ -23,11 +23,6 @@ export default class Channels extends Component {
   render() {
     return (
       <Container>
-        <Header noShadow>
-          <Body>
-            <Title>Chats</Title>
-          </Body>
-        </Header>
         <Content padder>
           <Text>Channels</Text>
         </Content>

@@ -13,12 +13,14 @@ import {
   View,
 } from 'native-base';
 
-import UserList from './UserList';
-import SearchBar from './SearchBar';
+import { SearchBar } from 'components';
+import { USER } from '../roteNames';
+import UsersConnection from './UsersConnection';
 
 export default class Contacts extends PureComponent {
   static navigationOptions = {
     title: 'Users',
+    header: null,
     tabBarIcon: ({ focused, tintColor }) => (
       <Icon
         style={{ color: tintColor, fontSize: 35 }}
@@ -37,18 +39,21 @@ export default class Contacts extends PureComponent {
     });
   }
 
+  onItemPress({ node }) {
+    const { navigation: { navigate } } = this.props;
+
+    navigate(USER, {
+      id: node.id,
+    });
+  }
+
   render() {
     const { searchPhrase } = this.state;
 
     return (
       <Container>
-        <Header noShadow>
-          <Body>
-            <Title>Users</Title>
-          </Body>
-        </Header>
         <SearchBar onSearch={::this.onSearch} />
-        <UserList search={searchPhrase} />
+        <UsersConnection search={searchPhrase} onItemPress={::this.onItemPress} />
       </Container>
     );
   }
