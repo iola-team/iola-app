@@ -1,120 +1,88 @@
 import React, { Component } from 'react';
-import { Image, Keyboard, Platform } from 'react-native';
+import { Image, ImageBackground, Keyboard, Platform } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { withProps } from 'recompose';
-import { Title, Button, Container, Content, Form, Input, Item, Label, Text, View, H1 } from 'native-base';
-
-import { withStyleSheet as styleSheet } from 'theme';
+import { Button, Container, Content, Input, Item, Label, Text, View, H1 } from 'native-base';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 import { SIGN_UP, LAUNCH } from '../roteNames';
 import LoginForm from './Form';
 import Divider from './Divider';
 
+const Background = connectToStyleSheet('background', ImageBackground).withProps({
+  source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
+});
+const Title = connectToStyleSheet('title', H1);
+const TextBold = connectToStyleSheet('textBold', Text);
+const ButtonFacebook = connectToStyleSheet('buttonFacebook', Button);
+const ButtonSignup = connectToStyleSheet('buttonSignup', Button);
+
 @styleSheet('Sparkle.SignInScreen', {
   content: {
     flex: 1,
-    justifyContent: 'center',
+    alignSelf: 'center',
+    minWidth: 320,
+    paddingLeft: '5%',
+    paddingRight: '5%',
   },
 
   background: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
     height: '100%',
-  },
-
-  backgroundImage: {
-    resizeMode: 'cover',
-    width: null,
-    height: '100%',
-  },
-
-  divider: {
-    marginVertical: 30,
-  },
-
-  facebookButton: {
-    backgroundColor: '#6D83CC',
-  },
-
-  button: {
-    width: '55%',
-    alignSelf: 'center',
-    marginTop: 15,
   },
 
   title: {
-    marginBottom: '20%',
+    marginVertical: 34,
     alignSelf: 'center',
-    color: '#FFFFFF',
     fontSize: 30,
+    color: '#FFFFFF',
+  },
+
+  textBold: {
+    fontWeight: 'bold',
+  },
+
+  buttonFacebook: {
+    backgroundColor: '#6D83CC',
+  },
+
+  buttonSignup: {
+    marginTop: 8,
   },
 })
 export default class SignInScreen extends Component {
-  state = {
-    keyboardHeight: 0,
-  };
-
-  componentWillMount () {
-    this.keyboardListeners = [
-      Keyboard.addListener('keyboardDidShow', this.onKeyboardUpdate),
-      Keyboard.addListener('keyboardDidHide', this.onKeyboardUpdate)
-    ];
-  }
-
-  componentWillUnmount() {
-    this.keyboardListeners.forEach(listener => listener.remove());
-  }
-
-  onKeyboardUpdate = (event) => {
-    const {
-      endCoordinates: { height = 0 } = {}
-    } = event || {};
-
-    this.setState({
-      keyboardHeight: height,
-    });
-  };
-
   render() {
     const { authenticate, navigation: { navigate }, styleSheet } = this.props;
-    const { keyboardHeight } = this.state;
-
-    const backgroundUri = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
 
     return (
       <Container>
-        <View style={styleSheet.background}>
-          <Image style={styleSheet.backgroundImage} source={{ uri: backgroundUri }} />
-        </View>
+        <Background>
+          <Content padder contentContainerStyle={styleSheet.content}>
+            <Title>Sign in</Title>
 
-        <Content padder contentContainerStyle={styleSheet.content}>
-          <H1 style={styleSheet.title}>Sign in</H1>
+            <ButtonFacebook block onPress={() => alert('Log in via Facebook')}>
+              <TextBold>Log in via Facebook</TextBold>
+            </ButtonFacebook>
 
-          <Button style={styleSheet.facebookButton} block onPress={() => alert('Log in via Facebook')}>
-            <Text>Log in via Facebook</Text>
-          </Button>
+            <Divider>or</Divider>
 
-          <Divider style={styleSheet.divider}>or</Divider>
+            <LoginForm
+              onSubmit={async (values) => {
+                const success = await authenticate(values.login, values.password);
 
-          <LoginForm
-            onSubmit={async (values) => {
-              const success = await authenticate(values.login, values.password);
+                if (success) {
+                  navigate(LAUNCH);
+                }
+              }}
+              onForgotPasswordPress={() => {
+                alert('Forgot password?');
+              }}
+            />
 
-              if (success) {
-                navigate(LAUNCH);
-              }
-            }}
-            onForgotPasswordPress={() => {
-              alert('Forgot password?');
-            }}
-          />
-
-          <Button style={styleSheet.button} block bordered light onPress={() => navigate(SIGN_UP)}>
-            <Text>Sign up</Text>
-          </Button>
-        </Content>
+            <ButtonSignup block bordered light onPress={() => navigate(SIGN_UP)}>
+              <TextBold>Sign up</TextBold>
+            </ButtonSignup>
+          </Content>
+        </Background>
       </Container>
     );
   }

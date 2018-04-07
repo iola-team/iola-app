@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Text, View } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet, withStyle } from 'theme';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 const Root = connectToStyleSheet('root', View);
 const Line = connectToStyleSheet('line', View);
@@ -11,11 +11,13 @@ const Label = connectToStyleSheet(() => 'label', Text);
   root: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 18,
   },
 
   label: {
     paddingHorizontal: 5,
     fontSize: 12,
+    lineHeight: 12,
     textAlign: 'center',
     color: '#FFFFFF',
   },
