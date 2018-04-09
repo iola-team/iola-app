@@ -19,7 +19,7 @@ import { BackButton } from 'components';
   },
 
   right: {
-    paddingRight: 16,
+
   },
 
   left: {
