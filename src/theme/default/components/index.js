@@ -129,7 +129,7 @@ export default (variables => ({
           justifyContent: 'center'
         },
         'NativeBase.Right': {
-          justifyContent: 'center'
+          justifyContent: 'center',
         },
       }
     }
