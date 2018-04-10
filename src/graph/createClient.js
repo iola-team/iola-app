@@ -16,8 +16,6 @@ import { AuthLink } from './links';
 disableFragmentWarnings();
 
 export default async () => {
-  let client;
-
   const cache = new InMemoryCache({
     dataIdFromObject: object => object.id || null,
     cacheRedirects: {
@@ -32,18 +30,12 @@ export default async () => {
   const cachePersistor = new CachePersistor({
     cache,
     storage: AsyncStorage,
+    trigger: 'background',
     debug: true,
   });
 
   const withContext = setContext(() => ({
     cachePersistor,
-
-    /**
-     * Adds client getter to the context. TODO: investigate if it is ok or find a better solution
-     */
-    get client() {
-      return client;
-    }
   }));
 
   const stateLink = withClientState({
@@ -75,7 +67,7 @@ export default async () => {
     uri: 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql',
   });
 
-  client = new ApolloClient({
+  const client = new ApolloClient({
     link: from([
       withContext.concat(
         stateLink,
