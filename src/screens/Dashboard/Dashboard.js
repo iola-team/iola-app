@@ -18,6 +18,7 @@ import {
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import { DashboardHeading, UserBriefCard, UserFriendsCard, UserPhotosCard } from 'components';
 import * as routes from '../roteNames';
+import LogoutButton from './LogoutButton';
 
 @graphql(gql`
   query DashboardQuery {
@@ -46,9 +47,7 @@ export default class Dashboard extends Component {
       />
     ),
     headerRight: (
-      <Button transparent>
-        <Text style={{ color: '#BDC0CB' }}>Logout</Text>
-      </Button>
+      <LogoutButton />
     ),
   };
 

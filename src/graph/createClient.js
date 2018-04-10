@@ -1,17 +1,22 @@
 import { assign } from 'lodash';
+import { AsyncStorage } from 'react-native';
 import { toIdValue } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
 import { from } from 'apollo-link';
 import { BatchHttpLink } from "apollo-link-batch-http";
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
+import { CachePersistor } from 'apollo-cache-persist';
+import { setContext } from "apollo-link-context";
 import { disableFragmentWarnings } from 'graphql-tag';
 
 import resolvers from './resolvers';
 import { AuthLink } from './links';
 
-export default () => {
-  disableFragmentWarnings();
+disableFragmentWarnings();
+
+export default async () => {
+  let client;
 
   const cache = new InMemoryCache({
     dataIdFromObject: object => object.id || null,
@@ -23,6 +28,23 @@ export default () => {
       }
     },
   });
+
+  const cachePersistor = new CachePersistor({
+    cache,
+    storage: AsyncStorage,
+    debug: true,
+  });
+
+  const withContext = setContext(() => ({
+    cachePersistor,
+
+    /**
+     * Adds client getter to the context. TODO: investigate if it is ok or find a better solution
+     */
+    get client() {
+      return client;
+    }
+  }));
 
   const stateLink = withClientState({
     resolvers: resolvers.resolvers,
@@ -46,17 +68,25 @@ export default () => {
     });
   }
 
+  await cachePersistor.restore();
+
   const authLink = new AuthLink();
   const httpLink = new BatchHttpLink({
     uri: 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql',
   });
 
-  return new ApolloClient({
+  client = new ApolloClient({
     link: from([
-      stateLink,
+      withContext.concat(
+        stateLink,
+      ),
       authLink,
       httpLink,
     ]),
     cache,
   });
+
+  client.onResetStore(stateLink.writeDefaults);
+
+  return client;
 };

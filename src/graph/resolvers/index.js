@@ -1,10 +1,10 @@
 import { composeResovers } from '../utils'
 
 // Resolvers
-import counter from './counter';
 import auth from './auth';
+import cache from './cache';
 
 export default composeResovers(
-  counter,
+  cache,
   auth
 );

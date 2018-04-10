@@ -7,14 +7,32 @@ import Theme from 'theme';
 import Application from 'application';
 
 export default class Root extends Component {
+  state = {
+    isReady: false,
+  };
+
+  apiClient = null;
+
   constructor(props) {
     super(props);
+  }
 
-    this.apiClient = createApiClient();
+  async init() {
+    this.apiClient = await createApiClient();
+  }
+
+  async componentDidMount() {
+    await this.init();
+
+    this.setState({
+      isReady: true,
+    });
   }
 
   render() {
-    return (
+    const { isReady } = this.state;
+
+    return isReady ? (
       <ApolloProvider client={this.apiClient}>
         <Theme>
           <Application>
@@ -22,6 +40,8 @@ export default class Root extends Component {
           </Application>
         </Theme>
       </ApolloProvider>
+    ) : (
+      null
     );
   }
 }

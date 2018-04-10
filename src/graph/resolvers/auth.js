@@ -11,6 +11,7 @@ const typeDefs = gql`
 
   type Mutation {
     storeAuthToken(token: String!): Boolean
+    clearAuthToken: Boolean
   }
 `;
 
@@ -22,23 +23,26 @@ const query = gql`
   }
 `;
 
+const writeToken = async (token, { cache }) => {
+  const { auth } = cache.readQuery({ query });
+
+  cache.writeQuery({
+    query,
+    data: {
+      auth: {
+        ...auth,
+        token,
+      },
+    }
+  });
+
+  return true;
+};
+
 const resolvers = {
   Mutation: {
-    storeAuthToken(root, { token }, { cache }) {
-      const { auth } = cache.readQuery({ query });
-
-      cache.writeQuery({
-        query,
-        data: {
-          auth: {
-            ...auth,
-            token,
-          },
-        }
-      });
-
-      return true;
-    },
+    storeAuthToken: (root, { token }, context) => writeToken(token, context),
+    clearAuthToken: (root, args, context) => writeToken(null, context),
   },
 };
 
