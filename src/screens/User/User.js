@@ -47,11 +47,6 @@ const propsToVariables = props => ({
   head: {
     height: 350,
   },
-
-  backIcon: {
-    fontSize: 35,
-    color: '#BDC0CB',
-  },
 })
 export default class UserScreen extends Component {
   static navigationOptions = {
@@ -59,7 +54,7 @@ export default class UserScreen extends Component {
   };
 
   render() {
-    const { styleSheet, data: { user }, navigation: { goBack, navigate } } = this.props;
+    const { styleSheet, data: { user }, navigation: { navigate } } = this.props;
 
     return (
       <Container>

@@ -1,7 +1,7 @@
 import { graphql } from 'react-apollo';
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import SplashScreen from "react-native-splash-screen"
+import SplashScreen from 'react-native-splash-screen';
 import Moment from 'react-moment';
 import { Text } from 'native-base';
 
@@ -35,7 +35,7 @@ export default class Application extends Component {
   }
 
   render() {
-    const { children, data } = this.props;
+    const { children } = this.props;
 
     return (
       children
