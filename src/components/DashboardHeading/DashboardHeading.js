@@ -86,10 +86,12 @@ export default class DashboardHeading extends PureComponent {
 
   static propTypes = {
     user: fragmentProp(userFragment).isRequired,
+    onEditPress: PropTypes.func.isRequired,
+    onSettingsPress: PropTypes.func.isRequired,
   }
 
   render() {
-    const { style, styleSheet, user } = this.props;
+    const { style, styleSheet, user, onEditPress, onSettingsPress } = this.props;
 
     const avatarUrl = user.avatar
       ? user.avatar.url
@@ -110,11 +112,11 @@ export default class DashboardHeading extends PureComponent {
           <Image source={{ uri: avatarUrl }} style={styleSheet.image} />
 
           <View style={styleSheet.buttons}>
-            <Button block bordered transparent style={styleSheet.button}>
+            <Button block bordered transparent style={styleSheet.button} onPress={onEditPress}>
               <Text style={styleSheet.buttonText}>Edit profile</Text>
             </Button>
 
-            <Button block bordered transparent style={styleSheet.button}>
+            <Button block bordered transparent style={styleSheet.button} onPress={onSettingsPress}>
               <Text style={styleSheet.buttonText}>Settings</Text>
             </Button>
           </View>

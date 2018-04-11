@@ -17,6 +17,8 @@ import Contacts from './Contacts';
 import Dashboard from './Dashboard';
 import User from './User';
 import Channel from './Channel';
+import ProfileEdit from './PropfileEdit';
+import Settings from './Settings';
 
 // Navigator
 export default SwitchNavigator({
@@ -72,19 +74,22 @@ export default SwitchNavigator({
           activeTintColor: '#5F96F2',
           inactiveTintColor: '#45474F',
         },
-        // navigationOptions: {
-        //   headerTitleStyle: {
-        //     left: 56, // Adds left spacing to center tans title. TODO: investigate a better approach
-        //   }
-        // }
       }),
     },
     [routes.USER]: {
-      screen: User
+      screen: User,
     },
 
     [routes.CHANNEL]: {
-      screen: Channel
+      screen: Channel,
+    },
+
+    [routes.SETTINGS]: {
+      screen: Settings,
+    },
+
+    [routes.PROFILE_EDIT]: {
+      screen: ProfileEdit,
     },
   }, {
     navigationOptions: {

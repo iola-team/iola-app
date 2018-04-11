@@ -74,12 +74,11 @@ export default class UserHeading extends PureComponent {
 
   static propTypes = {
     user: fragmentProp(userFragment).isRequired,
-    onBackPress: PropTypes.func.isRequired,
     onChatPress: PropTypes.func.isRequired,
   }
 
   render() {
-    const { style, styleSheet, user, onBackPress, onChatPress } = this.props;
+    const { style, styleSheet, user, onChatPress } = this.props;
 
     const avatarUrl = user.avatar
       ? user.avatar.url

@@ -10,3 +10,5 @@ export const CONTACTS = 'contacts';
 export const DASHBOARD = 'dashboard';
 export const CHANNELS = 'channels';
 export const CHANNEL = 'channel';
+export const PROFILE_EDIT = 'profile-edit';
+export const SETTINGS = 'settings';

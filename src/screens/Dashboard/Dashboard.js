@@ -63,6 +63,8 @@ export default class Dashboard extends Component {
                 <DashboardHeading
                   style={styleSheet.head}
                   user={user}
+                  onEditPress={() => navigate(routes.PROFILE_EDIT)}
+                  onSettingsPress={() => navigate(routes.SETTINGS)}
                 />
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
