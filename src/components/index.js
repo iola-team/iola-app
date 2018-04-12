@@ -9,3 +9,4 @@ export UserHeading from './UserHeading';
 export ScreenHeader from './ScreenHeader';
 export BackButton from './BackButton';
 export DashboardHeading from './DashboardHeading';
+export AvatarToolbar from './AvatarToolbar';
