@@ -23,7 +23,7 @@ const userFragment = gql`
 @styleSheet('Sparkle.AvatarToolbar', {
   root: {
     flexDirection: 'row',
-  }
+  },
 })
 export default class AvatarToolbar extends PureComponent {
   static fragments = {
@@ -42,7 +42,8 @@ export default class AvatarToolbar extends PureComponent {
         <UserAvatar large user={user} />
         <View horizontalPadder>
           <Text note>
-            Edit profile photo</Text>
+            Edit profile photo
+          </Text>
         </View>
       </View>
     );

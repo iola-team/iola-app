@@ -5,7 +5,7 @@
   "scripts": {
     "prestart": "yarn run schema:generate",
     "start": "concurrently -p name -n \"schemas,server\" \"yarn run schema:watch\" \"yarn run server:start\"",
-    "server:start": "REACT_DEBUGGER=\"yarn run debugger\" react-native start -- --reset-cache",
+    "server:start": "REACT_DEBUGGER=\"yarn run debugger\" react-native start --reset-cache --verbose",
     "run:android": "react-native run-android",
     "log:android": "react-native log-android",
     "test": "jest",
