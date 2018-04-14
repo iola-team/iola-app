@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
+import SplashScreen from 'react-native-splash-screen';
 
-import Navigator from 'screens';
 import createApiClient from 'graph';
 import Theme from 'theme';
 import Application from 'application';
+import Storybook from 'storybook';
 
-export default class Root extends Component {
+class ApplicationRoot extends Component {
   state = {
     isReady: false,
   };
@@ -29,19 +30,49 @@ export default class Root extends Component {
     });
   }
 
+  onApplicationReady() {
+    SplashScreen.hide();
+  }
+
   render() {
     const { isReady } = this.state;
 
     return isReady ? (
       <ApolloProvider client={this.apiClient}>
         <Theme>
-          <Application>
-            <Navigator />
-          </Application>
+          <Application onReady={::this.onApplicationReady} />
         </Theme>
       </ApolloProvider>
     ) : (
       null
+    );
+  }
+}
+
+class StorybookRoot extends Component {
+  componentDidMount() {
+    SplashScreen.hide();
+  }
+
+  render() {
+    return (
+      <Theme>
+        <Storybook />
+      </Theme>
+    );
+  }
+}
+
+export default class extends Component {
+  render() {
+    const { isStorybook } = this.props;
+
+    return (
+      isStorybook ? (
+        <StorybookRoot />
+      ) : (
+        <ApplicationRoot />
+      )
     );
   }
 }

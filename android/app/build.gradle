@@ -97,6 +97,14 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
 
+    productFlavors {
+        main {}
+        storybook {
+            applicationIdSuffix ".storybook"
+            versionNameSuffix "-storybook"
+        }
+    }
+
     defaultConfig {
         applicationId "com.apollomessenger"
         minSdkVersion 21
