@@ -15,6 +15,7 @@
     "schema:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchSchemas.js",
     "schema:generate": "babel-node $NODE_DEBUG_OPTION ./scripts/generateSchema.js",
     "storybook": "storybook start -p 7007 -c ./src/storybook --skip-packager",
+    "storybook:generate": "rnstl",
     "prestorybook": "rnstl"
   },
   "config": {
