@@ -63,4 +63,16 @@ class StorybookRoot extends Component {
   }
 }
 
-export default StorybookRoot;
+export default class extends Component {
+  render() {
+    const { isStorybook } = this.props;
+
+    return (
+      isStorybook ? (
+        <StorybookRoot />
+      ) : (
+        <ApplicationRoot />
+      )
+    );
+  }
+}
