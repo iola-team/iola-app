@@ -6,13 +6,29 @@
     "prestart": "yarn run schema:generate",
     "start": "concurrently -p name -n \"schemas,server\" \"yarn run schema:watch\" \"yarn run server:start\"",
     "server:start": "REACT_DEBUGGER=\"yarn run debugger\" react-native start -- --reset-cache",
-    "run:android": "react-native run-android",
+    "run:android": "react-native run-android --variant=mainDebug",
+    "run:android-storybook": "yarn storybook:generate && react-native run-android --variant=storybookDebug --appIdSuffix=storybook",
     "log:android": "react-native log-android",
     "test": "jest",
     "debugger": "rndebugger-open --open --port 8081",
     "schema:load": "graphql get-schema",
     "schema:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchSchemas.js",
-    "schema:generate": "babel-node $NODE_DEBUG_OPTION ./scripts/generateSchema.js"
+    "schema:generate": "babel-node $NODE_DEBUG_OPTION ./scripts/generateSchema.js",
+    "storybook": "concurrently -p name -n \"stories,server\" \"yarn storybook:watch\" \"yarn storybook:server\"",
+    "prestorybook": "yarn storybook:generate",
+    "storybook:server": "storybook start -p 7007 -c ./src/storybook --skip-packager",
+    "storybook:generate": "rnstl",
+    "storybook:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchStories.js"
+  },
+  "config": {
+    "react-native-storybook-loader": {
+      "searchDir": [
+        "./src/components",
+        "./src/screens"
+      ],
+      "pattern": "**/*.stories.js",
+      "outputFile": "./src/storybook/storyLoader.js"
+    }
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.1.12",
@@ -48,13 +64,19 @@
     "yup": "^0.24.1"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^4.0.0-alpha.2",
+    "@storybook/addon-links": "^4.0.0-alpha.2",
+    "@storybook/addons": "^4.0.0-alpha.2",
+    "@storybook/react-native": "^4.0.0-alpha.2",
     "babel-cli": "^6.26.0",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "22.4.3",
     "babel-plugin-inline-import-graphql-ast": "^2.3.6",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-function-bind": "^6.22.0",
     "babel-preset-react-native-stage-0": "^1.0.1",
+    "babel-runtime": "^7.0.0-beta.3",
     "child-process-promise": "^2.2.1",
     "concurrently": "^3.5.1",
     "glob-watcher": "^5.0.1",
@@ -62,7 +84,9 @@
     "graphql-tools": "^2.24.0",
     "jest": "22.4.3",
     "merge-graphql-schemas": "^1.5.1",
-    "react-native-debugger-open": "^0.3.17"
+    "react-dom": "^16.3.1",
+    "react-native-debugger-open": "^0.3.17",
+    "react-native-storybook-loader": "^1.8.0"
   },
   "jest": {
     "preset": "react-native"

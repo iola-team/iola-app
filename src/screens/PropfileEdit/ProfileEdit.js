@@ -1,25 +1,49 @@
 import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import {
   Container,
   Content,
-  Text,
+  View,
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
+import { AvatarToolbar } from 'components';
 
-@styleSheet('Sparkle.ProfileEditScreen')
+@graphql(gql`
+  query ProfileEditQuery {
+    user: me {
+      id
+
+      ...AvatarToolbar_user
+    }
+  }
+
+  ${AvatarToolbar.fragments.user}
+`)
+@styleSheet('Sparkle.ProfileEditScreen', {
+  avatar: {
+    paddingVertical: 30,
+  }
+})
 export default class ProfileEditScreen extends Component {
   static navigationOptions = {
     title: 'Profile Edit',
   };
 
   render() {
-    const { styleSheet } = this.props;
+    const { styleSheet, data: { user } } = this.props;
 
     return (
       <Container>
-        <Content padder>
-          <Text>Profile Edit</Text>
+        <Content>
+          <View
+            highlight
+            horizontalPadder
+            style={styleSheet.avatar}
+          >
+            <AvatarToolbar user={user} />
+          </View>
         </Content>
       </Container>
     );
