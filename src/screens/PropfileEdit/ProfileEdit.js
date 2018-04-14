@@ -9,7 +9,6 @@ import {
 
 import { withStyleSheet as styleSheet } from 'theme';
 import { AvatarToolbar } from 'components';
-import { DashboardHeading, UserBriefCard, UserFriendsCard, UserPhotosCard } from '../../components'
 
 @graphql(gql`
   query ProfileEditQuery {
