@@ -41,6 +41,45 @@ export default (variables => ({
         fontWeight: '500',
       },
 
+      '.transparent': {
+        '.secondary': {
+          backgroundColor: null,
+        }
+      },
+
+      '.bordered': {
+        '.secondary': {
+          backgroundColor: null,
+        }
+      },
+
+      '.light': {
+        'NativeBase.Text': {
+          color: variables.textColor,
+        },
+      },
+
+      '.secondary': {
+        borderColor: '#BDC0CB',
+        backgroundColor: variables.brandLight,
+
+        'NativeBase.Text': {
+          color: variables.textColor,
+        },
+
+        '.bordered': {
+          'NativeBase.Text': {
+            color: variables.textColor,
+          },
+        },
+
+        '.transparent': {
+          'NativeBase.Text': {
+            color: variables.textColor,
+          },
+        }
+      },
+
       elevation: 0,
       height: 50,
     },

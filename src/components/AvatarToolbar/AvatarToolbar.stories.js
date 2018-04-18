@@ -1,20 +1,40 @@
 import React from 'react';
+import { withHandlers } from 'recompose';
 import { storiesOf } from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
 import {
   Text
 } from 'native-base';
 
-import { getBorderedDecorator, getContentDecorator } from 'storybook';
+import { getContentDecorator } from 'storybook';
 import AvatarToolbar from './AvatarToolbar';
 
 const stories = storiesOf('Components/AvatarToolbar', module)
-  .addDecorator(getBorderedDecorator())
-  .addDecorator(getContentDecorator({ centered: true }));
+  .addDecorator(getContentDecorator({ padder: true }));
 
-stories.add('Default', () => (
-  <Text>Hello Storybook!!!</Text>
+const hasAvatar = {
+  id: 'User:1',
+  avatar: {
+    id: 'Avatar:1',
+    url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
+  }
+};
+
+const noAvatar = {
+  ...hasAvatar,
+  avatar: null,
+};
+
+const Toolbar = withHandlers({
+  onChangePress: () => action('change'),
+  onAddPress: () => action('add'),
+  onDeletePress: () => action('delete'),
+})(AvatarToolbar);
+
+stories.add('Has avatar', () => (
+  <Toolbar user={hasAvatar} />
 ));
 
-stories.add('Test', () => (
-  <Text>Hello Test Storybook!!!</Text>
+stories.add('No avatar', () => (
+  <Toolbar user={noAvatar} />
 ));

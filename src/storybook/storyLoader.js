@@ -6,11 +6,13 @@
 
 function loadStories() {
   require('../components/AvatarToolbar/AvatarToolbar.stories');
+  require('./stories/Button.stories');
   
 }
 
 const stories = [
   '../components/AvatarToolbar/AvatarToolbar.stories',
+  './stories/Button.stories',
   
 ];
 
