@@ -2,6 +2,7 @@ import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
+import ImagePicker from 'react-native-image-crop-picker';
 import {
   Text,
   View,
@@ -48,10 +49,32 @@ export default class AvatarToolbar extends PureComponent {
 
   static propTypes = {
     user: fragmentProp(userFragment),
-    onAddPress: PropTypes.func.isRequired,
-    onDeletePress: PropTypes.func.isRequired,
-    onChangePress: PropTypes.func.isRequired,
   };
+
+  async addPressed() {
+    let image = null;
+
+    try {
+      image = await ImagePicker.openPicker({
+        width: 500,
+        height: 500,
+        cropping: true,
+        mediaType: 'photo',
+      });
+    } catch(e) {
+      // Canceled ...
+    }
+
+    console.log(image);
+  }
+
+  deletePressed() {
+
+  }
+
+  changePressed() {
+
+  }
 
   render() {
     const { styleSheet, style, user } = this.props;
@@ -72,7 +95,7 @@ export default class AvatarToolbar extends PureComponent {
                   <Button
                     block
                     style={styleSheet.button}
-                    onPress={this.props.onChangePress}
+                    onPress={::this.changePressed}
                   >
                     <Text>Change</Text>
                   </Button>
@@ -82,7 +105,7 @@ export default class AvatarToolbar extends PureComponent {
                     secondary
                     bordered
                     style={styleSheet.button}
-                    onPress={this.props.onDeletePress}
+                    onPress={::this.deletePressed}
                   >
                     <Text>Delete</Text>
                   </Button>
@@ -91,7 +114,7 @@ export default class AvatarToolbar extends PureComponent {
                 <Button
                   block
                   style={styleSheet.button}
-                  onPress={this.props.onAddPress}
+                  onPress={::this.addPressed}
                 >
                   <Text>Add</Text>
                 </Button>
