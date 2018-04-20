@@ -2,7 +2,6 @@ import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import ImagePicker from 'react-native-image-crop-picker';
 import {
   Text,
   View,
@@ -49,31 +48,11 @@ export default class AvatarToolbar extends PureComponent {
 
   static propTypes = {
     user: fragmentProp(userFragment),
+    onButtonPress: PropTypes.func.isRequired,
   };
 
-  async addPressed() {
-    let image = null;
-
-    try {
-      image = await ImagePicker.openPicker({
-        width: 500,
-        height: 500,
-        cropping: true,
-        mediaType: 'photo',
-      });
-    } catch(e) {
-      // Canceled ...
-    }
-
-    console.log(image);
-  }
-
-  deletePressed() {
-
-  }
-
-  changePressed() {
-
+  onPress(action) {
+    this.props.onButtonPress(action);
   }
 
   render() {
@@ -95,7 +74,7 @@ export default class AvatarToolbar extends PureComponent {
                   <Button
                     block
                     style={styleSheet.button}
-                    onPress={::this.changePressed}
+                    onPress={this.onPress.bind(this, 'change')}
                   >
                     <Text>Change</Text>
                   </Button>
@@ -105,7 +84,7 @@ export default class AvatarToolbar extends PureComponent {
                     secondary
                     bordered
                     style={styleSheet.button}
-                    onPress={::this.deletePressed}
+                    onPress={this.onPress.bind(this, 'delete')}
                   >
                     <Text>Delete</Text>
                   </Button>
@@ -114,7 +93,7 @@ export default class AvatarToolbar extends PureComponent {
                 <Button
                   block
                   style={styleSheet.button}
-                  onPress={::this.addPressed}
+                  onPress={this.onPress.bind(this, 'add')}
                 >
                   <Text>Add</Text>
                 </Button>
