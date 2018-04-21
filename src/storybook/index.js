@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
-import { getStorybookUI, configure } from '@storybook/react-native';
+import { getStorybookUI } from '@storybook/react-native';
 
-import { loadStories } from './storyLoader';
+import './config';
 
 export * from './decorators';
 
 export default class StorybookHMR extends Component {
   constructor(...args) {
     super(...args);
-
-    configure(() => {
-      loadStories()
-    }, module);
 
     this.Storybook = getStorybookUI({
       port: 7007,

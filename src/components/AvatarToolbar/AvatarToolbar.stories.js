@@ -26,9 +26,7 @@ const noAvatar = {
 };
 
 const Toolbar = withHandlers({
-  onChangePress: () => action('change'),
-  onAddPress: () => action('add'),
-  onDeletePress: () => action('delete'),
+  onButtonPress: () => action('press'),
 })(AvatarToolbar);
 
 stories.add('Has avatar', () => (

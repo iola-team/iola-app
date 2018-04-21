@@ -6,12 +6,14 @@
 
 function loadStories() {
   require('../components/AvatarToolbar/AvatarToolbar.stories');
+  require('../components/CircularProgress/CircularProgress.stories');
   require('./stories/Button.stories');
   
 }
 
 const stories = [
   '../components/AvatarToolbar/AvatarToolbar.stories',
+  '../components/CircularProgress/CircularProgress.stories',
   './stories/Button.stories',
   
 ];
