@@ -25,7 +25,11 @@ import { ScreenHeader, UserAvatar } from 'components';
     },
   }),
 })
-@styleSheet('Sparkle.ChannelScreenHeader')
+@styleSheet('Sparkle.ChannelScreenHeader', {
+  avatar: {
+    marginHorizontal: 16,
+  }
+})
 export default class ChannelHeader extends Component {
 
   renderRight() {

@@ -1,4 +1,4 @@
-import { AppRegistry, NativeModules, Platform } from 'react-native';
+import { AppRegistry, NativeModules, Platform, YellowBox } from 'react-native';
 
 import Application from './src';
 
@@ -8,3 +8,16 @@ if (Platform.OS === 'android') {
 }
 
 AppRegistry.registerComponent('ApolloMessenger', () => Application);
+
+/**
+ * Temporarily disable warning about deprecated React lifecycle methods.
+ * We should wait till native-base adds support of the latest React and then remove this code.
+ *
+ * TODO: Remove when it will be possible
+ */
+YellowBox.ignoreWarnings([
+  'Warning: componentWillMount',
+  'Warning: componentWillUpdate',
+  'Warning: componentWillReceiveProps',
+  'Warning: isMounted'
+]);

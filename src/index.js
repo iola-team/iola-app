@@ -1,27 +1,78 @@
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
+import SplashScreen from 'react-native-splash-screen';
 
-import Navigator from 'screens';
 import createApiClient from 'graph';
 import Theme from 'theme';
 import Application from 'application';
+import Storybook from 'storybook';
 
-export default class Root extends Component {
+class ApplicationRoot extends Component {
+  state = {
+    isReady: false,
+  };
+
+  apiClient = null;
+
   constructor(props) {
     super(props);
+  }
 
-    this.apiClient = createApiClient();
+  async init() {
+    this.apiClient = await createApiClient();
+  }
+
+  async componentDidMount() {
+    await this.init();
+
+    this.setState({
+      isReady: true,
+    });
+  }
+
+  onApplicationReady() {
+    SplashScreen.hide();
+  }
+
+  render() {
+    const { isReady } = this.state;
+
+    return isReady ? (
+      <ApolloProvider client={this.apiClient}>
+        <Theme>
+          <Application onReady={::this.onApplicationReady} />
+        </Theme>
+      </ApolloProvider>
+    ) : (
+      null
+    );
+  }
+}
+
+class StorybookRoot extends Component {
+  componentDidMount() {
+    SplashScreen.hide();
   }
 
   render() {
     return (
-      <ApolloProvider client={this.apiClient}>
-        <Theme>
-          <Application>
-            <Navigator />
-          </Application>
-        </Theme>
-      </ApolloProvider>
+      <Theme>
+        <Storybook />
+      </Theme>
+    );
+  }
+}
+
+export default class extends Component {
+  render() {
+    const { isStorybook } = this.props;
+
+    return (
+      isStorybook ? (
+        <StorybookRoot />
+      ) : (
+        <ApplicationRoot />
+      )
     );
   }
 }

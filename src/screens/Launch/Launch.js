@@ -23,7 +23,7 @@ export default class LaunchScreen extends Component {
       data: { loading, me },
     } = newProps;
 
-    if (loading) {
+    if (loading && !me) {
       return;
     }
 

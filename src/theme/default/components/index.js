@@ -16,16 +16,24 @@ export default (variables => ({
       '.horizontalPadder': {
         paddingHorizontal: variables.contentPadding,
       },
+
+      '.highlight': {
+        backgroundColor: '#F8F9FB',
+      },
     },
 
     'NativeBase.Thumbnail': {
-      width: 40,
-      height: 40,
-      borderRadius: 8,
-
       '.small': {
         borderRadius: 4,
       },
+
+      '.large': {
+        borderRadius: 8,
+      },
+
+      width: 40,
+      height: 40,
+      borderRadius: 8,
     },
 
     'NativeBase.Button': {
