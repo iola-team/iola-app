@@ -43,8 +43,8 @@ const ButtonSignup = connectToStyleSheet('buttonSignup', Button);
   },
 })
 export default class SignInScreen extends Component {
-  onSubmit = async (values) => {
-    const success = await this.props.authenticate(values.login, values.password);
+  onSubmit = async ({ login, password }) => {
+    const success = await this.props.authenticate(login, password);
 
     if (success) this.props.navigation.navigate(LAUNCH);
   };

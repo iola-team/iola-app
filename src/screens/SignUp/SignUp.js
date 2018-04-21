@@ -102,6 +102,12 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
   },
 })
 export default class SignUpScreen extends Component {
+  onSubmit = async ({ name, login, password }) => {
+    const success = await this.props.submit(name, login, password);
+
+    //if (success) this.props.navigation.navigate(LAUNCH);
+  };
+
   render() {
     const { navigation: { goBack } } = this.props;
 
@@ -111,7 +117,7 @@ export default class SignUpScreen extends Component {
           <Content>
             <Title>Please sign up</Title>
 
-            <SignUpForm onSubmit={() => alert('Sign up')} />
+            <SignUpForm onSubmit={this.onSubmit} />
 
             <TermsAndConditionsContainer>
               <TermsAndConditionsText>By signing up, you agree</TermsAndConditionsText>
