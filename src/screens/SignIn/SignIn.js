@@ -46,7 +46,7 @@ export default class SignInScreen extends Component {
   onSubmit = async (values) => {
     const success = await this.props.authenticate(values.login, values.password);
 
-    if (success) navigate(LAUNCH);
+    if (success) this.props.navigation.navigate(LAUNCH);
   };
 
   render() {

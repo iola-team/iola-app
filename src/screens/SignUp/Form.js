@@ -20,9 +20,9 @@ const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button).withProps({
 
 @styleSheet('Sparkle.SignInForm', {
   formItem: {
+    marginBottom: 8,
     paddingHorizontal: 10,
     borderRadius: 8,
-    marginBottom: 8,
     borderColor: 'rgba(255, 255, 255, .6)',
   },
 
