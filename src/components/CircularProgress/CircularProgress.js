@@ -6,8 +6,6 @@ export default class CircularProgress extends Component {
     const { progress, loading } = this.props;
     const unknownProgress = progress === undefined || progress === null;
 
-    console.log(progress);
-
     return (
       <Circle
         size={100}

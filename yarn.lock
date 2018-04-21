@@ -569,6 +569,12 @@
     react-inspector "^2.2.2"
     uuid "^3.2.1"
 
+"@storybook/addon-console@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-console/-/addon-console-1.0.0.tgz#9313a65f04392b524698e01ceeaa4801f5d07b20"
+  dependencies:
+    global "^4.3.2"
+
 "@storybook/addon-knobs@^3.4.2":
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-3.4.2.tgz#31baf535cafa9740d96b2f93197d688fa30b97f2"

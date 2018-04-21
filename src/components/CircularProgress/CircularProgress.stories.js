@@ -10,7 +10,6 @@ const stories = storiesOf('Components/CircularProgress', module);
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator({ centered: true }));
 
-
 stories.add('Progress', () => {
   const progress = number('Progress', 0.3, {
     range: true,
