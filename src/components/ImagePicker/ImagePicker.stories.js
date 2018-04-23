@@ -18,6 +18,7 @@ stories.add('Picker', () => {
     width: number('Width', 500),
     height: number('Height', 500),
     crop: boolean('Crop', false),
+    multiple: boolean('Multiple', false),
     onChange: action('change'),
   };
 
