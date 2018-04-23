@@ -1,7 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { propType as fragmentProp } from 'graphql-anywhere';
-import gql from 'graphql-tag';
+import { Image } from 'react-native';
 import {
   Text,
   View,
@@ -9,23 +8,16 @@ import {
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import UserAvatar from '../UserAvatar'
-
-const userFragment = gql`
-  fragment AvatarToolbar_user on User {
-    id
-    avatar {
-      id
-    }
-    ...UserAvatar_user
-  }
-  
-  ${UserAvatar.fragments.user}
-`;
 
 @styleSheet('Sparkle.AvatarToolbar', {
   root: {
     flexDirection: 'row',
+  },
+
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
   },
 
   buttons: {
@@ -42,13 +34,13 @@ const userFragment = gql`
   }
 })
 export default class AvatarToolbar extends PureComponent {
-  static fragments = {
-    user: userFragment,
+  static propTypes = {
+    imageUrl: PropTypes.string,
+    onButtonPress: PropTypes.func.isRequired,
   };
 
-  static propTypes = {
-    user: fragmentProp(userFragment),
-    onButtonPress: PropTypes.func.isRequired,
+  static defaultProps = {
+    imageUrl: null,
   };
 
   onPress(action) {
@@ -56,20 +48,20 @@ export default class AvatarToolbar extends PureComponent {
   }
 
   render() {
-    const { styleSheet, style, user } = this.props;
-
-    const { avatar } = user;
+    const { styleSheet, style, imageUrl } = this.props;
+    const avatarUrl = imageUrl || 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg';
+    const hasAvatar = !!imageUrl;
 
     return (
       <View style={[styleSheet.root, style]}>
-        <UserAvatar large user={user} />
+        <Image style={styleSheet.image} source={{ uri: avatarUrl }} />
         <View horizontalPadder style={styleSheet.rightSection}>
           <Text note>
             Edit profile photo
           </Text>
           <View style={styleSheet.buttons}>
             {
-              avatar ? (
+              hasAvatar ? (
                 <Fragment>
                   <Button
                     block

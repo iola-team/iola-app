@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
@@ -13,6 +14,7 @@ const userFragment = gql`
     avatar {
       id
       url
+      medium: url(size: MEDIUM)
     }
   }
 `;
@@ -29,7 +31,6 @@ export default class UserAvatar extends Component {
 
   render() {
     const { user, onPress, ...restProps } = this.props;
-
     const props = {
       ...restProps,
     };
@@ -37,7 +38,7 @@ export default class UserAvatar extends Component {
     if (user) {
       const uri = user.avatar
         ? user.avatar.url
-        : 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg'; // TODO use correct default image
+          : 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg'; // TODO use correct default image
 
       props.source = { uri };
     }

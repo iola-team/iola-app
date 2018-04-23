@@ -63,6 +63,7 @@
     "react-native-splash-screen": "^3.0.6",
     "react-navigation": "^1.5.11",
     "recompose": "^0.26.0",
+    "uuid": "^3.2.1",
     "yup": "^0.24.1"
   },
   "devDependencies": {

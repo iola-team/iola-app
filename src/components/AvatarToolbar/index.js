@@ -1,82 +1,88 @@
 import React, { Component } from 'react';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import ImagePicker from 'react-native-image-crop-picker';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import FetchBlob from 'react-native-fetch-blob';
 
 import AvatarToolbar from './AvatarToolbar';
+import ImagePicker from '../ImagePicker';
 
-@graphql(gql`
+const userFragment = gql`
+  fragment AvatarToolbar_user on User {
+    id
+    avatar {
+      id
+      url
+    }
+  }
+`;
+
+const addAvatarMutation = gql`
   mutation addUserAvatarMutation($userId: ID!, $file: Upload!) {
     addUserAvatar(userId: $userId, file: $file) {
       id
-      user {
-        id
-        ...AvatarToolbar_user
-      }
+      url
+      medium: url(size: MEDIUM)
     }
   }
-  
-  ${AvatarToolbar.fragments.user}
-`, {
-  props: ({ mutate }) => ({
-    addAvatar(userId, file, uploadProgress) {
+`;
+
+@graphql(addAvatarMutation, {
+  props: ({ mutate, ownProps: { user } }) => ({
+    addAvatar(userId, file) {
       return mutate({
         variables: {
           userId,
           file,
-        },
-        context: {
-          fetchOptions: {
-            uploadProgress,
-          },
         }
       });
-    }
+    },
   }),
 })
 export default class AvatarToolbarContainer extends Component {
-  static fragments = AvatarToolbar.fragments;
-  static propTypes = {
-    user: PropTypes.object,
+  static fragments = {
+    user: userFragment,
   };
 
-  async getImage() {
-    try {
-      return await ImagePicker.openPicker({
-        width: 500,
-        height: 500,
-        cropping: false,
-        mediaType: 'photo',
-      });
-    } catch(e) {
-      return null;
-    }
+  static propTypes = {
+    user: PropTypes.object.isRequired,
+  };
+
+  onAvatarChange([{ blob }]) {
+    const { user, addAvatar } = this.props;
+
+    addAvatar(user.id, blob);
   }
 
-  async onButtonPress(action) {
-    const { addAvatar, user } = this.props;
+  onToolbarAction = pick => action => {
+    if (action === 'delete') {
+      // Skip for now ...
 
-    if (action === 'add' || action === 'change') {
-      const image = await this.getImage();
-      const { path, mime } = image;
-
-      const file = await File.build(
-        'avatar.jpg',
-        FetchBlob.wrap(path),
-        mime,
-      );
-
-      const avatar = await addAvatar(user.id, file);
+      return;
     }
+
+    pick();
   }
 
   render() {
     const { user } = this.props;
+    const avatarUrl = get(user, 'avatar.url');
 
     return (
-      <AvatarToolbar user={user} onButtonPress={::this.onButtonPress} />
+      <ImagePicker
+        crop
+        width={500}
+        height={500}
+        onChange={::this.onAvatarChange}
+      >
+        {(pick, [{ path } = {}]) => (
+          <AvatarToolbar
+            imageUrl={path || avatarUrl}
+            onButtonPress={this.onToolbarAction(pick)}
+          />
+        )}
+      </ImagePicker>
     );
   }
 }
