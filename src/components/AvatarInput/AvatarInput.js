@@ -1,4 +1,5 @@
 import React, { Fragment, PureComponent } from 'react';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { Image, Alert } from 'react-native';
 import {
@@ -47,12 +48,14 @@ export default class AvatarInput extends PureComponent {
     value: PropTypes.string,
     defaultValue: PropTypes.string,
     onChange: PropTypes.func,
+    onDelete: PropTypes.func,
   };
 
   static defaultProps = {
     value: undefined,
     defaultValue: undefined,
     onChange: () => {},
+    onDelete: () => {},
   };
 
   state = {
@@ -61,25 +64,31 @@ export default class AvatarInput extends PureComponent {
 
   static getDerivedStateFromProps({ defaultValue }, { image }) {
     return {
-      image: image === undefined ? defaultValue : image.path,
+      image: image === undefined ? defaultValue : image,
     }
   }
 
   onImageChange([selectedImage]) {
-    const image = selectedImage ? selectedImage.path : null;
-
-    this.setState({ image });
+    this.setState({
+      image: get(selectedImage, 'path'),
+    });
 
     this.props.onChange(selectedImage);
   }
 
   onDeletePress(reset) {
+    const { onDelete } = this.props;
+
     Alert.alert(
       'Are you sure?',
       'This action cannot be undone!',
       [
         { text: 'Cancel', style: 'cancel' },
-        { text: 'Delete', onPress: reset, style: 'destructive' },
+        {
+          text: 'Delete',
+          onPress: () => reset().then(onDelete),
+          style: 'destructive'
+        },
       ],
       {
         cancelable: false
