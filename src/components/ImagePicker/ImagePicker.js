@@ -58,8 +58,11 @@ export default class ImagePicker extends Component {
     return image;
   }).catch(() => null);
 
-  reset = () => {
+  reset = async () => {
     this.setState({ images: [] });
+    this.props.onChange([]);
+
+    return [];
   };
 
   render() {
