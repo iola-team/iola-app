@@ -13,7 +13,8 @@
     "debugger": "rndebugger-open --open --port 8081",
     "schema:load": "graphql get-schema",
     "schema:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchSchemas.js",
-    "schema:generate": "babel-node $NODE_DEBUG_OPTION ./scripts/generateSchema.js",
+    "schema:generate": "yarn schema:generate-types-introspection && babel-node $NODE_DEBUG_OPTION ./scripts/generateSchema.js",
+    "schema:generate-types-introspection": "babel-node $NODE_DEBUG_OPTION ./scripts/generateTypesIntrospection.js ./src/graph/meta/fragmentTypes.json",
     "storybook": "concurrently -p name -n \"stories,server\" \"yarn storybook:watch\" \"yarn storybook:server\"",
     "prestorybook": "yarn storybook:generate",
     "storybook:server": "storybook start -p 7007 -c ./src/storybook --skip-packager",
@@ -89,6 +90,7 @@
     "graphql-tools": "^2.24.0",
     "jest": "22.4.3",
     "merge-graphql-schemas": "^1.5.1",
+    "node-fetch": "^2.1.2",
     "react-dom": "^16.3.1",
     "react-native-debugger-open": "^0.3.17",
     "react-native-storybook-loader": "^1.8.0"

@@ -4,7 +4,7 @@ import { toIdValue } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
 import { from, ApolloLink } from 'apollo-link';
 import { BatchHttpLink } from "apollo-link-batch-http";
-import { InMemoryCache } from 'apollo-cache-inmemory';
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 import { CachePersistor } from 'apollo-cache-persist';
 import { setContext } from "apollo-link-context";
@@ -13,11 +13,17 @@ import { disableFragmentWarnings } from 'graphql-tag';
 
 import resolvers from './resolvers';
 import { AuthLink } from './links';
+import introspectionQueryResultData from './meta/fragmentTypes';
 
 disableFragmentWarnings();
 
 export default async () => {
+  const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData,
+  });
+
   const cache = new InMemoryCache({
+    fragmentMatcher,
     dataIdFromObject: object => object.id || null,
     cacheRedirects: {
       Query: {
