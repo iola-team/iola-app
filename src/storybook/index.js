@@ -1,22 +1,33 @@
 import React, { Component } from 'react';
-import { getStorybookUI, configure } from '@storybook/react-native';
+import { getStorybookUI } from '@storybook/react-native';
+import addons from '@storybook/addons';
 
-import { loadStories } from './storyLoader';
+import configure from './config';
 
 export * from './decorators';
 
 export default class StorybookHMR extends Component {
+  configured = false;
+
   constructor(...args) {
     super(...args);
-
-    configure(() => {
-      loadStories()
-    }, module);
 
     this.Storybook = getStorybookUI({
       port: 7007,
       onDeviceUI: false,
     });
+  }
+
+  componentDidMount() {
+
+    /**
+     * Delay storybook configuration to prevent channel errors
+     *
+     * Related issue: https://github.com/storybooks/storybook/issues/1192
+     *
+     * TODO: Refactor it whe the issue is resolved
+     */
+    configure();
   }
 
   render() {

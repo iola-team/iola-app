@@ -5,12 +5,18 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
-  require('../components/AvatarToolbar/AvatarToolbar.stories');
+  require('../components/AvatarInput/AvatarInput.stories');
+  require('../components/CircularProgress/CircularProgress.stories');
+  require('../components/ImagePicker/ImagePicker.stories');
+  require('./stories/Button.stories');
   
 }
 
 const stories = [
-  '../components/AvatarToolbar/AvatarToolbar.stories',
+  '../components/AvatarInput/AvatarInput.stories',
+  '../components/CircularProgress/CircularProgress.stories',
+  '../components/ImagePicker/ImagePicker.stories',
+  './stories/Button.stories',
   
 ];
 
