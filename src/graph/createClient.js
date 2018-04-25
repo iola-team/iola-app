@@ -2,12 +2,13 @@ import { assign } from 'lodash';
 import { AsyncStorage } from 'react-native';
 import { toIdValue } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
-import { from } from 'apollo-link';
+import { from, ApolloLink } from 'apollo-link';
 import { BatchHttpLink } from "apollo-link-batch-http";
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 import { CachePersistor } from 'apollo-cache-persist';
 import { setContext } from "apollo-link-context";
+import { createUploadLink } from 'apollo-upload-client';
 import { disableFragmentWarnings } from 'graphql-tag';
 
 import resolvers from './resolvers';
@@ -63,8 +64,22 @@ export default async () => {
   await cachePersistor.restore();
 
   const authLink = new AuthLink();
-  const httpLink = new BatchHttpLink({
-    uri: 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql',
+
+  const httpLink = createUploadLink({
+    uri: 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM',
+    fetch: (uri, allOptions, ...restArgs) => {
+      const {
+        uploadProgress,
+        ...options
+      } = allOptions;
+      const promise = fetch(uri, options, ...restArgs);
+
+      if (uploadProgress) {
+        promise.uploadProgress(options.uploadProgress);
+      }
+
+      return promise;
+    }
   });
 
   const client = new ApolloClient({

@@ -1,3 +1,5 @@
+import './polyfill';
+
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import SplashScreen from 'react-native-splash-screen';

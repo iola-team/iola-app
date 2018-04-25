@@ -5,7 +5,7 @@
   "scripts": {
     "prestart": "yarn run schema:generate",
     "start": "concurrently -p name -n \"schemas,server\" \"yarn run schema:watch\" \"yarn run server:start\"",
-    "server:start": "REACT_DEBUGGER=\"yarn run debugger\" react-native start -- --reset-cache",
+    "server:start": "REACT_DEBUGGER=\"yarn run debugger\" react-native start --reset-cache",
     "run:android": "react-native run-android --variant=mainDebug",
     "run:android-storybook": "yarn storybook:generate && react-native run-android --variant=storybookDebug --appIdSuffix=storybook",
     "log:android": "react-native log-android",
@@ -23,8 +23,7 @@
   "config": {
     "react-native-storybook-loader": {
       "searchDir": [
-        "./src/components",
-        "./src/screens"
+        "./src"
       ],
       "pattern": "**/*.stories.js",
       "outputFile": "./src/storybook/storyLoader.js"
@@ -39,8 +38,8 @@
     "apollo-link-context": "^1.0.7",
     "apollo-link-http": "^1.5.3",
     "apollo-link-state": "^0.4.1",
+    "apollo-upload-client": "^8.0.0",
     "apollo-utilities": "^1.0.11",
-    "babel-preset-react-native": "4.0.0",
     "formik": "^0.11.11",
     "graphql": "^0.13.2",
     "graphql-anywhere": "^4.1.8",
@@ -57,14 +56,20 @@
     "react-moment": "^0.7.0",
     "react-native": "0.55.2",
     "react-native-animatable": "^1.2.4",
+    "react-native-fetch-blob": "^0.10.8",
+    "react-native-image-crop-picker": "^0.20.1",
     "react-native-linear-gradient": "^2.4.0",
+    "react-native-progress": "^3.4.0",
     "react-native-splash-screen": "^3.0.6",
     "react-navigation": "^1.5.11",
     "recompose": "^0.26.0",
+    "uuid": "^3.2.1",
     "yup": "^0.24.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^4.0.0-alpha.2",
+    "@storybook/addon-console": "^1.0.0",
+    "@storybook/addon-knobs": "^3.4.2",
     "@storybook/addon-links": "^4.0.0-alpha.2",
     "@storybook/addons": "^4.0.0-alpha.2",
     "@storybook/react-native": "^4.0.0-alpha.2",

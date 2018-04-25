@@ -8,18 +8,18 @@ import {
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import { AvatarToolbar } from 'components';
+import { AvatarEdit } from 'components';
 
 @graphql(gql`
   query ProfileEditQuery {
     user: me {
       id
 
-      ...AvatarToolbar_user
+      ...AvatarEdit_user
     }
   }
 
-  ${AvatarToolbar.fragments.user}
+  ${AvatarEdit.fragments.user}
 `)
 @styleSheet('Sparkle.ProfileEditScreen', {
   avatar: {
@@ -42,7 +42,7 @@ export default class ProfileEditScreen extends Component {
             horizontalPadder
             style={styleSheet.avatar}
           >
-            <AvatarToolbar user={user} />
+            <AvatarEdit user={user} />
           </View>
         </Content>
       </Container>
