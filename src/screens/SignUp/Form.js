@@ -5,18 +5,9 @@ import yup from 'yup';
 import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
-const disableShadowOnAndroid = {
-  shadowColor: 'transparent',
-  shadowOffset: { height: 0, width: 0 },
-  shadowOpacity: 0,
-  elevation: 0,
-};
 const FormItem = connectToStyleSheet('formItem', Item).withProps({ regular: true });
 const FormInput = connectToStyleSheet('formInput', Input).withProps({ placeholderTextColor: '#FFFFFF' });
-const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button).withProps({
-  block: true,
-  ...disableShadowOnAndroid,
-});
+const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button).withProps({ block: true });
 
 @styleSheet('Sparkle.SignInForm', {
   formItem: {
