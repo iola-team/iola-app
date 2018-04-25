@@ -7,6 +7,7 @@
 function loadStories() {
   require('../components/AvatarInput/AvatarInput.stories');
   require('../components/CircularProgress/CircularProgress.stories');
+  require('../components/ComponentTemplate/ComponentTemplate.stories');
   require('../components/ImagePicker/ImagePicker.stories');
   require('./stories/Button.stories');
   
@@ -15,6 +16,7 @@ function loadStories() {
 const stories = [
   '../components/AvatarInput/AvatarInput.stories',
   '../components/CircularProgress/CircularProgress.stories',
+  '../components/ComponentTemplate/ComponentTemplate.stories',
   '../components/ImagePicker/ImagePicker.stories',
   './stories/Button.stories',
   
