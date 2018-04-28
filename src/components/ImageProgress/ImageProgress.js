@@ -47,12 +47,14 @@ export default class ImageProgress extends Component {
   static propTypes = {
     previewUrl: PropTypes.string.isRequired,
     progress: PropTypes.number,
+    blurRadius: PropTypes.number,
     onCancel: PropTypes.func,
     active: PropTypes.bool,
   };
 
   static defaultProps = {
     onCancel: noop,
+    blurRadius: 3,
     progress: 0,
     active: false,
   };
@@ -73,6 +75,7 @@ export default class ImageProgress extends Component {
     const {
       style,
       children,
+      blurRadius,
       progress,
       previewUrl,
       active,
@@ -95,7 +98,7 @@ export default class ImageProgress extends Component {
               onAnimationEnd={::this.onAnimationEnd}
               style={{ opacity: active ? 1 : 0 }}
             >
-              <Background source={{ uri: previewUrl }} blurRadius={5}>
+              <Background source={{ uri: previewUrl }} blurRadius={blurRadius}>
                 <Progress progress={progress}>
                   <Button block light transparent rounded onPress={onCancel}>
                     <Icon name={'md-close'} />
