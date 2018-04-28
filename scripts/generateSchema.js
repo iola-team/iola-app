@@ -27,7 +27,7 @@ const generate = async () => {
     ...defaultTypeDefs,
     ...clientSchemas,
   ]));
-}
+};
 
 export default generate;
 

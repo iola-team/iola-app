@@ -4,25 +4,38 @@ import gql from 'graphql-tag';
 import Screen from './SignUp';
 
 const withSignUpMutation = graphql(gql`
-  mutation($name: String!, $login: String!, $password: String!) {
-    result: signUpUser($name: String!, $login: String!, $password: String!) {
+  mutation($input: signUpUserInput!) {
+    result: signUpUser(input: $input) {
       accessToken
+      user {
+        id
+        name
+        email
+        activityTime
+      }
     }
   }
 `, {
   props: ({ mutate, ownProps: { storeToken } }) => ({
     async submit(name, login, password) {
-      const { data: { result } } = await mutate({
-        variables: {
-          name,
-          login,
-          password,
-        },
-      });
+      try {
+            const { data: { result } } = await mutate({
+              variables: {
+                input: {
+                  name,
+                  login,
+                  password,
+                },
+              },
+            });
+alert(result.accessToken);
+            await storeToken(result.accessToken);
+            // @TODO: store result.user?
+          } catch(error) {
+alert(2);
+          }
 
-      await storeToken(result.accessToken);
-
-      return !!result.accessToken;
+          return !!result.accessToken;
     },
   }),
 });

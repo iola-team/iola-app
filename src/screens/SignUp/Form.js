@@ -82,6 +82,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
+  mapPropsToValues: props => ({ name: 'test', login: 'test', password: 'test' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(SignUpForm);

@@ -99,7 +99,7 @@ export default class SignUpScreen extends Component {
   onSubmit = async ({ name, login, password }) => {
     const success = await this.props.submit(name, login, password);
 
-    //if (success) this.props.navigation.navigate(LAUNCH);
+    alert(success ? 'ok' : 'failed');
   };
 
   render() {
