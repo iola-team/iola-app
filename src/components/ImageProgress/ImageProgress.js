@@ -88,6 +88,7 @@ export default class ImageProgress extends Component {
         {
           isVisible && (
             <Layer
+              useNativeDriver
               easing="ease-out"
               transition="opacity"
               duration={200}
