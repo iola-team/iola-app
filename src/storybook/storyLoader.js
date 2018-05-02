@@ -9,6 +9,7 @@ function loadStories() {
   require('../components/CircularProgress/CircularProgress.stories');
   require('../components/ComponentTemplate/ComponentTemplate.stories');
   require('../components/ImagePicker/ImagePicker.stories');
+  require('../components/ImageProgress/ImageProgress.stories');
   require('./stories/Button.stories');
   
 }
@@ -18,6 +19,7 @@ const stories = [
   '../components/CircularProgress/CircularProgress.stories',
   '../components/ComponentTemplate/ComponentTemplate.stories',
   '../components/ImagePicker/ImagePicker.stories',
+  '../components/ImageProgress/ImageProgress.stories',
   './stories/Button.stories',
   
 ];
