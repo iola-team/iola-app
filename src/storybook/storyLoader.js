@@ -10,6 +10,7 @@ function loadStories() {
   require('../components/ComponentTemplate/ComponentTemplate.stories');
   require('../components/ImagePicker/ImagePicker.stories');
   require('../components/ImageProgress/ImageProgress.stories');
+  require('../components/PhotoEdit/PhotoEdit.stories');
   require('./stories/Button.stories');
   
 }
@@ -20,6 +21,7 @@ const stories = [
   '../components/ComponentTemplate/ComponentTemplate.stories',
   '../components/ImagePicker/ImagePicker.stories',
   '../components/ImageProgress/ImageProgress.stories',
+  '../components/PhotoEdit/PhotoEdit.stories',
   './stories/Button.stories',
   
 ];
