@@ -5,7 +5,11 @@
 - `react-native link`
 
 ## Development
-1) `yarn start`
-2) run your Android emulator
-3) `yarn run run:android`
-4) `yarn run log:android`
+1) Run react-native server + GraphQL scheme watch
+  - `yarn start`
+2) Run your emulator:
+  - Android:
+    - `yarn run run:android`
+    - `yarn run log:android`
+  - iOS:
+    - `yarn run run:ios`

@@ -1,142 +1,136 @@
 import React, { Component } from 'react';
-import { Image } from 'react-native';
-import { Button, Container, Form, Input, Item, Label, Text, View } from 'native-base';
-
+import { ImageBackground } from 'react-native';
+import { Button, Container, Text, View } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
-import { SIGN_IN } from '../roteNames';
+import SignUpForm from './Form';
 
-const Background = connectToStyleSheet('background', View, {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
+const Title = connectToStyleSheet('title', Text);
+const Background = connectToStyleSheet('background', ImageBackground).withProps({
+  source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
 });
+const Content = connectToStyleSheet('content', View);
+const TermsContainer = connectToStyleSheet('termsContainer', View);
+const TermsText = connectToStyleSheet('termsText', Text);
+const TermsSubcontainer = connectToStyleSheet('termsSubcontainer', View);
+const TermsButton = connectToStyleSheet('termsButton', Button);
+const TermsButtonText = connectToStyleSheet('termsButtonText', Text);
+const AlreadyHaveAnAccountContainer = connectToStyleSheet('alreadyHaveAnAccountContainer', View);
+const AlreadyHaveAnAccountText = connectToStyleSheet('alreadyHaveAnAccountText', Text);
+const ButtonSignIn = connectToStyleSheet('buttonSignIn', Button);
+const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 
-const Content = connectToStyleSheet('content', View, {
-  flex: 1,
-  alignSelf: 'center',
-  justifyContent: 'center',
-  width: '100%',
-  marginVertical: 50,
-  paddingHorizontal: '10%',
-  backgroundColor: 'transparent',
-});
+@styleSheet('Sparkle.SignUpScreen', {
+  background: {
+    flex: 1,
+  },
 
-const Title = connectToStyleSheet('title', Text, {
-  marginBottom: '20%',
-  fontSize: 36,
-  fontWeight: '500',
-  textAlign: 'center',
-  color: '#FFFFFF',
-});
+  content: {
+    flex: 1,
+    alignSelf: 'center',
+    minWidth: 320,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+  },
 
-const TextBold = connectToStyleSheet('textBold', Text, {
-  fontWeight: '500',
-  fontSize: 16,
-});
+  title: {
+    marginVertical: 34,
+    alignSelf: 'center',
+    fontSize: 30,
+    color: '#FFFFFF',
+  },
 
-const disableShadowOnAndroid = {
-  shadowColor: 'transparent',
-  shadowOffset: { height: 0, width: 0 },
-  shadowOpacity: 0,
-  elevation: 0,
-};
+  termsContainer: {
+    marginTop: 15,
+    alignItems: 'center',
+  },
 
-const FormContent = connectToStyleSheet('formContent', View, {
-  justifyContent: 'center',
-});
+  termsText: {
+    fontSize: 14,
+    lineHeight: 19,
+    color: '#FFFFFF',
+  },
 
-const FormItem = connectToStyleSheet('formItem', Item, {
-  marginBottom: 15,
-  paddingVertical: 0,
-  paddingHorizontal: 10,
-  borderRadius: 10,
-  borderColor: 'rgba(255, 255, 255, .6)',
+  termsButton: {
+    height: 29,
+    marginTop: -5,
+    marginHorizontal: -11,
+    backgroundColor: 'transparent',
+  },
+
+  termsButtonText: {
+    fontSize: 14,
+    lineHeight: 19,
+    textDecorationLine: 'underline',
+  },
+
+  termsSubcontainer: {
+    flexDirection: 'row',
+  },
+
+  alreadyHaveAnAccountContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 33,
+  },
+
+  alreadyHaveAnAccountText: {
+    fontSize: 14,
+    lineHeight: 19,
+    color: '#FFFFFF',
+  },
+
+  buttonSignIn: {
+    height: 30,
+    marginTop: -5,
+    marginHorizontal: -4,
+    backgroundColor: 'transparent',
+  },
+
+  buttonSignInText: {
+    fontSize: 14,
+    lineHeight: 19,
+    paddingVertical: 0,
+    paddingHorizontal: 10,
+    textDecorationLine: 'underline',
+  },
 })
-.withProps({ regular: true });
-
-const FormInput = connectToStyleSheet('formInput', Input, {
-  fontSize: 16,
-  color: '#FFFFFF',
-})
-.withProps({
-  placeholderTextColor: 'white'
-});
-
-const FormButtonSignUp = connectToStyleSheet('signUpButton', Button, {
-  width: '55%',
-  height: 50,
-  marginTop: '10%',
-  alignSelf: 'center',
-  borderRadius: 10,
-})
-.withProps({
-  block: true,
-  ...disableShadowOnAndroid
-});
-
-const BottomTextContainer = connectToStyleSheet('bottomTextContainer', View, {
-  flexDirection: 'row',
-  justifyContent: 'center',
-  marginTop: 20,
-});
-
-const BottomText = connectToStyleSheet('bottomText', Text, {
-  color: '#FFFFFF',
-});
-
-const ButtonSignIn = connectToStyleSheet('signInButton', Button, {
-  height: 30,
-  marginTop: -5,
-  backgroundColor: 'transparent',
-})
-.withProps({ ...disableShadowOnAndroid });
-
-const ButtonSignInText = connectToStyleSheet('signInButtonText', Text, {
-  paddingVertical: 0,
-  paddingHorizontal: 10,
-  textDecorationLine: 'underline',
-});
-
-@styleSheet('Sparkle.SignUpScreen')
 export default class SignUpScreen extends Component {
+  onSubmit = async ({ name, login, password }) => {
+    const success = await this.props.submit(name, login, password);
+
+    alert(success ? 'ok' : 'failed');
+  };
+
   render() {
-    const { navigation: {
-      goBack
-    }} = this.props;
+    const { navigation: { goBack } } = this.props;
 
     return (
       <Container>
         <Background>
-          <Image style={{ resizeMode: 'cover', width: null, height: '100%' }} source={{ uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' }} />
-        </Background>
-        <Content>
-          <Title>Please sign up</Title>
-          <FormContent>
-            <Form>
-              <FormItem>
-                <FormInput placeholder="Full Name" />
-              </FormItem>
-              <FormItem>
-                <FormInput placeholder="Email" />
-              </FormItem>
-              <FormItem>
-                <FormInput placeholder="Password" secureTextEntry={true} />
-              </FormItem>
-              <FormButtonSignUp onPress={() => alert('Sign up')}>
-                <TextBold>Sign up</TextBold>
-              </FormButtonSignUp>
-            </Form>
-            <BottomTextContainer>
-              <BottomText>Already have an account?</BottomText>
+          <Content>
+            <Title>Please sign up</Title>
+
+            <SignUpForm onSubmit={this.onSubmit} />
+
+            <TermsContainer>
+              <TermsText>By signing up, you agree</TermsText>
+              <TermsSubcontainer>
+                <TermsText>to the</TermsText>
+                <TermsButton onPress={() => alert('Terms and Conditions')}>
+                  <TermsButtonText>Terms and Conditions</TermsButtonText>
+                </TermsButton>
+              </TermsSubcontainer>
+            </TermsContainer>
+
+            <AlreadyHaveAnAccountContainer>
+              <AlreadyHaveAnAccountText>Already have an account?</AlreadyHaveAnAccountText>
               <ButtonSignIn onPress={() => goBack()}>
                 <ButtonSignInText>Sign in</ButtonSignInText>
               </ButtonSignIn>
-            </BottomTextContainer>
-          </FormContent>
-        </Content>
+            </AlreadyHaveAnAccountContainer>
+          </Content>
+        </Background>
       </Container>
     );
   }

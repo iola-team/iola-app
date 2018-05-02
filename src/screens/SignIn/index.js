@@ -14,8 +14,8 @@ const withTokenMutation = graphql(gql`
 });
 
 const withLoginMutation = graphql(gql`
-  mutation($login: String!, $password: String!) {
-    result: signInUser(login: $login, password: $password) {
+  mutation($input: SignInUserInput!) {
+    result: signInUser(input: $input) {
       accessToken
     }
   }
@@ -24,8 +24,10 @@ const withLoginMutation = graphql(gql`
     async authenticate(login, password) {
       const { data: { result } } = await mutate({
         variables: {
-          login,
-          password,
+          input: {
+            login,
+            password,
+          }
         },
       });
 

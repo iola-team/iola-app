@@ -2,27 +2,22 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { withFormik } from 'formik';
 import yup from 'yup';
-import { Button, Form, Input, Item, Label, Text, View, Icon } from 'native-base';
+import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 const ItemLogin = connectToStyleSheet('itemLogin', Item).withProps({ regular: true });
 const ItemPassword = connectToStyleSheet('itemPassword', Item).withProps({ regular: true });
-const InputTransparent = connectToStyleSheet('inputTransparent', Input);
+const InputTransparent = connectToStyleSheet('inputTransparent', Input).withProps({ placeholderTextColor: '#FFFFFF' });
 const itemStyle = {
-  paddingLeft: 10,
-  paddingRight: 2,
+  paddingHorizontal: 10,
   borderRadius: 8,
   borderColor: 'rgba(255, 255, 255, .6)',
 };
-const ButtonForgotPassword = connectToStyleSheet('buttonForgotPassword', Button);
+const ForgotPasswordButton = connectToStyleSheet('forgotPasswordButton', Button);
+const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
 const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button);
-const TextForgotPassword = connectToStyleSheet('textForgotPassword', Text);
 
 @styleSheet('Sparkle.SignInForm', {
-  root: {
-
-  },
-
   itemLogin: {
     ...itemStyle,
     borderBottomLeftRadius: 0,
@@ -32,30 +27,33 @@ const TextForgotPassword = connectToStyleSheet('textForgotPassword', Text);
 
   itemPassword: {
     ...itemStyle,
+    paddingRight: 5,
     borderTopLeftRadius: 0,
     borderTopRightRadius: 0,
   },
 
   inputTransparent: {
-    color: 'white',
+    fontSize: 16,
+    lineHeight: 17,
+    color: '#FFFFFF',
   },
 
-  buttonForgotPassword: {
+  forgotPasswordButton: {
     marginRight: -8,
     alignSelf: 'center',
   },
 
-  textForgotPassword: {
+  forgotPasswordText: {
     fontSize: 12,
-    color: 'white',
+    fontWeight: 'normal',
+    color: '#FFFFFF',
   },
 
   buttonSubmit: {
     marginTop: 48,
-    width: '100%',
   },
 })
-class LoginForm extends Component {
+class SignInForm extends Component {
   static propTypes = {
     onSubmit: propTypes.func.isRequired,
     onForgotPasswordPress: propTypes.func.isRequired,
@@ -69,12 +67,10 @@ class LoginForm extends Component {
       setFieldTouched,
       handleSubmit,
       isValid,
-      styleSheet,
-      style,
     } = this.props;
 
     return (
-      <Form style={[styleSheet.root, style]}>
+      <Form>
         <ItemLogin>
           <InputTransparent
             placeholder="Login"
@@ -86,16 +82,16 @@ class LoginForm extends Component {
 
         <ItemPassword>
           <InputTransparent
-            secureTextEntry
             placeholder="Password"
             onChangeText={text => setFieldValue('password', text)}
             onBlur={() => setFieldTouched('password')}
             value={values.password}
+            secureTextEntry
           />
 
-          <ButtonForgotPassword transparent small onPress={() => onForgotPasswordPress()}>
-            <TextForgotPassword>Forgot password?</TextForgotPassword>
-          </ButtonForgotPassword>
+          <ForgotPasswordButton transparent small onPress={() => onForgotPasswordPress()}>
+            <ForgotPasswordText>Forgot password?</ForgotPasswordText>
+          </ForgotPasswordButton>
         </ItemPassword>
 
         <ButtonSubmit block onPress={handleSubmit}>
@@ -115,4 +111,4 @@ export default withFormik({
   mapPropsToValues: props => ({ login: 'demo', password: 'demo1986' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
-})(LoginForm);
+})(SignInForm);
