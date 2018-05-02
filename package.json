@@ -9,6 +9,7 @@
     "run:android": "react-native run-android --variant=mainDebug",
     "run:android-storybook": "yarn storybook:generate && react-native run-android --variant=storybookDebug --appIdSuffix=storybook",
     "log:android": "react-native log-android",
+    "run:ios": "react-native run-ios",
     "test": "jest",
     "debugger": "rndebugger-open --open --port 8081",
     "schema:load": "graphql get-schema",

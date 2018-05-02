@@ -9,12 +9,12 @@ export default (variables => ({
     },
 
     'NativeBase.ViewNB': {
-      ".padder": {
-        padding: variables.contentPadding
+      '.padder': {
+        padding: variables.contentPadding,
       },
 
-      ".horizontalPadder": {
-        paddingHorizontal: variables.contentPadding
+      '.horizontalPadder': {
+        paddingHorizontal: variables.contentPadding,
       },
 
       '.highlight': {
@@ -37,7 +37,11 @@ export default (variables => ({
     },
 
     'NativeBase.Button': {
+      elevation: 0,
+      height: 50,
+
       'NativeBase.Text': {
+        fontSize: 16,
         fontWeight: '500',
       },
 
@@ -79,34 +83,31 @@ export default (variables => ({
           },
         }
       },
-
-      elevation: 0,
-      height: 50,
     },
 
     'NativeBase.H1': {
       fontWeight: '500',
       '.inverse': {
         color: variables.inverseTextColor,
-      }
+      },
     },
 
     'NativeBase.H2': {
       '.inverse': {
         color: variables.inverseTextColor,
-      }
+      },
     },
 
     'NativeBase.H3': {
       '.inverse': {
         color: variables.inverseTextColor,
-      }
+      },
     },
 
     'NativeBase.Text': {
       '.inverse': {
         color: variables.inverseTextColor,
-      }
+      },
     },
 
     'NativeBase.Header': {
@@ -117,11 +118,13 @@ export default (variables => ({
 
     'NativeBase.ListItem': {
       '.searchBar': {
-        'NativeBase.Item': {
-          backgroundColor: variables.toolbarInputColor,
-          borderRadius: variables.borderRadiusBase,
-          padding: 10,
+        paddingHorizontal: variables.listItemPadding + 5,
+        backgroundColor: 'transparent',
 
+        'NativeBase.Item': {
+          padding: 10,
+          borderRadius: variables.borderRadiusBase,
+          backgroundColor: variables.toolbarInputColor,
           shadowColor: '#E1E6ED',
           shadowRadius: 4,
           shadowOpacity: 1,
@@ -134,37 +137,35 @@ export default (variables => ({
             color: '#BDC0CB',
           },
         },
-        paddingHorizontal: variables.listItemPadding + 5,
-        backgroundColor: 'transparent',
       },
     },
 
     'NativeBase.Card': {
+      borderWidth: 0,
+      marginBottom: 16,
+
       'NativeBase.CardItem': {
         padding: 0,
 
         '.header': {
+          alignItems: 'center',
+
           'NativeBase.Text': {
             fontWeight: null,
             color: '#BDC0CB',
           },
 
           'NativeBase.Icon': {
-            color: '#BDC0CB',
-            fontSize: 20,
             width: 30,
+            fontSize: 20,
+            color: '#BDC0CB',
           },
-
-          alignItems: 'center',
-        }
+        },
       },
 
       '.topBorder': {
         borderTopWidth: variables.borderWidth,
       },
-
-      borderWidth: 0,
-      marginBottom: 16,
     },
 
     'Sparkle.Divider': {},
@@ -173,12 +174,12 @@ export default (variables => ({
       'NativeBase.ListItem': {
         'NativeBase.Body': {
           height: 68,
-          justifyContent: 'center'
+          justifyContent: 'center',
         },
         'NativeBase.Right': {
           justifyContent: 'center',
         },
-      }
-    }
+      },
+    },
   }),
 }));

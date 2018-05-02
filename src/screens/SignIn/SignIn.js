@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
 import { Image, ImageBackground, Keyboard, Platform } from 'react-native';
-import * as Animatable from 'react-native-animatable';
-import { withProps } from 'recompose';
-import { Button, Container, Content, Input, Item, Label, Text, View, H1 } from 'native-base';
+import { Button, Container, Content, Text, H1 } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 import { SIGN_UP, LAUNCH } from '../roteNames';
-import LoginForm from './Form';
+import SignInForm from './Form';
 import Divider from './Divider';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
   source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
 });
 const Title = connectToStyleSheet('title', H1);
-const TextBold = connectToStyleSheet('textBold', Text);
 const ButtonFacebook = connectToStyleSheet('buttonFacebook', Button);
 const ButtonSignup = connectToStyleSheet('buttonSignup', Button);
 
 @styleSheet('Sparkle.SignInScreen', {
+  background: {
+    flex: 1,
+  },
+
   content: {
     flex: 1,
     alignSelf: 'center',
@@ -26,19 +27,11 @@ const ButtonSignup = connectToStyleSheet('buttonSignup', Button);
     paddingRight: '5%',
   },
 
-  background: {
-    height: '100%',
-  },
-
   title: {
     marginVertical: 34,
     alignSelf: 'center',
     fontSize: 30,
     color: '#FFFFFF',
-  },
-
-  textBold: {
-    fontWeight: 'bold',
   },
 
   buttonFacebook: {
@@ -50,8 +43,14 @@ const ButtonSignup = connectToStyleSheet('buttonSignup', Button);
   },
 })
 export default class SignInScreen extends Component {
+  onSubmit = async ({ login, password }) => {
+    const success = await this.props.authenticate(login, password);
+
+    if (success) this.props.navigation.navigate(LAUNCH);
+  };
+
   render() {
-    const { authenticate, navigation: { navigate }, styleSheet } = this.props;
+    const { navigation: { navigate }, styleSheet } = this.props;
 
     return (
       <Container>
@@ -60,26 +59,15 @@ export default class SignInScreen extends Component {
             <Title>Sign in</Title>
 
             <ButtonFacebook block onPress={() => alert('Log in via Facebook')}>
-              <TextBold>Log in via Facebook</TextBold>
+              <Text>Log in via Facebook</Text>
             </ButtonFacebook>
 
             <Divider>or</Divider>
 
-            <LoginForm
-              onSubmit={async (values) => {
-                const success = await authenticate(values.login, values.password);
-
-                if (success) {
-                  navigate(LAUNCH);
-                }
-              }}
-              onForgotPasswordPress={() => {
-                alert('Forgot password?');
-              }}
-            />
+            <SignInForm onSubmit={this.onSubmit} onForgotPasswordPress={() => alert('Forgot password?')} />
 
             <ButtonSignup block bordered light onPress={() => navigate(SIGN_UP)}>
-              <TextBold>Sign up</TextBold>
+              <Text>Sign up</Text>
             </ButtonSignup>
           </Content>
         </Background>
