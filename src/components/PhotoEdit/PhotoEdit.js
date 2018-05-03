@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import OnLayout from 'react-native-on-layout';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import {
@@ -21,41 +20,67 @@ const photoEdgeFragment = gql`
   }
 `;
 
-const Root = connectToStyleSheet('root', OnLayout);
-
-const Item = connectToStyleSheet('item', View);
+const Root = connectToStyleSheet('root', View);
+const Item = connectToStyleSheet('item', Button).withProps({
+  block: true,
+  bordered: true,
+  secondary: true,
+});
 const Grid = connectToStyleSheet('grid', View);
 const Section = connectToStyleSheet('section', View);
 const Left = connectToStyleSheet('left', Section);
 const Right = connectToStyleSheet('right', Section);
 const Bottom = connectToStyleSheet('bottom', Section);
+const Place = connectToStyleSheet('place', View);
 
 @styleSheet('Sparkle.PhotoEdit', {
-  ITEMS_MARGIN: 8,
-
   root: {
 
   },
 
+  left: {
+    width: '50%',
+  },
+
+  leftPlace: {
+    width: '100%',
+  },
+
+  right: {
+    width: '50%',
+  },
+
+  rightPlace: {
+    width: '50%',
+  },
+
+  bottom: {
+    width: '100%',
+  },
+
+  bottomPlace: {
+    width: '25%',
+  },
+
   grid: {
-    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    alignContent: 'space-between',
+    margin: -4,
   },
 
   section: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    alignContent: 'space-between',
+  },
+
+  place: {
+    aspectRatio: 1,
+    padding: 4,
   },
 
   item: {
-    backgroundColor: '#00FFFF',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flex: 1,
+    borderStyle: 'dashed',
   },
 })
 export default class PhotoEdit extends Component {
@@ -75,46 +100,36 @@ export default class PhotoEdit extends Component {
 
   renderItem(index) {
     return (
-      <Text>{index}</Text>
+      <Item>
+        <Text>{index}</Text>
+      </Item>
     );
   }
 
-  renderGrid(width) {
+  renderGrid() {
     const { styleSheet } = this.props;
-    const itemSize = (width / 4) - styleSheet.ITEMS_MARGIN * 3 / 4;
-    const itemStyle = {
-      width: itemSize,
-      height: itemSize,
-    };
-
-    const halfStyle = {
-      width: width / 2 - styleSheet.ITEMS_MARGIN / 2,
-      height: width / 2 - styleSheet.ITEMS_MARGIN / 2,
-    };
-
-    const gridHeight = halfStyle.height + styleSheet.ITEMS_MARGIN + itemSize;
 
     return (
-      <Grid style={{ height: gridHeight }}>
-        <Section style={halfStyle}>
-          <Item style={halfStyle}>
+      <Grid>
+        <Left>
+          <Place style={styleSheet.leftPlace}>
             {this.renderItem(0)}
-          </Item>
-        </Section>
-        <Section style={halfStyle}>
-          {[1, 2, 3, 4].map((index) => (
-            <Item key={index} style={itemStyle}>
-              {this.renderItem(index)}
-            </Item>
+          </Place>
+        </Left>
+        <Right>
+          {[1, 2, 3, 4].map((pos, index) => (
+            <Place key={pos} style={styleSheet.rightPlace}>
+              {this.renderItem(pos)}
+            </Place>
           ))}
-        </Section>
-        <Section style={{ width }}>
-          {[5, 6, 7, 8].map((index) => (
-            <Item key={index} style={itemStyle}>
-              {this.renderItem(index)}
-            </Item>
+        </Right>
+        <Bottom>
+          {[5, 6, 7, 8].map((pos, index) => (
+            <Place key={pos} style={styleSheet.bottomPlace}>
+              {this.renderItem(pos)}
+            </Place>
           ))}
-        </Section>
+        </Bottom>
       </Grid>
     );
   }
@@ -124,7 +139,7 @@ export default class PhotoEdit extends Component {
 
     return (
       <Root style={style}>
-        {({ width }) => width ? this.renderGrid(width) : null}
+        {this.renderGrid()}
       </Root>
     );
   }
