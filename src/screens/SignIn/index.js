@@ -27,7 +27,7 @@ const withLoginMutation = graphql(gql`
           input: {
             login,
             password,
-          }
+          },
         },
       });
 
