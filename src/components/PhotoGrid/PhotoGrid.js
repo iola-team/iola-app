@@ -55,7 +55,6 @@ const Place = connectToStyleSheet('place', View);
 
   place: {
     aspectRatio: 1,
-    padding: 4,
   },
 })
 export default class PhotoGrid extends Component {

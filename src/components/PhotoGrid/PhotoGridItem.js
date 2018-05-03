@@ -7,6 +7,7 @@ import { withStyle } from 'theme/index';
   flex: 1,
   overflow: 'hidden',
   borderRadius: 8,
+  margin: 4,
 
   '.placeholder': {
     borderWidth: 1,
