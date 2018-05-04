@@ -18,44 +18,30 @@ const Place = connectToStyleSheet('place', View);
 
   },
 
-  left: {
-    width: '50%',
-  },
-
-  leftPlace: {
-    width: '100%',
-  },
-
-  right: {
-    width: '50%',
-  },
-
-  rightPlace: {
-    width: '50%',
-  },
-
-  bottom: {
-    width: '100%',
-  },
-
-  bottomPlace: {
-    width: '25%',
-  },
-
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    alignItems: 'flex-start',
     margin: -4,
   },
 
-  section: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-
   place: {
+    width: '25%',
     aspectRatio: 1,
   },
+
+  place0: {
+    width: '50%',
+    position: 'absolute',
+  },
+
+  place1: {
+    marginLeft: '50%',
+  },
+
+  place3: {
+    marginLeft: '50%',
+  }
 })
 export default class PhotoGrid extends Component {
   static propTypes = {
@@ -71,7 +57,7 @@ export default class PhotoGrid extends Component {
     const { getItemKey } = this.props;
     const key = getItemKey && getItemKey(pos);
 
-    return key || `place-${pos}`;
+    return key || `place${pos}`;
   }
 
   renderItem(index) {
@@ -89,25 +75,13 @@ export default class PhotoGrid extends Component {
     return (
       <Root style={style}>
         <Grid>
-          <Left>
-            <Place key={this.getItemKey(0)} style={styleSheet.leftPlace}>
-              {this.renderItem(0)}
-            </Place>
-          </Left>
-          <Right>
-            {[1, 2, 3, 4].map((pos, index) => (
-              <Place key={this.getItemKey(pos)} style={styleSheet.rightPlace}>
-                {this.renderItem(pos)}
-              </Place>
-            ))}
-          </Right>
-          <Bottom>
-            {[5, 6, 7, 8].map((pos, index) => (
-              <Place key={this.getItemKey(pos)} style={styleSheet.bottomPlace}>
-                {this.renderItem(pos)}
-              </Place>
-            ))}
-          </Bottom>
+            {
+              Array(9).fill(null).map((item, index) => (
+                <Place key={this.getItemKey(index)} style={styleSheet[`place${index}`]}>
+                  {this.renderItem(index)}
+                </Place>
+              ))
+            }
         </Grid>
       </Root>
     );
