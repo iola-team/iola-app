@@ -23,10 +23,15 @@ const styleSheet = StyleSheet.create({
 export default class CircularProgress extends Component {
   static propTypes = {
     progress: PropTypes.number.isRequired,
+    animated: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    animated: true,
   };
 
   render() {
-    const { progress, style, children } = this.props;
+    const { progress, animated, style, children } = this.props;
 
     /**
      * Extract custom style props from style object
@@ -36,6 +41,7 @@ export default class CircularProgress extends Component {
     return (
       <View style={restStyle}>
         <Circle
+          animated={animated}
           color={color}
           unfilledColor={unfilledColor}
           borderWidth={0}

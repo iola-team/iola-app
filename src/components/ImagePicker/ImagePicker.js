@@ -8,8 +8,8 @@ import FetchBlob from 'react-native-fetch-blob'
 export default class ImagePicker extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
+    width: PropTypes.number,
+    height: PropTypes.number,
     crop: PropTypes.bool,
     multiple: PropTypes.bool,
 
@@ -17,6 +17,8 @@ export default class ImagePicker extends Component {
   }
 
   static defaultProps = {
+    width: null,
+    height: null,
     crop: false,
     multiple: false,
     onChange: () => {},
@@ -27,9 +29,22 @@ export default class ImagePicker extends Component {
   };
 
   async getImages(options) {
+    const width = options.width || this.props.width;
+    const height = options.height || this.props.height;
+
+    const heightOptions = height ? {
+      height,
+      compressImageMaxHeight: height,
+    } : {};
+
+    const widthOptions = width ? {
+      width,
+      compressImageMaxWidth: width,
+    } : {};
+
     const images = await Picker.openPicker({
-      width: options.width || this.props.width,
-      height: options.height || this.props.height,
+      ...heightOptions,
+      ...widthOptions,
       cropping: isUndefined(options.crop) ? this.props.crop : options.crop,
       multiple: isUndefined(options.multiple) ? this.props.multiple : options.multiple,
       mediaType: 'photo',

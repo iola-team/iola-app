@@ -55,6 +55,9 @@ buck-out/
 # Bundle artifact
 *.jsbundle
 
+# Visual Studio Code
+.vscode
+
 # TMP
 .tmp/*
 !.tmp/schemas

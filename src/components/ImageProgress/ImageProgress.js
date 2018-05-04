@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { noop } from 'lodash';
 import PropTypes from 'prop-types';
-import * as Animatable from 'react-native-animatable';
 import {
   StyleSheet,
   ImageBackground,
@@ -16,7 +15,7 @@ import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
 import CircularProgress from '../CircularProgress';
 
 const Root = connectToStyleSheet('root', View);
-const Layer = connectToStyleSheet('layer', Animatable.View);
+const Layer = connectToStyleSheet('layer', View);
 const Progress = connectToStyleSheet('progress', CircularProgress);
 const Background = connectToStyleSheet('background', ImageBackground);
 
@@ -40,10 +39,6 @@ const Background = connectToStyleSheet('background', ImageBackground);
   },
 })
 export default class ImageProgress extends Component {
-  state = {
-    isVisible: null,
-  };
-
   static propTypes = {
     previewUrl: PropTypes.string.isRequired,
     progress: PropTypes.number,
@@ -59,18 +54,6 @@ export default class ImageProgress extends Component {
     active: false,
   };
 
-  static getDerivedStateFromProps({ active }, { isVisible }) {
-    return {
-      isVisible: isVisible === null ? active : isVisible,
-    };
-  }
-
-  onAnimationEnd() {
-    this.setState({
-      isVisible: this.props.active,
-    });
-  }
-
   render() {
     const {
       style,
@@ -82,24 +65,15 @@ export default class ImageProgress extends Component {
       onCancel,
     } = this.props;
 
-    const { isVisible } = this.state;
-
     return (
       <Root style={style}>
         {children}
 
         {
-          isVisible && (
-            <Layer
-              useNativeDriver
-              easing="ease-out"
-              transition="opacity"
-              duration={200}
-              onAnimationEnd={::this.onAnimationEnd}
-              style={{ opacity: active ? 1 : 0 }}
-            >
+          active && (
+            <Layer>
               <Background source={{ uri: previewUrl }} blurRadius={blurRadius}>
-                <Progress progress={progress}>
+                <Progress animated={progress !== null} progress={progress || 0}>
                   <Button block light transparent rounded onPress={onCancel}>
                     <Icon name={'md-close'} />
                   </Button>

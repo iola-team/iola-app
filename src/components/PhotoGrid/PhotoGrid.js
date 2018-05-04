@@ -60,7 +60,19 @@ const Place = connectToStyleSheet('place', View);
 export default class PhotoGrid extends Component {
   static propTypes = {
     renderItem: PropTypes.func.isRequired,
+    getItemKey: PropTypes.func,
   };
+
+  static defaultProps = {
+    getItemKey: null,
+  };
+
+  getItemKey(pos) {
+    const { getItemKey } = this.props;
+    const key = getItemKey && getItemKey(pos);
+
+    return key || `place-${pos}`;
+  }
 
   renderItem(index) {
     const { renderItem } = this.props;
@@ -72,26 +84,26 @@ export default class PhotoGrid extends Component {
   }
 
   render() {
-    const { style, styleSheet } = this.props;
+    const { style, styleSheet, getItemKey } = this.props;
 
     return (
       <Root style={style}>
         <Grid>
           <Left>
-            <Place style={styleSheet.leftPlace}>
+            <Place key={this.getItemKey(0)} style={styleSheet.leftPlace}>
               {this.renderItem(0)}
             </Place>
           </Left>
           <Right>
             {[1, 2, 3, 4].map((pos, index) => (
-              <Place key={pos} style={styleSheet.rightPlace}>
+              <Place key={this.getItemKey(pos)} style={styleSheet.rightPlace}>
                 {this.renderItem(pos)}
               </Place>
             ))}
           </Right>
           <Bottom>
             {[5, 6, 7, 8].map((pos, index) => (
-              <Place key={pos} style={styleSheet.bottomPlace}>
+              <Place key={this.getItemKey(pos)} style={styleSheet.bottomPlace}>
                 {this.renderItem(pos)}
               </Place>
             ))}
