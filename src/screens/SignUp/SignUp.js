@@ -96,8 +96,8 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
   },
 })
 export default class SignUpScreen extends Component {
-  onSubmit = async ({ name, login, password }) => {
-    const success = await this.props.submit(name, login, password);
+  onSubmit = async ({ name, email, password }) => {
+    const success = await this.props.create(name, email, password);
 
     alert(success ? 'ok' : 'failed');
   };

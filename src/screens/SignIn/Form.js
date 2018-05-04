@@ -5,7 +5,7 @@ import yup from 'yup';
 import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
-const ItemLogin = connectToStyleSheet('itemLogin', Item).withProps({ regular: true });
+const ItemEmail = connectToStyleSheet('itemEmail', Item).withProps({ regular: true });
 const ItemPassword = connectToStyleSheet('itemPassword', Item).withProps({ regular: true });
 const InputTransparent = connectToStyleSheet('inputTransparent', Input).withProps({ placeholderTextColor: '#FFFFFF' });
 const itemStyle = {
@@ -18,7 +18,7 @@ const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
 const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button);
 
 @styleSheet('Sparkle.SignInForm', {
-  itemLogin: {
+  itemEmail: {
     ...itemStyle,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
@@ -71,14 +71,14 @@ class SignInForm extends Component {
 
     return (
       <Form>
-        <ItemLogin>
+        <ItemEmail>
           <InputTransparent
-            placeholder="Login"
-            onChangeText={text => setFieldValue('login', text)}
-            onBlur={() => setFieldTouched('login')}
-            value={values.login}
+            placeholder="Email"
+            onChangeText={text => setFieldValue('email', text)}
+            onBlur={() => setFieldTouched('email')}
+            value={values.email}
           />
-        </ItemLogin>
+        </ItemEmail>
 
         <ItemPassword>
           <InputTransparent
@@ -103,12 +103,12 @@ class SignInForm extends Component {
 }
 
 const validationSchema = yup.object().shape({
-  login: yup.string().required('Login is required'),
+  email: yup.string().required('Email is required'),
   password: yup.string().required('Password is required'),
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ login: 'demo', password: 'demo1986' }),
+  mapPropsToValues: props => ({ email: 'demo5@oxpro.org', password: 'demo1986' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(SignInForm);

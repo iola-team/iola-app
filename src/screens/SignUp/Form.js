@@ -9,7 +9,7 @@ const FormItem = connectToStyleSheet('formItem', Item).withProps({ regular: true
 const FormInput = connectToStyleSheet('formInput', Input).withProps({ placeholderTextColor: '#FFFFFF' });
 const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button).withProps({ block: true });
 
-@styleSheet('Sparkle.SignInForm', {
+@styleSheet('Sparkle.SignUpForm', {
   formItem: {
     marginBottom: 8,
     paddingHorizontal: 10,
@@ -52,10 +52,10 @@ class SignUpForm extends Component {
         </FormItem>
         <FormItem>
           <FormInput
-            placeholder="Login"
-            onChangeText={text => setFieldValue('login', text)}
-            onBlur={() => setFieldTouched('login')}
-            value={values.login}
+            placeholder="Email"
+            onChangeText={text => setFieldValue('email', text)}
+            onBlur={() => setFieldTouched('email')}
+            value={values.email}
           />
         </FormItem>
         <FormItem>
@@ -77,12 +77,12 @@ class SignUpForm extends Component {
 
 const validationSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
-  login: yup.string().required('Login is required'),
+  email: yup.string().required('Email is required'),
   password: yup.string().required('Password is required'),
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ name: 'test', login: 'test@test.test', password: 'test' }),
+  mapPropsToValues: props => ({ name: 'Roman Banan', email: 'roman@banan.com', password: 'rb' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(SignUpForm);

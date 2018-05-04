@@ -17,13 +17,13 @@ const withSignUpMutation = graphql(gql`
   }
 `, {
   props: ({ mutate, ownProps: { storeToken } }) => ({
-    async submit(name, login, password) {
+    async create(name, email, password) {
       try {
         const { data: { result } } = await mutate({
           variables: {
             input: {
               name,
-              login,
+              email,
               password,
             },
           },

@@ -13,7 +13,7 @@ const withTokenMutation = graphql(gql`
   }),
 });
 
-const withLoginMutation = graphql(gql`
+const withSignInMutation = graphql(gql`
   mutation($input: SignInUserInput!) {
     result: signInUser(input: $input) {
       accessToken
@@ -21,11 +21,11 @@ const withLoginMutation = graphql(gql`
   }
 `, {
   props: ({ mutate, ownProps: { storeToken } }) => ({
-    async authenticate(login, password) {
+    async authenticate(email, password) {
       const { data: { result } } = await mutate({
         variables: {
           input: {
-            login,
+            email,
             password,
           },
         },
@@ -40,5 +40,5 @@ const withLoginMutation = graphql(gql`
 
 export default compose(
   withTokenMutation,
-  withLoginMutation,
+  withSignInMutation,
 )(Screen);
