@@ -7,22 +7,19 @@ import Item from './PhotoGridItem';
 
 const Root = connectToStyleSheet('root', View);
 const Grid = connectToStyleSheet('grid', View);
-const Section = connectToStyleSheet('section', View);
-const Left = connectToStyleSheet('left', Section);
-const Right = connectToStyleSheet('right', Section);
-const Bottom = connectToStyleSheet('bottom', Section);
 const Place = connectToStyleSheet('place', View);
+const List = connectToStyleSheet('list', View);
 
 @styleSheet('Sparkle.PhotoGrid', {
   root: {
-
+    margin: -4,
   },
 
   grid: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     flexWrap: 'wrap',
-    alignItems: 'flex-start',
-    margin: -4,
+    alignItems: 'flex-end',
+    aspectRatio: 2,
   },
 
   place: {
@@ -30,18 +27,13 @@ const Place = connectToStyleSheet('place', View);
     aspectRatio: 1,
   },
 
+  list: {
+    flexDirection: 'row',
+  },
+
   place0: {
     width: '50%',
-    position: 'absolute',
   },
-
-  place1: {
-    marginLeft: '50%',
-  },
-
-  place3: {
-    marginLeft: '50%',
-  }
 })
 export default class PhotoGrid extends Component {
   static propTypes = {
@@ -76,13 +68,22 @@ export default class PhotoGrid extends Component {
       <Root style={style}>
         <Grid>
             {
-              Array(9).fill(null).map((item, index) => (
+              [0, 1, 2, 3, 4].map((index) => (
                 <Place key={this.getItemKey(index)} style={styleSheet[`place${index}`]}>
                   {this.renderItem(index)}
                 </Place>
               ))
             }
         </Grid>
+        <List>
+          {
+            [5, 6, 7, 8].map((index) => (
+              <Place key={this.getItemKey(index)} style={styleSheet[`place${index}`]}>
+                {this.renderItem(index)}
+              </Place>
+            ))
+          }
+        </List>
       </Root>
     );
   }
