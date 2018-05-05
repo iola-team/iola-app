@@ -8,7 +8,7 @@ import { Button, View, Text } from 'native-base';
 
 import { getContentDecorator } from 'storybook/index';
 
-import PhotoGridItem from './PhotoGridItem';
+import Item from './PhotoGridItem';
 import PhotoGrid from './PhotoGrid';
 import ImageProgress from '../ImageProgress';
 
@@ -19,9 +19,16 @@ stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator({ padder: true }));
 
 // Stories
-stories.add('Empty grid', () => {
+stories.add('Empty grid with numbers', () => {
   return (
-    <PhotoGrid renderItem={() => null} />
+    <PhotoGrid renderItem={(index) => (
+      <Item placeholder style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+        <Text>{index}</Text>
+      </Item>
+    )} />
   );
 });
 
@@ -31,7 +38,7 @@ const imagePreview = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAAQABAAD/4QAYRXh
 stories.add('Loading first image', () => {
   return (
     <PhotoGrid renderItem={(index) => index === 0 ? (
-      <PhotoGridItem>
+      <Item>
         <ImageProgress
           style={{ flex: 1 }}
           blurRadius={1}
@@ -42,7 +49,7 @@ stories.add('Loading first image', () => {
         >
           <Image source={{ uri: imageUrl }} />
         </ImageProgress>
-      </PhotoGridItem>
+      </Item>
     ) : null} />
   );
 });
@@ -52,13 +59,13 @@ stories.add('Complex example', () => {
   const items = [];
 
   items.push(
-    <PhotoGridItem>
+    <Item>
       <Image source={{ uri: imageUrl }} style={{ flex: 1 }} />
-    </PhotoGridItem>
+    </Item>
   );
 
   items.push(
-    <PhotoGridItem>
+    <Item>
       <ImageProgress
         style={{ flex: 1 }}
         blurRadius={1}
@@ -69,11 +76,11 @@ stories.add('Complex example', () => {
       >
         <Image source={{ uri: imageUrl }} />
       </ImageProgress>
-    </PhotoGridItem>
+    </Item>
   );
 
   items.push(
-    <PhotoGridItem placeholder>
+    <Item placeholder>
       <Button
         style={{ flex: 1 }}
         transparent
@@ -81,7 +88,7 @@ stories.add('Complex example', () => {
       >
         <Text>Button</Text>
       </Button>
-    </PhotoGridItem>
+    </Item>
   );
 
   return (
