@@ -1,18 +1,53 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Circle, CircleSnail } from 'react-native-progress';
+import { View, StyleSheet } from 'react-native';
 
+import { connectToStyleSheet, withStyle } from 'theme/index';
+
+const styleSheet = StyleSheet.create({
+  content: {
+    ...StyleSheet.absoluteFillObject,
+
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+
+@withStyle('Sparkle.CircularProgress', {
+  color: '#FFFFFF',
+  unfilledColor: 'rgba(255,255,255, 0.3)',
+  thickness: 4,
+  size: 100,
+})
 export default class CircularProgress extends Component {
+  static propTypes = {
+    progress: PropTypes.number.isRequired,
+  };
+
   render() {
-    const { progress, loading } = this.props;
-    const unknownProgress = progress === undefined || progress === null;
+    const { progress, style, children } = this.props;
+
+    /**
+     * Extract custom style props from style object
+     */
+    const { color, unfilledColor, thickness, size, ...restStyle } = StyleSheet.flatten(style);
 
     return (
-      <Circle
-        size={100}
-        thickness={5}
-        progress={progress || 0}
-        indeterminate={unknownProgress}
-      />
+      <View style={restStyle}>
+        <Circle
+          color={color}
+          unfilledColor={unfilledColor}
+          borderWidth={0}
+          size={size}
+          thickness={thickness}
+          progress={progress || 0}
+        />
+
+        <View style={styleSheet.content}>
+          {children}
+        </View>
+      </View>
     );
   }
 }
