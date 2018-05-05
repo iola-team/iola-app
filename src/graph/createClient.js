@@ -3,7 +3,6 @@ import { AsyncStorage } from 'react-native';
 import { toIdValue } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
 import { from, ApolloLink } from 'apollo-link';
-import { BatchHttpLink } from "apollo-link-batch-http";
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 import { CachePersistor } from 'apollo-cache-persist';
@@ -12,7 +11,7 @@ import { createUploadLink } from 'apollo-upload-client';
 import { disableFragmentWarnings } from 'graphql-tag';
 
 import resolvers from './resolvers';
-import { AuthLink } from './links';
+import { AuthLink, ErrorLink } from './links';
 import introspectionQueryResultData from './meta/fragmentTypes';
 
 disableFragmentWarnings();
@@ -71,6 +70,8 @@ export default async () => {
 
   const authLink = new AuthLink();
 
+  const errorLink = new ErrorLink();
+
   const httpLink = createUploadLink({
     uri: 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM',
     fetch: (uri, allOptions, ...restArgs) => {
@@ -90,6 +91,7 @@ export default async () => {
 
   const client = new ApolloClient({
     link: from([
+      errorLink,
       withContext.concat(
         stateLink,
       ),
