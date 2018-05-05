@@ -73,7 +73,7 @@ export default async () => {
   const errorLink = new ErrorLink();
 
   const httpLink = createUploadLink({
-    uri: 'http://172.27.1.46/ox/oxwall-1.8.4.1/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM',
+    uri: 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM',
     fetch: (uri, allOptions, ...restArgs) => {
       const {
         uploadProgress,

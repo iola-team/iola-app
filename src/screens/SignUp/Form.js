@@ -47,7 +47,6 @@ class SignUpForm extends Component {
             placeholder="Full Name"
             onChangeText={text => setFieldValue('name', text)}
             onBlur={() => setFieldTouched('name')}
-            value={values.name}
           />
         </FormItem>
         <FormItem>
@@ -55,7 +54,6 @@ class SignUpForm extends Component {
             placeholder="Email"
             onChangeText={text => setFieldValue('email', text)}
             onBlur={() => setFieldTouched('email')}
-            value={values.email}
           />
         </FormItem>
         <FormItem>
@@ -63,7 +61,6 @@ class SignUpForm extends Component {
             placeholder="Password"
             onChangeText={text => setFieldValue('password', text)}
             onBlur={() => setFieldTouched('password')}
-            value={values.password}
             secureTextEntry
           />
         </FormItem>
@@ -82,7 +79,6 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ name: 'Roman Banan', email: 'roman@banan.com', password: 'rb' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(SignUpForm);

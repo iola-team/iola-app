@@ -4,6 +4,7 @@ import { Button, Container, Text, View } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 import SignUpForm from './Form';
+import { LAUNCH } from '../roteNames';
 
 const Title = connectToStyleSheet('title', Text);
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
@@ -99,7 +100,7 @@ export default class SignUpScreen extends Component {
   onSubmit = async ({ name, email, password }) => {
     const success = await this.props.create(name, email, password);
 
-    alert(success ? 'ok' : 'failed');
+    if (success) this.props.navigation.navigate(LAUNCH);
   };
 
   render() {
