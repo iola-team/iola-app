@@ -16,6 +16,7 @@ import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
 const userFragment = gql`
   fragment ComponentTemplate_user on User {
     id
+    name
   }
 `;
 
