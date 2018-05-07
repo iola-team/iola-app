@@ -43,6 +43,7 @@ class Provider extends Component {
 
   componentDidMount() {
     createClient({
+      restoreCache: false,
       persistorStorage: new MockAsyncStorage(),
       terminatingLink: createSchemaLink(this.props),
     }).then(client => this.setState({
