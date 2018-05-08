@@ -4,11 +4,24 @@ import { withFormik } from 'formik';
 import yup from 'yup';
 import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { graphql, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+
+import { LAUNCH } from '../roteNames';
 
 const FormItem = connectToStyleSheet('formItem', Item).withProps({ regular: true });
 const FormInput = connectToStyleSheet('formInput', Input).withProps({ placeholderTextColor: '#FFFFFF' });
-const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button).withProps({ block: true });
+const SubmitButton = connectToStyleSheet('submitButton', Button).withProps({ block: true });
 
+@graphql(gql`
+  mutation($token: String!) {
+    storeAuthToken(token: $token) @client
+  }
+`, {
+  props: ({ mutate }) => ({
+    storeToken: token => mutate({ variables: { token } }),
+  }),
+})
 @styleSheet('Sparkle.SignUpForm', {
   formItem: {
     marginBottom: 8,
@@ -22,13 +35,60 @@ const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button).withProps({ blo
     color: '#FFFFFF',
   },
 
-  buttonSubmit: {
+  submitButton: {
     marginTop: 40,
   },
 })
 class SignUpForm extends Component {
-  static propTypes = {
-    onSubmit: propTypes.func.isRequired,
+  renderSubmitButton() {
+    const { values: { name, email, password }, storeToken } = this.props;
+
+    const mutation = gql`
+      mutation($input: SignUpUserInput!) {
+        result: signUpUser(input: $input) {
+          accessToken
+          user {
+            id
+            name
+            email
+            activityTime
+          }
+        }
+      }
+    `;
+
+    const onPress = async (signUpUser) => {
+      let success = false;
+
+      try {
+        const { data: { result } } = await signUpUser({
+          variables: {
+            input: {
+              name,
+              email,
+              password,
+            },
+          },
+        });
+
+        await storeToken(result.accessToken);
+        success = !!result.accessToken;
+      } catch (error) {
+        if (error.message.includes('Duplicate email')) alert('This email is already taken');
+      }
+
+      if (success) this.props.navigation.navigate(LAUNCH);
+    };
+
+    return (
+      <Mutation mutation={mutation}>
+        {signUpUser => (
+          <SubmitButton block onPress={() => onPress(signUpUser)}>
+            <Text>Sign up</Text>
+          </SubmitButton>
+        )}
+      </Mutation>
+    );
   };
 
   render() {
@@ -36,7 +96,6 @@ class SignUpForm extends Component {
       values,
       setFieldValue,
       setFieldTouched,
-      handleSubmit,
       isValid,
     } = this.props;
 
@@ -47,6 +106,7 @@ class SignUpForm extends Component {
             placeholder="Full Name"
             onChangeText={text => setFieldValue('name', text)}
             onBlur={() => setFieldTouched('name')}
+            value={values.name}
           />
         </FormItem>
         <FormItem>
@@ -54,6 +114,7 @@ class SignUpForm extends Component {
             placeholder="Email"
             onChangeText={text => setFieldValue('email', text)}
             onBlur={() => setFieldTouched('email')}
+            value={values.email}
           />
         </FormItem>
         <FormItem>
@@ -62,11 +123,10 @@ class SignUpForm extends Component {
             onChangeText={text => setFieldValue('password', text)}
             onBlur={() => setFieldTouched('password')}
             secureTextEntry
+            value={values.password}
           />
         </FormItem>
-        <ButtonSubmit block onPress={handleSubmit}>
-          <Text>Sign up</Text>
-        </ButtonSubmit>
+        {::this.renderSubmitButton()}
       </Form>
     );
   }
@@ -79,6 +139,6 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  handleSubmit: (values, { props }) => props.onSubmit(values),
+  mapPropsToValues: props => ({ name: 'Roman Banan', email: 'roman@banan.com', password: 'rb' }),
   validationSchema,
 })(SignUpForm);

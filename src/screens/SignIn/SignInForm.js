@@ -5,7 +5,7 @@ import yup from 'yup';
 import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
-const ItemEmail = connectToStyleSheet('itemEmail', Item).withProps({ regular: true });
+const ItemEmailOrLogin = connectToStyleSheet('itemEmailOrLogin', Item).withProps({ regular: true });
 const ItemPassword = connectToStyleSheet('itemPassword', Item).withProps({ regular: true });
 const InputTransparent = connectToStyleSheet('inputTransparent', Input).withProps({ placeholderTextColor: '#FFFFFF' });
 const itemStyle = {
@@ -15,10 +15,10 @@ const itemStyle = {
 };
 const ForgotPasswordButton = connectToStyleSheet('forgotPasswordButton', Button);
 const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
-const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button);
+const SubmitButton = connectToStyleSheet('submitButton', Button);
 
 @styleSheet('Sparkle.SignInForm', {
-  itemEmail: {
+  itemEmailOrLogin: {
     ...itemStyle,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
@@ -49,7 +49,7 @@ const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button);
     color: '#FFFFFF',
   },
 
-  buttonSubmit: {
+  submitButton: {
     marginTop: 48,
   },
 })
@@ -71,14 +71,14 @@ class SignInForm extends Component {
 
     return (
       <Form>
-        <ItemEmail>
+        <ItemEmailOrLogin>
           <InputTransparent
-            placeholder="Email"
-            onChangeText={text => setFieldValue('email', text)}
-            onBlur={() => setFieldTouched('email')}
-            value={values.email}
+            placeholder="Email or login"
+            onChangeText={text => setFieldValue('login', text)}
+            onBlur={() => setFieldTouched('login')}
+            value={values.login}
           />
-        </ItemEmail>
+        </ItemEmailOrLogin>
 
         <ItemPassword>
           <InputTransparent
@@ -94,21 +94,21 @@ class SignInForm extends Component {
           </ForgotPasswordButton>
         </ItemPassword>
 
-        <ButtonSubmit block onPress={handleSubmit}>
+        <SubmitButton block onPress={handleSubmit}>
           <Text>Submit</Text>
-        </ButtonSubmit>
+        </SubmitButton>
       </Form>
     );
   }
 }
 
 const validationSchema = yup.object().shape({
-  email: yup.string().required('Email is required'),
+  login: yup.string().required('Email or login is required'),
   password: yup.string().required('Password is required'),
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ email: 'demo5@oxpro.org', password: 'demo1986' }),
+  mapPropsToValues: props => ({ login: 'demo5@oxpro.org', password: 'demo1986' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(SignInForm);

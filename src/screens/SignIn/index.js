@@ -21,11 +21,11 @@ const withSignInMutation = graphql(gql`
   }
 `, {
   props: ({ mutate, ownProps: { storeToken } }) => ({
-    async authenticate(email, password) {
+    async authenticate(login, password) {
       const { data: { result } } = await mutate({
         variables: {
           input: {
-            email,
+            login,
             password,
           },
         },
