@@ -9,6 +9,20 @@ import gql from 'graphql-tag';
 
 import { LAUNCH } from '../roteNames';
 
+const signUpUserMutation = gql`
+  mutation signUpUserMutation($input: SignUpUserInput!) {
+    result: signUpUser(input: $input) {
+      accessToken
+      user {
+        id
+        name
+        email
+        activityTime
+      }
+    }
+  }
+`;
+
 const FormItem = connectToStyleSheet('formItem', Item).withProps({ regular: true });
 const FormInput = connectToStyleSheet('formInput', Input).withProps({ placeholderTextColor: '#FFFFFF' });
 const SubmitButton = connectToStyleSheet('submitButton', Button).withProps({ block: true });
@@ -40,56 +54,29 @@ const SubmitButton = connectToStyleSheet('submitButton', Button).withProps({ blo
   },
 })
 class SignUpForm extends Component {
-  renderSubmitButton() {
+  async onSubmit(signUpUser) {
     const { values: { name, email, password }, storeToken } = this.props;
+    let success = false;
 
-    const mutation = gql`
-      mutation($input: SignUpUserInput!) {
-        result: signUpUser(input: $input) {
-          accessToken
-          user {
-            id
-            name
-            email
-            activityTime
-          }
-        }
-      }
-    `;
-
-    const onPress = async (signUpUser) => {
-      let success = false;
-
-      try {
-        const { data: { result } } = await signUpUser({
-          variables: {
-            input: {
-              name,
-              email,
-              password,
-            },
+    try {
+      const { data: { result } } = await signUpUser({
+        variables: {
+          input: {
+            name,
+            email,
+            password,
           },
-        });
+        },
+      });
 
-        await storeToken(result.accessToken);
-        success = !!result.accessToken;
-      } catch (error) {
-        if (error.message.includes('Duplicate email')) alert('This email is already taken');
-      }
+      await storeToken(result.accessToken);
+      success = !!result.accessToken;
+    } catch (error) {
+      if (error.message.includes('Duplicate email')) alert('This email is already taken');
+    }
 
-      if (success) this.props.navigation.navigate(LAUNCH);
-    };
-
-    return (
-      <Mutation mutation={mutation}>
-        {signUpUser => (
-          <SubmitButton block onPress={() => onPress(signUpUser)}>
-            <Text>Sign up</Text>
-          </SubmitButton>
-        )}
-      </Mutation>
-    );
-  };
+    if (success) this.props.navigation.navigate(LAUNCH);
+  }
 
   render() {
     const {
@@ -126,7 +113,14 @@ class SignUpForm extends Component {
             value={values.password}
           />
         </FormItem>
-        {::this.renderSubmitButton()}
+
+        <Mutation mutation={signUpUserMutation}>
+          {signUpUser => (
+            <SubmitButton block onPress={() => ::this.onSubmit(signUpUser)}>
+              <Text>Sign up</Text>
+            </SubmitButton>
+          )}
+        </Mutation>
       </Form>
     );
   }
