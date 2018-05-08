@@ -16,7 +16,11 @@ import introspectionQueryResultData from './meta/fragmentTypes';
 
 disableFragmentWarnings();
 
-export default async () => {
+export async function createClient({
+  terminatingLink,
+  persistorStorage = AsyncStorage,
+  restoreCache = true,
+}) {
   const fragmentMatcher = new IntrospectionFragmentMatcher({
     introspectionQueryResultData,
   });
@@ -35,7 +39,7 @@ export default async () => {
 
   const cachePersistor = new CachePersistor({
     cache,
-    storage: AsyncStorage,
+    storage: persistorStorage,
     trigger: 'background',
     debug: true,
   });
@@ -66,12 +70,31 @@ export default async () => {
     });
   }
 
-  await cachePersistor.restore();
+  if (restoreCache) {
+    await cachePersistor.restore();
+  }
 
   const authLink = new AuthLink();
-
   const errorLink = new ErrorLink();
 
+  const client = new ApolloClient({
+    link: from([
+      errorLink,
+      withContext.concat(
+        stateLink,
+      ),
+      authLink,
+      terminatingLink,
+    ]),
+    cache,
+  });
+
+  client.onResetStore(stateLink.writeDefaults);
+
+  return client;
+}
+
+export default async () => {
   const httpLink = createUploadLink({
     uri: 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM',
     fetch: (uri, allOptions, ...restArgs) => {
@@ -89,19 +112,7 @@ export default async () => {
     }
   });
 
-  const client = new ApolloClient({
-    link: from([
-      errorLink,
-      withContext.concat(
-        stateLink,
-      ),
-      authLink,
-      httpLink,
-    ]),
-    cache,
+  return createClient({
+    terminatingLink: httpLink,
   });
-
-  client.onResetStore(stateLink.writeDefaults);
-
-  return client;
 };
