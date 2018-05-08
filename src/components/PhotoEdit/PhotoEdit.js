@@ -22,6 +22,7 @@ function mergeSlots(slots, nextSlots) {
 
 const userFragment = gql`
   fragment PhotoEdit_user on User {
+    id
     photos {
       edges {
         cursor
