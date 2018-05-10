@@ -29,12 +29,13 @@ function mergeSlots(prevSlots, nextSlots, by = 'id') {
   }, prevSlots);
 }
 
-function createSlot({ id = uniqueId(), url, progress = 1 }, key) {
+function createSlot({ id = uniqueId(), url, progress = 1, loading = false }, key) {
   return {
     id,
     key: key || id,
     url,
     progress,
+    loading,
   };
 }
 
@@ -116,6 +117,7 @@ export default class PhotoEdit extends Component {
     const { slots } = this.state;
     const newSlots = images.map(({ path }) => createSlot({
       url: path,
+      loading: true,
       progress: 0,
     }));
 
@@ -135,7 +137,7 @@ export default class PhotoEdit extends Component {
     });
   }
 
-  renderPhoto({ url, progress}) {
+  renderPhoto({ url, progress, loading}) {
     const { styleSheet } = this.props;
 
     return (
@@ -143,7 +145,7 @@ export default class PhotoEdit extends Component {
         <ImageProgress
           style={styleSheet.itemContent}
           previewUrl={url}
-          active={progress < 1}
+          active={loading}
           progress={progress}
         >
           <Image
@@ -177,6 +179,15 @@ export default class PhotoEdit extends Component {
                       file: images[index].blob,
                       uploadTime: new Date(),
                     },
+                  },
+                  context: {
+                    fetchOptions: {
+                      uploadProgress: (received, total) => {
+                        this.updateSlot(slot.key, {
+                          progress: received / total,
+                        });
+                      }
+                    }
                   },
                   update: (cache, { data: { addUserPhoto: result } }) => {
                     this.updateSlot(slot.key, createSlot(result.node));

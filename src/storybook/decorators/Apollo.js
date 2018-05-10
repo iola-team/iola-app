@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
-import { isFunction, cloneDeep } from 'lodash';
+import { isFunction, cloneDeep, range } from 'lodash';
 import { ApolloProvider } from 'react-apollo';
+import { setContext } from "apollo-link-context";
+import { ApolloLink } from 'apollo-link';
 import { SchemaLink } from 'apollo-link-schema';
 import MockAsyncStorage from 'mock-async-storage';
+import delay from 'promise-delay';
 import {
   makeExecutableSchema,
   addMockFunctionsToSchema,
@@ -36,6 +39,30 @@ function createSchemaLink({ typeDefs, mocks, resolvers, dataStore = {} }) {
   });
 }
 
+function createProgressLink({ progressOptions = {} }) {
+  const total = progressOptions.total || 100;
+  const step = progressOptions.step || 10;
+  const getDelay = isFunction(progressOptions.delay)
+    ? progressOptions.delay
+    : () => progressOptions.delay || Math.random() * 100;
+
+  return setContext(async (request, { fetchOptions = {} }) => {
+    if (fetchOptions.uploadProgress) {
+      await range(0, total + step, step).reduce((prev, tick) => prev.then(async () => {
+        await delay(getDelay(tick));
+        fetchOptions.uploadProgress(tick, total)
+      }), Promise.resolve());
+    }
+  });
+}
+
+function createTerminatingLink(options) {
+  return ApolloLink.from([
+    createProgressLink(options),
+    createSchemaLink(options),
+  ]);
+}
+
 class Provider extends Component {
   state = {
     client: null,
@@ -45,7 +72,7 @@ class Provider extends Component {
     createClient({
       restoreCache: false,
       persistorStorage: new MockAsyncStorage(),
-      terminatingLink: createSchemaLink(this.props),
+      terminatingLink: createTerminatingLink(this.props),
     }).then(client => this.setState({
       client,
     }));

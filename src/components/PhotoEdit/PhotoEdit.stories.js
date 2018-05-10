@@ -100,7 +100,7 @@ const resolvers = {
 
   Mutation: {
     addUserPhoto: async (root, { input }, { dataStore }) => {
-      await delay(500 + Math.random() * 1000);
+      await delay(1000 + Math.random() * 1000);
 
       const user = find(dataStore.users, { id: input.userId });
       const node = {
