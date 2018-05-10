@@ -70,7 +70,7 @@ export default class ImagePicker extends Component {
     this.setState({ images });
     this.props.onChange(images);
 
-    return image;
+    return images;
   }).catch(() => null);
 
   reset = async () => {

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { unionBy, uniqueId } from 'lodash';
+import { unionBy, uniqueId, clone, find, assign, findIndex } from 'lodash';
+import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
 import { Image } from 'react-native';
 import {
   View,
@@ -16,8 +18,24 @@ import PhotoGrid, { Item } from '../PhotoGrid';
 import ImagePicker from '../ImagePicker';
 import ImageProgress from '../ImageProgress';
 
-function mergeSlots(slots, nextSlots) {
-  return unionBy(nextSlots, slots, 'key').slice(0, 8);
+function mergeSlots(prevSlots, nextSlots, by = 'id') {
+  return nextSlots.reduce((slots, slot) => {
+    const index = findIndex(slots, { [by]: slot[by] });
+    const patch = index >= 0
+      ? { [index]: { $merge: slot } }
+      : { $unshift: [slot] };
+
+    return update(slots, patch);
+  }, prevSlots);
+}
+
+function createSlot({ id = uniqueId(), url, progress = 1 }, key) {
+  return {
+    id,
+    key: key || id,
+    url,
+    progress,
+  };
 }
 
 const userFragment = gql`
@@ -33,6 +51,19 @@ const userFragment = gql`
       }
     }
   }
+`;
+
+const addPhotoMutation = gql`
+  mutation addUserPhotoMutation($input: UserPhotoCreateInput!) {
+    addUserPhoto(input: $input) {
+      node {
+        id
+        url
+      }
+    }
+  }
+  
+  ${userFragment}
 `;
 
 @styleSheet('Sparkle.PhotoEdit', {
@@ -73,27 +104,34 @@ export default class PhotoEdit extends Component {
       }
     } = user;
 
-    const loadedSlots = edges.map(({ node }) => ({
-      progress: 1,
-      key: node.id,
-      url: node.url,
-    }));
-
     return {
-      slots: mergeSlots(slots, loadedSlots),
+      slots: mergeSlots(
+        slots,
+        edges.map(edge => createSlot(edge.node)),
+      ),
     };
   }
 
-  pickerOnChange(images) {
+  addLoadingImages(images) {
     const { slots } = this.state;
-    const newSlots = images.map(({ path }) => ({
-      progress: 0.3,
-      key: uniqueId(),
+    const newSlots = images.map(({ path }) => createSlot({
       url: path,
+      progress: 0,
     }));
 
     this.setState({
       slots: mergeSlots(slots, newSlots),
+    });
+
+    return newSlots;
+  }
+
+  updateSlot(key, slot) {
+    this.setState({
+      slots: mergeSlots(this.state.slots, [{
+        ...slot,
+        key,
+      }], 'key'),
     });
   }
 
@@ -118,30 +156,50 @@ export default class PhotoEdit extends Component {
   }
 
   renderAddButton() {
-    const { styleSheet } = this.props;
+    const { styleSheet, user } = this.props;
 
     return (
       <Item>
-        <ImagePicker
-          multiple
-          width={1000}
-          height={1000}
-          onChange={::this.pickerOnChange}
+        <Mutation
+          mutation={addPhotoMutation}
+          ignoreResults
         >
-          {(pick) => (
-            <Button
-              transparent
-              block
-              style={[styleSheet.itemContent, styleSheet.addButton]}
-              onPress={() => pick()}
+          {(addPhoto) => (
+            <ImagePicker
+              multiple
+              width={1000}
+              height={1000}
+              onChange={(images) => {
+                this.addLoadingImages(images).map((slot, index) => addPhoto({
+                  variables: {
+                    input: {
+                      userId: user.id,
+                      file: images[index].blob,
+                      uploadTime: new Date(),
+                    },
+                  },
+                  update: (cache, { data: { addUserPhoto: result } }) => {
+                    this.updateSlot(slot.key, createSlot(result.node));
+                  }
+                }));
+              }}
             >
-              <Icon
-                name="add"
-                style={styleSheet.addButtonIcon}
-              />
-            </Button>
+              {(pick) => (
+                <Button
+                  transparent
+                  block
+                  style={[styleSheet.itemContent, styleSheet.addButton]}
+                  onPress={() => pick()}
+                >
+                  <Icon
+                    name="add"
+                    style={styleSheet.addButtonIcon}
+                  />
+                </Button>
+              )}
+            </ImagePicker>
           )}
-        </ImagePicker>
+        </Mutation>
       </Item>
     )
   }

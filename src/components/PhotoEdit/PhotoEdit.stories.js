@@ -1,5 +1,7 @@
 import React from 'react';
-import { find } from 'lodash';
+import { find, orderBy } from 'lodash';
+import { uniqueId } from 'lodash';
+import delay from 'promise-delay';
 import { withHandlers } from 'recompose';
 import { number, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
@@ -24,14 +26,17 @@ const dataStore = {
         {
           id: 'Photo:1',
           url: 'https://images.unsplash.com/photo-1523444540064-c7c832de3364?w=400&h400',
+          uploadTime: new Date(),
         },
         {
           id: 'Photo:2',
           url: 'https://images.unsplash.com/photo-1525025500848-f00b7d362dec?w=300&h=600',
+          uploadTime: new Date(),
         },
         {
           id: 'Photo:3',
           url: 'https://images.unsplash.com/photo-1524850108227-6f2c213bf20d?w=800&h=600',
+          uploadTime: new Date(),
         },
       ],
     },
@@ -45,6 +50,8 @@ const dataStore = {
 
 const typeDefs = gql`
   scalar Cursor
+  scalar Upload
+  scalar Date
   
   type Photo {
     id: ID!
@@ -69,6 +76,21 @@ const typeDefs = gql`
   type Query {
     node(id: ID!): User!
   }
+  
+  input UserPhotoCreateInput {
+    userId: ID!
+    file: Upload!
+    uploadTime: Date
+  }
+
+  type UserPhotoCreatePayload {
+    user: User!
+    node: Photo!
+  } 
+  
+  type Mutation {
+    addUserPhoto(input: UserPhotoCreateInput!): UserPhotoCreatePayload!
+  }
 `;
 
 const resolvers = {
@@ -76,9 +98,28 @@ const resolvers = {
     node: (root, { id }, { dataStore }) => find(dataStore.users, { id }),
   },
 
+  Mutation: {
+    addUserPhoto: async (root, { input }, { dataStore }) => {
+      await delay(500 + Math.random() * 1000);
+
+      const user = find(dataStore.users, { id: input.userId });
+      const node = {
+        id: `Photo:${uniqueId()}`,
+        url: input.file.blobPath,
+      }
+
+      user.photos.unshift(node);
+
+      return {
+        user,
+        node,
+      };
+    },
+  },
+
   User: {
     photos: (user, { first }) => {
-      const photos = user.photos.slice(0, first);
+      const photos = orderBy(user.photos, 'uploadTime').slice(0, first);
 
       return {
         totalCount: photos.length,
