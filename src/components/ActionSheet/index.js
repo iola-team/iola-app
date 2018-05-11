@@ -1,0 +1,1 @@
+export componentTemplate from './ActionSheet';

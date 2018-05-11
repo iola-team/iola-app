@@ -1,6 +1,9 @@
-import { configure } from '@storybook/react-native';
+import { configure, addDecorator } from '@storybook/react-native';
 
+import { getRootDecorator } from './decorators';
 import { loadStories } from './storyLoader';
+
+addDecorator(getRootDecorator());
 
 configure(loadStories, module);
 
