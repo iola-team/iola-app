@@ -8,6 +8,7 @@ import createApiClient from 'graph';
 import Theme from 'theme';
 import Application from 'application';
 import Storybook from 'storybook';
+import Root from './components/Root/Root'
 
 class ApplicationRoot extends Component {
   state = {
@@ -42,7 +43,9 @@ class ApplicationRoot extends Component {
     return isReady ? (
       <ApolloProvider client={this.apiClient}>
         <Theme>
-          <Application onReady={::this.onApplicationReady} />
+          <Root>
+            <Application onReady={::this.onApplicationReady} />
+          </Root>
         </Theme>
       </ApolloProvider>
     ) : (

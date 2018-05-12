@@ -5,6 +5,7 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
+  require('../components/ActionSheet/ActionSheet.stories');
   require('../components/AvatarInput/AvatarInput.stories');
   require('../components/CircularProgress/CircularProgress.stories');
   require('../components/ComponentTemplate/ComponentTemplate.stories');
@@ -15,6 +16,7 @@ function loadStories() {
 }
 
 const stories = [
+  '../components/ActionSheet/ActionSheet.stories',
   '../components/AvatarInput/AvatarInput.stories',
   '../components/CircularProgress/CircularProgress.stories',
   '../components/ComponentTemplate/ComponentTemplate.stories',
