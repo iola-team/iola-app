@@ -46,13 +46,21 @@ const wrapToStyleSheet = () => (WrappedComponent) => {
       }
     }
 
+    setWrappedInstance = (component) => {
+      if (component && component._root) {
+        this._root = component._root;
+      } else {
+        this._root = component;
+      }
+
+      this.wrappedInstance = this._root;
+    }
+
     render() {
       const props = {
         ...this.props,
         ...this.splitStyle(this.props.style),
-        ref: (cmp) => {
-          this.wrappedInstance = cmp;
-        },
+        ref: this.setWrappedInstance,
       };
 
       return <WrappedComponent {...props} />;

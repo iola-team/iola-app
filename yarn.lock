@@ -8515,6 +8515,10 @@ react-moment@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-moment/-/react-moment-0.7.0.tgz#9ccb5c87be683d08c253b48469167443f09c3d89"
 
+react-native-actionsheet@^2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-actionsheet/-/react-native-actionsheet-2.4.2.tgz#6a00dd51a75ef2c8974312130e405af73191500f"
+
 react-native-animatable@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.2.4.tgz#b5fb7657e8f6edadbc26697057a327fb920b3039"

@@ -1,3 +1,4 @@
+export Root from './Root';
 export UserAvatar from './UserAvatar';
 export UserList from './UserList';
 export UserListItem from './UserListItem';
