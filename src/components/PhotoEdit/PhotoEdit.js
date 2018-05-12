@@ -195,7 +195,7 @@ export default class PhotoEdit extends Component {
                 }));
               }}
             >
-              {(pick) => (
+              {({ pick }) => (
                 <Button
                   transparent
                   block

@@ -3,7 +3,9 @@ import { isArray, isUndefined } from 'lodash';
 import PropTypes from 'prop-types';
 import { Text } from 'native-base';
 import Picker from 'react-native-image-crop-picker';
-import FetchBlob from 'react-native-fetch-blob'
+import FetchBlob from 'react-native-fetch-blob';
+
+import ActionSheet from '../ImagePickerActionSheet';
 
 export default class ImagePicker extends Component {
   static propTypes = {
@@ -28,7 +30,7 @@ export default class ImagePicker extends Component {
     images: [],
   };
 
-  async getImages(options) {
+  async getImages(from, options) {
     const width = options.width || this.props.width;
     const height = options.height || this.props.height;
 
@@ -42,7 +44,8 @@ export default class ImagePicker extends Component {
       compressImageMaxWidth: width,
     } : {};
 
-    const images = await Picker.openPicker({
+    const method = from === 'gallery' ? 'openPicker' : 'openCamera';
+    const images = await Picker[method]({
       ...heightOptions,
       ...widthOptions,
       cropping: isUndefined(options.crop) ? this.props.crop : options.crop,
@@ -53,7 +56,7 @@ export default class ImagePicker extends Component {
     return isArray(images) ? images : [images];
   }
 
-  showPicker = (options = {}) => this.getImages(options).then(async (pickedImages) => {
+  showPicker = from => (options = {}) => this.getImages(from, options).then(async (pickedImages) => {
     const images = await Promise.all(pickedImages.map(async (image) => {
       const blob = await File.build(
         image.path.split('/').pop(),
@@ -81,10 +84,20 @@ export default class ImagePicker extends Component {
   };
 
   render() {
-    return this.props.children(
-      this.showPicker,
-      this.state.images,
-      this.reset
+    return (
+      <ActionSheet>
+        {show => this.props.children(
+          {
+            pick: options => show({
+              onSourceSelect: source => this.showPicker(source)(options),
+            }),
+            fromCamera: this.showPicker('camera'),
+            fromGallery: this.showPicker('camera'),
+          },
+          this.state.images,
+          this.reset
+        )}
+      </ActionSheet>
     );
   }
 }
