@@ -9,9 +9,7 @@ import {
 
 import { withStyleSheet as styleSheet } from 'theme/index';
 
-@styleSheet('Sparkle.ActionSheet', {
-
-})
+@styleSheet('Sparkle.ActionSheet')
 export default class ActionSheet extends Component {
   static propTypes = {
     options: PropTypes.array.isRequired,
@@ -27,13 +25,13 @@ export default class ActionSheet extends Component {
     children: () => null,
   };
 
-  styleSheet = null;
-  setStyleSheet = (ref) => {
-    this.styleSheet = ref;
+  actionSheet = null;
+  setActionSheet = (ref) => {
+    this.actionSheet = ref;
   };
 
   show() {
-    this.styleSheet.show();
+    this.actionSheet.show();
   }
 
   render() {
@@ -45,7 +43,7 @@ export default class ActionSheet extends Component {
 
         <ActionSheetRN
           {...props}
-          ref={this.setStyleSheet}
+          ref={this.setActionSheet}
         />
       </Fragment>
     );

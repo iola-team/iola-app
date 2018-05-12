@@ -1,1 +1,1 @@
-export componentTemplate from './ActionSheet';
+export ActionSheet from './ActionSheet';

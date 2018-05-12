@@ -49,7 +49,7 @@ stories.add('With title', () => {
   return (
     <ActionSheet
       {...props}
-      title={"Edit photo"}
+      title="Edit photo"
     >
       {show => (
         <Button onPress={() => show()}>
@@ -64,8 +64,8 @@ stories.add('With title and message', () => {
   return (
     <ActionSheet
       {...props}
-      title={"Edit photo"}
-      message={"Are you sure?"}
+      title="Edit photo"
+      message="Are you sure?"
     >
       {show => (
         <Button onPress={() => show()}>
