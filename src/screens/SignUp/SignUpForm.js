@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import yup from 'yup';
 import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import { graphql, Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
-
-import { LAUNCH } from '../roteNames';
+import { find, get } from 'lodash';
 
 const validateEmailQuery = gql`
-  query validateEmailQuery($email: String = "") {
-    users(email: $email) {
+  query validateEmailQuery($email: String = "", $skip: Boolean!) {
+    users(email: $email) @skip(if: $skip) {
       totalCount
     }
   }
@@ -33,7 +32,11 @@ const signUpUserMutation = gql`
 
 const FormItem = connectToStyleSheet('formItem', Item).withProps({ regular: true });
 const FormInput = connectToStyleSheet('formInput', Input).withProps({ placeholderTextColor: '#FFFFFF' });
-const SubmitButton = connectToStyleSheet('submitButton', Button).withProps({ block: true });
+const ErrorText = connectToStyleSheet('errorText', Text);
+const SubmitButton = connectToStyleSheet('submitButton', Button).withProps(({ isValid }) => ({
+  block: true,
+  disabled: !isValid,
+}));
 
 @graphql(gql`
   mutation($token: String!) {
@@ -57,16 +60,21 @@ const SubmitButton = connectToStyleSheet('submitButton', Button).withProps({ blo
     color: '#FFFFFF',
   },
 
+  errorText: {
+    color: '#FF8787',
+  },
+
   submitButton: {
     marginTop: 40,
   },
 })
 class SignUpForm extends Component {
-  // static getDerivedStateFromProps(nextProps, prevState) {
-  // }
+  static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+  };
 
   async onSubmit(signUpUser) {
-    const { values: { name, email, password }, storeToken } = this.props;
+    const { values: { name, email, password }, storeToken, onSubmit } = this.props;
     let success = false;
 
     try {
@@ -83,24 +91,20 @@ class SignUpForm extends Component {
       await storeToken(result.accessToken);
       success = !!result.accessToken;
     } catch (error) {
-      if (_.find(error.graphQLErrors, { message: 'Duplicate email' })) {
+      if (find(error.graphQLErrors, { message: 'Duplicate email' })) {
         alert('This email is already taken');
       }
     }
 
-    if (success) this.props.navigation.navigate(LAUNCH);
+    if (success) onSubmit();
   }
 
   render() {
-    const {
-      values,
-      setFieldValue,
-      setFieldTouched,
-      isValid,
-    } = this.props;
+    const { values, errors, isValid, setFieldValue, setFieldError, setFieldTouched } = this.props;
 
     return (
       <Form>
+        <Text>{JSON.stringify(errors)}</Text>
         <FormItem>
           <FormInput
             placeholder="Full Name"
@@ -111,23 +115,30 @@ class SignUpForm extends Component {
         </FormItem>
         <Query
           query={validateEmailQuery}
-          variables={{ email: values.email }}
+          variables={{ email: values.email, skip: true /* @TODO */}}
+          skip={!!errors.email}
         >
-          {({ loading, error, data, startPolling, stopPolling }) => {
-            if (loading) return <Text>LOADING</Text>;
-            if (error) alert(`Error: ${JSON.stringify(error)}`);
+          {({ data, error }) => {
+            if (error) alert('Something went wrong');
 
-            return <Text>Count: {data.users.totalCount}, {values.email}</Text>;
+            if (!errors.email && !!get(data, 'users.totalCount')) {
+              alert(JSON.stringify(data));
+              setFieldError('email', 'Email is taken');
+            }
+
+            return (
+              <FormItem>
+                <FormInput
+                  placeholder="Email"
+                  onChangeText={text => setFieldValue('email', text)}
+                  onBlur={() => setFieldTouched('email')}
+                  value={values.email}
+                />
+                {errors.email ? <ErrorText>{errors.email}</ErrorText> : null}
+              </FormItem>
+            );
           }}
         </Query>
-        <FormItem>
-          <FormInput
-            placeholder="Email"
-            onChangeText={text => setFieldValue('email', text)}
-            onBlur={() => setFieldTouched('email')}
-            value={values.email}
-          />
-        </FormItem>
         <FormItem>
           <FormInput
             placeholder="Password"
@@ -140,7 +151,7 @@ class SignUpForm extends Component {
 
         <Mutation mutation={signUpUserMutation}>
           {signUpUser => (
-            <SubmitButton block onPress={() => ::this.onSubmit(signUpUser)}>
+            <SubmitButton onPress={() => ::this.onSubmit(signUpUser)} isValid={isValid} block>
               <Text>Sign up</Text>
             </SubmitButton>
           )}
@@ -152,11 +163,11 @@ class SignUpForm extends Component {
 
 const validationSchema = yup.object().shape({
   name: yup.string().required('Name is required'),
-  email: yup.string().required('Email is required'),
-  password: yup.string().required('Password is required'),
+  email: yup.string().required('Email is required').email('Invalid email'),
+  password: yup.string().required('Password is required').min(4, 'Password is too short'),
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ name: 'Roman Banan', email: 'roman@banan.com', password: 'rb' }),
+  mapPropsToValues: props => ({ name: 'Roman Banan', email: '', password: '1234' }),
   validationSchema,
 })(SignUpForm);

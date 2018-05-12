@@ -3,6 +3,7 @@ import { ImageBackground } from 'react-native';
 import { Button, Container, Text, View } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
+import { LAUNCH } from '../roteNames';
 import SignUpForm from './SignUpForm';
 
 const Title = connectToStyleSheet('title', Text);
@@ -97,7 +98,7 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 })
 export default class SignUpScreen extends Component {
   render() {
-    const { navigation } = this.props;
+    const { navigation: { goBack, navigate } } = this.props;
 
     return (
       <Container>
@@ -105,7 +106,7 @@ export default class SignUpScreen extends Component {
           <Content>
             <Title>Please sign up</Title>
 
-            <SignUpForm navigation={navigation} />
+            <SignUpForm onSubmit={() => navigate(LAUNCH)} />
 
             <TermsContainer>
               <TermsText>By signing up, you agree</TermsText>
@@ -119,7 +120,7 @@ export default class SignUpScreen extends Component {
 
             <AlreadyHaveAnAccountContainer>
               <AlreadyHaveAnAccountText>Already have an account?</AlreadyHaveAnAccountText>
-              <ButtonSignIn onPress={() => navigation.goBack()}>
+              <ButtonSignIn onPress={() => goBack()}>
                 <ButtonSignInText>Sign in</ButtonSignInText>
               </ButtonSignIn>
             </AlreadyHaveAnAccountContainer>
