@@ -2,15 +2,10 @@ import React, { Component, Fragment } from 'react';
 import { noop } from 'lodash';
 import PropTypes from 'prop-types';
 import ActionSheetRN from 'react-native-actionsheet';
-import {
-  View,
-  Text,
-  Button,
-} from 'native-base';
+import { View } from 'react-native';
 
 import { withStyleSheet as styleSheet } from 'theme/index';
 
-@styleSheet('Sparkle.ActionSheet')
 export default class ActionSheet extends Component {
   static propTypes = {
     options: PropTypes.array.isRequired,
@@ -46,7 +41,7 @@ export default class ActionSheet extends Component {
   };
 
   render() {
-    const { styleSheet, children, ...props } = this.props;
+    const { style, styleSheet, children, ...props } = this.props;
 
     return (
       <Fragment>

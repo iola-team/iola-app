@@ -1,1 +1,1 @@
-export componentTemplate from './PhotoEdit';
+export default from './PhotoEdit';

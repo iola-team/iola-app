@@ -5,10 +5,11 @@ import {
   Container,
   Content,
   View,
+  Spinner,
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import { AvatarEdit } from 'components';
+import { AvatarEdit, PhotoEdit } from 'components';
 
 @graphql(gql`
   query ProfileEditQuery {
@@ -16,10 +17,12 @@ import { AvatarEdit } from 'components';
       id
 
       ...AvatarEdit_user
+      ...PhotoEdit_user
     }
   }
 
   ${AvatarEdit.fragments.user}
+  ${PhotoEdit.fragments.user}
 `)
 @styleSheet('Sparkle.ProfileEditScreen', {
   avatar: {
@@ -37,13 +40,16 @@ export default class ProfileEditScreen extends Component {
     return (
       <Container>
         <Content>
-          <View
-            highlight
-            horizontalPadder
-            style={styleSheet.avatar}
-          >
-            <AvatarEdit user={user} />
-          </View>
+          {
+            user ? (
+              <View>
+                <AvatarEdit user={user} />
+                <PhotoEdit user={user} />
+              </View>
+            ) : (
+              <Spinner/>
+            )
+          }
         </Content>
       </Container>
     );

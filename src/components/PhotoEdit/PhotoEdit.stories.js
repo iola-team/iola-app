@@ -15,7 +15,7 @@ const stories = storiesOf('Components/PhotoEdit', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({ padder: true }));
+stories.addDecorator(getContentDecorator());
 
 const dataStore = {
   users: [

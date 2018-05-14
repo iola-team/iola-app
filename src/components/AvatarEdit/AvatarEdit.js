@@ -55,6 +55,11 @@ const deleteAvatarMutation = gql`
 @graphql(deleteAvatarMutation, {
   name: 'deleteAvatar',
 })
+@styleSheet('Sparkle.AvatarEdit', {
+  root: {
+    paddingVertical: 30,
+  }
+})
 export default class AvatarEdit extends PureComponent {
   static propTypes = {
     user: fragmentProp(userFragment).isRequired,
@@ -90,14 +95,20 @@ export default class AvatarEdit extends PureComponent {
   }
 
   render() {
-    const { user } = this.props;
+    const { style, styleSheet, user } = this.props;
 
     return (
-      <AvatarInput
-        defaultValue={get(user, 'avatar.url')}
-        onChange={this.onChange}
-        onDelete={this.onDelete}
-      />
+      <View
+        highlight
+        horizontalPadder
+        style={[styleSheet.root, style]}
+      >
+        <AvatarInput
+          defaultValue={get(user, 'avatar.url')}
+          onChange={this.onChange}
+          onDelete={this.onDelete}
+        />
+      </View>
     );
   }
 }

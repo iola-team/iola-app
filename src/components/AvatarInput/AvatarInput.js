@@ -150,7 +150,7 @@ export default class AvatarInput extends PureComponent {
         height={500}
         onChange={::this.onImageChange}
       >
-        {(pick, [image], reset) => this.renderInput({
+        {({ pick }, [image], reset) => this.renderInput({
           pick,
           image,
           reset,

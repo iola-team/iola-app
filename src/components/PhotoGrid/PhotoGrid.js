@@ -13,6 +13,7 @@ const List = connectToStyleSheet('list', View);
 @styleSheet('Sparkle.PhotoGrid', {
   root: {
     margin: -4,
+    flex: 1,
   },
 
   grid: {
