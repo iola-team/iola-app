@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { unionBy, uniqueId, clone, find, assign, findIndex } from 'lodash';
+import { unionBy, uniqueId, clone, find, assign, findIndex, without, noop } from 'lodash';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
@@ -17,6 +17,7 @@ import { withStyleSheet as styleSheet } from 'theme/index';
 import PhotoGrid, { Item } from '../PhotoGrid';
 import ImagePicker from '../ImagePicker';
 import ImageProgress from '../ImageProgress';
+import ActionSheet from '../ActionSheet';
 
 function mergeSlots(prevSlots, nextSlots, by = 'id') {
   return nextSlots.reduce((slots, slot) => {
@@ -63,8 +64,14 @@ const addPhotoMutation = gql`
       }
     }
   }
-  
-  ${userFragment}
+`;
+
+const deletePhotoMutation = gql`
+  mutation deleteUserPhotoMutation($id: ID!) {
+    deleteUserPhoto(id: $id) {
+      deletedId
+    }
+  }
 `;
 
 @styleSheet('Sparkle.PhotoEdit', {
@@ -74,6 +81,13 @@ const addPhotoMutation = gql`
 
   addButton: {
     backgroundColor: '#DDE2EE',
+  },
+
+  itemButton: {
+    flex: 1,
+    alignItems: 'stretch',
+    borderRadius: 0,
+    paddingVertical: 0,
   },
 
   addButtonIcon: {
@@ -128,17 +142,37 @@ export default class PhotoEdit extends Component {
     return newSlots;
   }
 
-  updateSlot(key, slot) {
+  emptySlot(slot) {
+    const { slots } = this.state;
+
     this.setState({
-      slots: mergeSlots(this.state.slots, [{
+      slots: without(slots, slot),
+    });
+  }
+
+  cancelUpload(slot) {
+    console.log('Slot', slot);
+    slot.cancel();
+  }
+
+  updateSlot({ key }, slot) {
+    const { slots } = this.state;
+
+    if (!find(slots, { key })) {
+      return;
+    }
+
+    this.setState({
+      slots: mergeSlots(slots, [{
         ...slot,
         key,
       }], 'key'),
     });
   }
 
-  renderPhoto({ url, progress, loading}) {
+  renderPhoto(slot) {
     const { styleSheet } = this.props;
+    const { key, id, url, progress, loading } = slot;
 
     return (
       <Item>
@@ -147,11 +181,47 @@ export default class PhotoEdit extends Component {
           previewUrl={url}
           active={loading}
           progress={progress}
+          onCancel={() => {
+            this.cancelUpload(slot);
+            this.emptySlot(slot);
+          }}
         >
-          <Image
-            style={styleSheet.itemContent}
-            source={{ uri: url }}
-          />
+          <Mutation
+            mutation={deletePhotoMutation}
+            variables={{ id }}
+          >
+            {deletePhoto => (
+              <ActionSheet
+                options={[
+                  'Cancel',
+                  'Delete',
+                ]}
+                cancelButtonIndex={0}
+                destructiveButtonIndex={1}
+                onPress={index => {
+                  if (index === 1) {
+                    deletePhoto();
+
+                    this.emptySlot(slot);
+                  }
+                }}
+              >
+                {show => (
+                  <Button
+                    transparent
+                    block
+                    style={styleSheet.itemButton}
+                    onPress={show}
+                  >
+                    <Image
+                      style={styleSheet.itemContent}
+                      source={{ uri: url }}
+                    />
+                  </Button>
+                )}
+              </ActionSheet>
+            )}
+          </Mutation>
         </ImageProgress>
       </Item>
     )
@@ -182,17 +252,32 @@ export default class PhotoEdit extends Component {
                   },
                   context: {
                     fetchOptions: {
+                      uploadStart: ({ cancel }) => {
+                        console.log('Upload start', cancel);
+                        this.updateSlot(slot, {
+                          cancel,
+                        });
+                      },
+
+                      uploadEnd: () => {
+                        console.log('uploadEnd');
+                        this.updateSlot(slot, {
+                          cancel: null,
+                        });
+                      },
+
                       uploadProgress: (received, total) => {
-                        this.updateSlot(slot.key, {
+                        console.log('uploadProgress', received / total);
+                        this.updateSlot(slot, {
                           progress: received / total,
                         });
                       }
                     }
                   },
                   update: (cache, { data: { addUserPhoto: result } }) => {
-                    this.updateSlot(slot.key, createSlot(result.node));
+                    this.updateSlot(slot, createSlot(result.node));
                   }
-                }));
+                }).catch(noop));
               }}
             >
               {({ pick }) => (

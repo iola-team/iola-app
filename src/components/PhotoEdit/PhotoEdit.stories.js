@@ -1,6 +1,5 @@
 import React from 'react';
-import { find, orderBy } from 'lodash';
-import { uniqueId } from 'lodash';
+import { uniqueId, find, without, orderBy } from 'lodash';
 import delay from 'promise-delay';
 import { withHandlers } from 'recompose';
 import { number, withKnobs } from '@storybook/addon-knobs/react';
@@ -86,10 +85,16 @@ const typeDefs = gql`
   type UserPhotoCreatePayload {
     user: User!
     node: Photo!
-  } 
+  }
+
+  type UserPhotoDeletePayload {
+    deletedId: ID!
+    user: User!
+  }
   
   type Mutation {
     addUserPhoto(input: UserPhotoCreateInput!): UserPhotoCreatePayload!
+    deleteUserPhoto(id: ID!): UserPhotoDeletePayload!
   }
 `;
 
@@ -99,6 +104,25 @@ const resolvers = {
   },
 
   Mutation: {
+    deleteUserPhoto: async (root, { id }, { dataStore }) => {
+      let photo;
+      let photoOwner;
+
+      dataStore.users.forEach((user) => {
+        photo = photo || find(user.photos, { id });
+
+        if (photo && !photoOwner) {
+          photoOwner = user;
+          user.photos = without(user.photos, find(user.photos, { id }));
+        }
+      });
+
+      return {
+        deletedId: photo.id,
+        user: photoOwner,
+      }
+    },
+
     addUserPhoto: async (root, { input }, { dataStore }) => {
       await delay(1000 + Math.random() * 1000);
 

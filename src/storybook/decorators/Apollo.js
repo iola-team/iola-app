@@ -47,12 +47,37 @@ function createProgressLink({ progressOptions = {} }) {
     : () => progressOptions.delay || Math.random() * 100;
 
   return setContext(async (request, { fetchOptions = {} }) => {
+    let uploadPromise = Promise.resolve();
+    let canceled = false;
+
     if (fetchOptions.uploadProgress) {
-      await range(0, total + step, step).reduce((prev, tick) => prev.then(async () => {
+      uploadPromise = range(0, total + step, step).reduce((prev, tick) => prev.then(async () => {
+        if (canceled) {
+          throw new Error('Upload canceled');
+        }
+
         await delay(getDelay(tick));
-        fetchOptions.uploadProgress(tick, total)
-      }), Promise.resolve());
+
+        if (!canceled) {
+          fetchOptions.uploadProgress(tick, total)
+        }
+      }), uploadPromise);
     }
+
+    if (fetchOptions.uploadStart) {
+      fetchOptions.uploadStart({
+        cancel: () => {
+          console.log('API: cancel');
+          canceled = true;
+        },
+      });
+    }
+
+    if (fetchOptions.uploadEnd) {
+      uploadPromise.then(fetchOptions.uploadEnd, fetchOptions.uploadEnd);
+    }
+
+    await uploadPromise;
   });
 }
 
