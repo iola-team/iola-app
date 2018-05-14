@@ -4,17 +4,11 @@ import { withFormik } from 'formik';
 import yup from 'yup';
 import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { graphql, Mutation, Query } from 'react-apollo';
+import { graphql, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { find, get } from 'lodash';
 
-const validateEmailQuery = gql`
-  query validateEmailQuery($email: String = "", $skip: Boolean!) {
-    users(email: $email) @skip(if: $skip) {
-      totalCount
-    }
-  }
-`;
+import EmailInput from './EmailInput';
 
 const signUpUserMutation = gql`
   mutation signUpUserMutation($input: SignUpUserInput!) {
@@ -32,7 +26,6 @@ const signUpUserMutation = gql`
 
 const FormItem = connectToStyleSheet('formItem', Item).withProps({ regular: true });
 const FormInput = connectToStyleSheet('formInput', Input).withProps({ placeholderTextColor: '#FFFFFF' });
-const ErrorText = connectToStyleSheet('errorText', Text);
 const SubmitButton = connectToStyleSheet('submitButton', Button).withProps(({ isValid }) => ({
   block: true,
   disabled: !isValid,
@@ -113,32 +106,13 @@ class SignUpForm extends Component {
             value={values.name}
           />
         </FormItem>
-        <Query
-          query={validateEmailQuery}
-          variables={{ email: values.email, skip: true /* @TODO */}}
-          skip={!!errors.email}
-        >
-          {({ data, error }) => {
-            if (error) alert('Something went wrong');
 
-            if (!errors.email && !!get(data, 'users.totalCount')) {
-              alert(JSON.stringify(data));
-              setFieldError('email', 'Email is taken');
-            }
+        <EmailInput
+          value={values.email}
+          valueError={errors.email}
+          {...{ setFieldValue, setFieldTouched, setFieldError }}
+        />
 
-            return (
-              <FormItem>
-                <FormInput
-                  placeholder="Email"
-                  onChangeText={text => setFieldValue('email', text)}
-                  onBlur={() => setFieldTouched('email')}
-                  value={values.email}
-                />
-                {errors.email ? <ErrorText>{errors.email}</ErrorText> : null}
-              </FormItem>
-            );
-          }}
-        </Query>
         <FormItem>
           <FormInput
             placeholder="Password"
