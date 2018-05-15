@@ -15,8 +15,8 @@ stories.addDecorator(getContentDecorator({ padder: true }));
 stories.add('Picker', () => {
 
   const props = {
-    width: number('Width', 500),
-    height: number('Height', 500),
+    width: number('Width', 200),
+    height: number('Height', 200),
     crop: boolean('Crop', false),
     multiple: boolean('Multiple', false),
     onChange: action('change'),
@@ -39,7 +39,7 @@ stories.add('Picker', () => {
           </View>
           {
             image && (
-              <Image source={{ uri: image.path }} style={{ width: 300, height: 300, alignSelf: 'center' }} />
+              <Image source={{ uri: image.path }} style={{ width: image.width, height: image.height, alignSelf: 'center' }} />
             )
           }
         </Fragment>

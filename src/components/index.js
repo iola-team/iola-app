@@ -11,3 +11,4 @@ export ScreenHeader from './ScreenHeader';
 export BackButton from './BackButton';
 export DashboardHeading from './DashboardHeading';
 export AvatarEdit from './AvatarEdit';
+export PhotoEdit from './PhotoEdit';

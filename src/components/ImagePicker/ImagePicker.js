@@ -3,13 +3,15 @@ import { isArray, isUndefined } from 'lodash';
 import PropTypes from 'prop-types';
 import { Text } from 'native-base';
 import Picker from 'react-native-image-crop-picker';
-import FetchBlob from 'react-native-fetch-blob'
+import FetchBlob from 'react-native-fetch-blob';
+
+import ActionSheet from '../ImagePickerActionSheet';
 
 export default class ImagePicker extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
-    width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired,
+    width: PropTypes.number,
+    height: PropTypes.number,
     crop: PropTypes.bool,
     multiple: PropTypes.bool,
 
@@ -17,6 +19,8 @@ export default class ImagePicker extends Component {
   }
 
   static defaultProps = {
+    width: null,
+    height: null,
     crop: false,
     multiple: false,
     onChange: () => {},
@@ -26,10 +30,24 @@ export default class ImagePicker extends Component {
     images: [],
   };
 
-  async getImages(options) {
-    const images = await Picker.openPicker({
-      width: options.width || this.props.width,
-      height: options.height || this.props.height,
+  async getImages(from, options) {
+    const width = options.width || this.props.width;
+    const height = options.height || this.props.height;
+
+    const heightOptions = height ? {
+      height,
+      compressImageMaxHeight: height,
+    } : {};
+
+    const widthOptions = width ? {
+      width,
+      compressImageMaxWidth: width,
+    } : {};
+
+    const method = from === 'gallery' ? 'openPicker' : 'openCamera';
+    const images = await Picker[method]({
+      ...heightOptions,
+      ...widthOptions,
       cropping: isUndefined(options.crop) ? this.props.crop : options.crop,
       multiple: isUndefined(options.multiple) ? this.props.multiple : options.multiple,
       mediaType: 'photo',
@@ -38,7 +56,7 @@ export default class ImagePicker extends Component {
     return isArray(images) ? images : [images];
   }
 
-  showPicker = (options = {}) => this.getImages(options).then(async (pickedImages) => {
+  showPicker = from => (options = {}) => this.getImages(from, options).then(async (pickedImages) => {
     const images = await Promise.all(pickedImages.map(async (image) => {
       const blob = await File.build(
         image.path.split('/').pop(),
@@ -55,7 +73,7 @@ export default class ImagePicker extends Component {
     this.setState({ images });
     this.props.onChange(images);
 
-    return image;
+    return images;
   }).catch(() => null);
 
   reset = async () => {
@@ -66,10 +84,20 @@ export default class ImagePicker extends Component {
   };
 
   render() {
-    return this.props.children(
-      this.showPicker,
-      this.state.images,
-      this.reset
+    return (
+      <ActionSheet>
+        {show => this.props.children(
+          {
+            pick: options => show({
+              onSourceSelect: source => this.showPicker(source)(options),
+            }),
+            fromCamera: this.showPicker('camera'),
+            fromGallery: this.showPicker('camera'),
+          },
+          this.state.images,
+          this.reset
+        )}
+      </ActionSheet>
     );
   }
 }

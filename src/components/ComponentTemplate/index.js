@@ -1,1 +1,1 @@
-export componentTemplate from './ComponentTemplate';
+export default from './ComponentTemplate';

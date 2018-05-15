@@ -1,1 +1,1 @@
-export componentTemplate from './ImageProgress';
+export default from './ImageProgress';

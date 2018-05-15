@@ -27,7 +27,6 @@ const props = {
   ],
   cancelButtonIndex: 0,
   destructiveButtonIndex: 4,
-  onPress: action('onPress'),
 }
 
 // Stories
@@ -35,6 +34,7 @@ stories.add('No title and message', () => {
   return (
     <ActionSheet
       {...props}
+      onPress={action('onPress')}
     >
       {show => (
         <Button onPress={() => show()}>
@@ -49,6 +49,7 @@ stories.add('With title', () => {
   return (
     <ActionSheet
       {...props}
+      onPress={action('onPress')}
       title="Edit photo"
     >
       {show => (
@@ -64,11 +65,28 @@ stories.add('With title and message', () => {
   return (
     <ActionSheet
       {...props}
+      onPress={action('onPress')}
       title="Edit photo"
       message="Are you sure?"
     >
       {show => (
         <Button onPress={() => show()}>
+          <Text>Show</Text>
+        </Button>
+      )}
+    </ActionSheet>
+  );
+});
+
+stories.add('Render prop callback', () => {
+  return (
+    <ActionSheet
+      {...props}
+      title="Edit photo"
+      message="Are you sure?"
+    >
+      {show => (
+        <Button onPress={() => show({ onPress: action('onPress (render prop)') })}>
           <Text>Show</Text>
         </Button>
       )}

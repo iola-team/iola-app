@@ -17,6 +17,10 @@ export default (variables => ({
         paddingHorizontal: variables.contentPadding,
       },
 
+      '.verticalPadder': {
+        paddingVertical: variables.contentPadding,
+      },
+
       '.highlight': {
         backgroundColor: '#F8F9FB',
       },
@@ -161,6 +165,10 @@ export default (variables => ({
             color: '#BDC0CB',
           },
         },
+
+        '.padder': {
+          paddingHorizontal: variables.contentPadding,
+        }
       },
 
       '.topBorder': {
