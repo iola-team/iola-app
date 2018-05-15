@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { get, unionBy, uniqueId, clone, find, assign, findIndex, without, noop } from 'lodash';
+import { get, uniqueId, find, findIndex, without, noop } from 'lodash';
 import update from 'immutability-helper';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
@@ -24,8 +24,9 @@ import ActionSheet from '../ActionSheet';
 function mergeSlots(prevSlots, nextSlots, by = 'id') {
   return nextSlots.reduce((slots, slot) => {
     const index = findIndex(slots, { [by]: slot[by] });
+    const { url, ...partialSlot } = slot;
     const patch = index >= 0
-      ? { [index]: { $merge: slot } }
+      ? { [index]: { $merge: partialSlot } }
       : { $unshift: [slot] };
 
     return update(slots, patch);
@@ -46,6 +47,7 @@ const userFragment = gql`
   fragment PhotoEdit_user on User {
     id
     photos {
+      totalCount
       edges {
         cursor
         node {
@@ -64,8 +66,13 @@ const addPhotoMutation = gql`
         id
         url
       }
+      user {
+        ...PhotoEdit_user
+      }
     }
   }
+
+  ${userFragment}
 `;
 
 const deletePhotoMutation = gql`
@@ -125,12 +132,12 @@ export default class PhotoEdit extends Component {
 
   static getDerivedStateFromProps({ user }, { slots }) {
     const edges = get(user, 'photos.edges', []);
+    const newSlots = edges.map(edge => createSlot(edge.node));
+
+    newSlots.reverse();
 
     return {
-      slots: mergeSlots(
-        slots,
-        edges.map(edge => createSlot(edge.node)),
-      ),
+      slots: mergeSlots(slots, newSlots),
     };
   }
 
@@ -155,11 +162,6 @@ export default class PhotoEdit extends Component {
     this.setState({
       slots: without(slots, slot),
     });
-  }
-
-  cancelUpload(slot) {
-    console.log('Slot', slot);
-    slot.cancel();
   }
 
   updateSlot({ key }, slot) {
@@ -188,10 +190,6 @@ export default class PhotoEdit extends Component {
           previewUrl={url}
           active={loading}
           progress={progress}
-          onCancel={() => {
-            this.cancelUpload(slot);
-            this.emptySlot(slot);
-          }}
         >
           <Mutation
             mutation={deletePhotoMutation}
@@ -254,27 +252,12 @@ export default class PhotoEdit extends Component {
                     input: {
                       userId: user.id,
                       file: images[index].blob,
-                      uploadTime: new Date(),
+                      uploadTime: (new Date()).toISOString(),
                     },
                   },
                   context: {
                     fetchOptions: {
-                      uploadStart: ({ cancel }) => {
-                        console.log('Upload start', cancel);
-                        this.updateSlot(slot, {
-                          cancel,
-                        });
-                      },
-
-                      uploadEnd: () => {
-                        console.log('uploadEnd');
-                        this.updateSlot(slot, {
-                          cancel: null,
-                        });
-                      },
-
                       uploadProgress: (received, total) => {
-                        console.log('uploadProgress', received / total);
                         this.updateSlot(slot, {
                           progress: received / total,
                         });
@@ -282,7 +265,10 @@ export default class PhotoEdit extends Component {
                     }
                   },
                   update: (cache, { data: { addUserPhoto: result } }) => {
-                    this.updateSlot(slot, createSlot(result.node));
+                    this.updateSlot(slot, createSlot({
+                      ...result.node,
+                      url: slot.url,
+                    }));
                   }
                 }).catch(noop));
               }}
@@ -332,7 +318,7 @@ export default class PhotoEdit extends Component {
   }
 
   render() {
-    const { style, styleSheet } = this.props;
+    const { style, styleSheet, user: { photos } } = this.props;
 
     return (
       <Card
@@ -340,7 +326,7 @@ export default class PhotoEdit extends Component {
         transparent
       >
         <CardItem header padder>
-          <Text>Photos 0</Text>
+          <Text>Photos {photos.totalCount}</Text>
         </CardItem>
         <CardItem>
           <View

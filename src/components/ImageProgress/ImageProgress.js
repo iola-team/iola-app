@@ -45,6 +45,7 @@ export default class ImageProgress extends Component {
     blurRadius: PropTypes.number,
     onCancel: PropTypes.func,
     active: PropTypes.bool,
+    cancelable: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -52,6 +53,7 @@ export default class ImageProgress extends Component {
     blurRadius: 3,
     progress: 0,
     active: false,
+    cancelable: false,
   };
 
   render() {
@@ -62,6 +64,7 @@ export default class ImageProgress extends Component {
       progress,
       previewUrl,
       active,
+      cancelable,
       onCancel,
     } = this.props;
 
@@ -74,9 +77,11 @@ export default class ImageProgress extends Component {
             <Layer>
               <Background source={{ uri: previewUrl }} blurRadius={blurRadius}>
                 <Progress animated={progress !== null} progress={progress || 0}>
-                  <Button block light transparent rounded onPress={onCancel}>
-                    <Icon name={'md-close'} />
-                  </Button>
+                  {cancelable && (
+                    <Button block light transparent rounded onPress={onCancel}>
+                      <Icon name={'md-close'} />
+                    </Button>
+                  )}
                 </Progress>
               </Background>
             </Layer>

@@ -36,12 +36,14 @@ stories.add('Default', () => {
   const progress = getProgress();
   const blurRadius = getBlurRadius();
   const active = boolean('Active', true);
+  const cancelable = boolean('Cancelable', true);
 
   return (
     <ImageProgress
       blurRadius={blurRadius}
       previewUrl={imagePreview}
       active={active}
+      cancelable={cancelable}
       progress={progress}
       onCancel={action('onCancel')}
     >
