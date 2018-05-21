@@ -97,7 +97,6 @@ class SignUpForm extends Component {
 
     return (
       <Form>
-        <Text>{JSON.stringify(errors)}</Text>
         <FormItem>
           <FormInput
             placeholder="Full Name"
@@ -142,6 +141,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ name: 'Roman Banan', email: '', password: '1234' }),
+  mapPropsToValues: props => ({ name: 'Roman Banan', email: 'roman@banan.co', password: '1234' }),
   validationSchema,
+  // validateOnBlur: false,
 })(SignUpForm);

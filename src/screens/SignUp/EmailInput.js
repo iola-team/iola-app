@@ -4,7 +4,7 @@ import { Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import { ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
-import { debounce, trim, get } from 'lodash';
+import { isEmpty, debounce, get } from 'lodash';
 
 const validateEmailQuery = gql`
   query validateEmailQuery($email: String = "") {
@@ -42,21 +42,21 @@ const ErrorText = connectToStyleSheet('errorText', Text);
 export default class EmailInput extends Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
-    // valueError: PropTypes.oneOf([PropTypes.array.isRequired, null]),
+    valueError: PropTypes.string,
     setFieldValue: PropTypes.func.isRequired,
     setFieldTouched: PropTypes.func.isRequired,
     setFieldError: PropTypes.func.isRequired,
   };
 
   async onValidate(text, client) {
-    if (!trim(text).length) return;
+    if (isEmpty(text)) return;
 
     const { valueError, setFieldError } = this.props;
     const { data } = await client.query({
       query: validateEmailQuery,
       variables: { email: text }
     });
-
+// alert(get(data, 'users.totalCount', 0));
     if (!valueError && get(data, 'users.totalCount', 0)) {
       setFieldError('email', 'Email is taken');
     }
