@@ -4,11 +4,17 @@ import { withFormik } from 'formik';
 import yup from 'yup';
 import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { graphql, Mutation } from 'react-apollo';
+import { graphql, ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { find, get } from 'lodash';
+import { debounce, find, get, isEmpty } from 'lodash';
 
-import EmailInput from './EmailInput';
+const validateEmailQuery = gql`
+  query validateEmailQuery($email: String = "") {
+    users(email: $email) {
+      totalCount
+    }
+  }
+`;
 
 const signUpUserMutation = gql`
   mutation signUpUserMutation($input: SignUpUserInput!) {
@@ -26,9 +32,10 @@ const signUpUserMutation = gql`
 
 const FormItem = connectToStyleSheet('formItem', Item).withProps({ regular: true });
 const FormInput = connectToStyleSheet('formInput', Input).withProps({ placeholderTextColor: '#FFFFFF' });
-const SubmitButton = connectToStyleSheet('submitButton', Button).withProps(({ isValid }) => ({
+const ErrorText = connectToStyleSheet('errorText', Text);
+const SubmitButton = connectToStyleSheet('submitButton', Button).withProps(({ disabled }) => ({
+  disabled,
   block: true,
-  disabled: !isValid,
 }));
 
 @graphql(gql`
@@ -66,6 +73,27 @@ class SignUpForm extends Component {
     onSubmit: PropTypes.func.isRequired,
   };
 
+  state = { emailIsDuplicated: false };
+
+  validateEmail = debounce(this.onValidateEmail, 200);
+
+  async onValidateEmail(text, client) {
+    if (this.props.errors.email) return;
+
+    const { data } = await client.query({
+      query: validateEmailQuery,
+      variables: { email: text }
+    });
+    const emailIsDuplicated = !!get(data, 'users.totalCount', 0);
+
+    if (emailIsDuplicated !== this.state.emailIsDuplicated) this.setState({ emailIsDuplicated });
+  }
+
+  onChangeEmail(text, client) {
+    this.props.setFieldValue('email', text);
+    this.validateEmail(text, client);
+  }
+
   async onSubmit(signUpUser) {
     const { values: { name, email, password }, storeToken, onSubmit } = this.props;
     let success = false;
@@ -84,16 +112,19 @@ class SignUpForm extends Component {
       await storeToken(result.accessToken);
       success = !!result.accessToken;
     } catch (error) {
-      if (find(error.graphQLErrors, { message: 'Duplicate email' })) {
-        alert('This email is already taken');
-      }
+      alert('Something went wrong'); // @TODO
     }
 
     if (success) onSubmit();
   }
 
+  getErrorText(error) {
+    return error ? <ErrorText>{error}</ErrorText> : null;
+  }
+
   render() {
-    const { values, errors, isValid, setFieldValue, setFieldError, setFieldTouched } = this.props;
+    const { values, errors, isValid, setFieldValue, setFieldTouched } = this.props;
+    const { emailIsDuplicated } = this.state;
 
     return (
       <Form>
@@ -104,27 +135,37 @@ class SignUpForm extends Component {
             onBlur={() => setFieldTouched('name')}
             value={values.name}
           />
+          {::this.getErrorText(errors.name)}
         </FormItem>
 
-        <EmailInput
-          value={values.email}
-          valueError={errors.email}
-          {...{ setFieldValue, setFieldTouched, setFieldError }}
-        />
+        <ApolloConsumer>
+          {client => (
+            <FormItem>
+              <FormInput
+                placeholder="Email"
+                onChangeText={text => this.onChangeEmail(text, client)}
+                onBlur={() => setFieldTouched('email')}
+                value={values.email}
+              />
+              {::this.getErrorText(errors.email || (emailIsDuplicated && 'Email is taken'))}
+            </FormItem>
+          )}
+        </ApolloConsumer>
 
         <FormItem>
           <FormInput
             placeholder="Password"
             onChangeText={text => setFieldValue('password', text)}
             onBlur={() => setFieldTouched('password')}
-            secureTextEntry
             value={values.password}
+            secureTextEntry
           />
+          {::this.getErrorText(errors.password)}
         </FormItem>
 
         <Mutation mutation={signUpUserMutation}>
           {signUpUser => (
-            <SubmitButton onPress={() => ::this.onSubmit(signUpUser)} isValid={isValid} block>
+            <SubmitButton onPress={() => ::this.onSubmit(signUpUser)} disabled={!(isValid && !emailIsDuplicated)} block>
               <Text>Sign up</Text>
             </SubmitButton>
           )}
@@ -135,13 +176,9 @@ class SignUpForm extends Component {
 }
 
 const validationSchema = yup.object().shape({
-  name: yup.string().required('Name is required'),
+  name: yup.string().required('Name is required').min(3, 'Name is too short'),
   email: yup.string().required('Email is required').email('Invalid email'),
   password: yup.string().required('Password is required').min(4, 'Password is too short'),
 });
 
-export default withFormik({
-  mapPropsToValues: props => ({ name: 'Roman Banan', email: 'roman@banan.co', password: '1234' }),
-  validationSchema,
-  // validateOnBlur: false,
-})(SignUpForm);
+export default withFormik({ validationSchema })(SignUpForm);
