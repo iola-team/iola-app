@@ -122,11 +122,7 @@ class SignUpForm extends Component {
 
   renderFieldError(name, secondaryErrorText) {
     const { touched, errors } = this.props;
-    let errorText = secondaryErrorText;
-
-    if (touched[name]) {
-      if (errors[name]) errorText = errors[name];
-    }
+    const errorText = touched[name] && errors[name] ? errors[name] : secondaryErrorText;
 
     return errorText ? <ErrorText>{errorText}</ErrorText> : null;
   }
