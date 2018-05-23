@@ -2,9 +2,18 @@ import { onError } from 'apollo-link-error';
 
 export default () => onError(({ networkError, graphQLErrors }) => {
   if (graphQLErrors) {
-    graphQLErrors.map(({ message, locations, path }) => console.error(
-      `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(locations)}, Path: ${path}`,
-    ));
+    graphQLErrors.forEach(({ message, category, locations, path, originalError }) => {
+      if (category !== 'user') {
+        console.error(`
+          [GraphQL error]:
+            message: ${message},
+            category: ${category},
+            location: ${JSON.stringify(locations)},
+            path: ${path},
+            originalError: ${typeof originalError === 'object' && originalError.message}
+        `);
+      }
+    });
   }
 
   if (networkError) console.error(`[Network error]: ${networkError}`);

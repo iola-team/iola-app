@@ -21,7 +21,8 @@
     "storybook:server": "storybook start -p 7007 -c ./src/storybook --skip-packager",
     "storybook:generate": "rnstl",
     "storybook:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchStories.js",
-    "tools:generate-component": "generact ./src/components/ComponentTemplate/index.js --root ./src/components/"
+    "tools:generate-component": "generact ./src/components/ComponentTemplate/index.js --root ./src/components/",
+    "postinstall": "patch -p0 < apollo.patch || true"
   },
   "config": {
     "react-native-storybook-loader": {

@@ -5,9 +5,10 @@ import yup from 'yup';
 import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
-const ItemLogin = connectToStyleSheet('itemLogin', Item).withProps({ regular: true });
+const ItemEmailOrLogin = connectToStyleSheet('itemEmailOrLogin', Item).withProps({ regular: true });
 const ItemPassword = connectToStyleSheet('itemPassword', Item).withProps({ regular: true });
 const InputTransparent = connectToStyleSheet('inputTransparent', Input).withProps({ placeholderTextColor: '#FFFFFF' });
+const ErrorText = connectToStyleSheet('errorText', Text);
 const itemStyle = {
   paddingHorizontal: 10,
   borderRadius: 8,
@@ -15,10 +16,10 @@ const itemStyle = {
 };
 const ForgotPasswordButton = connectToStyleSheet('forgotPasswordButton', Button);
 const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
-const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button);
+const SubmitButton = connectToStyleSheet('submitButton', Button);
 
 @styleSheet('Sparkle.SignInForm', {
-  itemLogin: {
+  itemEmailOrLogin: {
     ...itemStyle,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
@@ -38,6 +39,12 @@ const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button);
     color: '#FFFFFF',
   },
 
+  errorText: {
+    fontSize: 12,
+    fontWeight: 'normal',
+    color: '#FF8787',
+  },
+
   forgotPasswordButton: {
     marginRight: -8,
     alignSelf: 'center',
@@ -49,7 +56,7 @@ const ButtonSubmit = connectToStyleSheet('buttonSubmit', Button);
     color: '#FFFFFF',
   },
 
-  buttonSubmit: {
+  submitButton: {
     marginTop: 48,
   },
 })
@@ -59,26 +66,26 @@ class SignInForm extends Component {
     onForgotPasswordPress: propTypes.func.isRequired,
   };
 
+  renderFieldError(name) {
+    const { touched, errors } = this.props;
+
+    return touched[name] && errors[name] ? <ErrorText>{errors[name]}</ErrorText> : null;
+  }
+
   render() {
-    const {
-      onForgotPasswordPress,
-      values,
-      setFieldValue,
-      setFieldTouched,
-      handleSubmit,
-      isValid,
-    } = this.props;
+    const { onForgotPasswordPress, values, setFieldValue, setFieldTouched, handleSubmit, isValid } = this.props;
 
     return (
       <Form>
-        <ItemLogin>
+        <ItemEmailOrLogin>
           <InputTransparent
-            placeholder="Login"
+            placeholder="Email or login"
             onChangeText={text => setFieldValue('login', text)}
             onBlur={() => setFieldTouched('login')}
             value={values.login}
           />
-        </ItemLogin>
+          {this.renderFieldError('login')}
+        </ItemEmailOrLogin>
 
         <ItemPassword>
           <InputTransparent
@@ -88,27 +95,27 @@ class SignInForm extends Component {
             value={values.password}
             secureTextEntry
           />
-
           <ForgotPasswordButton transparent small onPress={() => onForgotPasswordPress()}>
             <ForgotPasswordText>Forgot password?</ForgotPasswordText>
           </ForgotPasswordButton>
+          {this.renderFieldError('password')}
         </ItemPassword>
 
-        <ButtonSubmit block onPress={handleSubmit}>
+        <SubmitButton block onPress={handleSubmit} disabled={!isValid}>
           <Text>Submit</Text>
-        </ButtonSubmit>
+        </SubmitButton>
       </Form>
     );
   }
 }
 
 const validationSchema = yup.object().shape({
-  login: yup.string().required('Login is required'),
-  password: yup.string().required('Password is required'),
+  login: yup.string().required('Email or login is required').min(3, 'Email or login is too short'),
+  password: yup.string().required('Password is required').min(4, 'Password is too short'),
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ login: 'demo', password: 'demo1986' }),
+  mapPropsToValues: props => ({ login: 'demo5@oxpro.org', password: 'demo1986' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(SignInForm);

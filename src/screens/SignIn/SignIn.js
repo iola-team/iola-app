@@ -4,15 +4,15 @@ import { Button, Container, Content, Text, H1 } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 import { SIGN_UP, LAUNCH } from '../roteNames';
-import SignInForm from './Form';
+import SignInForm from './SignInForm';
 import Divider from './Divider';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
   source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
 });
 const Title = connectToStyleSheet('title', H1);
-const ButtonFacebook = connectToStyleSheet('buttonFacebook', Button);
-const ButtonSignup = connectToStyleSheet('buttonSignup', Button);
+const FacebookButton = connectToStyleSheet('facebookButton', Button);
+const SignUpButton = connectToStyleSheet('signUpButton', Button);
 
 @styleSheet('Sparkle.SignInScreen', {
   background: {
@@ -34,11 +34,11 @@ const ButtonSignup = connectToStyleSheet('buttonSignup', Button);
     color: '#FFFFFF',
   },
 
-  buttonFacebook: {
+  facebookButton: {
     backgroundColor: '#6D83CC',
   },
 
-  buttonSignup: {
+  signUpButton: {
     marginTop: 8,
   },
 })
@@ -58,17 +58,17 @@ export default class SignInScreen extends Component {
           <Content padder contentContainerStyle={styleSheet.content}>
             <Title>Sign in</Title>
 
-            <ButtonFacebook block onPress={() => alert('Log in via Facebook')}>
+            <FacebookButton block onPress={() => alert('Log in via Facebook')}>
               <Text>Log in via Facebook</Text>
-            </ButtonFacebook>
+            </FacebookButton>
 
             <Divider>or</Divider>
 
             <SignInForm onSubmit={this.onSubmit} onForgotPasswordPress={() => alert('Forgot password?')} />
 
-            <ButtonSignup block bordered light onPress={() => navigate(SIGN_UP)}>
+            <SignUpButton block bordered light onPress={() => navigate(SIGN_UP)}>
               <Text>Sign up</Text>
-            </ButtonSignup>
+            </SignUpButton>
           </Content>
         </Background>
       </Container>
