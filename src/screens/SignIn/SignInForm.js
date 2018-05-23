@@ -66,8 +66,10 @@ class SignInForm extends Component {
     onForgotPasswordPress: propTypes.func.isRequired,
   };
 
-  getErrorText(error) {
-    return error ? <ErrorText>{error}</ErrorText> : null;
+  renderFieldError(name) {
+    const { touched, errors } = this.props;
+
+    return touched[name] && errors[name] ? <ErrorText>{errors[name]}</ErrorText> : null;
   }
 
   render() {
@@ -91,7 +93,7 @@ class SignInForm extends Component {
             onBlur={() => setFieldTouched('login')}
             value={values.login}
           />
-          {touched.login && this.getErrorText(errors.login)}
+          {::this.renderFieldError('login')}
         </ItemEmailOrLogin>
 
         <ItemPassword>
@@ -105,7 +107,7 @@ class SignInForm extends Component {
           <ForgotPasswordButton transparent small onPress={() => onForgotPasswordPress()}>
             <ForgotPasswordText>Forgot password?</ForgotPasswordText>
           </ForgotPasswordButton>
-          {touched.password && this.getErrorText(errors.password)}
+          {::this.renderFieldError('password')}
         </ItemPassword>
 
         <SubmitButton block onPress={handleSubmit} disabled={!isValid}>

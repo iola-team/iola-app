@@ -120,12 +120,19 @@ class SignUpForm extends Component {
     if (success) onSubmit();
   }
 
-  getErrorText(error) {
-    return error ? <ErrorText>{error}</ErrorText> : null;
+  renderFieldError(name, secondaryErrorText) {
+    const { touched, errors } = this.props;
+    let errorText = secondaryErrorText;
+
+    if (touched[name]) {
+      if (errors[name]) errorText = errors[name];
+    }
+
+    return errorText ? <ErrorText>{errorText}</ErrorText> : null;
   }
 
   render() {
-    const { values, touched, errors, isValid, setFieldValue, setFieldTouched } = this.props;
+    const { values, isValid, setFieldValue, setFieldTouched } = this.props;
     const { emailIsDuplicated } = this.state;
 
     return (
@@ -137,7 +144,7 @@ class SignUpForm extends Component {
             onBlur={() => setFieldTouched('name')}
             value={values.name}
           />
-          {touched.name && this.getErrorText(errors.name)}
+          {::this.renderFieldError('name')}
         </FormItem>
 
         <ApolloConsumer>
@@ -149,7 +156,7 @@ class SignUpForm extends Component {
                 onBlur={() => setFieldTouched('email')}
                 value={values.email}
               />
-              {touched.email && this.getErrorText(errors.email || (emailIsDuplicated && 'Email is taken'))}
+              {::this.renderFieldError('email', emailIsDuplicated && 'Email is taken')}
             </FormItem>
           )}
         </ApolloConsumer>
@@ -162,7 +169,7 @@ class SignUpForm extends Component {
             value={values.password}
             secureTextEntry
           />
-          {touched.password && this.getErrorText(errors.password)}
+          {::this.renderFieldError('password')}
         </FormItem>
 
         <Mutation mutation={signUpUserMutation}>
