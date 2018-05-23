@@ -8,6 +8,7 @@ import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 const ItemEmailOrLogin = connectToStyleSheet('itemEmailOrLogin', Item).withProps({ regular: true });
 const ItemPassword = connectToStyleSheet('itemPassword', Item).withProps({ regular: true });
 const InputTransparent = connectToStyleSheet('inputTransparent', Input).withProps({ placeholderTextColor: '#FFFFFF' });
+const ErrorText = connectToStyleSheet('errorText', Text);
 const itemStyle = {
   paddingHorizontal: 10,
   borderRadius: 8,
@@ -38,6 +39,12 @@ const SubmitButton = connectToStyleSheet('submitButton', Button);
     color: '#FFFFFF',
   },
 
+  errorText: {
+    fontSize: 12,
+    fontWeight: 'normal',
+    color: '#FF8787',
+  },
+
   forgotPasswordButton: {
     marginRight: -8,
     alignSelf: 'center',
@@ -59,10 +66,16 @@ class SignInForm extends Component {
     onForgotPasswordPress: propTypes.func.isRequired,
   };
 
+  getErrorText(error) {
+    return error ? <ErrorText>{error}</ErrorText> : null;
+  }
+
   render() {
     const {
       onForgotPasswordPress,
       values,
+      touched,
+      errors,
       setFieldValue,
       setFieldTouched,
       handleSubmit,
@@ -78,6 +91,7 @@ class SignInForm extends Component {
             onBlur={() => setFieldTouched('login')}
             value={values.login}
           />
+          {touched.login && this.getErrorText(errors.login)}
         </ItemEmailOrLogin>
 
         <ItemPassword>
@@ -88,13 +102,13 @@ class SignInForm extends Component {
             value={values.password}
             secureTextEntry
           />
-
           <ForgotPasswordButton transparent small onPress={() => onForgotPasswordPress()}>
             <ForgotPasswordText>Forgot password?</ForgotPasswordText>
           </ForgotPasswordButton>
+          {touched.password && this.getErrorText(errors.password)}
         </ItemPassword>
 
-        <SubmitButton block onPress={handleSubmit}>
+        <SubmitButton block onPress={handleSubmit} disabled={!isValid}>
           <Text>Submit</Text>
         </SubmitButton>
       </Form>
@@ -103,8 +117,8 @@ class SignInForm extends Component {
 }
 
 const validationSchema = yup.object().shape({
-  login: yup.string().required('Email or login is required'),
-  password: yup.string().required('Password is required'),
+  login: yup.string().required('Email or login is required').min(3, 'Email or login is too short'),
+  password: yup.string().required('Password is required').min(4, 'Password is too short'),
 });
 
 export default withFormik({

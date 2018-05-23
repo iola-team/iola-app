@@ -61,6 +61,8 @@ const SubmitButton = connectToStyleSheet('submitButton', Button).withProps(({ di
   },
 
   errorText: {
+    fontSize: 12,
+    fontWeight: 'normal',
     color: '#FF8787',
   },
 
@@ -123,7 +125,7 @@ class SignUpForm extends Component {
   }
 
   render() {
-    const { values, errors, isValid, setFieldValue, setFieldTouched } = this.props;
+    const { values, touched, errors, isValid, setFieldValue, setFieldTouched } = this.props;
     const { emailIsDuplicated } = this.state;
 
     return (
@@ -135,7 +137,7 @@ class SignUpForm extends Component {
             onBlur={() => setFieldTouched('name')}
             value={values.name}
           />
-          {::this.getErrorText(errors.name)}
+          {touched.name && this.getErrorText(errors.name)}
         </FormItem>
 
         <ApolloConsumer>
@@ -147,7 +149,7 @@ class SignUpForm extends Component {
                 onBlur={() => setFieldTouched('email')}
                 value={values.email}
               />
-              {::this.getErrorText(errors.email || (emailIsDuplicated && 'Email is taken'))}
+              {touched.email && this.getErrorText(errors.email || (emailIsDuplicated && 'Email is taken'))}
             </FormItem>
           )}
         </ApolloConsumer>
@@ -160,7 +162,7 @@ class SignUpForm extends Component {
             value={values.password}
             secureTextEntry
           />
-          {::this.getErrorText(errors.password)}
+          {touched.password && this.getErrorText(errors.password)}
         </FormItem>
 
         <Mutation mutation={signUpUserMutation}>
