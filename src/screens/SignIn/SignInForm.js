@@ -73,16 +73,7 @@ class SignInForm extends Component {
   }
 
   render() {
-    const {
-      onForgotPasswordPress,
-      values,
-      touched,
-      errors,
-      setFieldValue,
-      setFieldTouched,
-      handleSubmit,
-      isValid,
-    } = this.props;
+    const { onForgotPasswordPress, values, setFieldValue, setFieldTouched, handleSubmit, isValid } = this.props;
 
     return (
       <Form>
