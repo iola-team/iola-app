@@ -140,7 +140,7 @@ class SignUpForm extends Component {
             onBlur={() => setFieldTouched('name')}
             value={values.name}
           />
-          {::this.renderFieldError('name')}
+          {this.renderFieldError('name')}
         </FormItem>
 
         <ApolloConsumer>
@@ -152,7 +152,7 @@ class SignUpForm extends Component {
                 onBlur={() => setFieldTouched('email')}
                 value={values.email}
               />
-              {::this.renderFieldError('email', emailIsDuplicated && 'Email is taken')}
+              {this.renderFieldError('email', emailIsDuplicated && 'Email is taken')}
             </FormItem>
           )}
         </ApolloConsumer>
@@ -165,12 +165,12 @@ class SignUpForm extends Component {
             value={values.password}
             secureTextEntry
           />
-          {::this.renderFieldError('password')}
+          {this.renderFieldError('password')}
         </FormItem>
 
         <Mutation mutation={signUpUserMutation}>
           {signUpUser => (
-            <SubmitButton onPress={() => ::this.onSubmit(signUpUser)} disabled={!(isValid && !emailIsDuplicated)} block>
+            <SubmitButton onPress={() => this.onSubmit(signUpUser)} disabled={!(isValid && !emailIsDuplicated)} block>
               <Text>Sign up</Text>
             </SubmitButton>
           )}

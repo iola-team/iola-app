@@ -84,7 +84,7 @@ class SignInForm extends Component {
             onBlur={() => setFieldTouched('login')}
             value={values.login}
           />
-          {::this.renderFieldError('login')}
+          {this.renderFieldError('login')}
         </ItemEmailOrLogin>
 
         <ItemPassword>
@@ -98,7 +98,7 @@ class SignInForm extends Component {
           <ForgotPasswordButton transparent small onPress={() => onForgotPasswordPress()}>
             <ForgotPasswordText>Forgot password?</ForgotPasswordText>
           </ForgotPasswordButton>
-          {::this.renderFieldError('password')}
+          {this.renderFieldError('password')}
         </ItemPassword>
 
         <SubmitButton block onPress={handleSubmit} disabled={!isValid}>
