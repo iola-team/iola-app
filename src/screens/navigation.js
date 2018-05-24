@@ -18,6 +18,7 @@ import Dashboard from './Dashboard';
 import User from './User';
 import Channel from './Channel';
 import ProfileEdit from './PropfileEdit';
+import PhotoPreview from './PhotoPreview';
 import Settings from './Settings';
 
 // Navigator
@@ -90,6 +91,10 @@ export default SwitchNavigator({
 
     [routes.PROFILE_EDIT]: {
       screen: ProfileEdit,
+    },
+
+    [routes.PHOTO_PREVIEW]: {
+      screen: PhotoPreview,
     },
   }, {
     navigationOptions: {

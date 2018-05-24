@@ -11,4 +11,5 @@ export const DASHBOARD = 'dashboard';
 export const CHANNELS = 'channels';
 export const CHANNEL = 'channel';
 export const PROFILE_EDIT = 'profile-edit';
+export const PHOTO_PREVIEW = 'photo-preview';
 export const SETTINGS = 'settings';

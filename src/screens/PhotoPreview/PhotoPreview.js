@@ -43,12 +43,12 @@ const propsToVariables = props => ({
     variables: propsToVariables(props),
   }),
 })
-@styleSheet('Sparkle.UserScreen', {
+@styleSheet('Sparkle.PhotoPreview', {
   head: {
     height: 350,
   },
 })
-export default class UserScreen extends Component {
+export default class PhotoPreview extends Component {
   static navigationOptions = {
     headerTransparent: true,
   };
@@ -73,7 +73,7 @@ export default class UserScreen extends Component {
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
                   <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
-                  <UserPhotosCard user={user} onPress={navigate(routes.PHOTO_PREVIEW)} />
+                  <UserPhotosCard user={user} />
                 </View>
               </View>
             ) : (
