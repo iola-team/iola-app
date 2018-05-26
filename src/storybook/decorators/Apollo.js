@@ -15,7 +15,12 @@ import {
 import { createClient } from 'graph';
 
 function createSchemaLink({ typeDefs, mocks, resolvers, dataStore = {} }) {
-  const schema = makeExecutableSchema({ typeDefs });
+  const schema = makeExecutableSchema({
+    typeDefs,
+    resolverValidationOptions :{
+      requireResolversForResolveType: false
+    },
+  });
 
   if (mocks) {
     addMockFunctionsToSchema({
