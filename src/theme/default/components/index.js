@@ -26,6 +26,12 @@ export default (variables => ({
       },
     },
 
+    'NativeBase.Item': {
+      '.last': {
+        borderWidth: 0,
+      }
+    },
+
     'NativeBase.Thumbnail': {
       '.small': {
         borderRadius: 4,
@@ -167,8 +173,12 @@ export default (variables => ({
         },
 
         '.padder': {
-          paddingHorizontal: variables.contentPadding,
-        }
+          padding: variables.contentPadding,
+        },
+
+        '.highlight': {
+          backgroundColor: '#F8F9FB',
+        },
       },
 
       '.topBorder': {

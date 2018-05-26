@@ -1,9 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { GatewayProvider, GatewayDest } from 'react-gateway';
+import { View } from 'react-native';
 
 export default class Root extends Component {
   render() {
     const { children } = this.props;
 
-    return children;
+    return (
+      <GatewayProvider>
+        <Fragment>
+          {children}
+
+          <GatewayDest name="root" component={View} />
+        </Fragment>
+      </GatewayProvider>
+    );
   }
 }
