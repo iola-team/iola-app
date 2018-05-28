@@ -4,9 +4,12 @@ import { Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-const FormItem = connectToStyleSheet('formItem', Item, ({ isValid }) => !isValid && ({
-  borderColor: 'rgba(255, 135, 135, 0.56)',
-  backgroundColor: '#FFE0E0'
+const FormItem = connectToStyleSheet('formItem', Item, ({ customStyle, isValid }) => ({
+  ...customStyle,
+  ...(isValid ? {} : {
+    borderColor: 'rgba(255, 135, 135, 0.56)',
+    backgroundColor: '#FFE0E0',
+  }),
 })).withProps({ regular: true });
 const FormInput = connectToStyleSheet('formInput', Input, ({ isValid }) => !isValid && ({
   color: '#FF8787',
@@ -21,7 +24,8 @@ const ErrorText = connectToStyleSheet('errorText', Text);
 @styleSheet('Sparkle.FormTextInput', {
   formItem: {
     marginBottom: 8,
-    paddingHorizontal: 10,
+    paddingLeft: 10,
+    paddingRight: 15,
     borderRadius: 8,
     borderColor: 'rgba(255, 255, 255, .6)',
   },
@@ -49,13 +53,14 @@ const ErrorText = connectToStyleSheet('errorText', Text);
     color: '#FF8787',
   },
 })
-class FormTextInput extends Component {
+class TextInputItem extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
     values: PropTypes.object,
     touched: PropTypes.object,
     errors: PropTypes.object,
+    customStyle: PropTypes.object,
     setFieldTouched: PropTypes.func.isRequired,
     setFieldValue: PropTypes.func.isRequired,
     onChangeText: PropTypes.func,
@@ -65,6 +70,7 @@ class FormTextInput extends Component {
   };
 
   static defaultProps = {
+    customStyle: {},
     secureTextEntry: false,
     infoText: '',
   };
@@ -76,6 +82,7 @@ class FormTextInput extends Component {
       values,
       touched,
       errors,
+      customStyle,
       setFieldTouched,
       setFieldValue,
       onChangeText,
@@ -90,7 +97,7 @@ class FormTextInput extends Component {
     const FieldInfo = touched[name] ? <CheckMark /> : <InfoText>{infoText}</InfoText>;
 
     return (
-      <FormItem isValid={isValid}>
+      <FormItem customStyle={customStyle} isValid={isValid}>
         <FormInput
           placeholder={placeholder}
           secureTextEntry={secureTextEntry}
@@ -105,4 +112,4 @@ class FormTextInput extends Component {
   }
 }
 
-export default FormTextInput;
+export default TextInputItem;

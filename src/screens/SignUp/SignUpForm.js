@@ -8,7 +8,7 @@ import { graphql, ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { debounce, find, get, isEmpty } from 'lodash';
 
-import FormTextInput from './FormTextInput';
+import TextInputItem from '../../components/Form/TextInputItem';
 
 const validateEmailQuery = gql`
   query validateEmailQuery($email: String = "") {
@@ -107,11 +107,11 @@ class SignUpForm extends Component {
 
     return (
       <Form>
-        <FormTextInput name="name" placeholder="Full Name" {...this.props} />
+        <TextInputItem name="name" placeholder="Full Name" {...this.props} />
 
         <ApolloConsumer>
           {client => (
-            <FormTextInput
+            <TextInputItem
               name="email"
               placeholder="Email"
               onChangeText={text => this.onChangeEmail(text, client)}
@@ -121,7 +121,7 @@ class SignUpForm extends Component {
           )}
         </ApolloConsumer>
 
-        <FormTextInput
+        <TextInputItem
           name="password"
           placeholder="Password"
           infoText="At least 4 characters"
