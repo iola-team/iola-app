@@ -73,6 +73,7 @@
     "react-native-on-layout": "^2.0.2",
     "react-native-progress": "^3.4.0",
     "react-native-splash-screen": "^3.0.6",
+    "react-native-wheel-picker-android": "^1.1.2",
     "react-navigation": "^1.5.11",
     "recompose": "^0.26.0",
     "uuid": "^3.2.1",
