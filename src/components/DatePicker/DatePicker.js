@@ -47,7 +47,7 @@ const getDays = date => range(1, moment(date).daysInMonth() + 1);
   },
 
   wheel: {
-    height: 200,
+    height: 250,
     flex: 1,
   },
 
@@ -147,7 +147,7 @@ export default class DatePicker extends Component {
       selectedItemTextColor: '#585A61',
       onItemSelected: this.onSelect('month'),
       renderIndicator: true,
-      indicatorColor: '#EEEEEE',
+      indicatorColor: '#F9F9F9',
       itemTextSize: PixelRatio.getPixelSizeForLayoutSize(16),
     }
 
