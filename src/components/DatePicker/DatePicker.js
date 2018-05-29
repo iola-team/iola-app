@@ -147,7 +147,7 @@ export default class DatePicker extends Component {
       selectedItemTextColor: '#585A61',
       onItemSelected: this.onSelect('month'),
       renderIndicator: true,
-      indicatorColor: '#F9F9F9',
+      indicatorColor: '#F2F2F2',
       itemTextSize: PixelRatio.getPixelSizeForLayoutSize(16),
     }
 
