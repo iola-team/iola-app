@@ -176,9 +176,17 @@ export default (variables => ({
           padding: variables.contentPadding,
         },
 
+        '.horizontalPadder': {
+          paddingHorizontal: variables.contentPadding,
+        },
+
         '.highlight': {
           backgroundColor: '#F8F9FB',
         },
+
+        '.cardBody': {
+          flexDirection: 'column',
+        }
       },
 
       '.topBorder': {
