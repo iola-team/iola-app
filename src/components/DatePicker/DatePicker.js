@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { includes, filter, isFunction, isUndefined, range } from 'lodash';
+import { includes, filter, isFunction, isUndefined, range, memoize, constant, noop, last } from 'lodash';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import { TouchableOpacity, StyleSheet, Dimensions, PixelRatio } from 'react-native';
@@ -58,26 +58,38 @@ const getDays = date => range(1, moment(date).daysInMonth() + 1);
 })
 export default class DatePicker extends Component {
   static propTypes = {
-    isVisible: PropTypes.bool,
-    label: PropTypes.string.isRequired,
-    onChange: PropTypes.func,
-    onHide: PropTypes.func,
-    onShow: PropTypes.func,
+    value: PropTypes.instanceOf(Date),
     minDate: PropTypes.instanceOf(Date).isRequired,
     maxDate: PropTypes.instanceOf(Date),
+
+    isVisible: PropTypes.bool,
+    label: PropTypes.string.isRequired,
+
+    onSelect: PropTypes.func,
+    onHide: PropTypes.func,
+    onShow: PropTypes.func,
+    onSwipe: PropTypes.func,
+    onDone: PropTypes.func,
+    onCancel: PropTypes.func,
   }
 
   static defaultProps = {
-    isVisible: undefined,
-    onChange: () => null,
-    onHide: () => null,
-    onShow: () => null,
+    value: null,
     maxDate: new Date(),
+
+    isVisible: undefined,
+
+    onSelect: noop,
+    onHide: noop,
+    onShow: noop,
+    onSwipe: noop,
+    onDone: noop,
+    onCancel: noop,
   }
 
   state = {
+    value: null,
     isVisible: false,
-    value: new Date(),
     wheels: {
       year: [],
       month: [],
@@ -87,17 +99,19 @@ export default class DatePicker extends Component {
 
   static getDerivedStateFromProps(props, state) {
     return {
+      value: props.value,
       isVisible: isUndefined(props.isVisible) ? state.isVisible : props.isVisible,
       wheels: {
-        year: range(props.minDate.getFullYear(), props.maxDate.getFullYear()),
+        year: range(props.minDate.getFullYear(), props.maxDate.getFullYear() + 1),
         month: moment.months(),
-        day: getDays(state.value),
+        day: getDays(props.value || props.maxDate),
       },
     }
   }
 
   show = () => {
     this.setState({
+      value: this.props.value,
       isVisible: true,
     });
   };
@@ -108,36 +122,54 @@ export default class DatePicker extends Component {
     });
   };
 
+  action = (handler, preHandler = noop) => () => {
+    preHandler();
+    this.props[handler](this.state.value);
+  };
+
   onSelect = part => ({ data, position }) => {
-    const { value, wheels } = this.state;
-    const newValue = new Date(value.getTime());
+    const { wheels, value } = this.state;
+    const { maxDate, onSelect } = this.props;
+    const prevValue = value || maxDate;
+    const newValue = new Date(prevValue.getTime());
 
-    const setter = ({
-      year: 'setFullYear',
-      month: 'setMonth',
-      day: 'setDate',
-    })[part];
+    ({
+      year: () => newValue.setFullYear(data),
+      day: () => newValue.setDate(data),
+      month: () => {
+        const days = getDays([newValue.getFullYear(), position]);
+        const lastDay = last(days);
+        if (newValue.getDate() > lastDay) {
+          newValue.setDate(lastDay);
+        }
 
-    newValue[setter](part === 'month' ? position : data);
+        newValue.setMonth(position);
+
+        this.setState({
+          wheels: {
+            ...wheels,
+            day: days,
+          }
+        });
+      },
+    })[part]();
 
     this.setState({
       value: newValue,
-      wheels: {
-        ...wheels,
-        day: getDays(newValue),
-      },
-    });
+    }, () => onSelect(newValue));
   }
 
   renderModal() {
-    const { isVisible, wheels } = this.state;
+    const { isVisible, wheels, value: stateValue } = this.state;
     const {
       styleSheet: styles,
       label,
       onHide,
       onShow,
+      maxDate,
     } = this.props;
 
+    const value = stateValue || maxDate;
     const wheelProps = {
       style: styles.wheel,
       isCurved: false,
@@ -145,7 +177,6 @@ export default class DatePicker extends Component {
       isCurtain: false,
       isCyclic: true,
       selectedItemTextColor: '#585A61',
-      onItemSelected: this.onSelect('month'),
       renderIndicator: true,
       indicatorColor: '#F2F2F2',
       itemTextSize: PixelRatio.getPixelSizeForLayoutSize(16),
@@ -159,9 +190,9 @@ export default class DatePicker extends Component {
         backdropOpacity={styles.backdrop.opacity}
         // swipeDirection="down"
 
-        onModalHide={onHide}
-        onModalShow={onShow}
-        onSwipe={this.hide}
+        onModalHide={this.action('onHide')}
+        onModalShow={this.action('onShow')}
+        onSwipe={this.action('onSwipe', this.hide)}
         onBackdropPress={this.hide}
         onBackButtonPress={this.hide}
       >
@@ -172,7 +203,7 @@ export default class DatePicker extends Component {
             padder
           >
             <Text>{label}</Text>
-            <TouchableOpacity onPress={this.hide}>
+            <TouchableOpacity onPress={this.action('onDone', this.hide)}>
               <Text style={styles.headerButtonText}>Done</Text>
             </TouchableOpacity>
           </View>
@@ -182,17 +213,23 @@ export default class DatePicker extends Component {
           >
             <WheelPicker
               {...wheelProps}
+              onItemSelected={this.onSelect('month')}
               data={wheels.month}
+              selectedItemPosition={value.getMonth()}
             />
 
             <WheelPicker
               {...wheelProps}
               data={wheels.day}
+              onItemSelected={this.onSelect('day')}
+              selectedItemPosition={wheels.day.indexOf(value.getDate())}
             />
 
             <WheelPicker
-              data={wheels.year}
               {...wheelProps}
+              onItemSelected={this.onSelect('year')}
+              data={wheels.year}
+              selectedItemPosition={wheels.year.indexOf(value.getFullYear())}
             />
           </View>
         </View>
@@ -201,13 +238,13 @@ export default class DatePicker extends Component {
   }
 
   render() {
-    const { style, styleSheet: styles, children } = this.props;
+    const { style, styleSheet: styles, value, children } = this.props;
 
     return (
       <View style={[styles.root, style]}>
         {
           isFunction(children)
-            ? children(this.show)
+            ? children(this.show, value)
             : children
         }
         {this.renderModal()}
