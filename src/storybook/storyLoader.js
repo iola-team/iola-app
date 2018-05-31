@@ -19,6 +19,7 @@ function loadStories() {
   require('../components/PhotoEdit/PhotoEdit.stories');
   require('../components/PhotoGrid/PhotoGrid.stories');
   require('../components/ProfileFieldsEdit/ProfileFieldsEdit.stories');
+  require('../components/TextPicker/TextPicker.stories');
   require('./stories/Button.stories');
   
 }
@@ -38,6 +39,7 @@ const stories = [
   '../components/PhotoEdit/PhotoEdit.stories',
   '../components/PhotoGrid/PhotoGrid.stories',
   '../components/ProfileFieldsEdit/ProfileFieldsEdit.stories',
+  '../components/TextPicker/TextPicker.stories',
   './stories/Button.stories',
   
 ];

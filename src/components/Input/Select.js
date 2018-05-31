@@ -20,8 +20,6 @@ import ListPicker from '../ListPicker';
 @styleSheet('Sparkle.SelectInput', {
   button: {
     flex: 1,
-    height: 50,
-    justifyContent: 'center',
   }
 })
 export default class Select extends Component {
@@ -77,6 +75,8 @@ export default class Select extends Component {
           options={options}
           multiple={multiple}
           onDone={this.onDone}
+          onSwipe={this.hidePicker}
+          onCancel={this.hidePicker}
         />
       </Fragment>
     );

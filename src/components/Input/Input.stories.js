@@ -102,7 +102,7 @@ stories.add('Password', () => {
 stories.add('Textarea', () => {
   return (
     <Section>
-      <Input
+      <StatefulInput
         type="text"
         multiline
         label={'Textarea'}
@@ -176,7 +176,7 @@ stories.add('All', () => {
         placeholder={'Enter password'}
       />
 
-      <Input
+      <StatefulInput
         type="text"
         multiline
         label={'Textarea'}

@@ -101,7 +101,7 @@ stories.add('Single select wrapper', () => {
   );
 });
 
-stories.add('Controlled with isVisible prop', () => {
+stories.add('Controlled by isVisible prop', () => {
   const value = array('Selected', ['2', '5']);
   const isVisible = boolean('isVisible', false);
 

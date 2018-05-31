@@ -7,7 +7,13 @@ import {
 
 import InputItem from './Input';
 import DatePicker from '../DatePicker';
+import { withStyleSheet as styleSheet } from '../../theme'
 
+@styleSheet('Sparkle.DateInput', {
+  button: {
+    flex: 1,
+  }
+})
 export default class DateInput extends Component {
   state = {
     isPickerVisible: false,
@@ -35,6 +41,7 @@ export default class DateInput extends Component {
       maxDate,
       label,
       placeholder,
+      styleSheet,
       ...props
     } = this.props;
 
@@ -43,7 +50,7 @@ export default class DateInput extends Component {
         label={label}
         {...props}
       >
-        <TouchableOpacity onPress={this.showPicker}>
+        <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>
           <Text note={!value}>
             {value ? (
               <Moment format="MMMM D, YYYY">{value}</Moment>
@@ -58,6 +65,8 @@ export default class DateInput extends Component {
           minDate={minDate}
           maxDate={maxDate}
           onDone={this.onDone}
+          onSwipe={this.hidePicker}
+          onCancel={this.hidePicker}
         />
       </InputItem>
     );

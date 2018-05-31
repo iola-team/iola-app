@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { TouchableOpacity } from 'react-native';
 import {
   Input,
@@ -6,19 +6,61 @@ import {
 } from 'native-base';
 
 import InputItem from './Input';
+import TextPicker from '../TextPicker';
+import { withStyleSheet as styleSheet } from '../../theme'
 
+@styleSheet('Sparkle.TextInput', {
+  button: {
+    flex: 1,
+  }
+})
 export default class TextInput extends Component {
+  state = {
+    isPickerVisible: false,
+  };
+
+  showPicker = () => {
+    this.setState({ isPickerVisible: true });
+  };
+
+  hidePicker = () => {
+    this.setState({ isPickerVisible: false });
+  };
+
+  onDone = value => {
+    this.hidePicker();
+
+    this.props.onChange(value);
+  }
+
   renderMultilineInput() {
     const {
+      value,
+      label,
       placeholder,
+      styleSheet,
     } = this.props;
 
+    const preview = value && value.trim();
+
     return (
-      <TouchableOpacity>
-        <Text note={!!placeholder}>
-          {placeholder}
-        </Text>
-      </TouchableOpacity>
+      <Fragment>
+        <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>
+          <Text note={!preview}>
+            {preview ? preview : placeholder}
+          </Text>
+        </TouchableOpacity>
+
+        <TextPicker
+          isVisible={this.state.isPickerVisible}
+          value={value}
+          label={label}
+          placeholder={placeholder}
+          onDone={this.onDone}
+          onSwipe={this.hidePicker}
+          onCancel={this.hidePicker}
+        />
+      </Fragment>
     )
   }
 

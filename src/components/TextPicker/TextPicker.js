@@ -5,18 +5,12 @@ import { includes, filter, isFunction, isUndefined, without, noop } from 'lodash
 import {
   TouchableOpacity,
   StyleSheet,
-  ScrollView,
-  Easing,
   Dimensions,
 } from 'react-native';
 import {
   View,
   Text,
-  List,
-  ListItem,
-  Body,
-  Right,
-  Icon,
+  Textarea,
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme/index';
@@ -37,14 +31,14 @@ const itemShape = PropTypes.shape({
   value: valueShape,
 });
 
-@styleSheet('Sparkle.ListPicker', {
+@styleSheet('Sparkle.TextPicker', {
   root: {
 
   },
 
   modal: {
     margin: 0,
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
   },
 
   backdrop: {
@@ -73,11 +67,9 @@ const itemShape = PropTypes.shape({
     backgroundColor: '#FFFFFF',
   }
 })
-export default class ListPicker extends PureComponent {
+export default class TextPicker extends PureComponent {
   static propTypes = {
-    value: PropTypes.arrayOf(valueShape),
-    options: PropTypes.arrayOf(itemShape).isRequired,
-    multiple: PropTypes.bool,
+    value: PropTypes.string,
 
     isVisible: PropTypes.bool,
     label: PropTypes.string.isRequired,
@@ -89,16 +81,13 @@ export default class ListPicker extends PureComponent {
     onSwipe: PropTypes.func,
     onDone: PropTypes.func,
     onCancel: PropTypes.func,
-    onItemPress: PropTypes.func,
   }
 
   static defaultProps = {
     isVisible: undefined,
-    value: [],
-    multiple: false,
+    value: '',
 
     onChange: noop,
-    onItemPress: noop,
     onHide: noop,
     onShow: noop,
     onSwipe: noop,
@@ -140,56 +129,19 @@ export default class ListPicker extends PureComponent {
     this.props[handler](this.state.value);
   };
 
-  onItemPress = ({ value }) => {
-    const { value: values } = this.state;
-    const newValues = this.props.multiple
-      ? values.includes(value) ? without(values, value) : [
-          ...values,
-          value,
-        ]
-      : [ value ];
-
+  onChange = (value) => {
     this.setState({
-      value: newValues,
-    }, this.action('onChange', this.action('onItemPress')));
+      value,
+    }, this.action('onChange'));
   };
-
-  renderRow = (item) => {
-    const { label, value, selected } = item;
-    const { styleSheet: styles } = this.props;
-
-    return (
-      <ListItem
-        key={value}
-        button
-        onPress={() => this.onItemPress(item)}
-      >
-        <Body>
-        <Text>{label}</Text>
-        </Body>
-        <Right>
-          {
-            selected && (
-              <Icon style={styles.checkIcon} name="checkmark" />
-            )
-          }
-        </Right>
-      </ListItem>
-    );
-  }
 
   renderModal() {
     const { isVisible, value } = this.state;
     const {
       styleSheet: styles,
       label,
-      options,
+      placeholder,
     } = this.props;
-
-    const items = options.map(option => ({
-      ...option,
-      selected: includes(value, option.value),
-    }));
 
     return (
       <Modal
@@ -198,6 +150,8 @@ export default class ListPicker extends PureComponent {
         backdropColor={styles.backdrop.backgroundColor}
         backdropOpacity={styles.backdrop.opacity}
         swipeDirection="down"
+        animationIn={'fadeIn'}
+        animationOut={'fadeOut'}
 
         onModalHide={this.action('onHide')}
         onModalShow={this.action('onShow')}
@@ -216,26 +170,28 @@ export default class ListPicker extends PureComponent {
               <Text style={styles.headerButtonText}>Done</Text>
             </TouchableOpacity>
           </View>
-          <ScrollView style={styles.content}>
-            <List
-              dataArray={items}
-              renderRow={this.renderRow}
+          <View style={styles.content}>
+            <Textarea
+              value={value}
+              onChangeText={this.onChange}
+              autoFocus
+              rowSpan={12}
+              placeholder={placeholder}
             />
-          </ScrollView>
+          </View>
         </View>
       </Modal>
     );
   }
 
   render() {
-    const { style, styleSheet: styles, value, options, children } = this.props;
-    const selectedOptions = filter(options, option => includes(value, option.value))
+    const { style, styleSheet: styles, value, children } = this.props;
 
     return (
       <View style={[styles.root, style]}>
         {
           isFunction(children)
-            ? children(this.show, selectedOptions)
+            ? children(this.show, value)
             : children
         }
         {this.renderModal()}
