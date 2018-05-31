@@ -40,8 +40,8 @@ const StatefulInput = windValue(Input);
 stories.add('Select', () => {
   return (
     <Section>
-      <Input
-        label={"Gender"}
+      <StatefulInput defaultValue={['1']}
+        label={"Select"}
         type="select"
         placeholder={'Select a value'}
         options={[
@@ -56,9 +56,10 @@ stories.add('Select', () => {
 stories.add('Multi-select', () => {
   return (
     <Section>
-      <Input
+      <StatefulInput defaultValue={['1', '2']}
         label={"Multi-select"}
         type="select"
+        multiple
         placeholder={'Select values'}
         options={[
           { label: 'Female', value: '1' },

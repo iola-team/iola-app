@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { find } from 'lodash';
 import {
   View,
   TouchableOpacity,
@@ -36,14 +37,24 @@ export default class Select extends Component {
     this.setState({ isPickerVisible: false });
   };
 
+  onDone = value => {
+    this.hidePicker();
+
+    this.props.onChange(value);
+  }
+
   render() {
     const {
+      value,
       label,
       options,
+      multiple,
       placeholder,
       styleSheet,
       ...props
     } = this.props;
+
+    const selectedLabels = value.map(value => find(options, { value }).label)
 
     return (
       <Fragment>
@@ -52,16 +63,19 @@ export default class Select extends Component {
           {...props}
         >
           <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>
-            <Text note>
-              {placeholder}
+            <Text note={!value.length}>
+              {!!value.length ? selectedLabels.join(', ') : placeholder}
             </Text>
           </TouchableOpacity>
         </Input>
 
         <ListPicker
           isVisible={this.state.isPickerVisible}
+          value={value}
           label={label}
           options={options}
+          multiple={multiple}
+          onDone={this.onDone}
         />
       </Fragment>
     );
