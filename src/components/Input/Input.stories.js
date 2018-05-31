@@ -114,6 +114,8 @@ stories.add('Date', () => {
       <Input
         type="date"
         label={'Date'}
+        minDate={new Date('1980')}
+        maxDate={new Date('2018')}
         placeholder={'Select date'}
       />
     </Section>
@@ -166,6 +168,8 @@ stories.add('All', () => {
       <Input
         type="date"
         label={'Date'}
+        minDate={new Date('1980')}
+        maxDate={new Date('2018')}
         placeholder={'Select date'}
       />
 
