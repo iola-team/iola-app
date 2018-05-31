@@ -45,7 +45,7 @@ export default class Select extends Component {
 
   render() {
     const {
-      value,
+      value: rawValue,
       label,
       options,
       multiple,
@@ -54,6 +54,7 @@ export default class Select extends Component {
       ...props
     } = this.props;
 
+    const value = rawValue || [];
     const selectedLabels = value.map(value => find(options, { value }).label)
 
     return (

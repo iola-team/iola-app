@@ -40,7 +40,8 @@ const StatefulInput = windValue(Input);
 stories.add('Select', () => {
   return (
     <Section>
-      <StatefulInput defaultValue={['1']}
+      <StatefulInput
+        defaultValue={['1']}
         label={"Select"}
         type="select"
         placeholder={'Select a value'}
@@ -56,7 +57,8 @@ stories.add('Select', () => {
 stories.add('Multi-select', () => {
   return (
     <Section>
-      <StatefulInput defaultValue={['1', '2']}
+      <StatefulInput
+        defaultValue={['1', '2']}
         label={"Multi-select"}
         type="select"
         multiple
@@ -73,7 +75,8 @@ stories.add('Multi-select', () => {
 stories.add('Text', () => {
   return (
     <Section>
-      <StatefulInput defaultValue={"Default value"}
+      <StatefulInput
+        defaultValue={"Default value"}
         type="text"
         label={"Real name"}
         placeholder={'Enter real name'}
@@ -85,7 +88,8 @@ stories.add('Text', () => {
 stories.add('Password', () => {
   return (
     <Section>
-      <StatefulInput defaultValue={"123"}
+      <StatefulInput
+        defaultValue={"123"}
         type="text"
         secure
         label={'Password'}
@@ -111,7 +115,8 @@ stories.add('Textarea', () => {
 stories.add('Switch', () => {
   return (
     <Section>
-      <StatefulInput defaultValue={false}
+      <StatefulInput
+        defaultValue={false}
         type="switch"
         label={'Switch'}
       />
@@ -122,7 +127,8 @@ stories.add('Switch', () => {
 stories.add('Date', () => {
   return (
     <Section>
-      <StatefulInput defaultValue={new Date('March 7, 1986 00:00:00')}
+      <StatefulInput
+        defaultValue={new Date('March 7, 1986 00:00:00')}
         type="date"
         label={'Date'}
         minDate={new Date('1980')}
@@ -136,8 +142,8 @@ stories.add('Date', () => {
 stories.add('All', () => {
   return (
     <Section>
-      <Input
-        label={"Gender"}
+      <StatefulInput
+        label={"Select"}
         type="select"
         placeholder={'Select a value'}
         options={[
@@ -146,9 +152,10 @@ stories.add('All', () => {
         ]}
       />
 
-      <Input
+      <StatefulInput
         label={"Multi-select"}
         type="select"
+        multiple
         placeholder={'Select values'}
         options={[
           { label: 'Female', value: '1' },
@@ -156,13 +163,13 @@ stories.add('All', () => {
         ]}
       />
 
-      <Input
+      <StatefulInput
         type="text"
-        label={'Real name'}
+        label={"Real name"}
         placeholder={'Enter real name'}
       />
 
-      <Input
+      <StatefulInput
         type="text"
         secure
         label={'Password'}
@@ -176,7 +183,7 @@ stories.add('All', () => {
         placeholder={'Enter text'}
       />
 
-      <Input
+      <StatefulInput
         type="date"
         label={'Date'}
         minDate={new Date('1980')}
@@ -184,7 +191,7 @@ stories.add('All', () => {
         placeholder={'Select date'}
       />
 
-      <Input
+      <StatefulInput
         type="switch"
         label={'Switch'}
       />
