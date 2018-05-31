@@ -90,6 +90,7 @@ export default class ListPicker extends PureComponent {
     onDone: PropTypes.func,
     onCancel: PropTypes.func,
     onItemPress: PropTypes.func,
+    onClose: PropTypes.func,
   }
 
   static defaultProps = {
@@ -104,6 +105,7 @@ export default class ListPicker extends PureComponent {
     onSwipe: noop,
     onDone: noop,
     onCancel: noop,
+    onClose: noop,
   }
 
   static getDerivedStateFromProps(props, state) {

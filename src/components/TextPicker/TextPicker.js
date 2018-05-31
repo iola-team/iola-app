@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Keyboard,
 } from 'react-native';
 import {
   View,
@@ -81,6 +82,7 @@ export default class TextPicker extends PureComponent {
     onSwipe: PropTypes.func,
     onDone: PropTypes.func,
     onCancel: PropTypes.func,
+    onClose: PropTypes.func,
   }
 
   static defaultProps = {
@@ -93,6 +95,7 @@ export default class TextPicker extends PureComponent {
     onSwipe: noop,
     onDone: noop,
     onCancel: noop,
+    onClose: noop,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -135,6 +138,12 @@ export default class TextPicker extends PureComponent {
     }, this.action('onChange'));
   };
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (!this.state.isVisible && prevState.isVisible) { // Dismiss
+      Keyboard.dismiss();
+    }
+  }
+
   renderModal() {
     const { isVisible, value } = this.state;
     const {
@@ -156,8 +165,8 @@ export default class TextPicker extends PureComponent {
         onModalHide={this.action('onHide')}
         onModalShow={this.action('onShow')}
         onSwipe={this.action('onSwipe', this.hide)}
-        onBackdropPress={this.hide}
-        onBackButtonPress={this.hide}
+        onBackdropPress={this.action('onClose', this.hide)}
+        onBackButtonPress={this.action('onClose', this.hide)}
       >
         <View>
           <View

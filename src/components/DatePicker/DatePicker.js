@@ -2,9 +2,15 @@ import React, { Component } from 'react';
 import { includes, filter, isFunction, isUndefined, range, memoize, constant, noop, last } from 'lodash';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
-import { TouchableOpacity, StyleSheet, Dimensions, PixelRatio } from 'react-native';
 import { WheelPicker } from 'react-native-wheel-picker-android';
 import moment from 'moment';
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  PixelRatio,
+  ScrollView,
+} from 'react-native';
 import {
   View,
   Text,
@@ -77,6 +83,7 @@ export default class DatePicker extends Component {
     onSwipe: PropTypes.func,
     onDone: PropTypes.func,
     onCancel: PropTypes.func,
+    onClose: PropTypes.func,
   }
 
   static defaultProps = {
@@ -91,6 +98,7 @@ export default class DatePicker extends Component {
     onSwipe: noop,
     onDone: noop,
     onCancel: noop,
+    onClose: noop,
   }
 
   state = {
@@ -198,13 +206,13 @@ export default class DatePicker extends Component {
         isVisible={isVisible}
         backdropColor={styles.backdrop.backgroundColor}
         backdropOpacity={styles.backdrop.opacity}
-        // swipeDirection="down"
+        swipeDirection="down"
 
         onModalHide={this.action('onHide')}
         onModalShow={this.action('onShow')}
         onSwipe={this.action('onSwipe', this.hide)}
-        onBackdropPress={this.hide}
-        onBackButtonPress={this.hide}
+        onBackdropPress={this.action('onClose', this.hide)}
+        onBackButtonPress={this.action('onClose', this.hide)}
       >
         <View>
           <View
@@ -218,6 +226,7 @@ export default class DatePicker extends Component {
             </TouchableOpacity>
           </View>
           <View
+            onStartShouldSetResponder={() => true}
             padder
             style={styles.content}
           >

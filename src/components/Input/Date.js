@@ -67,6 +67,7 @@ export default class DateInput extends Component {
           onDone={this.onDone}
           onSwipe={this.hidePicker}
           onCancel={this.hidePicker}
+          onClose={this.hidePicker}
         />
       </InputItem>
     );

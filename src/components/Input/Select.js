@@ -77,6 +77,7 @@ export default class Select extends Component {
           onDone={this.onDone}
           onSwipe={this.hidePicker}
           onCancel={this.hidePicker}
+          onClose={this.hidePicker}
         />
       </Fragment>
     );
