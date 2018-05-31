@@ -1,5 +1,5 @@
 import React from 'react';
-import { boolean, number, withKnobs } from '@storybook/addon-knobs/react';
+import { boolean, date, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
@@ -13,6 +13,11 @@ const stories = storiesOf('Components/DatePicker', module);
 // Decorators
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator({ padder: true }));
+
+function dateKnob(name, defaultValue) {
+  const stringTimestamp = date(name, defaultValue)
+  return new Date(stringTimestamp)
+}
 
 const renderChildren = (show, date) => (
   <Button transparent onPress={show}>
@@ -35,13 +40,11 @@ const DatePickerWithState = compose(
 // Stories
 
 stories.add('No value prop', () => {
-  const isVisible = boolean('Is visible', false);
-  const minDate = new Date();
-  minDate.setFullYear(1990);
+  const minDate = dateKnob('Min date', new Date('1980'))
+  const maxDate = dateKnob('Max date', new Date())
 
   return (
     <DatePicker
-      isVisible={isVisible}
       label={'Birthdate'}
       onChange={action('onChange')}
       onCancel={action('onCancel')}
@@ -49,6 +52,7 @@ stories.add('No value prop', () => {
       onShow={action('onShow')}
       onHide={action('onHide')}
       minDate={minDate}
+      maxDate={maxDate}
     >
       {renderChildren}
     </DatePicker>
@@ -56,14 +60,12 @@ stories.add('No value prop', () => {
 });
 
 stories.add('Fixed value prop', () => {
-  const isVisible = boolean('Is visible', false);
-  const minDate = new Date();
-  minDate.setFullYear(1990);
+  const minDate = dateKnob('Min date', new Date('1980'))
+  const maxDate = dateKnob('Max date', new Date())
 
   return (
     <DatePicker
       value={new Date()}
-      isVisible={isVisible}
       label={'Birthdate'}
       onChange={action('onChange')}
       onCancel={action('onCancel')}
@@ -71,6 +73,7 @@ stories.add('Fixed value prop', () => {
       onShow={action('onShow')}
       onHide={action('onHide')}
       minDate={minDate}
+      maxDate={maxDate}
     >
       {renderChildren}
     </DatePicker>
@@ -78,9 +81,29 @@ stories.add('Fixed value prop', () => {
 });
 
 stories.add('Dynamic value prop', () => {
-  const isVisible = boolean('Is visible', false);
-  const minDate = new Date();
-  minDate.setFullYear(1990);
+  const minDate = dateKnob('Min date', new Date('1980'))
+  const maxDate = dateKnob('Max date', new Date())
+
+  return (
+    <DatePickerWithState
+      label={'Birthdate'}
+      onChange={action('onChange')}
+      onCancel={action('onCancel')}
+      onDone={action('onDone')}
+      onShow={action('onShow')}
+      onHide={action('onHide')}
+      minDate={minDate}
+      maxDate={maxDate}
+    >
+      {renderChildren}
+    </DatePickerWithState>
+  );
+});
+
+stories.add('Controlled with isVisible prop', () => {
+  const minDate = dateKnob('Min date', new Date('1980'))
+  const maxDate = dateKnob('Max date', new Date())
+  const isVisible = boolean('isVisible', false);
 
   return (
     <DatePickerWithState
@@ -92,6 +115,7 @@ stories.add('Dynamic value prop', () => {
       onShow={action('onShow')}
       onHide={action('onHide')}
       minDate={minDate}
+      maxDate={maxDate}
     >
       {renderChildren}
     </DatePickerWithState>

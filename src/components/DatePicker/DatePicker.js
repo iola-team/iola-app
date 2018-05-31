@@ -110,15 +110,19 @@ export default class DatePicker extends Component {
   }
 
   show = () => {
+    const { value, isVisible } = this.props;
+
     this.setState({
-      value: this.props.value,
-      isVisible: true,
+      value,
+      isVisible: isUndefined(isVisible) ? true : isVisible,
     });
   };
 
   hide = () => {
+    const { isVisible } = this.props;
+
     this.setState({
-      isVisible: false,
+      isVisible: isUndefined(isVisible) ? false : isVisible,
     });
   };
 
