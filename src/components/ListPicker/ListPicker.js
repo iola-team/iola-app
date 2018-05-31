@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
-import { includes, filter, isFunction, isUndefined } from 'lodash';
+import { includes, filter, isFunction, isUndefined, without, noop } from 'lodash';
 import {
   TouchableOpacity,
   StyleSheet,
@@ -75,53 +75,88 @@ const itemShape = PropTypes.shape({
 })
 export default class ListPicker extends PureComponent {
   static propTypes = {
+    value: PropTypes.arrayOf(valueShape),
+    options: PropTypes.arrayOf(itemShape).isRequired,
+    multiple: PropTypes.bool,
+
     isVisible: PropTypes.bool,
     label: PropTypes.string.isRequired,
     children: childrenShape,
-    options: PropTypes.arrayOf(itemShape).isRequired,
-    value: PropTypes.arrayOf(valueShape),
-    onSelect: PropTypes.func,
+
+    onChange: PropTypes.func,
     onHide: PropTypes.func,
     onShow: PropTypes.func,
+    onSwipe: PropTypes.func,
+    onDone: PropTypes.func,
+    onCancel: PropTypes.func,
+    onItemPress: PropTypes.func,
   }
 
   static defaultProps = {
     isVisible: undefined,
     value: [],
-    onSelect: () => null,
-    onHide: () => null,
-    onShow: () => null,
+    multiple: false,
+
+    onChange: noop,
+    onItemPress: noop,
+    onHide: noop,
+    onShow: noop,
+    onSwipe: noop,
+    onDone: noop,
+    onCancel: noop,
   }
 
   static getDerivedStateFromProps(props, state) {
     return {
+      value: props.value,
       isVisible: isUndefined(props.isVisible) ? state.isVisible : props.isVisible,
     }
   }
 
   state = {
     isVisible: false,
+    value: null,
   };
 
   show = () => {
+    const { value, isVisible } = this.props;
+
     this.setState({
-      isVisible: true,
+      value,
+      isVisible: isUndefined(isVisible) ? true : isVisible,
     });
   };
 
   hide = () => {
+    const { isVisible } = this.props;
+
     this.setState({
-      isVisible: false,
+      isVisible: isUndefined(isVisible) ? false : isVisible,
     });
   };
 
-  onItemPress = (item) => {
-    this.props.onSelect(item.value);
+  action = (handler, preHandler = noop) => () => {
+    preHandler();
+    this.props[handler](this.state.value);
+  };
+
+  onItemPress = ({ value }) => {
+    const { value: values } = this.state;
+    const newValues = this.props.multiple
+      ? values.includes(value) ? without(values, value) : [
+          ...values,
+          value,
+        ]
+      : [ value ];
+
+    this.setState({
+      value: newValues,
+    }, this.action('onChange', this.action('onItemPress')));
   };
 
   renderRow = (item) => {
     const { label, value, selected } = item;
-    const { styleSheet: styles, value: selectedValues } = this.props;
+    const { styleSheet: styles } = this.props;
 
     return (
       <ListItem
@@ -144,11 +179,10 @@ export default class ListPicker extends PureComponent {
   }
 
   renderModal() {
-    const { isVisible } = this.state;
+    const { isVisible, value } = this.state;
     const {
       styleSheet: styles,
       label,
-      value,
       options,
       onHide,
       onShow,
@@ -167,9 +201,9 @@ export default class ListPicker extends PureComponent {
         backdropOpacity={styles.backdrop.opacity}
         swipeDirection="down"
 
-        onModalHide={onHide}
-        onModalShow={onShow}
-        onSwipe={this.hide}
+        onModalHide={this.action('onHide')}
+        onModalShow={this.action('onShow')}
+        onSwipe={this.action('onSwipe', this.hide)}
         onBackdropPress={this.hide}
         onBackButtonPress={this.hide}
       >
@@ -180,7 +214,7 @@ export default class ListPicker extends PureComponent {
             padder
           >
             <Text>{label}</Text>
-            <TouchableOpacity onPress={this.hide}>
+            <TouchableOpacity onPress={this.action('onDone', this.hide)}>
               <Text style={styles.headerButtonText}>Done</Text>
             </TouchableOpacity>
           </View>

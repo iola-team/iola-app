@@ -33,7 +33,7 @@ const DatePickerWithState = compose(
   withStateHandlers({
     value: new Date('March 7, 1986 00:00:00'),
   }, {
-    onSelect: () => value => ({ value }),
+    onChange: () => value => ({ value }),
   }),
 )(DatePicker);
 

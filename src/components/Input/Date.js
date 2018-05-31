@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Moment from 'react-moment';
 import { TouchableOpacity } from 'react-native';
 import {
   Text,
@@ -16,6 +17,12 @@ export default class DateInput extends Component {
     this.setState({ isPickerVisible: true });
   };
 
+  onDone = value => {
+    this.hidePicker();
+
+    this.props.onChange(value);
+  }
+
   hidePicker = () => {
     this.setState({ isPickerVisible: false });
   };
@@ -23,6 +30,7 @@ export default class DateInput extends Component {
   render() {
     const { isPickerVisible } = this.state;
     const {
+      value,
       minDate,
       maxDate,
       label,
@@ -36,17 +44,20 @@ export default class DateInput extends Component {
         {...props}
       >
         <TouchableOpacity onPress={this.showPicker}>
-          <Text note>
-            {placeholder}
+          <Text note={!value}>
+            {value ? (
+              <Moment format="MMMM D, YYYY">{value}</Moment>
+            ): placeholder}
           </Text>
         </TouchableOpacity>
 
         <DatePicker
           isVisible={isPickerVisible}
+          value={value}
           label={label}
           minDate={minDate}
           maxDate={maxDate}
-          onDone={this.hidePicker}
+          onDone={this.onDone}
         />
       </InputItem>
     );

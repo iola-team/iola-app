@@ -15,6 +15,11 @@ import { withStyleSheet as styleSheet } from 'theme/index';
 
 const getDays = date => range(1, moment(date).daysInMonth() + 1);
 
+const childrenShape = PropTypes.oneOfType([
+  PropTypes.func,
+  PropTypes.element,
+]);
+
 @styleSheet('Sparkle.DatePicker', {
   root: {
 
@@ -64,8 +69,9 @@ export default class DatePicker extends Component {
 
     isVisible: PropTypes.bool,
     label: PropTypes.string.isRequired,
+    children: childrenShape,
 
-    onSelect: PropTypes.func,
+    onChange: PropTypes.func,
     onHide: PropTypes.func,
     onShow: PropTypes.func,
     onSwipe: PropTypes.func,
@@ -79,7 +85,7 @@ export default class DatePicker extends Component {
 
     isVisible: undefined,
 
-    onSelect: noop,
+    onChange: noop,
     onHide: noop,
     onShow: noop,
     onSwipe: noop,
@@ -131,9 +137,9 @@ export default class DatePicker extends Component {
     this.props[handler](this.state.value);
   };
 
-  onSelect = part => ({ data, position }) => {
+  onChange = part => ({ data, position }) => {
     const { wheels, value } = this.state;
-    const { maxDate, onSelect } = this.props;
+    const { maxDate, onChange } = this.props;
     const prevValue = value || maxDate;
     const newValue = new Date(prevValue.getTime());
 
@@ -160,7 +166,7 @@ export default class DatePicker extends Component {
 
     this.setState({
       value: newValue,
-    }, () => onSelect(newValue));
+    }, () => onChange(newValue));
   }
 
   renderModal() {
@@ -217,7 +223,7 @@ export default class DatePicker extends Component {
           >
             <WheelPicker
               {...wheelProps}
-              onItemSelected={this.onSelect('month')}
+              onItemSelected={this.onChange('month')}
               data={wheels.month}
               selectedItemPosition={value.getMonth()}
             />
@@ -225,13 +231,13 @@ export default class DatePicker extends Component {
             <WheelPicker
               {...wheelProps}
               data={wheels.day}
-              onItemSelected={this.onSelect('day')}
+              onItemSelected={this.onChange('day')}
               selectedItemPosition={wheels.day.indexOf(value.getDate())}
             />
 
             <WheelPicker
               {...wheelProps}
-              onItemSelected={this.onSelect('year')}
+              onItemSelected={this.onChange('year')}
               data={wheels.year}
               selectedItemPosition={wheels.year.indexOf(value.getFullYear())}
             />

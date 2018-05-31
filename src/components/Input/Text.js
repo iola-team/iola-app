@@ -24,6 +24,9 @@ export default class TextInput extends Component {
 
   render() {
     const {
+      value,
+      onChange,
+
       secure,
       multiline,
       placeholder,
@@ -37,6 +40,8 @@ export default class TextInput extends Component {
         {
           multiline ? this.renderMultilineInput() : (
             <Input
+              onChangeText={onChange}
+              value={value}
               placeholder={placeholder}
               placeholderTextColor={'#a7a7a7'}
               secureTextEntry={secure}

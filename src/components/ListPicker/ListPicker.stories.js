@@ -1,6 +1,6 @@
 import React from 'react';
 import { without, includes, union } from 'lodash';
-import { withKnobs, boolean } from '@storybook/addon-knobs/react';
+import { withKnobs, boolean, array } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
@@ -16,37 +16,23 @@ stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator({ padder: true }));
 
 const options = [
-  { label: 'Tacos', value: 1 },
-  { label: 'Kebab', value: 2 },
-  { label: 'Pizza', value: 3 },
-  { label: 'Pasta', value: 4 },
-  { label: 'Avocados', value: 5 },
-  { label: 'Tacos 2', value: 6 },
-  { label: 'Kebab 2', value: 7 },
-  { label: 'Pizza 2', value: 8 },
-  { label: 'Pasta 2', value: 9 },
-  { label: 'Avocados 2', value: 10 },
+  { label: 'Tacos', value: '1' },
+  { label: 'Kebab', value: '2' },
+  { label: 'Pizza', value: '3' },
+  { label: 'Pasta', value: '4' },
+  { label: 'Avocados', value: '5' },
+  { label: 'Tacos 2', value: '6' },
+  { label: 'Kebab 2', value: '7' },
+  { label: 'Pizza 2', value: '8' },
+  { label: 'Pasta 2', value: '9' },
+  { label: 'Avocados 2', value: '10' },
 ];
-
-const Multiselect = compose(
-  withStateHandlers({
-    value: [],
-  }, {
-    onSelect: ({ value: values }) => (value) => {
-      return {
-        value: includes(values, value)
-          ? without(values, value)
-          : union(values, [value]),
-      };
-    },
-  }),
-)(ListPicker);
 
 const Select = compose(
   withStateHandlers({
     value: [],
   }, {
-    onSelect: ({ value: values }) => value => ({ value: [value] }),
+    onChange: ({ value: values }) => value => ({ value }),
   }),
 )(ListPicker);
 
@@ -64,15 +50,16 @@ const renderChildren = (show, selectedOptions) => (
 
 // Stories
 stories.add('Static', () => {
-  const isVisible = boolean('Is visible', false);
+  const value = array('Selected', ['2', '5']);
 
   return (
     <ListPicker
-      isVisible={isVisible}
       label={'Favourite food'}
       options={options}
-      value={[3, 5]}
-      onSelect={action('onSelect')}
+      value={value}
+      onChange={action('onChange')}
+      onCancel={action('onCancel')}
+      onDone={action('onDone')}
       onShow={action('onShow')}
       onHide={action('onHide')}
     >
@@ -83,13 +70,18 @@ stories.add('Static', () => {
 
 stories.add('Multi select wrapper', () => {
   return (
-    <Multiselect
+    <Select
       label={'Multi select'}
+      multiple={true}
       invitation={'Choose multiple'}
       options={options}
+      onCancel={action('onCancel')}
+      onDone={action('onDone')}
+      onShow={action('onShow')}
+      onHide={action('onHide')}
     >
       {renderChildren}
-    </Multiselect>
+    </Select>
   );
 });
 
@@ -99,8 +91,34 @@ stories.add('Single select wrapper', () => {
       label={'Single select'}
       invitation={'Choose one'}
       options={options}
+      onCancel={action('onCancel')}
+      onDone={action('onDone')}
+      onShow={action('onShow')}
+      onHide={action('onHide')}
     >
       {renderChildren}
     </Select>
+  );
+});
+
+stories.add('Controlled with isVisible prop', () => {
+  const value = array('Selected', ['2', '5']);
+  const isVisible = boolean('isVisible', false);
+
+  return (
+    <ListPicker
+      multiple
+      value={value}
+      isVisible={isVisible}
+      label={'Single select'}
+      invitation={'Choose one'}
+      options={options}
+      onCancel={action('onCancel')}
+      onDone={action('onDone')}
+      onShow={action('onShow')}
+      onHide={action('onHide')}
+    >
+      {renderChildren}
+    </ListPicker>
   );
 });

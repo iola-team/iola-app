@@ -8,6 +8,8 @@ import InputItem from './Input';
 export default class SwitchInput extends Component {
   render() {
     const {
+      value,
+      onChange,
       ...props
     } = this.props;
 
@@ -15,7 +17,7 @@ export default class SwitchInput extends Component {
       <InputItem
         {...props}
       >
-        <Switch />
+        <Switch value={value} onValueChange={onChange} />
       </InputItem>
     );
   }

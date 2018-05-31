@@ -2,6 +2,7 @@ import React from 'react';
 import { number, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
+import { compose, withStateHandlers } from 'recompose';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
 import { Card, CardItem, Text, View, Form } from 'native-base';
@@ -25,6 +26,15 @@ const Section = ({ children }) => (
   </Card>
 );
 
+const windValue = compose(
+  withStateHandlers(({ defaultValue = null }) => ({
+    value: defaultValue,
+  }), {
+    onChange: () => value => ({ value }),
+  }),
+);
+
+const StatefulInput = windValue(Input);
 
 // Stories
 stories.add('Select', () => {
@@ -62,7 +72,7 @@ stories.add('Multi-select', () => {
 stories.add('Text', () => {
   return (
     <Section>
-      <Input
+      <StatefulInput defaultValue={"Default value"}
         type="text"
         label={"Real name"}
         placeholder={'Enter real name'}
@@ -74,7 +84,7 @@ stories.add('Text', () => {
 stories.add('Password', () => {
   return (
     <Section>
-      <Input
+      <StatefulInput defaultValue={"123"}
         type="text"
         secure
         label={'Password'}
@@ -100,7 +110,7 @@ stories.add('Textarea', () => {
 stories.add('Switch', () => {
   return (
     <Section>
-      <Input
+      <StatefulInput defaultValue={false}
         type="switch"
         label={'Switch'}
       />
@@ -111,7 +121,7 @@ stories.add('Switch', () => {
 stories.add('Date', () => {
   return (
     <Section>
-      <Input
+      <StatefulInput defaultValue={new Date('March 7, 1986 00:00:00')}
         type="date"
         label={'Date'}
         minDate={new Date('1980')}
