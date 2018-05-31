@@ -127,6 +127,8 @@ export default class TextPicker extends PureComponent {
     });
   };
 
+  onKeyboardHide = () => this.action('onClose', this.hide)();
+
   action = (handler, preHandler = noop) => () => {
     preHandler();
     this.props[handler](this.state.value);
@@ -137,6 +139,14 @@ export default class TextPicker extends PureComponent {
       value,
     }, this.action('onChange'));
   };
+
+  componentDidMount() {
+    Keyboard.addListener('keyboardDidHide', this.onKeyboardHide);
+  }
+
+  componentWillUnmount() {
+    Keyboard.removeListener('keyboardDidHide', this.onKeyboardHide);
+  }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (!this.state.isVisible && prevState.isVisible) { // Dismiss
