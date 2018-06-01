@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Moment from 'react-moment';
+import { isUndefined } from 'lodash';
 import { TouchableOpacity } from 'react-native';
 import {
   Text,
@@ -48,6 +49,7 @@ export default class DateInput extends Component {
     return (
       <InputItem
         label={label}
+        isLoading={isUndefined(value)}
         {...props}
       >
         <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>

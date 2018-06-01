@@ -240,6 +240,28 @@ const users = [
       values,
     },
   },
+
+  {
+    id: 'User:2',
+    profile: {
+      accountType: {
+        id: 'AccountType:1',
+        fields,
+      },
+      values: [],
+    },
+  },
+
+  {
+    id: 'User:3',
+    profile: {
+      accountType: {
+        id: 'AccountType:1',
+        fields,
+      },
+      values: () => delay(1000, values),
+    },
+  },
 ];
 
 const dataStore = {
@@ -413,23 +435,51 @@ const valuesQuery = gql`
   ${FieldForm.fragments.value}
 `;
 
+const WithData = ({ userId: id }) => (
+  <Query query={fieldsQuery} variables={{ id }}>
+    {({ data: fieldsData, loading }) => !loading && (
+      <Query query={valuesQuery} variables={{ id }}>
+        {({ data: valuesData, loading }) => (
+          <FieldForm
+            fields={fieldsData.user.profile.accountType.fields}
+            values={loading ? undefined : valuesData.user.profile.values}
+          />
+        )}
+      </Query>
+    )}
+  </Query>
+)
+
 // Stories
-stories.add('Default', () => {
-  const something = number('Some number', 0);
+stories.add('With filled data', () => {
+  return (
+    <WithData userId={'User:1'} />
+  );
+});
+
+stories.add('No data', () => {
+  return (
+    <WithData userId={'User:2'} />
+  );
+});
+
+stories.add('Loading data', () => {
   const id = 'User:1';
 
   return (
-    <Query query={fieldsQuery} variables={{ id }}>
+    <Query query={fieldsQuery} variables={{ id }} pollInterval={1000}>
       {({ data: fieldsData, loading }) => !loading && (
-        <Query query={valuesQuery} variables={{ id }}>
-          {({ data: valuesData, loading }) => (
-            <FieldForm
-              fields={fieldsData.user.profile.accountType.fields}
-              values={loading ? [] : valuesData.user.profile.values}
-            />
-          )}
-        </Query>
+        <FieldForm
+          fields={fieldsData.user.profile.accountType.fields}
+          values={undefined}
+        />
       )}
     </Query>
+  );
+});
+
+stories.add('With async data', () => {
+  return (
+    <WithData userId={'User:3'} />
   );
 });

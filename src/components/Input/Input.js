@@ -10,6 +10,7 @@ import {
   Body,
   Right,
   Icon,
+  Spinner,
 } from 'native-base';
 
 import { withStyle } from 'theme';
@@ -35,7 +36,11 @@ import { withStyle } from 'theme';
 
   'NativeBase.Right': {
     flexGrow: 0,
-    flexBasis: 30
+    flexBasis: 30,
+
+    'NativeBase.Spinner': {
+      height: 20,
+    }
   },
 
   minHeight: 50,
@@ -46,9 +51,15 @@ import { withStyle } from 'theme';
 export default class Input extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool,
   };
+
+  static defaultProps = {
+    isLoading: false,
+  };
+
   render() {
-    const { label, style, children, ...props } = this.props;
+    const { label, isLoading, style, children } = this.props;
 
     return(
       <View style={style}>
@@ -57,9 +68,15 @@ export default class Input extends Component {
         </Label>
 
         <Body>
-          {children}
+          {!isLoading ? children : null}
         </Body>
-        <Right />
+        <Right>
+          {
+            isLoading && (
+              <Spinner size={20} />
+            )
+          }
+        </Right>
       </View>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { isUndefined } from 'lodash';
 import {
   Input,
   Text,
@@ -78,6 +79,7 @@ export default class TextInput extends Component {
 
     return (
       <InputItem
+        isLoading={isUndefined(value)}
         {...props}
       >
         {

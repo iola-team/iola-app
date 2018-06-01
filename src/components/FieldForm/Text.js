@@ -44,12 +44,11 @@ export default class FieldText extends Component {
 
   render() {
     const { field, value, ...props } = this.props;
-    const inputValue = value && value.data.text;
 
     return (
       <InputItem
         type="text"
-        value={inputValue}
+        value={value && value.data.text}
         placeholder="Enter here..."
         label={field.label}
         {...field.configs}

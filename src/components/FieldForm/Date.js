@@ -42,13 +42,12 @@ export default class FieldDate extends Component {
 
   render() {
     const { field, value, ...props } = this.props;
-    const inputValue = value && value.data.date;
 
     return (
       <InputItem
         type="date"
-        value={inputValue}
-        placeholder="Not specified"
+        value={value && value.data.date}
+        placeholder={'Not specified'}
         label={field.label}
         {...field.configs}
         onChange={(value) => {

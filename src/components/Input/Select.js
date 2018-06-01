@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { find } from 'lodash';
+import { find, isUndefined } from 'lodash';
 import {
   View,
   TouchableOpacity,
@@ -59,6 +59,7 @@ export default class Select extends Component {
       <Fragment>
         <Input
           label={label}
+          isLoading={isUndefined(rawValue)}
           {...props}
         >
           <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>

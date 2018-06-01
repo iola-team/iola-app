@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { groupBy, map, first } from 'lodash';
+import { groupBy, map, first, isUndefined } from 'lodash';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -66,8 +66,8 @@ export default class FieldForm extends Component {
   };
 
   render() {
-    const { style, fields: profileFields, values = [] } = this.props;
-    const valuesByField = groupBy(values, 'field.id');
+    const { style, fields: profileFields, values } = this.props;
+    const valuesByField = groupBy(values || [], 'field.id');
     const sections = map(
       groupBy(profileFields, 'section.id'),
       fields => ({
@@ -83,7 +83,11 @@ export default class FieldForm extends Component {
             <Section key={id} label={label}>
               {
                 fields.map(field => (
-                  <Field key={field.id} field={field} value={first(valuesByField[field.id])} />
+                  <Field
+                    key={field.id}
+                    field={field}
+                    value={values && (first(valuesByField[field.id]) || null)}
+                  />
                 ))
               }
             </Section>

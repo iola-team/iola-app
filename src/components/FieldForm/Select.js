@@ -45,12 +45,11 @@ export default class FieldSelect extends Component {
 
   render() {
     const { field, value, ...props } = this.props;
-    const inputValue = value && value.data.selectedOptions;
 
     return (
       <InputItem
         type="select"
-        value={inputValue}
+        value={value && value.data.selectedOptions}
         placeholder="Not specified"
         label={field.label}
         {...field.configs}

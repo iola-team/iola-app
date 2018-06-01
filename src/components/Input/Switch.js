@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { isUndefined } from 'lodash';
 import {
   Switch,
 } from 'native-base';
@@ -15,6 +16,7 @@ export default class SwitchInput extends Component {
 
     return (
       <InputItem
+        isLoading={isUndefined(value)}
         {...props}
       >
         <Switch value={value} onValueChange={onChange} />

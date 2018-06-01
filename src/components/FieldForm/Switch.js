@@ -36,12 +36,11 @@ export default class FieldDate extends Component {
 
   render() {
     const { field, value, ...props } = this.props;
-    const inputValue = value && value.data.isSwitched;
 
     return (
       <InputItem
         type="switch"
-        value={inputValue}
+        value={value && value.data.isSwitched}
         label={field.label}
         {...field.configs}
         onChange={(value) => {
