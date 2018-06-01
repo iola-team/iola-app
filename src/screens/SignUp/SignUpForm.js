@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import yup from 'yup';
-import { Button, Form, RNContent, Text } from 'native-base';
+import { Button, Form, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import { graphql, ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { debounce, find, get, isEmpty } from 'lodash';
+import { debounce, get } from 'lodash';
 
 import TextInputItem from '../../components/Form/TextInputItem';
 

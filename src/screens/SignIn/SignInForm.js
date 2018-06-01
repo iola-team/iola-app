@@ -7,6 +7,9 @@ import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 import TextInputItem from '../../components/Form/TextInputItem';
 
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+
 const ForgotPasswordButton = connectToStyleSheet('forgotPasswordButton', Button);
 const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
 const SubmitButton = connectToStyleSheet('submitButton', Button);
@@ -33,42 +36,61 @@ class SignInForm extends Component {
     onForgotPasswordPress: propTypes.func.isRequired,
   };
 
+  isAuthIsValid(token) {
+    const { isSubmitting, submitCount } = this.props;
+
+    return !isSubmitting && !!submitCount && !token;
+  }
+
   render() {
-    const { onForgotPasswordPress, handleSubmit, isValid } = this.props;
+    const { onForgotPasswordPress, handleSubmit, isValid, status } = this.props;
 
     return (
-      <Form>
-        <TextInputItem
-          name="login"
-          placeholder="Email or login"
-          customStyle={{
-            marginBottom: 0,
-            borderBottomLeftRadius: 0,
-            borderBottomRightRadius: 0,
-            borderBottomWidth: 0,
-          }}
-          {...this.props}
-        />
+      <Query query={gql`
+        {
+          auth @client {
+            token
+          }
+        }
+      `}>
+        {({ data: { auth: { token } } }) => (
+          <Form>
+            <Text>{JSON.stringify(status)}</Text>
+            <TextInputItem
+              name="login"
+              placeholder="Email or login"
+              customStyle={{
+                marginBottom: 0,
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                borderBottomWidth: 0,
+              }}
+              error={this.isAuthIsValid(token)}
+              {...this.props}
+            />
 
-        <TextInputItem
-          name="password"
-          placeholder="Password"
-          infoText="At least 4 characters"
-          customStyle={{
-            borderTopLeftRadius: 0,
-            borderTopRightRadius: 0,
-          }}
-          secureTextEntry
-          {...this.props}
-        />
-        <ForgotPasswordButton transparent small onPress={() => onForgotPasswordPress()}>
-          <ForgotPasswordText>Forgot password?</ForgotPasswordText>
-        </ForgotPasswordButton>
+            <TextInputItem
+              name="password"
+              placeholder="Password"
+              infoText="At least 4 characters"
+              customStyle={{
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+              }}
+              error={this.isAuthIsValid(token)}
+              secureTextEntry
+              {...this.props}
+            />
+            <ForgotPasswordButton transparent small onPress={() => onForgotPasswordPress()}>
+              <ForgotPasswordText>Forgot password?</ForgotPasswordText>
+            </ForgotPasswordButton>
 
-        <SubmitButton block onPress={handleSubmit} disabled={!isValid}>
-          <Text>Submit</Text>
-        </SubmitButton>
-      </Form>
+            <SubmitButton block onPress={handleSubmit} disabled={!isValid}>
+              <Text>Submit</Text>
+            </SubmitButton>
+          </Form>
+        )}
+      </Query>
     );
   }
 }
@@ -80,6 +102,10 @@ const validationSchema = yup.object().shape({
 
 export default withFormik({
   mapPropsToValues: props => ({ login: 'demo5@oxpro.or', password: 'demo1986' }),
-  handleSubmit: (values, { props }) => props.onSubmit(values),
+  handleSubmit: (values, { props, setSubmitting, status, setStatus }) => props.onSubmit(values, {
+    setSubmitting,
+    status,
+    setStatus,
+  }),
   validationSchema,
 })(SignInForm);

@@ -59,19 +59,24 @@ class TextInputItem extends Component {
     placeholder: PropTypes.string.isRequired,
     values: PropTypes.object,
     touched: PropTypes.object,
+    error: PropTypes.bool,
     errors: PropTypes.object,
+    secondaryErrorText: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     customStyle: PropTypes.object,
     setFieldTouched: PropTypes.func.isRequired,
     setFieldValue: PropTypes.func.isRequired,
+    status: PropTypes.any,
+    setStatus: PropTypes.func.isRequired,
     onChangeText: PropTypes.func,
-    secondaryErrorText: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     secureTextEntry: PropTypes.bool,
     infoText: PropTypes.string,
   };
 
   static defaultProps = {
+    error: false,
     customStyle: {},
     secureTextEntry: false,
+    status: {},
     infoText: '',
   };
 
@@ -81,20 +86,27 @@ class TextInputItem extends Component {
       placeholder,
       values,
       touched,
+      error,
       errors,
+      secondaryErrorText,
       customStyle,
       setFieldTouched,
       setFieldValue,
+      status,
+      setStatus,
       onChangeText,
-      secondaryErrorText,
       secureTextEntry,
       infoText,
     } = this.props;
-    const onChangeTextDefault = text => setFieldValue(name, text);
     const errorText = touched[name] && errors[name] ? errors[name] : secondaryErrorText;
-    const isValid = !errorText;
-    const FieldError = isValid ? null : <ErrorText>{errorText}</ErrorText>;
+    const isValid = !error && !errorText;
+    const FieldError = errorText ? <ErrorText>{errorText}</ErrorText> : null;
     const FieldInfo = touched[name] ? <CheckMark /> : <InfoText>{infoText}</InfoText>;
+    const onChange = (text) => {
+      setStatus({ ...status, changed: true });
+
+      onChangeText ? onChangeText(text) : setFieldValue(name, text);
+    };
 
     return (
       <FormItem customStyle={customStyle} isValid={isValid}>
@@ -102,7 +114,7 @@ class TextInputItem extends Component {
           placeholder={placeholder}
           secureTextEntry={secureTextEntry}
           value={values[name]}
-          onChangeText={onChangeText ? onChangeText : onChangeTextDefault}
+          onChangeText={onChange}
           onBlur={() => setFieldTouched(name)}
           isValid={isValid}
         />

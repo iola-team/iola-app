@@ -45,7 +45,7 @@
     "apollo-link-state": "^0.4.1",
     "apollo-upload-client": "^8.0.0",
     "apollo-utilities": "^1.0.11",
-    "formik": "^0.11.11",
+    "formik": "1.0.0-alpha.5",
     "graphql": "^0.13.2",
     "graphql-anywhere": "^4.1.8",
     "graphql-tag": "^2.8.0",
