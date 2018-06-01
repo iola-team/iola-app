@@ -10,6 +10,7 @@ import {
 } from 'native-base';
 
 import Section from './Section';
+import Field from './Field';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
 
 const userFragment = gql`
@@ -26,16 +27,14 @@ const userFragment = gql`
             id
             label
           }
-          configs {
-            ...on ProfileFieldTextConfigs {
-              minLength
-              maxLength
-            }
-          }
+          
+          ...Field_field
         }
       }
     }
   }
+  
+  ${Field.fragments.field}
 `;
 
 const Root = connectToStyleSheet('root', View);
@@ -54,10 +53,6 @@ export default class FieldForm extends Component {
     user: fragmentProp(userFragment).isRequired,
   };
 
-  static defaultProps = {
-
-  };
-
   render() {
     const { style, user: { profile } } = this.props;
     const sections = map(
@@ -74,8 +69,8 @@ export default class FieldForm extends Component {
           sections.map(({ id, label, fields }) => (
             <Section key={id} label={label}>
               {
-                fields.map(({ id, label }) => (
-                  <Text key={id}>{label}</Text>
+                fields.map(field => (
+                  <Field key={field.id} field={field} />
                 ))
               }
             </Section>

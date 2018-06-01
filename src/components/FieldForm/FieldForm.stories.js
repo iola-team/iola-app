@@ -44,6 +44,8 @@ const fields = [
     section: find(sections, { id: 'Section:1'}),
     configs: {
       presentation: 'TEXT',
+      multiline: null,
+      secure: null,
       regexp: null,
       minLength: 3,
       maxLength: 50,
@@ -53,11 +55,13 @@ const fields = [
     id: 'Field:2',
     name: 'password',
     label: 'Password',
-    presentation: 'PASSWORD',
+    presentation: 'TEXT',
     isRequired: true,
     section: find(sections, { id: 'Section:1'}),
     configs: {
-      presentation: 'PASSWORD',
+      presentation: 'TEXT',
+      multiline: null,
+      secure: true,
       regexp: null,
       minLength: 3,
       maxLength: 50,
@@ -72,6 +76,8 @@ const fields = [
     section: find(sections, { id: 'Section:2'}),
     configs: {
       presentation: 'TEXT',
+      multiline: null,
+      secure: null,
       regexp: null,
       minLength: 3,
       maxLength: 50,
@@ -81,12 +87,13 @@ const fields = [
     id: 'Field:4',
     name: 'gender',
     label: 'Gender',
-    presentation: 'SINGLE_CHOICE',
+    presentation: 'SELECT',
     isRequired: true,
     section: find(sections, { id: 'Section:2'}),
     configs: {
-      presentation: 'SINGLE_CHOICE',
-      items: [
+      presentation: 'SELECT',
+      multiple: null,
+      options: [
         { label: 'Female', value: '1' },
         { label: 'Male', value: '2' },
       ]
@@ -96,17 +103,18 @@ const fields = [
     id: 'Field:5',
     name: 'food',
     label: 'Favourite food',
-    presentation: 'MULTI_CHOICE',
+    presentation: 'SELECT',
     isRequired: true,
     section: find(sections, { id: 'Section:2'}),
     configs: {
-      presentation: 'MULTI_CHOICE',
-      items: [
+      presentation: 'SELECT',
+      multiple: true,
+      options: [
         { label: 'Tacos', value: '1' },
         { label: 'Kebab', value: '2' },
-        { label: 'Pizza', value: '1' },
-        { label: 'Pasta', value: '2' },
-        { label: 'Avocados', value: '1' },
+        { label: 'Pizza', value: '3' },
+        { label: 'Pasta', value: '4' },
+        { label: 'Avocados', value: '5' },
       ]
     },
   },
@@ -114,14 +122,42 @@ const fields = [
     id: 'Field:6',
     name: 'description',
     label: 'Description',
-    presentation: 'TEXTAREA',
+    presentation: 'TEXT',
     isRequired: true,
     section: find(sections, { id: 'Section:3'}),
     configs: {
-      presentation: 'TEXTAREA',
+      presentation: 'TEXT',
+      multiline: true,
+      secure: null,
       regexp: null,
       minLength: 0,
       maxLength: 200,
+    },
+  },
+
+  {
+    id: 'Field:7',
+    name: 'birthdate',
+    label: 'Birthdate',
+    presentation: 'DATE',
+    isRequired: true,
+    section: find(sections, { id: 'Section:3'}),
+    configs: {
+      presentation: 'DATE',
+      minDate: new Date('1980'),
+      maxDate: new Date(),
+    },
+  },
+
+  {
+    id: 'Field:8',
+    name: 'tos',
+    label: 'I agree',
+    presentation: 'SWITCH',
+    isRequired: true,
+    section: find(sections, { id: 'Section:3'}),
+    configs: {
+      presentation: 'SWITCH',
     },
   },
 ];
@@ -168,12 +204,8 @@ const typeDefs = gql`
 
   enum ProfileFieldPresentation {
     TEXT
-    TEXTAREA
-    PASSWORD
-    URL
     DATE
-    SINGLE_CHOICE
-    MULTI_CHOICE
+    SELECT
     SWITCH
     RANGE
   }
@@ -184,18 +216,21 @@ const typeDefs = gql`
   }
 
   type ProfileFieldTextConfigs {
+    multiline: Boolean
+    secure: Boolean
     regexp: String
     minLength: Int
     maxLength: Int
   }
 
-  type ProfileFieldListItem {
+  type ProfileFieldSelectOption {
     label: String!
     value: String!
   }
 
-  type ProfileFieldListConfigs {
-    items: [ProfileFieldListItem!]!
+  type ProfileFieldSelectConfigs {
+    multiple: Boolean
+    options: [ProfileFieldSelectOption!]!
   }
 
   type ProfileFieldDateConfigs {
@@ -203,7 +238,11 @@ const typeDefs = gql`
     maxDate: Date!
   }
 
-  union ProfileFieldConfigs = ProfileFieldTextConfigs | ProfileFieldListConfigs | ProfileFieldDateConfigs
+  type ProfileFieldDefaultConfigs {
+    presentation: ProfileFieldPresentation!
+  }
+
+  union ProfileFieldConfigs = ProfileFieldTextConfigs | ProfileFieldSelectConfigs | ProfileFieldDateConfigs | ProfileFieldDefaultConfigs
 
   type ProfileField {
     id: ID!
@@ -224,12 +263,10 @@ const resolvers = {
   ProfileFieldConfigs: {
     __resolveType: ({ presentation }) =>({
       TEXT: 'ProfileFieldTextConfigs',
-      TEXTAREA: 'ProfileFieldTextConfigs',
-      PASSWORD: 'ProfileFieldTextConfigs',
-      URL: 'ProfileFieldTextConfigs',
-      SINGLE_CHOICE: 'ProfileFieldListConfigs',
-      MULTI_CHOICE: 'ProfileFieldListConfigs',
+      SELECT: 'ProfileFieldSelectConfigs',
       DATE: 'ProfileFieldDateConfigs',
+      SWITCH: 'ProfileFieldDefaultConfigs',
+      RANGE: 'ProfileFieldDefaultConfigs',
     })[presentation],
   },
 };

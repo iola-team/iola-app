@@ -20,7 +20,7 @@ export default class Section extends Component {
           <Text>{label}</Text>
         </CardItem>
 
-        <CardItem cardBody highlight>
+        <CardItem cardBody highlight horizontalPadder>
           {children}
         </CardItem>
       </Card>

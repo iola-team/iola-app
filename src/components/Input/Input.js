@@ -19,7 +19,8 @@ import { withStyle } from 'theme';
     flex: 1,
     color: '#585A61',
     fontWeight: '600',
-    lineHeight: 50,
+    paddingRight: 5,
+    flexWrap: 'wrap',
   },
 
   'NativeBase.Body': {
@@ -37,6 +38,7 @@ import { withStyle } from 'theme';
     flexBasis: 30
   },
 
+  minHeight: 50,
   flex: 1,
   flexDirection: 'row',
   alignItems: 'center',

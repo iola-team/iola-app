@@ -204,8 +204,8 @@ export default class ListPicker extends PureComponent {
         onModalHide={this.action('onHide')}
         onModalShow={this.action('onShow')}
         onSwipe={this.action('onSwipe', this.hide)}
-        onBackdropPress={this.hide}
-        onBackButtonPress={this.hide}
+        onBackdropPress={this.action('onClose', this.hide)}
+        onBackButtonPress={this.action('onClose', this.hide)}
       >
         <View>
           <View
