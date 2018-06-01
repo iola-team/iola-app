@@ -18,23 +18,36 @@ const fieldFragment = gql`
   }
 `;
 
+const valueFragment = gql`
+  fragment FieldDate_value on ProfileFieldValue {
+    id
+    data {
+      ...on ProfileFieldDateValue {
+        date: value
+      }
+    }
+  }
+`;
+
 export default class FieldDate extends Component {
   static fragments = {
     field: fieldFragment,
+    value: valueFragment,
   };
 
   static propTypes = {
-    field: fragmentProp(fieldFragment).isRequired
+    field: fragmentProp(fieldFragment).isRequired,
+    value: fragmentProp(valueFragment),
   };
 
   render() {
-    const { field, ...props } = this.props;
-
-    console.log('Date', field);
+    const { field, value, ...props } = this.props;
+    const inputValue = value && value.data.date;
 
     return (
       <InputItem
         type="date"
+        value={inputValue}
         placeholder="Not specified"
         label={field.label}
         {...field.configs}

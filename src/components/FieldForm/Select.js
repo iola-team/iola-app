@@ -21,21 +21,36 @@ const fieldFragment = gql`
   }
 `;
 
+const valueFragment = gql`
+  fragment FieldSelect_value on ProfileFieldValue {
+    id
+    data {
+      ...on ProfileFieldSelectValue {
+        selectedOptions: value
+      }
+    }
+  }
+`;
+
 export default class FieldSelect extends Component {
   static fragments = {
     field: fieldFragment,
+    value: valueFragment,
   };
 
   static propTypes = {
-    field: fragmentProp(fieldFragment).isRequired
+    field: fragmentProp(fieldFragment).isRequired,
+    value: fragmentProp(valueFragment),
   };
 
   render() {
-    const { field, ...props } = this.props;
+    const { field, value, ...props } = this.props;
+    const inputValue = value && value.data.selectedOptions;
 
     return (
       <InputItem
         type="select"
+        value={inputValue}
         placeholder="Not specified"
         label={field.label}
         {...field.configs}

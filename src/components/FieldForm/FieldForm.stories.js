@@ -162,6 +162,73 @@ const fields = [
   },
 ];
 
+const values = [
+  {
+    id: 'Value:1',
+    field: find(fields, { id: 'Field:1'}),
+    data: {
+      presentation: 'TEXT',
+      value: 'rroman',
+    },
+  },
+  {
+    id: 'Value:2',
+    field: find(fields, { id: 'Field:2'}),
+    data: {
+      presentation: 'TEXT',
+      value: '1234',
+    },
+  },
+  {
+    id: 'Value:3',
+    field: find(fields, { id: 'Field:3'}),
+    data: {
+      presentation: 'TEXT',
+      value: 'Roman Banan',
+    },
+  },
+  {
+    id: 'Value:4',
+    field: find(fields, { id: 'Field:4'}),
+    data: {
+      presentation: 'SELECT',
+      value: ['1'],
+    },
+  },
+  {
+    id: 'Value:5',
+    field: find(fields, { id: 'Field:5'}),
+    data: {
+      presentation: 'SELECT',
+      value: ['2', '3'],
+    },
+  },
+  {
+    id: 'Value:6',
+    field: find(fields, { id: 'Field:6'}),
+    data: {
+      presentation: 'TEXT',
+      value: 'Roman is a good boy',
+    },
+  },
+  {
+    id: 'Value:7',
+    field: find(fields, { id: 'Field:7'}),
+    data: {
+      presentation: 'DATE',
+      value: new Date('1988'),
+    },
+  },
+  {
+    id: 'Value:8',
+    field: find(fields, { id: 'Field:8'}),
+    data: {
+      presentation: 'SWITCH',
+      value: true,
+    },
+  },
+];
+
 const users = [
   {
     id: 'User:1',
@@ -169,7 +236,8 @@ const users = [
       accountType: {
         id: 'AccountType:1',
         fields,
-      }
+      },
+      values,
     },
   },
 ];
@@ -195,6 +263,7 @@ const typeDefs = gql`
   
   type Profile {
     accountType: AccountType!
+    values: [ProfileFieldValue!]!
   }
 
   type AccountType {
@@ -253,6 +322,30 @@ const typeDefs = gql`
     section: ProfileFieldSection!
     configs: ProfileFieldConfigs
   }
+
+  type ProfileFieldTextValue {
+    value: String
+  }
+
+  type ProfileFieldSelectValue {
+    value: [String!]
+  }
+
+  type ProfileFieldDateValue {
+    value: Date
+  }
+
+  type ProfileFieldSwitchValue {
+    value: Boolean
+  }
+
+  union ProfileFieldValueData = ProfileFieldTextValue | ProfileFieldSelectValue | ProfileFieldDateValue | ProfileFieldSwitchValue
+
+  type ProfileFieldValue {
+    id: ID!
+    field: ProfileField!
+    data: ProfileFieldValueData
+  }
 `;
 
 const resolvers = {
@@ -266,36 +359,76 @@ const resolvers = {
       SELECT: 'ProfileFieldSelectConfigs',
       DATE: 'ProfileFieldDateConfigs',
       SWITCH: 'ProfileFieldDefaultConfigs',
-      RANGE: 'ProfileFieldDefaultConfigs',
+    })[presentation],
+  },
+
+  ProfileFieldValueData: {
+    __resolveType: ({ presentation }) =>({
+      TEXT: 'ProfileFieldTextValue',
+      SELECT: 'ProfileFieldSelectValue',
+      DATE: 'ProfileFieldDateValue',
+      SWITCH: 'ProfileFieldSwitchValue',
     })[presentation],
   },
 };
 
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
-const userQuery = gql`
-  query {
-    user: node(id: "User:1") {
+const fieldsQuery = gql`
+  query($id: ID!) {
+    user: node(id: $id) {
       id
-      ...FieldForm_user
+      ...on User {
+        profile {
+          accountType {
+            id
+            fields {
+              id
+              ...FieldForm_field
+            }
+          }
+        }
+      }
     }
   }
   
-  ${FieldForm.fragments.user}
+  ${FieldForm.fragments.field}
+`;
+
+const valuesQuery = gql`
+  query($id: ID!) {
+    user: node(id: $id) {
+      id
+      ...on User {
+        profile {
+          values {
+            id
+            ...FieldForm_value
+          }
+        }
+      }
+    }
+  }
+
+  ${FieldForm.fragments.value}
 `;
 
 // Stories
 stories.add('Default', () => {
   const something = number('Some number', 0);
+  const id = 'User:1';
 
   return (
-    <Query query={userQuery}>
-      {({ data, loading }) => !loading && (
-
-        <FieldForm
-          user={data.user}
-        />
-
+    <Query query={fieldsQuery} variables={{ id }}>
+      {({ data: fieldsData, loading }) => !loading && (
+        <Query query={valuesQuery} variables={{ id }}>
+          {({ data: valuesData, loading }) => (
+            <FieldForm
+              fields={fieldsData.user.profile.accountType.fields}
+              values={loading ? [] : valuesData.user.profile.values}
+            />
+          )}
+        </Query>
       )}
     </Query>
   );

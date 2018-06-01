@@ -32,21 +32,38 @@ const fieldFragment = gql`
   ${SwitchInput.fragments.field}
 `;
 
+const valueFragment = gql`
+  fragment Field_value on ProfileFieldValue {
+    id
+    ...FieldText_value
+    ...FieldSelect_value
+    ...FieldDate_value
+    ...FieldSwitch_value
+  }
+  
+  ${TextInput.fragments.value}
+  ${SelectInput.fragments.value}
+  ${DateInput.fragments.value}
+  ${SwitchInput.fragments.value}
+`;
+
 export default class Field extends Component {
   static fragments = {
     field: fieldFragment,
+    value: valueFragment,
   };
 
   static propTypes = {
-    field: fragmentProp(fieldFragment).isRequired
+    field: fragmentProp(fieldFragment).isRequired,
+    value: fragmentProp(valueFragment),
   };
 
   render() {
-    const { field, ...props } = this.props;
+    const { field, value, ...props } = this.props;
     const Component = types[field.presentation];
 
     return (
-      <Component field={field} />
+      <Component field={field} value={value} />
     );
   }
 }
