@@ -66,14 +66,12 @@ export default class UserScreen extends Component {
                   style={styleSheet.head}
                   user={user}
                   onBackPress={() => goBack()}
-                  onChatPress={() => navigate(routes.CHANNEL, {
-                    userId: user.id,
-                  })}
+                  onChatPress={() => navigate(routes.CHANNEL, { userId: user.id })}
                 />
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
                   <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
-                  <UserPhotosCard user={user} onPress={navigate(routes.PHOTO_PREVIEW)} />
+                  <UserPhotosCard user={user} onItemPress={() => navigate(routes.PHOTO_PREVIEW, { userId: user.id })} />
                 </View>
               </View>
             ) : (

@@ -1,17 +1,9 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import PropTypes from 'prop-types';
-import { Image, ScrollView } from 'react-native';
-import {
-  Card,
-  CardItem,
-  Icon,
-  Text,
-  Col,
-  Row,
-  Grid,
-} from 'native-base';
+import { Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Card, CardItem, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 
@@ -51,30 +43,31 @@ const userFragment = gql`
   }
 })
 export default class UserPhotosCard extends PureComponent {
+  static propTypes = {
+    user: fragmentProp(userFragment).isRequired,
+    onItemPress: PropTypes.func.isRequired,
+  };
+
   static fragments = {
     user: userFragment,
   };
 
-  static propTypes = {
-    user: fragmentProp(userFragment).isRequired,
-  };
-
   renderEdge({ node }, index) {
-    const { styleSheet, onItemPress  } = this.props;
+    const { styleSheet, onItemPress } = this.props;
 
     return (
+      <TouchableOpacity key={node.id} onPress={onItemPress}>
         <Image
-          key={node.id}
           style={[styleSheet.item, index === 0 ? styleSheet.firstItem : null]}
           source={{ uri: node.url }}
         />
+      </TouchableOpacity>
     );
   }
 
   render() {
     const { user: { photos }, styleSheet } = this.props;
     const { edges, totalCount } = photos;
-
 
     return (
       <Card transparent topBorder>
@@ -83,9 +76,7 @@ export default class UserPhotosCard extends PureComponent {
         </CardItem>
         <CardItem>
           <ScrollView horizontal contentContainerStyle={styleSheet.list}>
-            {
-              edges.map(::this.renderEdge)
-            }
+            {edges.map(::this.renderEdge)}
           </ScrollView>
         </CardItem>
       </Card>

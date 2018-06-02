@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 import { withFormik } from 'formik';
 import yup from 'yup';
 import { Button, Form, Input, Item, Text } from 'native-base';
+
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 const ItemEmailOrLogin = connectToStyleSheet('itemEmailOrLogin', Item).withProps({ regular: true });

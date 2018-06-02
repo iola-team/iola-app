@@ -6,7 +6,7 @@ export const SIGN_UP = 'signUp';
 export const LAUNCH = 'launch';
 export const USER = 'user';
 
-export const CONTACTS = 'contacts';
+export const USERS = 'users';
 export const DASHBOARD = 'dashboard';
 export const CHANNELS = 'channels';
 export const CHANNEL = 'channel';

@@ -1,85 +1,40 @@
 import React, { Component } from 'react';
+import { Container, Content, Text } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ImageBackground, Image } from 'react-native';
-import {
-  Container,
-  Content,
-  View,
-  Text,
-  Button,
-  Icon,
-  Spinner,
-  Card,
-  CardItem,
-  Body,
-} from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { UserHeading, UserBriefCard, UserFriendsCard, UserPhotosCard } from 'components';
-import * as routes from '../roteNames';
+import { UserAvatar } from 'components';
+import { withStyleSheet as styleSheet } from 'theme';
 
 const propsToVariables = props => ({
-  id: props.navigation.state.params.id,
+  userId: props.navigation.state.params.userId,
 });
 
 @graphql(gql`
-  query UserDetailsQuery($id: ID!) {
-    user: node(id: $id) {
-      id
-      ...UserHeading_user
-      ...UserBriefCard_user
-      ...UserFriendsCard_user
-      ...UserPhotosCard_user
+    query ChannelWithUserQuery($userId: ID!) {
+      user: node(id: $userId) {
+        id
+        ...UserAvatar_user
+      }
     }
-  }
 
-  ${UserHeading.fragments.user}
-  ${UserBriefCard.fragments.user}
-  ${UserFriendsCard.fragments.user}
-  ${UserPhotosCard.fragments.user}
+    ${UserAvatar.fragments.user}
 `, {
   options: (props) => ({
     variables: propsToVariables(props),
   }),
 })
-@styleSheet('Sparkle.PhotoPreview', {
-  head: {
-    height: 350,
-  },
-})
-export default class PhotoPreview extends Component {
-  static navigationOptions = {
-    headerTransparent: true,
-  };
+@styleSheet('Sparkle.PhotoPreview')
+export default class Channel extends Component {
+  static navigationOptions = ({ navigation }) => ({ title: '1 of 5' });
 
   render() {
-    const { styleSheet, data: { user }, navigation: { navigate } } = this.props;
+    const { data } = this.props;
 
     return (
       <Container>
-        <Content>
-          {
-            user ? (
-              <View>
-                <UserHeading
-                  style={styleSheet.head}
-                  user={user}
-                  onBackPress={() => goBack()}
-                  onChatPress={() => navigate(routes.CHANNEL, {
-                    userId: user.id,
-                  })}
-                />
-                <View horizontalPadder>
-                  <UserBriefCard user={user} />
-                  <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
-                  <UserPhotosCard user={user} />
-                </View>
-              </View>
-            ) : (
-              <Spinner />
-            )
-          }
+        <Content padder>
+          <Text>{JSON.stringify(data)}</Text>
         </Content>
       </Container>
     );

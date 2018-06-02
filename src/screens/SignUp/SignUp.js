@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Button, Container, Text, View } from 'native-base';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import { LAUNCH } from '../roteNames';
 import SignUpForm from './SignUpForm';
 

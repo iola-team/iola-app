@@ -1,8 +1,5 @@
 import React, { PureComponent } from 'react';
-import {
-  Button,
-  Icon,
-} from 'native-base';
+import { Button, Icon } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 
@@ -18,7 +15,7 @@ export default class BackButton extends PureComponent {
 
     return (
       <Button rounded light transparent {...props}>
-        <Icon style={styleSheet.icon} name={'ios-arrow-back'} />
+        <Icon name="ios-arrow-back" style={styleSheet.icon} />
       </Button>
     );
   }

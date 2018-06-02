@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Image, ImageBackground, Keyboard, Platform } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import { SIGN_UP, LAUNCH } from '../roteNames';
 import SignInForm from './SignInForm';
 import Divider from './Divider';

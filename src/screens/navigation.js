@@ -13,7 +13,7 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Launch from './Launch';
 import Channels from './Channels';
-import Contacts from './Contacts';
+import Users from './Users';
 import Dashboard from './Dashboard';
 import User from './User';
 import Channel from './Channel';
@@ -44,8 +44,8 @@ export default SwitchNavigator({
   [routes.APPLICATION]: StackNavigator({
     [routes.APPLICATION]: {
       screen: TabNavigator({
-        [routes.CONTACTS]: {
-          screen: Contacts,
+        [routes.USERS]: {
+          screen: Users,
         },
 
         [routes.CHANNELS]: {
@@ -56,7 +56,7 @@ export default SwitchNavigator({
           screen: Dashboard,
         },
       }, {
-        initialRouteName: routes.CONTACTS,
+        initialRouteName: routes.USERS,
         tabBarComponent: TabBarBottom,
         tabBarPosition: 'bottom',
         tabBarOptions: {
