@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, ImageBackground, Keyboard, Platform } from 'react-native';
+import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
@@ -45,12 +45,11 @@ const SignUpButton = connectToStyleSheet('signUpButton', Button);
 export default class SignInScreen extends Component {
   onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }) => {
     const success = await this.props.authenticate(login, password);
-alert(setStatus);
-// alert(JSON.stringify(status));
+
     setStatus({ ...status, success });
     setSubmitting(false);
 
-    // if (success) this.props.navigation.navigate(LAUNCH);
+    if (success) this.props.navigation.navigate(LAUNCH);
   };
 
   render() {
