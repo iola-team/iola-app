@@ -52,7 +52,7 @@ export default class Dashboard extends Component {
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
                   <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
-                  <UserPhotosCard user={user} onItemPress={() => navigate(routes.PHOTO_PREVIEW, { userId: user.id })} />
+                  <UserPhotosCard user={user} />
                 </View>
               </View>
             ) : (
