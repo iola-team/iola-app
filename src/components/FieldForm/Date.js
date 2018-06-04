@@ -4,6 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
 import InputItem from '../Input';
+import Yup from 'yup'
 
 const fieldFragment = gql`
   fragment FieldDate_field on ProfileField {
@@ -19,43 +20,42 @@ const fieldFragment = gql`
 `;
 
 const valueFragment = gql`
-  fragment FieldDate_value on ProfileFieldDateValue {
+  fragment FieldDate_data on ProfileFieldDateValue {
     dateValue: value
   }
 `;
 
 export default class FieldDate extends Component {
+  static formOptions({ field, data }) {
+    return {
+      validationSchema: Yup.date(),
+      initialValue: data && data.dateValue,
+    };
+  }
+
   static fragments = {
     field: fieldFragment,
-    value: valueFragment,
+    data: valueFragment,
   };
 
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
-    value: fragmentProp(valueFragment),
+    data: fragmentProp(valueFragment),
   };
 
-  onChange = (value) => {
-    const { onChange, onError } = this.props;
-
-    return onChange({
-      dateValue: value,
-    });
-  }
-
   render() {
-    const { field, value } = this.props;
+    const { field, value, onChange } = this.props;
 
     return (
       <InputItem
         type="date"
-        value={value && value.dateValue}
+        value={value}
         placeholder={'Not specified'}
         label={field.label}
         {...field.configs}
-        onChange={this.onChange}
+        onChange={onChange}
       />
     );
   }

@@ -123,7 +123,7 @@ const fields = [
     name: 'description',
     label: 'Description',
     presentation: 'TEXT',
-    isRequired: true,
+    isRequired: false,
     section: find(sections, { id: 'Section:3'}),
     configs: {
       presentation: 'TEXT',

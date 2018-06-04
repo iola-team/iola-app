@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
+import Yup from 'yup';
 
 import InputItem from '../Input';
 
@@ -9,9 +10,11 @@ const fieldFragment = gql`
   fragment FieldText_field on ProfileField {
     id
     label
+    isRequired
     configs {
       ...on ProfileFieldTextConfigs {
         secure
+        regexp
         multiline
         minLength
         maxLength
@@ -20,44 +23,45 @@ const fieldFragment = gql`
   }
 `;
 
-const valueFragment = gql`
-  fragment FieldText_value on ProfileFieldTextValue {
+const dataFragment = gql`
+  fragment FieldText_data on ProfileFieldTextValue {
     stringValue: value
   }
 `;
 
 export default class FieldText extends Component {
+  static formOptions({ field, data }) {
+    return {
+      validationSchema: Yup.string(),
+      initialValue: data && data.stringValue,
+    };
+  }
+
   static fragments = {
     field: fieldFragment,
-    value: valueFragment
+    data: dataFragment
   };
 
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     onError: PropTypes.func.isRequired,
+    error: PropTypes.string,
     field: fragmentProp(fieldFragment).isRequired,
-    value: fragmentProp(valueFragment),
+    data: fragmentProp(dataFragment),
   };
 
-  onChange = (value) => {
-    const { onChange, onError } = this.props;
-
-    return onChange({
-      stringValue: value,
-    });
-  }
-
   render() {
-    const { field, value } = this.props;
+    const { field, value, error, onChange } = this.props;
+    console.log(`Text Error (${field.id})`, error);
 
     return (
       <InputItem
         type="text"
-        value={value && value.stringValue}
+        value={value}
         placeholder="Enter here..."
         label={field.label}
         {...field.configs}
-        onChange={this.onChange}
+        onChange={onChange}
       />
     );
   }

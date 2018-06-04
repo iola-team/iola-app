@@ -4,6 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
 import InputItem from '../Input';
+import Yup from 'yup'
 
 const fieldFragment = gql`
   fragment FieldSwitch_field on ProfileField {
@@ -12,22 +13,29 @@ const fieldFragment = gql`
   }
 `;
 
-const valueFragment = gql`
-  fragment FieldSwitch_value on ProfileFieldSwitchValue {
+const dataFragment = gql`
+  fragment FieldSwitch_data on ProfileFieldSwitchValue {
     booleanValue: value,
   }
 `;
 
 export default class FieldDate extends Component {
+  static formOptions({ field, data }) {
+    return {
+      validationSchema: Yup.boolean(),
+      initialValue: data && data.booleanValue,
+    };
+  }
+
   static fragments = {
     field: fieldFragment,
-    value: valueFragment
+    data: dataFragment
   };
 
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
-    value: fragmentProp(valueFragment),
+    data: fragmentProp(dataFragment),
   };
 
   render() {
@@ -36,10 +44,10 @@ export default class FieldDate extends Component {
     return (
       <InputItem
         type="switch"
-        value={value && value.booleanValue}
+        value={value}
         label={field.label}
         {...field.configs}
-        onChange={value => onChange({ booleanValue: value })}
+        onChange={onChange}
       />
     );
   }

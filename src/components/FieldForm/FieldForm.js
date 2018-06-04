@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { Formik } from 'formik';
+import Yup from 'yup';
 import {
   View,
   Text,
@@ -19,6 +20,7 @@ const fieldFragment = gql`
     id
     name
     label
+    isRequired
     section {
       id
       label
@@ -38,11 +40,11 @@ const valueFragment = gql`
     }
 
     data {
-      ...Field_value  
+      ...Field_data
     }
   }
 
-  ${Field.fragments.value}
+  ${Field.fragments.data}
 `;
 
 const Root = connectToStyleSheet('root', View);
@@ -68,13 +70,41 @@ export default class FieldForm extends Component {
     ),
   };
 
+  getFieldOptions(field, data) {
+    return Field.getFormOptions({
+      field,
+      data,
+    });
+  }
+
+  renderField(field, data, form) {
+
+    return (
+      <Field
+        key={field.id}
+        field={field}
+        data={data}
+        form={form}
+      />
+    );
+  }
+
   render() {
     const { style, fields: profileFields, values } = this.props;
     const valuesByField = groupBy(values || [], 'field.id');
-    const initialValues = profileFields.reduce((result, { id }) => ({
+    const dataByField = profileFields.reduce((result, { id }) => ({
       ...result,
       [id]: values && get(valuesByField, [id, 0, 'data'], null),
-    }), {});
+    }), {})
+
+    const initialValues = profileFields.reduce((result, field) => {
+      const { initialValue } = this.getFieldOptions(field, dataByField[field.id]);
+
+      return {
+        ...result,
+        [field.id]: initialValue,
+      };
+    }, {});
 
     const sections = map(
       groupBy(profileFields, 'section.id'),
@@ -84,10 +114,26 @@ export default class FieldForm extends Component {
       }),
     );
 
+    const validationSchema = Yup.object().shape(profileFields.reduce((schema, field) => {
+      const defaultValidationSchema = Yup.mixed().label(field.label).nullable();
+      let { validationSchema = Yup.mixed() } = this.getFieldOptions(field, dataByField[field.id]);
+
+      if (field.isRequired) {
+        validationSchema = validationSchema.required();
+      }
+
+      return {
+        ...schema,
+        [field.id]: defaultValidationSchema.concat(validationSchema),
+      };
+    }, {}));
+
     return (
       <Formik
         enableReinitialize
         initialValues={initialValues}
+        validationSchema={validationSchema}
+
         onSubmit={(values, bag) => {
           console.log('Submit', values, bag);
         }}
@@ -98,15 +144,7 @@ export default class FieldForm extends Component {
               sections.map(({ id, label, fields }) => (
                 <Section key={id} label={label}>
                   {
-                    fields.map(field => (
-                      <Field
-                        key={field.id}
-                        field={field}
-                        value={form.values[field.id]}
-                        onChange={value => form.setFieldValue(field.id, value)}
-                        onError={error => form.setFieldError(field.id, error)}
-                      />
-                    ))
+                    fields.map(field => this.renderField(field, dataByField[field.id], form))
                   }
                 </Section>
               ))

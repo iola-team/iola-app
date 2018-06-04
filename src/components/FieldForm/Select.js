@@ -4,6 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
 import InputItem from '../Input';
+import Yup from 'yup'
 
 const fieldFragment = gql`
   fragment FieldSelect_field on ProfileField {
@@ -21,32 +22,31 @@ const fieldFragment = gql`
   }
 `;
 
-const valueFragment = gql`
-  fragment FieldSelect_value on ProfileFieldSelectValue {
+const dataFragment = gql`
+  fragment FieldSelect_data on ProfileFieldSelectValue {
     arrayValue: value
   }
 `;
 
 export default class FieldSelect extends Component {
+  static formOptions({ field, data }) {
+    return {
+      validationSchema: Yup.array(),
+      initialValue: data && data.arrayValue,
+    };
+  }
+
   static fragments = {
     field: fieldFragment,
-    value: valueFragment,
+    data: dataFragment,
   };
 
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
-    value: fragmentProp(valueFragment),
+    data: fragmentProp(dataFragment),
   };
-
-  onChange = (value) => {
-    const { onChange, onError } = this.props;
-
-    return onChange({
-      arrayValue: value,
-    });
-  }
 
   render() {
     const { field, value, onChange } = this.props;
@@ -54,11 +54,11 @@ export default class FieldSelect extends Component {
     return (
       <InputItem
         type="select"
-        value={value && value.arrayValue}
+        value={value}
         placeholder="Not specified"
         label={field.label}
         {...field.configs}
-        onChange={this.onChange}
+        onChange={onChange}
       />
     );
   }

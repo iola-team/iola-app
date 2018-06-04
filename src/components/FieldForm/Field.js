@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { isFunction, constant } from 'lodash';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
@@ -32,41 +33,56 @@ const fieldFragment = gql`
   ${SwitchInput.fragments.field}
 `;
 
-const valueFragment = gql`
-  fragment Field_value on ProfileFieldValueData {
-    ...FieldText_value
-    ...FieldSelect_value
-    ...FieldDate_value
-    ...FieldSwitch_value
+const dataFragment = gql`
+  fragment Field_data on ProfileFieldValueData {
+    ...FieldText_data
+    ...FieldSelect_data
+    ...FieldDate_data
+    ...FieldSwitch_data
   }
 
-  ${TextInput.fragments.value}
-  ${SelectInput.fragments.value}
-  ${DateInput.fragments.value}
-  ${SwitchInput.fragments.value}
+  ${TextInput.fragments.data}
+  ${SelectInput.fragments.data}
+  ${DateInput.fragments.data}
+  ${SwitchInput.fragments.data}
 `;
+
+const getFieldComponent = ({ field }) => types[field.presentation];
+const defaultFormOptions = {};
 
 export default class Field extends Component {
   static fragments = {
     field: fieldFragment,
-    value: valueFragment,
+    data: dataFragment,
   };
 
   static propTypes = {
-    onChange: PropTypes.func.isRequired,
-    onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
-    value: fragmentProp(valueFragment),
+    data: fragmentProp(dataFragment),
   };
 
+  static getFormOptions(props) {
+    const Component = getFieldComponent(props);
+    const formOptionsGetter = isFunction(Component.formOptions)
+      ? Component.formOptions
+      : constant(Component.formOptions || {});
+
+    return {
+      ...defaultFormOptions,
+      ...formOptionsGetter(props),
+    };
+  }
+
   render() {
-    const { field, ...props } = this.props;
-    const Component = types[field.presentation];
+    const { field, form } = this.props;
+    const Component = getFieldComponent(this.props);
 
     return (
       <Component
-        field={field}
-        {...props}
+        {...this.props}
+        value={form.values[field.id]}
+        onChange={() => {}}
+        onError={() => {}}
       />
     );
   }
