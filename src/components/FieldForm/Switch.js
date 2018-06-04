@@ -13,13 +13,8 @@ const fieldFragment = gql`
 `;
 
 const valueFragment = gql`
-  fragment FieldSwitch_value on ProfileFieldValue {
-    id
-    data {
-      ...on ProfileFieldSwitchValue {
-        isSwitched: value
-      }
-    }
+  fragment FieldSwitch_value on ProfileFieldSwitchValue {
+    booleanValue: value,
   }
 `;
 
@@ -30,22 +25,21 @@ export default class FieldDate extends Component {
   };
 
   static propTypes = {
+    onChange: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
     value: fragmentProp(valueFragment),
   };
 
   render() {
-    const { field, value, ...props } = this.props;
+    const { field, value, onChange } = this.props;
 
     return (
       <InputItem
         type="switch"
-        value={value && value.data.isSwitched}
+        value={value && value.booleanValue}
         label={field.label}
         {...field.configs}
-        onChange={(value) => {
-          console.log(`${field.label} = ${value}`)
-        }}
+        onChange={value => onChange({ booleanValue: value })}
       />
     );
   }

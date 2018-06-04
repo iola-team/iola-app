@@ -19,13 +19,8 @@ const fieldFragment = gql`
 `;
 
 const valueFragment = gql`
-  fragment FieldDate_value on ProfileFieldValue {
-    id
-    data {
-      ...on ProfileFieldDateValue {
-        date: value
-      }
-    }
+  fragment FieldDate_value on ProfileFieldDateValue {
+    dateValue: value
   }
 `;
 
@@ -36,23 +31,31 @@ export default class FieldDate extends Component {
   };
 
   static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
     value: fragmentProp(valueFragment),
   };
 
+  onChange = (value) => {
+    const { onChange, onError } = this.props;
+
+    return onChange({
+      dateValue: value,
+    });
+  }
+
   render() {
-    const { field, value, ...props } = this.props;
+    const { field, value } = this.props;
 
     return (
       <InputItem
         type="date"
-        value={value && value.data.date}
+        value={value && value.dateValue}
         placeholder={'Not specified'}
         label={field.label}
         {...field.configs}
-        onChange={(value) => {
-          console.log(`${field.label} = ${value}`)
-        }}
+        onChange={this.onChange}
       />
     );
   }

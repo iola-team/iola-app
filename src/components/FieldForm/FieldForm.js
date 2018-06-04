@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { groupBy, map, first, isUndefined } from 'lodash';
+import { groupBy, map, first, isUndefined, get } from 'lodash';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
+import { Formik } from 'formik';
 import {
   View,
   Text,
@@ -36,7 +37,9 @@ const valueFragment = gql`
       id
     }
 
-    ...Field_value
+    data {
+      ...Field_value  
+    }
   }
 
   ${Field.fragments.value}
@@ -68,6 +71,11 @@ export default class FieldForm extends Component {
   render() {
     const { style, fields: profileFields, values } = this.props;
     const valuesByField = groupBy(values || [], 'field.id');
+    const initialValues = profileFields.reduce((result, { id }) => ({
+      ...result,
+      [id]: values && get(valuesByField, [id, 0, 'data'], null),
+    }), {});
+
     const sections = map(
       groupBy(profileFields, 'section.id'),
       fields => ({
@@ -77,23 +85,36 @@ export default class FieldForm extends Component {
     );
 
     return (
-      <Root style={style}>
-        {
-          sections.map(({ id, label, fields }) => (
-            <Section key={id} label={label}>
-              {
-                fields.map(field => (
-                  <Field
-                    key={field.id}
-                    field={field}
-                    value={values && (first(valuesByField[field.id]) || null)}
-                  />
-                ))
-              }
-            </Section>
-          ))
-        }
-      </Root>
+      <Formik
+        enableReinitialize
+        initialValues={initialValues}
+        onSubmit={(values, bag) => {
+          console.log('Submit', values, bag);
+        }}
+      >
+        {form => (
+          <Root style={style}>
+            {
+              sections.map(({ id, label, fields }) => (
+                <Section key={id} label={label}>
+                  {
+                    fields.map(field => (
+                      <Field
+                        key={field.id}
+                        field={field}
+                        value={form.values[field.id]}
+                        onChange={value => form.setFieldValue(field.id, value)}
+                        onError={error => form.setFieldError(field.id, error)}
+                      />
+                    ))
+                  }
+                </Section>
+              ))
+            }
+            <Button onPress={() => form.submitForm()}><Text>Submit</Text></Button>
+          </Root>
+        )}
+      </Formik>
     );
   }
 }

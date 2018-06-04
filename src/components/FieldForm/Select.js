@@ -22,13 +22,8 @@ const fieldFragment = gql`
 `;
 
 const valueFragment = gql`
-  fragment FieldSelect_value on ProfileFieldValue {
-    id
-    data {
-      ...on ProfileFieldSelectValue {
-        selectedOptions: value
-      }
-    }
+  fragment FieldSelect_value on ProfileFieldSelectValue {
+    arrayValue: value
   }
 `;
 
@@ -39,23 +34,31 @@ export default class FieldSelect extends Component {
   };
 
   static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
     value: fragmentProp(valueFragment),
   };
 
+  onChange = (value) => {
+    const { onChange, onError } = this.props;
+
+    return onChange({
+      arrayValue: value,
+    });
+  }
+
   render() {
-    const { field, value, ...props } = this.props;
+    const { field, value, onChange } = this.props;
 
     return (
       <InputItem
         type="select"
-        value={value && value.data.selectedOptions}
+        value={value && value.arrayValue}
         placeholder="Not specified"
         label={field.label}
         {...field.configs}
-        onChange={(value) => {
-          console.log(`${field.label} = ${value}`)
-        }}
+        onChange={this.onChange}
       />
     );
   }

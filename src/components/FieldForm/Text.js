@@ -21,13 +21,8 @@ const fieldFragment = gql`
 `;
 
 const valueFragment = gql`
-  fragment FieldText_value on ProfileFieldValue {
-    id
-    data {
-      ...on ProfileFieldTextValue {
-        text: value
-      }
-    }
+  fragment FieldText_value on ProfileFieldTextValue {
+    stringValue: value
   }
 `;
 
@@ -38,23 +33,31 @@ export default class FieldText extends Component {
   };
 
   static propTypes = {
+    onChange: PropTypes.func.isRequired,
+    onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
     value: fragmentProp(valueFragment),
   };
 
+  onChange = (value) => {
+    const { onChange, onError } = this.props;
+
+    return onChange({
+      stringValue: value,
+    });
+  }
+
   render() {
-    const { field, value, ...props } = this.props;
+    const { field, value } = this.props;
 
     return (
       <InputItem
         type="text"
-        value={value && value.data.text}
+        value={value && value.stringValue}
         placeholder="Enter here..."
         label={field.label}
         {...field.configs}
-        onChange={(value) => {
-          console.log(`${field.label} = ${value}`)
-        }}
+        onChange={this.onChange}
       />
     );
   }
