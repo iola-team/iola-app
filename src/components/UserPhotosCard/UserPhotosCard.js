@@ -1,13 +1,11 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { Image, ScrollView, TouchableOpacity } from 'react-native';
 import { Card, CardItem, Text } from 'native-base';
-import { Modal } from 'react-native';
-import ImageViewer from 'react-native-image-zoom-viewer';
 
 import { withStyleSheet as styleSheet } from 'theme';
+import PhotoPreview from '../PhotoPreview';
 
 const userFragment = gql`
   fragment UserPhotosCard_user on User {
@@ -47,18 +45,19 @@ const userFragment = gql`
 export default class UserPhotosCard extends PureComponent {
   static propTypes = {
     user: fragmentProp(userFragment).isRequired,
-    // onItemPress: PropTypes.func.isRequired,
   };
 
   static fragments = {
     user: userFragment,
   };
 
+  photoPreviewElement = null;
+
   renderEdge({ node }, index) {
-    const { styleSheet, onItemPress } = this.props;
+    const { styleSheet } = this.props;
 
     return (
-      <TouchableOpacity key={node.id} onPress={onItemPress}>
+      <TouchableOpacity key={node.id} onPress={() => this.photoPreviewElement.onOpen(index)}>
         <Image
           style={[styleSheet.item, index === 0 ? styleSheet.firstItem : null]}
           source={{ uri: node.url }}
@@ -70,11 +69,6 @@ export default class UserPhotosCard extends PureComponent {
   render() {
     const { user: { photos }, styleSheet } = this.props;
     const { edges, totalCount } = photos;
-    const images = [
-      { url: 'https://cdn-images-1.medium.com/max/800/1*uvd7Z4npUG8qulaQLjHcZw.jpeg' },
-      { url: 'https://cdn-images-1.medium.com/max/800/1*uvd7Z4npUG8qulaQLjHcZw.jpeg' },
-      { url: 'https://cdn-images-1.medium.com/max/800/1*uvd7Z4npUG8qulaQLjHcZw.jpeg' },
-    ];
 
     return (
       <Card transparent topBorder>
@@ -88,9 +82,10 @@ export default class UserPhotosCard extends PureComponent {
           </ScrollView>
         </CardItem>
 
-        <Modal visible={true} transparent={true}>
-          <ImageViewer imageUrls={images}/>
-        </Modal>
+        <PhotoPreview
+          ref={element => (this.photoPreviewElement = element)}
+          images={edges.map(({ node }) => ({ url: node.url }))}
+        />
       </Card>
     );
   }
