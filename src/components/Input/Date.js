@@ -43,6 +43,7 @@ export default class DateInput extends Component {
       label,
       placeholder,
       styleSheet,
+      onFinishEditing,
       ...props
     } = this.props;
 
@@ -70,6 +71,7 @@ export default class DateInput extends Component {
           onSwipe={this.hidePicker}
           onCancel={this.hidePicker}
           onClose={this.hidePicker}
+          onHide={onFinishEditing}
         />
       </InputItem>
     );

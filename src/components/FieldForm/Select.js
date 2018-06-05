@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -28,7 +28,7 @@ const dataFragment = gql`
   }
 `;
 
-export default class FieldSelect extends Component {
+export default class FieldSelect extends PureComponent {
   static formOptions({ field, data }) {
     return {
       validationSchema: Yup.array(),
@@ -50,16 +50,18 @@ export default class FieldSelect extends Component {
   };
 
   render() {
-    const { field, value, onChange } = this.props;
+    const {
+      field,
+      ...props
+    } = this.props;
 
     return (
       <InputItem
+        {...props}
         type="select"
-        value={value}
         placeholder="Not specified"
         label={field.label}
         {...field.configs}
-        onChange={onChange}
       />
     );
   }

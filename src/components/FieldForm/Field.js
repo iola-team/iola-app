@@ -73,17 +73,37 @@ export default class Field extends Component {
     };
   }
 
-  render() {
+  onChange = (value) => {
     const { field, form } = this.props;
+
+    form.setFieldValue(field.id, value);
+  };
+
+  onError = (error) => {
+    const { field, form } = this.props;
+
+    form.setFieldError(field.id, error);
+  };
+
+  onFinishEditing = () => {
+    const { field, form } = this.props;
+
+    form.setFieldTouched(field.id);
+  };
+
+  render() {
+    const { field, form, data } = this.props;
     const Component = getFieldComponent(this.props);
 
     return (
       <Component
-        {...this.props}
+        data={data}
+        field={field}
         value={form.values[field.id]}
         error={form.errors[field.id]}
-        onChange={value => form.setFieldValue(field.id, value)}
-        onError={error => form.setFieldError(field.id, error)}
+        onChange={this.onChange}
+        onError={this.onError}
+        onFinishEditing={this.onFinishEditing}
       />
     );
   }

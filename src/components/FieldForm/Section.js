@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   Card,
@@ -6,7 +6,7 @@ import {
   Text,
 } from 'native-base';
 
-export default class Section extends Component {
+export default class Section extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
   };

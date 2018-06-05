@@ -129,6 +129,7 @@ export default class FieldForm extends Component {
       <Formik
         ref={this.onFormReady}
         enableReinitialize
+        validateOnChange={false}
         initialValues={initialValues}
         validationSchema={validationSchema}
 

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -19,7 +19,7 @@ const dataFragment = gql`
   }
 `;
 
-export default class FieldDate extends Component {
+export default class FieldDate extends PureComponent {
   static formOptions({ field, data }) {
     return {
       validationSchema: Yup.boolean(),
@@ -30,7 +30,7 @@ export default class FieldDate extends Component {
 
   static fragments = {
     field: fieldFragment,
-    data: dataFragment
+    data: dataFragment,
   };
 
   static propTypes = {
@@ -40,15 +40,17 @@ export default class FieldDate extends Component {
   };
 
   render() {
-    const { field, value, onChange } = this.props;
+    const {
+      field,
+      ...props,
+    } = this.props;
 
     return (
       <InputItem
+        {...props}
         type="switch"
-        value={value}
         label={field.label}
         {...field.configs}
-        onChange={onChange}
       />
     );
   }

@@ -40,6 +40,7 @@ export default class TextInput extends Component {
       label,
       placeholder,
       styleSheet,
+      onFinishEditing,
     } = this.props;
 
     const preview = value && value.trim();
@@ -61,6 +62,7 @@ export default class TextInput extends Component {
           onSwipe={this.hidePicker}
           onCancel={this.hidePicker}
           onClose={this.hidePicker}
+          onHide={onFinishEditing}
         />
       </Fragment>
     )
@@ -70,7 +72,7 @@ export default class TextInput extends Component {
     const {
       value,
       onChange,
-
+      onFinishEditing,
       secure,
       multiline,
       placeholder,
@@ -90,6 +92,7 @@ export default class TextInput extends Component {
               placeholder={placeholder}
               placeholderTextColor={'#a7a7a7'}
               secureTextEntry={secure}
+              onBlur={onFinishEditing}
             />
           )
         }

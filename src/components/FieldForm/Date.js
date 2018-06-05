@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -25,7 +25,7 @@ const valueFragment = gql`
   }
 `;
 
-export default class FieldDate extends Component {
+export default class FieldDate extends PureComponent {
   static formOptions({ field, data }) {
     return {
       validationSchema: Yup.date(),
@@ -40,24 +40,24 @@ export default class FieldDate extends Component {
   };
 
   static propTypes = {
-    onChange: PropTypes.func.isRequired,
-    onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
     data: fragmentProp(valueFragment),
   };
 
   render() {
-    const { field, value, onChange } = this.props;
+    const {
+      field,
+      ...props
+    } = this.props;
 
     return (
       <InputItem
+        {...props}
         type="date"
-        value={value}
         placeholder={'Not specified'}
         label={field.label}
         minDate={new Date(field.configs.minDate)} // TODO: handle custom scalars on graph layer
         maxDate={new Date(field.configs.maxDate)} // TODO: handle custom scalars on graph layer
-        onChange={onChange}
       />
     );
   }

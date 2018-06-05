@@ -7,10 +7,16 @@ import {
 import InputItem from './Input';
 
 export default class SwitchInput extends Component {
+  onChange = (value) => {
+    const { onFinishEditing, onChange } = this.props;
+
+    onChange(value);
+    onFinishEditing();
+  }
+
   render() {
     const {
       value,
-      onChange,
       ...props
     } = this.props;
 
@@ -19,7 +25,7 @@ export default class SwitchInput extends Component {
         isLoading={isUndefined(value)}
         {...props}
       >
-        <Switch value={value} onValueChange={onChange} />
+        <Switch value={value} onValueChange={this.onChange} />
       </InputItem>
     );
   }

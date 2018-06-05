@@ -49,6 +49,7 @@ export default class Select extends Component {
       multiple,
       placeholder,
       styleSheet,
+      onFinishEditing,
       ...props
     } = this.props;
 
@@ -79,6 +80,7 @@ export default class Select extends Component {
           onSwipe={this.hidePicker}
           onCancel={this.hidePicker}
           onClose={this.hidePicker}
+          onHide={onFinishEditing}
         />
       </Fragment>
     );
