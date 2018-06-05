@@ -14,6 +14,7 @@ function loadStories() {
   require('../components/ImageProgress/ImageProgress.stories');
   require('../components/PhotoEdit/PhotoEdit.stories');
   require('../components/PhotoGrid/PhotoGrid.stories');
+  require('../components/PhotoPreview/PhotoPreview.stories');
   require('./stories/Button.stories');
   
 }
@@ -28,6 +29,7 @@ const stories = [
   '../components/ImageProgress/ImageProgress.stories',
   '../components/PhotoEdit/PhotoEdit.stories',
   '../components/PhotoGrid/PhotoGrid.stories',
+  '../components/PhotoPreview/PhotoPreview.stories',
   './stories/Button.stories',
   
 ];
