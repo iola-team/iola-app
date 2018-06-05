@@ -53,7 +53,6 @@ export default class FieldText extends Component {
 
   render() {
     const { field, value, error, onChange } = this.props;
-    console.log(`Text Error (${field.id})`, error);
 
     return (
       <InputItem

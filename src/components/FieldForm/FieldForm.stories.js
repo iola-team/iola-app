@@ -2,14 +2,13 @@ import React from 'react';
 import { find } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
+import { number, button, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
-import { MockList } from 'graphql-tools';
+import delay from 'promise-delay'
 
 import { getContentDecorator, getApolloDecorator } from 'storybook/index';
 import FieldForm from './FieldForm';
-import delay from 'promise-delay'
 
 const stories = storiesOf('Components/FieldForm', module);
 
@@ -435,20 +434,32 @@ const valuesQuery = gql`
   ${FieldForm.fragments.value}
 `;
 
-const WithData = ({ userId: id }) => (
-  <Query query={fieldsQuery} variables={{ id }}>
-    {({ data: fieldsData, loading }) => !loading && (
-      <Query query={valuesQuery} variables={{ id }}>
-        {({ data: valuesData, loading }) => (
-          <FieldForm
-            fields={fieldsData.user.profile.accountType.fields}
-            values={loading ? undefined : valuesData.user.profile.values}
-          />
-        )}
-      </Query>
-    )}
-  </Query>
-)
+const WithData = ({ userId: id }) => {
+  let form;
+
+  button('Submit', () => {
+    const result = form._root.submit();
+
+    console.log('Submit result', result);
+  });
+
+  return (
+    <Query query={fieldsQuery} variables={{ id }}>
+      {({ data: fieldsData, loading }) => !loading && (
+        <Query query={valuesQuery} variables={{ id }}>
+          {({ data: valuesData, loading }) => (
+            <FieldForm
+              ref={r => form = r}
+              fields={fieldsData.user.profile.accountType.fields}
+              values={loading ? undefined : valuesData.user.profile.values}
+              onSubmit={action('onSubmit')}
+            />
+          )}
+        </Query>
+      )}
+    </Query>
+  );
+};
 
 // Stories
 stories.add('With filled data', () => {
@@ -472,6 +483,7 @@ stories.add('Loading data', () => {
         <FieldForm
           fields={fieldsData.user.profile.accountType.fields}
           values={undefined}
+          onSubmit={action('onSubmit')}
         />
       )}
     </Query>

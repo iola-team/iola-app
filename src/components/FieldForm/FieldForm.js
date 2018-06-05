@@ -15,6 +15,25 @@ import Section from './Section';
 import Field from './Field';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
 
+const getDataByField = (fields, values) => {
+  const valuesByField = groupBy(values || [], 'field.id');
+
+  return fields.reduce((result, { id }) => ({
+    ...result,
+    [id]: values && get(valuesByField, [id, 0, 'data'], null),
+  }), {})
+};
+
+const mapFieldOptions = (fields, dataList, mapper) => fields.reduce((result, field) => {
+  const data = dataList[field.id];
+  const options = Field.getFormOptions({ field, data });
+
+  return {
+    ...result,
+    [field.id]: mapper(options, field, data),
+  };
+}, {});
+
 const fieldFragment = gql`
   fragment FieldForm_field on ProfileField {
     id
@@ -47,13 +66,7 @@ const valueFragment = gql`
   ${Field.fragments.data}
 `;
 
-const Root = connectToStyleSheet('root', View);
-
-@styleSheet('Sparkle.FieldForm', {
-  root: {
-
-  }
-})
+@styleSheet('Sparkle.FieldForm')
 export default class FieldForm extends Component {
   static fragments = {
     field: fieldFragment,
@@ -68,44 +81,30 @@ export default class FieldForm extends Component {
     values: PropTypes.arrayOf(
       fragmentProp(valueFragment)
     ),
+
+    onSubmit: PropTypes.func.isRequired,
   };
 
-  getFieldOptions(field, data) {
-    return Field.getFormOptions({
-      field,
-      data,
-    });
-  }
+  form = null;
 
-  renderField(field, data, form) {
-
-    return (
-      <Field
-        key={field.id}
-        field={field}
-        data={data}
-        form={form}
-      />
-    );
+  submit() {
+    return this.form.submitForm();
   }
 
   render() {
-    const { style, fields: profileFields, values } = this.props;
-    const valuesByField = groupBy(values || [], 'field.id');
-    const dataByField = profileFields.reduce((result, { id }) => ({
-      ...result,
-      [id]: values && get(valuesByField, [id, 0, 'data'], null),
-    }), {})
+    const { style, fields: profileFields, values, onSubmit } = this.props;
+    const dataByField = getDataByField(profileFields, values);
+    const fieldSchemas = {};
+    const initialValues = {};
 
-    const initialValues = profileFields.reduce((result, field) => {
-      const { initialValue } = this.getFieldOptions(field, dataByField[field.id]);
+    mapFieldOptions(profileFields, dataByField, ({ validationSchema, initialValue }, { id, isRequired }) => {
+      fieldSchemas[id] = validationSchema || Yup.mixed();
+      fieldSchemas[id] = isRequired ? fieldSchemas[id].required() : fieldSchemas[id];
 
-      return {
-        ...result,
-        [field.id]: initialValue,
-      };
-    }, {});
+      initialValues[id] = initialValue;
+    });
 
+    const validationSchema = Yup.object().shape(fieldSchemas);
     const sections = map(
       groupBy(profileFields, 'section.id'),
       fields => ({
@@ -114,52 +113,42 @@ export default class FieldForm extends Component {
       }),
     );
 
-    const validationSchema = Yup.object().shape(profileFields.reduce((schema, field) => {
-      const defaultValidationSchema = Yup.mixed().label(field.label).nullable();
-      let { validationSchema = Yup.mixed() } = this.getFieldOptions(field, dataByField[field.id]);
-
-      if (field.isRequired) {
-        validationSchema = validationSchema.required();
-      }
-
-      return {
-        ...schema,
-        [field.id]: defaultValidationSchema.concat(validationSchema),
-      };
-    }, {}));
-
     return (
       <Formik
+        ref={form => {
+          this.form = form;
+        }}
         enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}
 
         onSubmit={(values, bag) => {
-          const resultValues = profileFields.reduce((result, field) => {
-            const { transformResult } = this.getFieldOptions(field, dataByField[field.id]);
+          const resultValues = mapFieldOptions(profileFields, dataByField, ((options, { id }) => (
+            options.transformResult(values[id])
+          )));
 
-            return {
-              ...result,
-              [field.id]: transformResult(values[field.id]),
-            };
-          }, {});
-
-          console.log('Submit', resultValues);
+          return onSubmit(resultValues);
         }}
       >
         {form => (
-          <Root style={style}>
+          <View style={style}>
             {
               sections.map(({ id, label, fields }) => (
                 <Section key={id} label={label}>
                   {
-                    fields.map(field => this.renderField(field, dataByField[field.id], form))
+                    fields.map(field => (
+                      <Field
+                        key={field.id}
+                        field={field}
+                        data={dataByField[field.id]}
+                        form={form}
+                      />
+                    ))
                   }
                 </Section>
               ))
             }
-            <Button onPress={() => form.submitForm()}><Text>Submit</Text></Button>
-          </Root>
+          </View>
         )}
       </Formik>
     );
