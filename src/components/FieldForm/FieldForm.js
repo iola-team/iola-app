@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { groupBy, map, first, isUndefined, get } from 'lodash';
+import { groupBy, map, first, isUndefined, get, noop } from 'lodash';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -83,9 +83,21 @@ export default class FieldForm extends Component {
     ),
 
     onSubmit: PropTypes.func.isRequired,
+    onFormReady: PropTypes.func,
+  };
+
+  static defaultProps = {
+    onFormReady: noop,
   };
 
   form = null;
+  onFormReady = (formRef) => {
+    this.form = formRef;
+
+    this.props.onFormReady({
+      submit: () => this.submit(),
+    });
+  };
 
   submit() {
     return this.form.submitForm();
@@ -115,9 +127,7 @@ export default class FieldForm extends Component {
 
     return (
       <Formik
-        ref={form => {
-          this.form = form;
-        }}
+        ref={this.onFormReady}
         enableReinitialize
         initialValues={initialValues}
         validationSchema={validationSchema}

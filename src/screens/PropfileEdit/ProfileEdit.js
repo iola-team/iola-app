@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { noop } from 'lodash';
 import {
   Container,
   Content,
   View,
   Spinner,
+  Button,
+  Text,
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
@@ -32,12 +35,25 @@ import { AvatarEdit, PhotoEdit, ProfileFieldsEdit } from 'components';
   }
 })
 export default class ProfileEditScreen extends Component {
-  static navigationOptions = {
-    title: 'Profile Edit',
+  static navigationOptions = ({ navigation }) => {
+    const { done = noop } = navigation.state.params || {};
+
+    return  {
+      title: 'Profile Edit',
+      headerRight: (
+        <Button transparent onPress={done}>
+          <Text>Done</Text>
+        </Button>
+      ),
+    };
+  };
+
+  done = form => () => {
+    form.submit();
   };
 
   render() {
-    const { styleSheet, data: { user } } = this.props;
+    const { styleSheet, data: { user }, navigation } = this.props;
 
     return (
       <Container>
@@ -47,7 +63,14 @@ export default class ProfileEditScreen extends Component {
               <View>
                 <AvatarEdit user={user} />
                 <PhotoEdit user={user} />
-                <ProfileFieldsEdit user={user} />
+                <ProfileFieldsEdit
+                  user={user}
+                  onFormReady={(form) => {
+                    navigation.setParams({
+                      done: this.done(form),
+                    });
+                  }}
+                />
               </View>
             ) : (
               <Spinner/>

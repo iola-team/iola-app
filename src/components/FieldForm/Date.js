@@ -29,8 +29,8 @@ export default class FieldDate extends Component {
   static formOptions({ field, data }) {
     return {
       validationSchema: Yup.date(),
-      initialValue: data && data.dateValue,
-      transformResult: value => ({ dateValue: value }),
+      initialValue: data && new Date(data.dateValue), // TODO: handle custom scalars on graph layer
+      transformResult: value => ({ dateValue: value.toISOString() }), // TODO: handle custom scalars on graph layer
     };
   }
 
@@ -55,7 +55,8 @@ export default class FieldDate extends Component {
         value={value}
         placeholder={'Not specified'}
         label={field.label}
-        {...field.configs}
+        minDate={new Date(field.configs.minDate)} // TODO: handle custom scalars on graph layer
+        maxDate={new Date(field.configs.maxDate)} // TODO: handle custom scalars on graph layer
         onChange={onChange}
       />
     );
