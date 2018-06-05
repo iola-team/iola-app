@@ -24,6 +24,7 @@ export default class FieldDate extends Component {
     return {
       validationSchema: Yup.boolean(),
       initialValue: data && data.booleanValue,
+      transformResult: value => ({ booleanValue: !!value }),
     };
   }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { isFunction, constant } from 'lodash';
+import { isFunction, constant, identity } from 'lodash';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
@@ -48,7 +48,6 @@ const dataFragment = gql`
 `;
 
 const getFieldComponent = ({ field }) => types[field.presentation];
-const defaultFormOptions = {};
 
 export default class Field extends Component {
   static fragments = {
@@ -68,7 +67,8 @@ export default class Field extends Component {
       : constant(Component.formOptions || {});
 
     return {
-      ...defaultFormOptions,
+      initialValue: undefined,
+      transformResult: identity,
       ...formOptionsGetter(props),
     };
   }
@@ -81,8 +81,9 @@ export default class Field extends Component {
       <Component
         {...this.props}
         value={form.values[field.id]}
-        onChange={() => {}}
-        onError={() => {}}
+        error={form.errors[field.id]}
+        onChange={value => form.setFieldValue(field.id, value)}
+        onError={error => form.setFieldError(field.id, error)}
       />
     );
   }

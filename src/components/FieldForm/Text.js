@@ -32,8 +32,9 @@ const dataFragment = gql`
 export default class FieldText extends Component {
   static formOptions({ field, data }) {
     return {
-      validationSchema: Yup.string(),
+      validationSchema: Yup.string().min(2),
       initialValue: data && data.stringValue,
+      transformResult: value => ({ stringValue: value }),
     };
   }
 

@@ -30,6 +30,7 @@ export default class FieldDate extends Component {
     return {
       validationSchema: Yup.date(),
       initialValue: data && data.dateValue,
+      transformResult: value => ({ dateValue: value }),
     };
   }
 

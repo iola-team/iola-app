@@ -33,6 +33,7 @@ export default class FieldSelect extends Component {
     return {
       validationSchema: Yup.array(),
       initialValue: data && data.arrayValue,
+      transformResult: value => ({ arrayValue: value }),
     };
   }
 

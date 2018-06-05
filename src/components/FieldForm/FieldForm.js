@@ -135,7 +135,16 @@ export default class FieldForm extends Component {
         validationSchema={validationSchema}
 
         onSubmit={(values, bag) => {
-          console.log('Submit', values, bag);
+          const resultValues = profileFields.reduce((result, field) => {
+            const { transformResult } = this.getFieldOptions(field, dataByField[field.id]);
+
+            return {
+              ...result,
+              [field.id]: transformResult(values[field.id]),
+            };
+          }, {});
+
+          console.log('Submit', resultValues);
         }}
       >
         {form => (
