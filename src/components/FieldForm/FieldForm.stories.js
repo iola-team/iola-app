@@ -43,6 +43,8 @@ const fields = [
     section: find(sections, { id: 'Section:1'}),
     configs: {
       presentation: 'TEXT',
+      isEmail: null,
+      isUrl: null,
       multiline: null,
       secure: null,
       regexp: null,
@@ -59,6 +61,7 @@ const fields = [
     section: find(sections, { id: 'Section:1'}),
     configs: {
       presentation: 'TEXT',
+      format: null,
       multiline: null,
       secure: true,
       regexp: null,
@@ -75,6 +78,7 @@ const fields = [
     section: find(sections, { id: 'Section:2'}),
     configs: {
       presentation: 'TEXT',
+      format: null,
       multiline: null,
       secure: null,
       regexp: '^[a-zA-Z\\s]+$',
@@ -126,6 +130,7 @@ const fields = [
     section: find(sections, { id: 'Section:3'}),
     configs: {
       presentation: 'TEXT',
+      format: null,
       multiline: true,
       secure: null,
       regexp: null,
@@ -157,6 +162,42 @@ const fields = [
     section: find(sections, { id: 'Section:3'}),
     configs: {
       presentation: 'SWITCH',
+    },
+  },
+
+  {
+    id: 'Field:9',
+    name: 'email',
+    label: 'Email',
+    presentation: 'TEXT',
+    isRequired: true,
+    section: find(sections, { id: 'Section:1'}),
+    configs: {
+      presentation: 'TEXT',
+      format: 'EMAIL',
+      multiline: null,
+      secure: null,
+      regexp: null,
+      minLength: 3,
+      maxLength: 50,
+    },
+  },
+
+  {
+    id: 'Field:10',
+    name: 'url',
+    label: 'Url',
+    presentation: 'TEXT',
+    isRequired: true,
+    section: find(sections, { id: 'Section:1'}),
+    configs: {
+      presentation: 'TEXT',
+      format: 'URL',
+      multiline: null,
+      secure: null,
+      regexp: null,
+      minLength: 3,
+      maxLength: 50,
     },
   },
 ];
@@ -305,7 +346,13 @@ const typeDefs = gql`
     label: String!
   }
 
+  enum StringFormat {
+    EMAIL
+    URL
+  }
+  
   type ProfileFieldTextConfigs {
+    format: StringFormat
     multiline: Boolean
     secure: Boolean
     regexp: String

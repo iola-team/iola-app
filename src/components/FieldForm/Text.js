@@ -13,6 +13,7 @@ const fieldFragment = gql`
     isRequired
     configs {
       ...on ProfileFieldTextConfigs {
+        format
         secure
         regexp
         multiline
@@ -31,7 +32,7 @@ const dataFragment = gql`
 
 export default class FieldText extends PureComponent {
   static formOptions({ field, data }) {
-    const { minLength, maxLength, regexp } = field.configs;
+    const { minLength, maxLength, regexp, format } = field.configs;
     let validationSchema = Yup.string();
 
     if (minLength) {
@@ -46,6 +47,14 @@ export default class FieldText extends PureComponent {
       validationSchema = validationSchema.matches(new RegExp(regexp), {
         excludeEmptyString: true,
       });
+    }
+
+    if (format === 'EMAIL') {
+      validationSchema = validationSchema.email();
+    }
+
+    if (format === 'URL') {
+      validationSchema = validationSchema.url();
     }
 
     return {

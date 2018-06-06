@@ -3,7 +3,6 @@ import { groupBy, map, first, isUndefined, get, noop } from 'lodash';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { Formik } from 'formik';
 import Yup from 'yup';
 import {
   View,
@@ -11,6 +10,7 @@ import {
   Button,
 } from 'native-base';
 
+import Formik from './Formik';
 import Section from './Section';
 import Field from './Field';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
@@ -83,11 +83,13 @@ export default class FieldForm extends Component {
     ),
 
     onSubmit: PropTypes.func.isRequired,
+    onSubmitError: PropTypes.func,
     onFormReady: PropTypes.func,
   };
 
   static defaultProps = {
     onFormReady: noop,
+    onSubmitError: noop,
   };
 
   form = null;
@@ -95,16 +97,19 @@ export default class FieldForm extends Component {
     this.form = formRef;
 
     this.props.onFormReady({
-      submit: () => this.submit(),
+      get isDirty() {
+        return formRef.getFormikBag().dirty;
+      },
+      submit: this.submit,
     });
   };
 
-  submit() {
+  submit = () => {
     return this.form.submitForm();
   }
 
   render() {
-    const { style, fields: profileFields, values, onSubmit } = this.props;
+    const { style, fields: profileFields, values, onSubmit, onSubmitError } = this.props;
     const dataByField = getDataByField(profileFields, values);
     const fieldSchemas = {};
     const initialValues = {};
@@ -135,12 +140,16 @@ export default class FieldForm extends Component {
         initialValues={initialValues}
         validationSchema={validationSchema}
 
-        onSubmit={(values, bag) => {
+        onSubmitError={onSubmitError}
+        onSubmit={async (values, bag) => {
           const resultValues = mapFieldOptions(profileFields, dataByField, ((options, { id }) => (
             options.transformResult(values[id])
           )));
 
-          return onSubmit(resultValues);
+          const result = await onSubmit(resultValues);
+          bag.setSubmitting(false);
+
+          return result;
         }}
       >
         {form => (

@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import {
   View,
   Text,
+  Toast,
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme/index';
@@ -48,9 +49,18 @@ export default class ProfileFieldsEdit extends Component {
     onFormReady: PropTypes.func,
   };
 
-  onSubmit(values) {
-    console.log('Submit', values);
+  onSubmit = (values) => {
+    alert(JSON.stringify(values));
   }
+
+  onSubmitError = (errors) => {
+    Toast.show({
+      text: 'Please, fill the form properly',
+      duration: 5000,
+      buttonText: 'Ok',
+      type: "danger",
+    });
+  };
 
   render() {
     const { style, user: { profile }, styleSheet, onFormReady } = this.props;
@@ -60,7 +70,8 @@ export default class ProfileFieldsEdit extends Component {
         <FieldForm
           fields={profile.accountType.fields}
           values={profile.values}
-          onSubmit={::this.onSubmit}
+          onSubmit={this.onSubmit}
+          onSubmitError={this.onSubmitError}
           onFormReady={onFormReady}
         />
       </View>

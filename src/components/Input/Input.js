@@ -33,6 +33,7 @@ import { withStyle } from 'theme';
 
     'NativeBase.Text': {
       fontSize: 14,
+      paddingVertical: 5,
     },
 
     flex: 2,
