@@ -77,7 +77,7 @@ const fields = [
       presentation: 'TEXT',
       multiline: null,
       secure: null,
-      regexp: null,
+      regexp: '^[a-zA-Z\\s]+$',
       minLength: 3,
       maxLength: 50,
     },

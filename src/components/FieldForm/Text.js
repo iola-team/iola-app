@@ -31,8 +31,25 @@ const dataFragment = gql`
 
 export default class FieldText extends PureComponent {
   static formOptions({ field, data }) {
+    const { minLength, maxLength, regexp } = field.configs;
+    let validationSchema = Yup.string();
+
+    if (minLength) {
+      validationSchema = validationSchema.min(minLength);
+    }
+
+    if (maxLength) {
+      validationSchema = validationSchema.max(maxLength);
+    }
+
+    if (regexp) {
+      validationSchema = validationSchema.matches(new RegExp(regexp), {
+        excludeEmptyString: true,
+      });
+    }
+
     return {
-      validationSchema: Yup.string().min(2),
+      validationSchema,
       initialValue: data && data.stringValue,
       transformResult: value => ({ stringValue: value }),
     };

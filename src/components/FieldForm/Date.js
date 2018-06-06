@@ -27,8 +27,19 @@ const valueFragment = gql`
 
 export default class FieldDate extends PureComponent {
   static formOptions({ field, data }) {
+    const { minDate, maxDate } = field.configs;
+    let validationSchema = Yup.date();
+
+    if (minDate) {
+      validationSchema = validationSchema.min(minDate);
+    }
+
+    if (maxDate) {
+      validationSchema = validationSchema.max(maxDate);
+    }
+
     return {
-      validationSchema: Yup.date(),
+      validationSchema,
       initialValue: data && new Date(data.dateValue), // TODO: handle custom scalars on graph layer
       transformResult: value => ({ dateValue: value.toISOString() }), // TODO: handle custom scalars on graph layer
     };
