@@ -13,6 +13,7 @@ stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator({ padder: true }));
 
 const user = {
+  // id: 1,
   photos: {
     edges: [
       {
@@ -39,12 +40,12 @@ const user = {
 
 stories.add('Render props', () => (
   <PhotoPreview
-    images={[
+    photos={[
       { url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfrqJXBM6PnW_YkX2KtwZyibjgSDpfUDX42xX5jxM96ZuoCrFb' },
       { url: 'https://cdn-images-1.medium.com/max/800/1*qh2fULr7LbjXDzuAUsH9hQ.jpeg' },
       { url: 'https://miro.medium.com/fit/c/240/240/1*OoW2mGH5GeA8VutCDWT27g.jpeg' },
     ]}
   >
-    {render => <UserPhotosCard user={user} onPress={index => render({ index })} />}
+    {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
   </PhotoPreview>
 ));

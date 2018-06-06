@@ -71,7 +71,7 @@ export default class UserScreen extends Component {
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
                   <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
-                  <PhotoPreview images={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
+                  <PhotoPreview photos={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
                     {render => <UserPhotosCard user={user} onPress={index => render({ index })} />}
                   </PhotoPreview>
                 </View>
