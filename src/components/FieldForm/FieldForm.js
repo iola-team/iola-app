@@ -147,12 +147,13 @@ export default class FieldForm extends Component {
               sections.map(({ id, label, fields }) => (
                 <Section key={id} label={label}>
                   {
-                    fields.map(field => (
+                    fields.map((field, index) => (
                       <Field
                         key={field.id}
                         field={field}
                         data={dataByField[field.id]}
                         form={form}
+                        last={fields.length === (index + 1)}
                       />
                     ))
                   }

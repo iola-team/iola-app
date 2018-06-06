@@ -192,6 +192,7 @@ stories.add('All', () => {
       />
 
       <StatefulInput
+        last
         type="switch"
         label={'Switch'}
       />

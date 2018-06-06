@@ -54,11 +54,13 @@ export default class DateInput extends Component {
         {...props}
       >
         <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>
-          <Text note={!value}>
-            {value ? (
-              <Moment format="MMMM D, YYYY">{value}</Moment>
-            ): placeholder}
-          </Text>
+          {
+            value ? (
+              <Moment element={Text} format="MMMM D, YYYY">{value}</Moment>
+            ) : (
+              <Text note>{placeholder}</Text>
+            )
+          }
         </TouchableOpacity>
 
         <DatePicker

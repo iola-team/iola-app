@@ -112,13 +112,15 @@ export default class DatePicker extends Component {
   };
 
   static getDerivedStateFromProps(props, state) {
+    const value = props.value || props.maxDate;
+
     return {
-      value: props.value,
+      value,
       isVisible: isUndefined(props.isVisible) ? state.isVisible : props.isVisible,
       wheels: {
         year: range(props.minDate.getFullYear(), props.maxDate.getFullYear() + 1),
         month: moment.months(),
-        day: getDays(props.value || props.maxDate),
+        day: getDays(value),
       },
     }
   }
@@ -147,9 +149,8 @@ export default class DatePicker extends Component {
 
   onChange = part => ({ data, position }) => {
     const { wheels, value } = this.state;
-    const { maxDate, onChange } = this.props;
-    const prevValue = value || maxDate;
-    const newValue = new Date(prevValue.getTime());
+    const { onChange } = this.props;
+    const newValue = new Date(value.getTime());
 
     ({
       year: () => newValue.setFullYear(data),
@@ -184,10 +185,9 @@ export default class DatePicker extends Component {
       label,
       onHide,
       onShow,
-      maxDate,
     } = this.props;
 
-    const value = stateValue || maxDate;
+    const value = stateValue;
     const wheelProps = {
       style: styles.wheel,
       isCurved: false,

@@ -29,6 +29,10 @@ import { withStyle } from 'theme';
       padding: 0,
     },
 
+    'NativeBase.Text': {
+      fontSize: 14,
+    },
+
     flex: 2,
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -43,23 +47,36 @@ import { withStyle } from 'theme';
     }
   },
 
+  '.last': {
+    borderBottomWidth: 0,
+  },
+
   minHeight: 50,
   flex: 1,
   flexDirection: 'row',
   alignItems: 'center',
+  borderBottomWidth: StyleSheet.hairlineWidth,
+  borderBottomColor: '#C9C9C9',
 })
 export default class Input extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
+    last: PropTypes.bool,
   };
 
   static defaultProps = {
     isLoading: false,
+    last: false,
   };
 
   render() {
-    const { label, isLoading, style, children } = this.props;
+    const {
+      label,
+      isLoading,
+      style,
+      children,
+    } = this.props;
 
     return(
       <View style={style}>
@@ -68,7 +85,7 @@ export default class Input extends Component {
         </Label>
 
         <Body>
-          {!isLoading ? children : null}
+          {children}
         </Body>
         <Right>
           {

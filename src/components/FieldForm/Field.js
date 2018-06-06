@@ -92,12 +92,12 @@ export default class Field extends Component {
   };
 
   render() {
-    const { field, form, data } = this.props;
+    const { field, form, ...props } = this.props;
     const Component = getFieldComponent(this.props);
 
     return (
       <Component
-        data={data}
+        {...props}
         field={field}
         value={form.values[field.id]}
         error={form.errors[field.id]}
