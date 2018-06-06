@@ -1,5 +1,5 @@
 import React from 'react';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
+import { number, text, boolean, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
@@ -38,10 +38,15 @@ const StatefulInput = windValue(Input);
 
 // Stories
 stories.add('Select', () => {
+  const isLoading = boolean('isLoading', false);
+  const error = text('Error', undefined);
+
   return (
     <Section>
       <StatefulInput
         defaultValue={['1']}
+        isLoading={isLoading}
+        error={error}
         label={"Select"}
         type="select"
         placeholder={'Select a value'}
@@ -55,10 +60,15 @@ stories.add('Select', () => {
 });
 
 stories.add('Multi-select', () => {
+  const isLoading = boolean('isLoading', false);
+  const error = text('Error', undefined);
+
   return (
     <Section>
       <StatefulInput
         defaultValue={['1', '2']}
+        isLoading={isLoading}
+        error={error}
         label={"Multi-select"}
         type="select"
         multiple
@@ -73,10 +83,15 @@ stories.add('Multi-select', () => {
 });
 
 stories.add('Text', () => {
+  const isLoading = boolean('isLoading', false);
+  const error = text('Error', undefined);
+
   return (
     <Section>
       <StatefulInput
         defaultValue={"Default value"}
+        isLoading={isLoading}
+        error={error}
         type="text"
         label={"Real name"}
         placeholder={'Enter real name'}
@@ -86,10 +101,15 @@ stories.add('Text', () => {
 });
 
 stories.add('Password', () => {
+  const isLoading = boolean('isLoading', false);
+  const error = text('Error', undefined);
+
   return (
     <Section>
       <StatefulInput
         defaultValue={"123"}
+        isLoading={isLoading}
+        error={error}
         type="text"
         secure
         label={'Password'}
@@ -100,10 +120,15 @@ stories.add('Password', () => {
 });
 
 stories.add('Textarea', () => {
+  const isLoading = boolean('isLoading', false);
+  const error = text('Error', undefined);
+
   return (
     <Section>
       <StatefulInput
         type="text"
+        isLoading={isLoading}
+        error={error}
         multiline
         label={'Textarea'}
         placeholder={'Enter text'}
@@ -113,10 +138,15 @@ stories.add('Textarea', () => {
 });
 
 stories.add('Switch', () => {
+  const isLoading = boolean('isLoading', false);
+  const error = text('Error', undefined);
+
   return (
     <Section>
       <StatefulInput
         defaultValue={false}
+        isLoading={isLoading}
+        error={error}
         type="switch"
         label={'Switch'}
       />
@@ -125,10 +155,15 @@ stories.add('Switch', () => {
 });
 
 stories.add('Date', () => {
+  const isLoading = boolean('isLoading', false);
+  const error = text('Error', undefined);
+
   return (
     <Section>
       <StatefulInput
         defaultValue={new Date('March 7, 1986 00:00:00')}
+        isLoading={isLoading}
+        error={error}
         type="date"
         label={'Date'}
         minDate={new Date('1980')}

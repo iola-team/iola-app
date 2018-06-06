@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { View } from 'react-native';
+import { Root as RootNB } from 'native-base';
 
 export default class Root extends Component {
   render() {
@@ -8,11 +9,11 @@ export default class Root extends Component {
 
     return (
       <GatewayProvider>
-        <Fragment>
+        <RootNB>
           {children}
 
           <GatewayDest name="root" component={View} />
-        </Fragment>
+        </RootNB>
       </GatewayProvider>
     );
   }

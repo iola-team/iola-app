@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
+  TouchableOpacity,
   View,
   StyleSheet,
 } from 'react-native';
@@ -11,6 +12,7 @@ import {
   Right,
   Icon,
   Spinner,
+  Toast,
 } from 'native-base';
 
 import { withStyle } from 'theme';
@@ -44,7 +46,16 @@ import { withStyle } from 'theme';
 
     'NativeBase.Spinner': {
       height: 20,
-    }
+    },
+
+    'NativeBase.Icon': {
+      '.disabled': {
+        opacity: 0.5,
+      },
+
+      fontSize: 22,
+      color: '#FF0000',
+    },
   },
 
   '.last': {
@@ -62,6 +73,7 @@ export default class Input extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
+    error: PropTypes.string,
     last: PropTypes.bool,
   };
 
@@ -70,13 +82,56 @@ export default class Input extends Component {
     last: false,
   };
 
+  state = {
+    isToastVisible: false,
+  }
+
+  showErrorToast = () => {
+    const { error } = this.props;
+
+    this.setState({ isToastVisible: true });
+
+    Toast.show({
+      text: error,
+      duration: 5000,
+      buttonText: 'Ok',
+      type: "danger",
+      onClose: () => {
+        this.setState({ isToastVisible: false });
+      },
+    })
+  };
+
+  renderRight() {
+    const { isLoading, error } = this.props;
+    const { isToastVisible } = this.state;
+
+    if (isLoading) {
+      return (
+        <Spinner size={20} />
+      );
+    }
+
+    if (error) {
+      return (
+        <TouchableOpacity disabled={isToastVisible} onPress={this.showErrorToast}>
+          <Icon name="ios-alert-outline" disabled={isToastVisible} />
+        </TouchableOpacity>
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const {
       label,
-      isLoading,
+      error,
       style,
       children,
     } = this.props;
+
+    error && console.log(error);
 
     return(
       <View style={style}>
@@ -89,9 +144,7 @@ export default class Input extends Component {
         </Body>
         <Right>
           {
-            isLoading && (
-              <Spinner size={20} />
-            )
+            this.renderRight()
           }
         </Right>
       </View>

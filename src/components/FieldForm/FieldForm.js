@@ -109,11 +109,13 @@ export default class FieldForm extends Component {
     const fieldSchemas = {};
     const initialValues = {};
 
-    mapFieldOptions(profileFields, dataByField, ({ validationSchema, initialValue }, { id, isRequired }) => {
-      fieldSchemas[id] = validationSchema || Yup.mixed();
+    mapFieldOptions(profileFields, dataByField, (options, field) => {
+      const { id, isRequired, label } = field;
+
+      fieldSchemas[id] = (options.validationSchema || Yup.mixed()).nullable().label(label);
       fieldSchemas[id] = isRequired ? fieldSchemas[id].required() : fieldSchemas[id];
 
-      initialValues[id] = initialValue;
+      initialValues[id] = options.initialValue;
     });
 
     const validationSchema = Yup.object().shape(fieldSchemas);
