@@ -64,7 +64,7 @@ const iconTheme = {
       },
 
       alignSelf: 'stretch',
-      alignItems: 'center',
+      alignItems: 'flex-end',
       justifyContent: 'center',
       flex: 1,
     },
@@ -74,7 +74,7 @@ const iconTheme = {
     },
 
     flexGrow: 0,
-    flexBasis: 40,
+    flexBasis: 30,
   },
 
   '.last': {
