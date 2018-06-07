@@ -34,16 +34,23 @@ const user = {
           url: 'https://miro.medium.com/fit/c/240/240/1*OoW2mGH5GeA8VutCDWT27g.jpeg',
         },
       },
+      {
+        node: {
+          id: 4,
+          url: 'https://cdn-images-1.medium.com/max/800/1*e54wT-QidAXpwVVsHs80Dg.jpeg',
+        },
+      },
     ],
   }
 };
 
-stories.add('Render props', () => (
+stories.add('Function as Child Component', () => (
   <PhotoPreview
     photos={[
       { url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfrqJXBM6PnW_YkX2KtwZyibjgSDpfUDX42xX5jxM96ZuoCrFb' },
       { url: 'https://cdn-images-1.medium.com/max/800/1*qh2fULr7LbjXDzuAUsH9hQ.jpeg' },
       { url: 'https://miro.medium.com/fit/c/240/240/1*OoW2mGH5GeA8VutCDWT27g.jpeg' },
+      { url: 'https://cdn-images-1.medium.com/max/800/1*e54wT-QidAXpwVVsHs80Dg.jpeg' },
     ]}
   >
     {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}

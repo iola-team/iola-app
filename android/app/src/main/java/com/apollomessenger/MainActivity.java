@@ -1,6 +1,7 @@
 package com.apollomessenger;
 
 import com.facebook.react.ReactActivity;
+import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactActivityDelegate;
 
 import org.devio.rn.splashscreen.SplashScreen;

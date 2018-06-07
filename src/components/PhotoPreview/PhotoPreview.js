@@ -2,12 +2,13 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Modal, Text, View } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import ExtraDimensions from 'react-native-extra-dimensions-android';
 
 import { BackButton } from 'components';
-import { withStyleSheet as styleSheet } from 'theme';
-import {connectToStyleSheet} from "../../theme";
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 const Indicator = connectToStyleSheet('indicator', Text);
+const Footer = connectToStyleSheet('footer', View);
 
 @styleSheet('Sparkle.PhotoPreview', {
   indicator: {
@@ -20,6 +21,12 @@ const Indicator = connectToStyleSheet('indicator', Text);
     lineHeight: 17,
     color: '#BDC0CB',
     zIndex: 9999,
+  },
+
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#CC0000',
   },
 })
 export default class PhotoPreview extends Component {
@@ -50,17 +57,28 @@ export default class PhotoPreview extends Component {
   }
 
   renderFooter() {
-    return <Text style={{
-      position: 'relative',
-      top: 15,
-      color: '#FFFFFF',
-      zIndex: 9999,
-    }}>FOOTER</Text>;
+    return (
+      <Footer>
+        <View>
+          <Text style={{ color: '#FFFFFF' }}>Natalie Rose</Text>
+          <Text style={{ color: '#FFFFFF' }}>Today at 18:16</Text>
+        </View>
+        <View>
+          <Text style={{ color: '#FFFFFF' }}>Delete</Text>
+        </View>
+      </Footer>
+    );
   }
 
   render() {
     const { children, photos } = this.props;
     const { index, visible } = this.state;
+    const footerContainerStyle = ({
+      width: '100%',
+      position: 'absolute',
+      bottom: ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT'), // @TODO: iOS
+      zIndex: 9999,
+    });
 
     return (
       <Fragment>
@@ -76,10 +94,11 @@ export default class PhotoPreview extends Component {
             renderHeader={::this.renderHeader}
             renderIndicator={this.renderIndicator}
             renderFooter={this.renderFooter}
+            footerContainerStyle={footerContainerStyle}
             imageUrls={photos}
             index={index}
             onSwipeDown={::this.onClose}
-            backgroundColor="#2E3037"
+            backgroundColor="rgba(46, 48, 55, 0.95)"
           />
         </Modal>
       </Fragment>

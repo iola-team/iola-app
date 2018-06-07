@@ -53,7 +53,7 @@ export default class Dashboard extends Component {
                   <UserBriefCard user={user} />
                   <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
                   <PhotoPreview photos={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
-                    {render => <UserPhotosCard user={user} onPress={index => render({ index })} />}
+                    {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
                   </PhotoPreview>
                 </View>
               </View>

@@ -2,7 +2,7 @@
 
 ## Install
 - `yarn`
-- `react-native link`
+- `rnpm link`
 
 ## Development
 1) Run dev server: `yarn start`
