@@ -59,6 +59,28 @@ stories.add('Select', () => {
   );
 });
 
+stories.add('Select + Error', () => {
+  const isLoading = boolean('isLoading', false);
+  const error = text('Error', "Error message");
+
+  return (
+    <Section>
+      <StatefulInput
+        defaultValue={['1']}
+        isLoading={isLoading}
+        error={error}
+        label={"Select"}
+        type="select"
+        placeholder={'Select a value'}
+        options={[
+          { label: 'Female', value: '1' },
+          { label: 'Male', value: '2' },
+        ]}
+      />
+    </Section>
+  );
+});
+
 stories.add('Multi-select', () => {
   const isLoading = boolean('isLoading', false);
   const error = text('Error', undefined);

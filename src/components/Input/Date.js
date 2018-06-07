@@ -13,6 +13,8 @@ import { withStyleSheet as styleSheet } from '../../theme'
 @styleSheet('Sparkle.DateInput', {
   button: {
     flex: 1,
+    minHeight: 50,
+    justifyContent: 'center',
   }
 })
 export default class DateInput extends Component {

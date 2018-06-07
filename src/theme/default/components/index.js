@@ -4,6 +4,14 @@ import getTheme from 'native-base/src/theme/components';
 export default (variables => ({
   ...variables,
   ...merge(getTheme(variables), {
+    'Sparkle.TouchableOpacity': {
+      '.disabled': {
+        opacity: 0.3,
+      },
+
+      'NativeBase.Icon': {},
+    },
+
     'NativeBase.Container': {
       backgroundColor: '#FFFFFF',
     },

@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
-  TouchableOpacity,
   View,
   StyleSheet,
 } from 'react-native';
@@ -13,9 +12,20 @@ import {
   Icon,
   Spinner,
   Toast,
+  Button,
 } from 'native-base';
 
 import { withStyle } from 'theme';
+import TouchableOpacity from '../TouchableOpacity';
+
+const iconTheme = {
+  '.disabled': {
+    opacity: 0.5,
+  },
+
+  fontSize: 22,
+  color: '#FF0000',
+};
 
 @withStyle('Sparkle.Input', {
   'NativeBase.Label': {
@@ -42,21 +52,29 @@ import { withStyle } from 'theme';
   },
 
   'NativeBase.Right': {
-    flexGrow: 0,
-    flexBasis: 30,
-
     'NativeBase.Spinner': {
       height: 20,
     },
 
-    'NativeBase.Icon': {
-      '.disabled': {
-        opacity: 0.5,
+    'Sparkle.TouchableOpacity': {
+      'NativeBase.Icon': {
+        ...iconTheme,
+
+        margin: 0,
       },
 
-      fontSize: 22,
-      color: '#FF0000',
+      alignSelf: 'stretch',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1,
     },
+
+    'NativeBase.Icon': {
+      ...iconTheme,
+    },
+
+    flexGrow: 0,
+    flexBasis: 40,
   },
 
   '.last': {
@@ -115,8 +133,11 @@ export default class Input extends Component {
 
     if (error) {
       return (
-        <TouchableOpacity disabled={isToastVisible} onPress={this.showErrorToast}>
-          <Icon name="ios-alert-outline" disabled={isToastVisible} />
+        <TouchableOpacity
+          disabled={isToastVisible}
+          onPress={this.showErrorToast}
+        >
+          <Icon name="ios-alert-outline" />
         </TouchableOpacity>
       );
     }

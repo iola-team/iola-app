@@ -110,6 +110,8 @@ export default class Modal extends PureComponent {
         animationIn={getInAnimation(modalHeight)}
         swipeDirection="down"
 
+        backdropTransitionInTiming={500}
+
         onModalHide={onDismiss}
         onModalShow={onShow}
         onSwipe={onSwipe}

@@ -13,6 +13,8 @@ import { withStyleSheet as styleSheet } from '../../theme'
 @styleSheet('Sparkle.TextInput', {
   button: {
     flex: 1,
+    minHeight: 50,
+    justifyContent: 'center',
   }
 })
 export default class TextInput extends Component {
