@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { includes, filter, isFunction, isUndefined, range, memoize, constant, noop, last } from 'lodash';
 import PropTypes from 'prop-types';
-import Modal from 'react-native-modal';
 import { WheelPicker } from 'react-native-wheel-picker-android';
 import moment from 'moment';
 import {
@@ -17,7 +16,8 @@ import {
   Button,
 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme/index';
+import { withStyleSheet as styleSheet } from 'theme';
+import Modal from '../Modal'
 
 const getDays = date => range(1, moment(date).daysInMonth() + 1);
 
@@ -27,45 +27,14 @@ const childrenShape = PropTypes.oneOfType([
 ]);
 
 @styleSheet('Sparkle.DatePicker', {
-  root: {
-
-  },
-
-  modal: {
-    margin: 0,
-    justifyContent: "flex-end",
-  },
-
-  backdrop: {
-    opacity: 0.8,
-    backgroundColor: '#FFFFFF',
-  },
-
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: '#BDC0CB',
-  },
-
-  headerButtonText: {
-    color: '#5F96F2',
-    fontWeight: 'bold',
-  },
-
-  checkIcon: {
-    color: '#5F96F2',
-  },
-
   wheel: {
     height: 250,
     flex: 1,
   },
 
-  content: {
+  wheels: {
     flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-  }
+  },
 })
 export default class DatePicker extends Component {
   static propTypes = {
@@ -78,12 +47,12 @@ export default class DatePicker extends Component {
     children: childrenShape,
 
     onChange: PropTypes.func,
-    onHide: PropTypes.func,
+    onDismiss: PropTypes.func,
     onShow: PropTypes.func,
     onSwipe: PropTypes.func,
     onDone: PropTypes.func,
     onCancel: PropTypes.func,
-    onClose: PropTypes.func,
+    onRequestClose: PropTypes.func,
   }
 
   static defaultProps = {
@@ -93,12 +62,12 @@ export default class DatePicker extends Component {
     isVisible: undefined,
 
     onChange: noop,
-    onHide: noop,
+    onDismiss: noop,
     onShow: noop,
     onSwipe: noop,
     onDone: noop,
     onCancel: noop,
-    onClose: noop,
+    onRequestClose: noop,
   }
 
   state = {
@@ -196,71 +165,57 @@ export default class DatePicker extends Component {
       isCyclic: true,
       selectedItemTextColor: '#585A61',
       renderIndicator: true,
-      indicatorColor: '#F2F2F2',
+      indicatorColor: '#F5F5F5',
       itemTextSize: PixelRatio.getPixelSizeForLayoutSize(16),
     }
 
     return (
       <Modal
-        style={styles.modal}
+        height={styles.wheel.height}
         isVisible={isVisible}
-        backdropColor={styles.backdrop.backgroundColor}
-        backdropOpacity={styles.backdrop.opacity}
-        swipeDirection="down"
-
-        onModalHide={this.action('onHide')}
-        onModalShow={this.action('onShow')}
+        title={label}
+        onDone={this.action('onDone', this.hide)}
+        onDismiss={this.action('onDismiss')}
+        onShow={this.action('onShow')}
         onSwipe={this.action('onSwipe', this.hide)}
-        onBackdropPress={this.action('onClose', this.hide)}
-        onBackButtonPress={this.action('onClose', this.hide)}
+        onCancel={this.action('onCancel', this.hide)}
+        onRequestClose={this.action('onRequestClose', this.hide)}
       >
-        <View>
-          <View
-            style={styles.header}
-            highlight
-            padder
-          >
-            <Text>{label}</Text>
-            <TouchableOpacity onPress={this.action('onDone', this.hide)}>
-              <Text style={styles.headerButtonText}>Done</Text>
-            </TouchableOpacity>
-          </View>
-          <View
-            onStartShouldSetResponder={() => true}
-            padder
-            style={styles.content}
-          >
-            <WheelPicker
-              {...wheelProps}
-              onItemSelected={this.onChange('month')}
-              data={wheels.month}
-              selectedItemPosition={value.getMonth()}
-            />
+        <View
+          style={styles.wheels}
+          onStartShouldSetResponder={() => true}
+          padderHorizontal
+        >
+          <WheelPicker
+            {...wheelProps}
+            onItemSelected={this.onChange('month')}
+            data={wheels.month}
+            selectedItemPosition={value.getMonth()}
+          />
 
-            <WheelPicker
-              {...wheelProps}
-              data={wheels.day}
-              onItemSelected={this.onChange('day')}
-              selectedItemPosition={wheels.day.indexOf(value.getDate())}
-            />
+          <WheelPicker
+            {...wheelProps}
+            data={wheels.day}
+            onItemSelected={this.onChange('day')}
+            selectedItemPosition={wheels.day.indexOf(value.getDate())}
+          />
 
-            <WheelPicker
-              {...wheelProps}
-              onItemSelected={this.onChange('year')}
-              data={wheels.year}
-              selectedItemPosition={wheels.year.indexOf(value.getFullYear())}
-            />
-          </View>
+          <WheelPicker
+            {...wheelProps}
+            onItemSelected={this.onChange('year')}
+            data={wheels.year}
+            selectedItemPosition={wheels.year.indexOf(value.getFullYear())}
+          />
         </View>
       </Modal>
     );
   }
 
   render() {
-    const { style, styleSheet: styles, value, children } = this.props;
+    const { style, value, children } = this.props;
 
     return (
-      <View style={[styles.root, style]}>
+      <View style={style}>
         {
           isFunction(children)
             ? children(this.show, value)

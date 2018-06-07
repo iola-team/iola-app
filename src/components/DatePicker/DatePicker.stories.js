@@ -50,7 +50,8 @@ stories.add('No value prop', () => {
       onCancel={action('onCancel')}
       onDone={action('onDone')}
       onShow={action('onShow')}
-      onHide={action('onHide')}
+      onDismiss={action('onDismiss')}
+      onRequestClose={action('onRequestClose')}
       minDate={minDate}
       maxDate={maxDate}
     >
@@ -71,7 +72,8 @@ stories.add('Fixed value prop', () => {
       onCancel={action('onCancel')}
       onDone={action('onDone')}
       onShow={action('onShow')}
-      onHide={action('onHide')}
+      onDismiss={action('onDismiss')}
+      onRequestClose={action('onRequestClose')}
       minDate={minDate}
       maxDate={maxDate}
     >
@@ -91,7 +93,8 @@ stories.add('Dynamic value prop', () => {
       onCancel={action('onCancel')}
       onDone={action('onDone')}
       onShow={action('onShow')}
-      onHide={action('onHide')}
+      onDismiss={action('onDismiss')}
+      onRequestClose={action('onRequestClose')}
       minDate={minDate}
       maxDate={maxDate}
     >
@@ -113,7 +116,8 @@ stories.add('Controlled with isVisible prop', () => {
       onCancel={action('onCancel')}
       onDone={action('onDone')}
       onShow={action('onShow')}
-      onHide={action('onHide')}
+      onDismiss={action('onDismiss')}
+      onRequestClose={action('onRequestClose')}
       minDate={minDate}
       maxDate={maxDate}
     >

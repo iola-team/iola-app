@@ -61,7 +61,8 @@ stories.add('Static', () => {
       onCancel={action('onCancel')}
       onDone={action('onDone')}
       onShow={action('onShow')}
-      onHide={action('onHide')}
+      onDismiss={action('onDismiss')}
+      onRequestClose={action('onRequestClose')}
     >
       {renderChildren}
     </ListPicker>
@@ -78,7 +79,8 @@ stories.add('Multi select wrapper', () => {
       onCancel={action('onCancel')}
       onDone={action('onDone')}
       onShow={action('onShow')}
-      onHide={action('onHide')}
+      onDismiss={action('onDismiss')}
+      onRequestClose={action('onRequestClose')}
     >
       {renderChildren}
     </Select>
@@ -94,7 +96,8 @@ stories.add('Single select wrapper', () => {
       onCancel={action('onCancel')}
       onDone={action('onDone')}
       onShow={action('onShow')}
-      onHide={action('onHide')}
+      onDismiss={action('onDismiss')}
+      onRequestClose={action('onRequestClose')}
     >
       {renderChildren}
     </Select>
@@ -116,7 +119,8 @@ stories.add('Controlled by isVisible prop', () => {
       onCancel={action('onCancel')}
       onDone={action('onDone')}
       onShow={action('onShow')}
-      onHide={action('onHide')}
+      onDismiss={action('onDismiss')}
+      onRequestClose={action('onRequestClose')}
     >
       {renderChildren}
     </ListPicker>

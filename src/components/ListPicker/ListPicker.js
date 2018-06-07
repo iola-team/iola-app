@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'react-native-modal';
 import { includes, filter, isFunction, isUndefined, without, noop } from 'lodash';
 import {
   TouchableOpacity,
@@ -16,11 +15,14 @@ import {
   ListItem,
   Body,
   Right,
+  Left,
   Icon,
 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme/index';
+import { withStyleSheet as styleSheet } from 'theme';
+import Modal from '../Modal';
 
+const maxHeight = Dimensions.get("window").height * 0.6;
 const valueShape = PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.number,
@@ -31,47 +33,38 @@ const childrenShape = PropTypes.oneOfType([
   PropTypes.element,
 ]);
 
-
 const itemShape = PropTypes.shape({
   label: PropTypes.string.isRequired,
   value: valueShape,
 });
 
 @styleSheet('Sparkle.ListPicker', {
-  root: {
+  list: {
 
   },
 
-  modal: {
-    margin: 0,
-    justifyContent: "flex-end",
+  item: {
+    marginRight: 20,
   },
 
-  backdrop: {
-    opacity: 0.8,
-    backgroundColor: '#FFFFFF',
-  },
-
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  itemFirst: {
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: '#BDC0CB',
   },
 
-  headerButtonText: {
+  itemBody: {
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+  },
+
+  selectedColor: {
     color: '#5F96F2',
-    fontWeight: 'bold',
   },
 
   checkIcon: {
-    color: '#5F96F2',
+    color: '#C4C7D1',
+    fontSize: 20,
+    marginRight: 10,
   },
-
-  content: {
-    maxHeight: Dimensions.get("window").height * 0.6,
-    backgroundColor: '#FFFFFF',
-  }
 })
 export default class ListPicker extends PureComponent {
   static propTypes = {
@@ -84,13 +77,13 @@ export default class ListPicker extends PureComponent {
     children: childrenShape,
 
     onChange: PropTypes.func,
-    onHide: PropTypes.func,
+    onDismiss: PropTypes.func,
     onShow: PropTypes.func,
     onSwipe: PropTypes.func,
     onDone: PropTypes.func,
     onCancel: PropTypes.func,
     onItemPress: PropTypes.func,
-    onClose: PropTypes.func,
+    onRequestClose: PropTypes.func,
   }
 
   static defaultProps = {
@@ -100,12 +93,12 @@ export default class ListPicker extends PureComponent {
 
     onChange: noop,
     onItemPress: noop,
-    onHide: noop,
+    onDismiss: noop,
     onShow: noop,
     onSwipe: noop,
     onDone: noop,
     onCancel: noop,
-    onClose: noop,
+    onRequestClose: noop,
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -157,25 +150,24 @@ export default class ListPicker extends PureComponent {
   };
 
   renderRow = (item) => {
-    const { label, value, selected } = item;
+    const { label, value, selected, first, last } = item;
     const { styleSheet: styles } = this.props;
+    const selectedStyle = selected ? styles.selectedColor : null;
+    const firstStyle = first ? styles.itemFirst : null;
 
     return (
       <ListItem
+        style={[styles.item, firstStyle]}
         key={value}
+        first={first}
+        last={last}
         button
         onPress={() => this.onItemPress(item)}
       >
-        <Body>
-        <Text>{label}</Text>
+        <Body style={styles.itemBody}>
+          <Icon style={[styles.checkIcon, selectedStyle]} name="checkmark" />
+          <Text style={selectedStyle}>{label}</Text>
         </Body>
-        <Right>
-          {
-            selected && (
-              <Icon style={styles.checkIcon} name="checkmark" />
-            )
-          }
-        </Right>
       </ListItem>
     );
   }
@@ -188,53 +180,42 @@ export default class ListPicker extends PureComponent {
       options,
     } = this.props;
 
-    const items = options.map(option => ({
+    const items = options.map((option, index) => ({
       ...option,
       selected: includes(value, option.value),
+      first: index === 0,
+      last: (index + 1) === options.length,
     }));
+
+    const listHeight = Math.min(options.length * 53, maxHeight);
 
     return (
       <Modal
-        style={styles.modal}
+        height={listHeight}
         isVisible={isVisible}
-        backdropColor={styles.backdrop.backgroundColor}
-        backdropOpacity={styles.backdrop.opacity}
-        swipeDirection="down"
-
-        onModalHide={this.action('onHide')}
-        onModalShow={this.action('onShow')}
+        title={label}
+        onDone={this.action('onDone', this.hide)}
+        onDismiss={this.action('onDismiss')}
+        onShow={this.action('onShow')}
         onSwipe={this.action('onSwipe', this.hide)}
-        onBackdropPress={this.action('onClose', this.hide)}
-        onBackButtonPress={this.action('onClose', this.hide)}
+        onCancel={this.action('onCancel', this.hide)}
+        onRequestClose={this.action('onRequestClose', this.hide)}
       >
-        <View>
-          <View
-            style={styles.header}
-            highlight
-            padder
-          >
-            <Text>{label}</Text>
-            <TouchableOpacity onPress={this.action('onDone', this.hide)}>
-              <Text style={styles.headerButtonText}>Done</Text>
-            </TouchableOpacity>
-          </View>
-          <ScrollView style={styles.content}>
-            <List
-              dataArray={items}
-              renderRow={this.renderRow}
-            />
-          </ScrollView>
-        </View>
+        <List
+          style={styles.list}
+          dataArray={items}
+          renderRow={this.renderRow}
+        />
       </Modal>
     );
   }
 
   render() {
-    const { style, styleSheet: styles, value, options, children } = this.props;
+    const { style, value, options, children } = this.props;
     const selectedOptions = filter(options, option => includes(value, option.value))
 
     return (
-      <View style={[styles.root, style]}>
+      <View style={style}>
         {
           isFunction(children)
             ? children(this.show, selectedOptions)
