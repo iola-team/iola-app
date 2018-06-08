@@ -1,6 +1,6 @@
 import React from 'react';
-import { find } from 'lodash';
-import { Query } from 'react-apollo';
+import { find, union, uniqueId } from 'lodash';
+import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { number, button, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
@@ -277,7 +277,7 @@ const users = [
         id: 'AccountType:1',
         fields,
       },
-      values,
+      values: () => values,
     },
   },
 
@@ -308,15 +308,39 @@ const dataStore = {
   users,
   fields,
   sections,
+  values,
 };
 
 const typeDefs = gql`
   scalar Date
   
+  type Mutation {
+    saveProfileFieldValues(input: ProfileFieldSaveInput!): ProfileFieldSavePayload!
+  }
+  
   type Query {
     node(id: ID!): User!
   }
 
+  input ProfileFieldValueInput {
+    fieldId: ID!
+
+    booleanValue: Boolean
+    stringValue: String
+    arrayValue: [String!]
+    dateValue: Date
+  }
+
+  input ProfileFieldSaveInput {
+    userId: ID!
+    values: [ProfileFieldValueInput!]!
+  }
+
+  type ProfileFieldSavePayload {
+    user: User!
+    nodes: [ProfileFieldValue!]!
+  }
+  
   type User {
     id: ID!
     
@@ -417,6 +441,39 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
+  Mutation: {
+    saveProfileFieldValues: (root, { input }, { dataStore }) => {
+      const { userId, values } = input;
+
+      let nextId = dataStore.values.length;
+      const nodes = values.map(({ fieldId, ...data }) => {
+        const field = find(dataStore.fields, { id: fieldId});
+
+        const value = find(dataStore.values, ['field.id', fieldId]) || {
+          id: `Value:${++nextId}`,
+          field: field,
+          data: {
+            presentation: field.presentation,
+            value: null,
+          },
+        };
+
+        value.data.value = Object.values(data)[0];
+
+        return value;
+      });
+
+      dataStore.values = union(dataStore.values, nodes);
+
+      return {
+        nodes: [
+          ...nodes,
+        ],
+        user: find(dataStore.users, { id: userId}),
+      };
+    },
+  },
+
   Query: {
     node: (root, { id }, { dataStore }) => find(dataStore.users, { id }),
   },
@@ -481,13 +538,28 @@ const valuesQuery = gql`
   ${FieldForm.fragments.value}
 `;
 
+const mutationQuery = gql`
+  mutation($input: ProfileFieldSaveInput!) {
+    saveProfileFieldValues(input: $input) {
+      user {
+        id
+      }
+
+      nodes {
+        id
+        ...FieldForm_value
+      }
+    }
+  }
+
+  ${FieldForm.fragments.value}
+`;
+
 const WithData = ({ userId: id }) => {
   let form;
 
   button('Submit', () => {
-    const result = form._root.submit();
-
-    console.log('Submit result', result);
+    form._root.submit();
   });
 
   return (
@@ -495,12 +567,27 @@ const WithData = ({ userId: id }) => {
       {({ data: fieldsData, loading }) => !loading && (
         <Query query={valuesQuery} variables={{ id }}>
           {({ data: valuesData, loading }) => (
-            <FieldForm
-              ref={r => form = r}
-              fields={fieldsData.user.profile.accountType.fields}
-              values={loading ? undefined : valuesData.user.profile.values}
-              onSubmit={action('onSubmit')}
-            />
+            <Mutation mutation={mutationQuery} onCompleted={action('onMutationComplete')}>
+              {(mutate) => (
+                <FieldForm
+                  ref={r => form = r}
+                  fields={fieldsData.user.profile.accountType.fields}
+                  values={loading ? undefined : valuesData.user.profile.values}
+                  onSubmit={(values) => {
+                    action('onSubmit')(values);
+
+                    return mutate({
+                      variables: {
+                        input: {
+                          userId: id,
+                          values: values,
+                        },
+                      },
+                    })
+                  }}
+                />
+              )}
+            </Mutation>
           )}
         </Query>
       )}

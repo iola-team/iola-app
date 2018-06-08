@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { groupBy, map, first, isUndefined, get, noop } from 'lodash';
+import { groupBy, map, first, isUndefined, get, noop, filter } from 'lodash';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -142,11 +142,13 @@ export default class FieldForm extends Component {
 
         onSubmitError={onSubmitError}
         onSubmit={async (values, bag) => {
-          const resultValues = mapFieldOptions(profileFields, dataByField, ((options, { id }) => (
-            options.transformResult(values[id])
-          )));
+          const changedFields = filter(profileFields, ({ id }) => values[id] !== initialValues[id]);
+          const resultValues = mapFieldOptions(changedFields, dataByField, ((options, { id }) => ({
+            ...options.transformResult(values[id]),
+            fieldId: id,
+          })));
 
-          const result = await onSubmit(resultValues);
+          const result = await onSubmit(Object.values(resultValues));
           bag.setSubmitting(false);
 
           return result;
