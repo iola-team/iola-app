@@ -2,6 +2,8 @@ import React, { createRef, Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+import { noop } from 'lodash';
 import {
   View,
   Text,
@@ -34,6 +36,32 @@ const userFragment = gql`
   ${FieldForm.fragments.value}
 `;
 
+const saveMutation = gql`
+  mutation saveProfileFieldValuesMutation($input: ProfileFieldSaveInput!) {
+    saveProfileFieldValues(input: $input) {
+      user {
+        id
+        name
+        email
+        info {
+          about
+          headline
+          location
+        }
+      }
+
+      nodes {
+        id
+        ...FieldForm_value
+      }
+    }
+  }
+  
+  ${FieldForm.fragments.value}
+`
+@graphql(saveMutation, {
+  name: 'saveValuesMutation',
+})
 @styleSheet('Sparkle.ProfileFieldsEdit', {
   root: {
 
@@ -47,10 +75,40 @@ export default class ProfileFieldsEdit extends Component {
   static propTypes = {
     user: fragmentProp(userFragment).isRequired,
     onFormReady: PropTypes.func,
+    onSaveStart: PropTypes.func,
+    onSaveEnd: PropTypes.func,
   };
 
-  onSubmit = (values) => {
-    alert(JSON.stringify(values));
+  static defaultProps = {
+    onFormReady: noop,
+    onSaveStart: noop,
+    onSaveEnd: noop,
+  }
+
+  onSubmit = async (values) => {
+    const {
+      onSaveStart,
+      onSaveEnd,
+      saveValuesMutation,
+      user: { id: userId },
+    } = this.props;
+
+    onSaveStart(values);
+
+    try {
+      const { data: { saveProfileFieldValues } } = await saveValuesMutation({
+        variables: {
+          input: {
+            userId,
+            values,
+          },
+        },
+      });
+
+      onSaveEnd(saveProfileFieldValues, null);
+    } catch(error) {
+      onSaveEnd(null, error);
+    }
   }
 
   onSubmitError = (errors) => {

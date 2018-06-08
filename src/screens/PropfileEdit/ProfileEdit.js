@@ -6,7 +6,6 @@ import {
   Container,
   Content,
   View,
-  Spinner,
   Button,
   Text,
 } from 'native-base';
@@ -36,21 +35,58 @@ import { AvatarEdit, PhotoEdit, ProfileFieldsEdit } from 'components';
 })
 export default class ProfileEditScreen extends Component {
   static navigationOptions = ({ navigation }) => {
-    const { done = noop } = navigation.state.params || {};
+    const { done = noop, busy = false } = navigation.state.params || {};
 
     return  {
       title: 'Profile Edit',
       headerRight: (
-        <Button transparent onPress={done}>
+        <Button transparent disabled={busy} onPress={done}>
           <Text>Done</Text>
         </Button>
       ),
     };
   };
 
-  done = form => () => {
-    form.submit();
+  form = null;
+  updateDone(busy = false) {
+    const { navigation } = this.props;
+
+    navigation.setParams({
+      done: this.onDone,
+      busy,
+    });
+  }
+
+  onDone = () => {
+    const { navigation } = this.props;
+
+    if (!this.form || !this.form.isDirty) {
+      return navigation.goBack();
+    }
+
+    this.form.submit();
   };
+
+  onFormReady = (form) => {
+    this.form = form;
+  };
+
+  onSaveStart = () => {
+    this.updateDone(true);
+  };
+
+  onSaveEnd = (data, error) => {
+    const { navigation } = this.props;
+
+    this.updateDone(false);
+    if (!error) {
+      return navigation.goBack();
+    }
+  };
+
+  componentDidMount() {
+    this.updateDone();
+  }
 
   render() {
     const { styleSheet, data: { user }, navigation } = this.props;
@@ -66,10 +102,11 @@ export default class ProfileEditScreen extends Component {
                 <ProfileFieldsEdit
                   user={user}
                   onFormReady={(form) => {
-                    navigation.setParams({
-                      done: this.done(form),
-                    });
+                    this.form = form;
                   }}
+
+                  onSaveStart={this.onSaveStart}
+                  onSaveEnd={this.onSaveEnd}
                 />
               </View>
             ) : (

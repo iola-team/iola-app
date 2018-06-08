@@ -66,6 +66,11 @@ export default (variables => ({
       '.transparent': {
         '.secondary': {
           backgroundColor: null,
+        },
+
+        '.disabled': {
+          backgroundColor: null,
+          opacity: 0.3,
         }
       },
 
