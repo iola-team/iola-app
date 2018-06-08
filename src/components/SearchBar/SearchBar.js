@@ -17,7 +17,7 @@ export default class SearchBar extends PureComponent {
   };
 
   state = {
-    phrase: "",
+    phrase: '',
   };
 
   onSearch = debounce(this.props.onSearch, 200);
@@ -31,7 +31,6 @@ export default class SearchBar extends PureComponent {
   }
 
   render() {
-    const { onSearch } = this.props;
     const { phrase } = this.state;
 
     return (

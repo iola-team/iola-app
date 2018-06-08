@@ -13,7 +13,7 @@ const withTokenMutation = graphql(gql`
   }),
 });
 
-const withLoginMutation = graphql(gql`
+const withSignInMutation = graphql(gql`
   mutation($input: SignInUserInput!) {
     result: signInUser(input: $input) {
       accessToken
@@ -27,7 +27,7 @@ const withLoginMutation = graphql(gql`
           input: {
             login,
             password,
-          }
+          },
         },
       });
 
@@ -40,5 +40,5 @@ const withLoginMutation = graphql(gql`
 
 export default compose(
   withTokenMutation,
-  withLoginMutation,
+  withSignInMutation,
 )(Screen);
