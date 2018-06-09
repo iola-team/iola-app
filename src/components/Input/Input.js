@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
@@ -88,7 +88,7 @@ const iconTheme = {
   borderBottomWidth: StyleSheet.hairlineWidth,
   borderBottomColor: '#C9C9C9',
 })
-export default class Input extends Component {
+export default class Input extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     isLoading: PropTypes.bool,
@@ -114,7 +114,7 @@ export default class Input extends Component {
       text: error,
       duration: 5000,
       buttonText: 'Ok',
-      type: "danger",
+      type: 'danger',
       onClose: () => {
         this.setState({ isToastVisible: false });
       },
@@ -153,22 +153,11 @@ export default class Input extends Component {
       children,
     } = this.props;
 
-    error && console.log(error);
-
     return(
       <View style={style}>
-        <Label>
-          {label}
-        </Label>
-
-        <Body>
-          {children}
-        </Body>
-        <Right>
-          {
-            this.renderRight()
-          }
-        </Right>
+        <Label>{label}</Label>
+        <Body>{children}</Body>
+        <Right>{this.renderRight()}</Right>
       </View>
     );
   }

@@ -95,10 +95,10 @@ export default class DatePicker extends Component {
   }
 
   show = () => {
-    const { value, isVisible } = this.props;
+    const { value, isVisible, maxDate } = this.props;
 
     this.setState({
-      value,
+      value: value || maxDate,
       isVisible: isUndefined(isVisible) ? true : isVisible,
     });
   };

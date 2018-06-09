@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Moment from 'react-moment';
 import { isUndefined } from 'lodash';
 import { TouchableOpacity } from 'react-native';
@@ -17,7 +17,7 @@ import { withStyleSheet as styleSheet } from '../../theme'
     justifyContent: 'center',
   }
 })
-export default class DateInput extends Component {
+export default class DateInput extends PureComponent {
   state = {
     isPickerVisible: false,
   };

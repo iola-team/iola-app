@@ -138,11 +138,8 @@ export default class ListPicker extends PureComponent {
   onItemPress = ({ value }) => {
     const { value: values } = this.state;
     const newValues = this.props.multiple
-      ? values.includes(value) ? without(values, value) : [
-          ...values,
-          value,
-        ]
-      : [ value ];
+      ? values.includes(value) ? without(values, value) : [...values, value]
+      : [value];
 
     this.setState({
       value: newValues,
@@ -212,7 +209,7 @@ export default class ListPicker extends PureComponent {
 
   render() {
     const { style, value, options, children } = this.props;
-    const selectedOptions = filter(options, option => includes(value, option.value))
+    const selectedOptions = filter(options, option => includes(value, option.value));
 
     return (
       <View style={style}>
