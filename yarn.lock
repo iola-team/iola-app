@@ -559,17 +559,17 @@
     react-inspector "^2.2.2"
     uuid "^3.2.1"
 
-"@storybook/addon-console@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-console/-/addon-console-1.0.0.tgz#9313a65f04392b524698e01ceeaa4801f5d07b20"
+"@storybook/addon-console@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-console/-/addon-console-1.0.4.tgz#726ed87152d0bfe39288885784d7846da914324e"
   dependencies:
     global "^4.3.2"
 
-"@storybook/addon-knobs@^3.4.2":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-3.4.2.tgz#31baf535cafa9740d96b2f93197d688fa30b97f2"
+"@storybook/addon-knobs@^3.4.7":
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-3.4.7.tgz#9e8f7827e3743ec76d773dd65a3857d538d0aa02"
   dependencies:
-    "@storybook/components" "3.4.2"
+    "@storybook/components" "3.4.7"
     babel-runtime "^6.26.0"
     deep-equal "^1.0.1"
     global "^4.3.2"
@@ -622,9 +622,9 @@
   version "4.0.0-alpha.2"
   resolved "https://registry.yarnpkg.com/@storybook/client-logger/-/client-logger-4.0.0-alpha.2.tgz#7ac1734024b748e93bc191e2211a5f98350b0f1e"
 
-"@storybook/components@3.4.2":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-3.4.2.tgz#1124cf22a54e36aa07c291608c652746919cf375"
+"@storybook/components@3.4.7":
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/@storybook/components/-/components-3.4.7.tgz#6f2f1d8dd1341d3794abc31b728089fa8021e973"
   dependencies:
     glamor "^2.20.40"
     glamorous "^4.12.1"
