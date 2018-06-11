@@ -76,7 +76,7 @@
     "react-navigation": "^1.5.11",
     "recompose": "^0.27.1",
     "uuid": "^3.2.1",
-    "yup": "^0.24.1"
+    "yup": "^0.25.1"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^4.0.0-alpha.2",

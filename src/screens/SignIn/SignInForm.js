@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { withFormik } from 'formik';
-import yup from 'yup';
+import * as yup from 'yup';
 import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 

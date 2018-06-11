@@ -4,7 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
 import InputItem from '../Input';
-import Yup from 'yup'
+import * as Yup from 'yup';
 
 const fieldFragment = gql`
   fragment FieldSelect_field on ProfileField {
