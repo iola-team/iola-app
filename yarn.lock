@@ -8828,9 +8828,9 @@ react-native-on-layout@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/react-native-on-layout/-/react-native-on-layout-2.0.2.tgz#158e91d6e2b8d0f1c2ba7caa692d98c430790501"
 
-react-native-progress@^3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-3.4.0.tgz#c002e6efb2f0b82dd6889510e669c492da2718ac"
+react-native-progress@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-3.5.0.tgz#d1ccc7f96dc17c609aedb43b2e6695d67deae0ec"
   dependencies:
     prop-types "^15.5.8"
 
