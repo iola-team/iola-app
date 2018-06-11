@@ -89,7 +89,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "22.4.3",
-    "babel-plugin-inline-import-graphql-ast": "^2.3.6",
+    "babel-plugin-import-graphql": "^2.5.2",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-transform-export-extensions": "^6.22.0",
     "babel-plugin-transform-function-bind": "^6.22.0",
