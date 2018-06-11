@@ -1865,15 +1865,6 @@ babel-plugin-transform-es2015-modules-commonjs@6.x, babel-plugin-transform-es201
     babel-template "^6.26.0"
     babel-types "^6.26.0"
 
-babel-plugin-transform-es2015-modules-commonjs@^6.7.4:
-  version "6.26.2"
-  resolved "https://registry.yarnpkg.com/babel-plugin-transform-es2015-modules-commonjs/-/babel-plugin-transform-es2015-modules-commonjs-6.26.2.tgz#58a793863a9e7ca870bdc5a881117ffac27db6f3"
-  dependencies:
-    babel-plugin-transform-strict-mode "^6.24.1"
-    babel-runtime "^6.26.0"
-    babel-template "^6.26.0"
-    babel-types "^6.26.0"
-
 babel-plugin-transform-es2015-modules-systemjs@^6.23.0:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-es2015-modules-systemjs/-/babel-plugin-transform-es2015-modules-systemjs-6.24.1.tgz#ff89a142b9119a906195f5f106ecf305d9407d23"
@@ -3345,7 +3336,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.5.2, create-react-class@^15.6.0, create-react-class@^15.6.2, create-react-class@^15.6.3:
+create-react-class@^15.5.2, create-react-class@^15.6.2, create-react-class@^15.6.3:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   dependencies:
@@ -8510,6 +8501,10 @@ react-lifecycles-compat@^3.0.0:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.2.tgz#7279047275bd727a912e25f734c0559527e84eff"
 
+react-lifecycles-compat@^3.0.2:
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
 react-modal@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.3.2.tgz#b13da9490653a7c76bc0e9600323eb1079c620e7"
@@ -8611,13 +8606,6 @@ react-native-modal@^6.0.0:
     prop-types "^15.6.1"
     react-native-animatable "^1.2.4"
 
-react-native-modalbox@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-modalbox/-/react-native-modalbox-1.4.2.tgz#818c9354c9b13327ec807c6436e8516b3b419478"
-  dependencies:
-    create-react-class "^15.6.0"
-    prop-types "^15.5.10"
-
 react-native-on-layout@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/react-native-on-layout/-/react-native-on-layout-2.0.2.tgz#158e91d6e2b8d0f1c2ba7caa692d98c430790501"
@@ -8668,9 +8656,9 @@ react-native-wheel-picker-android@^1.1.2:
   dependencies:
     moment "2.22.0"
 
-react-native@0.55.2:
-  version "0.55.2"
-  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.55.2.tgz#80d26a3f4193ebd1fd49a4859011c501b0ca3bab"
+react-native@0.55.4:
+  version "0.55.4"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.55.4.tgz#eecffada3750a928e2ddd07cf11d857ae9751c30"
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
@@ -8821,9 +8809,9 @@ react-tween-state@^0.1.5:
     raf "^3.1.0"
     tween-functions "^1.0.1"
 
-react@^16.3.1:
-  version "16.3.1"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.3.1.tgz#4a2da433d471251c69b6033ada30e2ed1202cfd8"
+react@16.3.2:
+  version "16.3.2"
+  resolved "https://registry.yarnpkg.com/react/-/react-16.3.2.tgz#fdc8420398533a1e58872f59091b272ce2f91ea9"
   dependencies:
     fbjs "^0.8.16"
     loose-envify "^1.1.0"
@@ -8926,13 +8914,15 @@ rechoir@^0.6.2:
   dependencies:
     resolve "^1.1.6"
 
-recompose@^0.26.0:
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.26.0.tgz#9babff039cb72ba5bd17366d55d7232fbdfb2d30"
+recompose@^0.27.1:
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/recompose/-/recompose-0.27.1.tgz#1a49e931f183634516633bbb4f4edbfd3f38a7ba"
   dependencies:
+    babel-runtime "^6.26.0"
     change-emitter "^0.1.2"
     fbjs "^0.8.1"
     hoist-non-react-statics "^2.3.1"
+    react-lifecycles-compat "^3.0.2"
     symbol-observable "^1.0.4"
 
 recursive-readdir@2.2.2:
