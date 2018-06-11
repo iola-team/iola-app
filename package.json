@@ -54,7 +54,7 @@
     "immutability-helper": "^2.7.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
-    "native-base": "^2.4.1",
+    "native-base": "^2.5.1",
     "native-base-shoutem-theme": "github:greyexpert/theme#master",
     "promise-delay": "^2.1.0",
     "prop-types": "^15.6.1",
