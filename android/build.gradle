@@ -15,13 +15,13 @@ buildscript {
 allprojects {
     repositories {
         mavenLocal()
-        jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
+        maven { url 'https://maven.google.com/' }
 
-        // jitpack repo is necessary to fetch ucrop dependency
+        jcenter()
         maven { url "https://jitpack.io" }
     }
 }

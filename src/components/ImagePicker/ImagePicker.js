@@ -92,7 +92,7 @@ export default class ImagePicker extends Component {
               onSourceSelect: source => this.showPicker(source)(options),
             }),
             fromCamera: this.showPicker('camera'),
-            fromGallery: this.showPicker('camera'),
+            fromGallery: this.showPicker('gallery'),
           },
           this.state.images,
           this.reset
