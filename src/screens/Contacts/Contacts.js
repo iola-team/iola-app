@@ -16,11 +16,11 @@ import {
 import { SearchBar } from 'components';
 import { USER } from '../roteNames';
 import UsersConnection from './UsersConnection';
+import * as routes from '../roteNames'
 
 export default class Contacts extends PureComponent {
   static navigationOptions = {
     title: 'Users',
-    header: null,
     tabBarIcon: ({ focused, tintColor }) => (
       <Icon
         style={{ color: tintColor, fontSize: 35 }}
@@ -42,9 +42,7 @@ export default class Contacts extends PureComponent {
   onItemPress({ node }) {
     const { navigation: { navigate } } = this.props;
 
-    navigate(USER, {
-      id: node.id,
-    });
+    navigate({ routeName: USER, params: { id: node.id }, key: node.id });
   }
 
   render() {

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Text, View, Footer, FooterTab, Button, Badge, Icon } from 'native-base';
-import { SwitchNavigator, StackNavigator, TabNavigator, TabBarBottom } from 'react-navigation';
+import { createBottomTabNavigator, createSwitchNavigator, createStackNavigator, createTabNavigator } from 'react-navigation';
 
 // Components
-import { ScreenHeader } from 'components';
+import { ScreenHeader, BottomTabBar } from 'components';
 
 // Rout names
 import * as routes from './roteNames';
@@ -21,8 +21,25 @@ import ProfileEdit from './PropfileEdit';
 import Settings from './Settings';
 
 // Navigator
-export default SwitchNavigator({
-  [routes.AUTHENTICATION]: StackNavigator({
+const TabsNavigator = createBottomTabNavigator({
+  [routes.CONTACTS]: {
+    screen: Contacts,
+  },
+
+  [routes.CHANNELS]: {
+    screen: Channels,
+  },
+
+  [routes.DASHBOARD]: {
+    screen: Dashboard,
+  },
+}, {
+  initialRouteName: routes.CONTACTS,
+  tabBarComponent: BottomTabBar,
+});
+
+export default createSwitchNavigator({
+  [routes.AUTHENTICATION]: createStackNavigator({
     [routes.SIGN_IN]: {
       screen: SignIn,
       navigationOptions: {
@@ -40,41 +57,19 @@ export default SwitchNavigator({
     initialRouteName: routes.SIGN_IN,
   }),
 
-  [routes.APPLICATION]: StackNavigator({
+  [routes.APPLICATION]: createStackNavigator({
     [routes.APPLICATION]: {
-      screen: TabNavigator({
-        [routes.CONTACTS]: {
-          screen: Contacts,
-        },
+      screen: TabsNavigator,
+      navigationOptions({ navigation: { state } }) {
+        const TabComponent = TabsNavigator.router.getComponentForRouteName(state.routes[state.index].routeName)
 
-        [routes.CHANNELS]: {
-          screen: Channels,
-        },
-
-        [routes.DASHBOARD]: {
-          screen: Dashboard,
-        },
-      }, {
-        initialRouteName: routes.CONTACTS,
-        tabBarComponent: TabBarBottom,
-        tabBarPosition: 'bottom',
-        tabBarOptions: {
-          style: {
-            backgroundColor: '#FFFFFF',
-            height: 70,
-            paddingBottom: 10,
-            paddingTop: 10,
-          },
-
-          labelStyle: {
-            fontSize: 14,
-          },
-
-          showIcon: true,
-          activeTintColor: '#5F96F2',
-          inactiveTintColor: '#45474F',
-        },
-      }),
+        return {
+          /**
+           * Pass tab component `navigationOptions` to main stack navigator
+           */
+          ...TabComponent.navigationOptions,
+        };
+      },
     },
     [routes.USER]: {
       screen: User,
@@ -94,7 +89,7 @@ export default SwitchNavigator({
   }, {
     navigationOptions: {
       header: props => <ScreenHeader {...props} />,
-    }
+    },
   }),
 
   [routes.LAUNCH]: {

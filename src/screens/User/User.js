@@ -72,7 +72,12 @@ export default class UserScreen extends Component {
                 />
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
-                  <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
+                  <UserFriendsCard
+                    user={user}
+                    onItemPress={id => {
+                      navigate({ routeName: routes.USER, params: { id }, key: id })
+                    }}
+                  />
                   <UserPhotosCard user={user} />
                 </View>
               </View>
