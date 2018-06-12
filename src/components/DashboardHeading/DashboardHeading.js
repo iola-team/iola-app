@@ -98,7 +98,7 @@ export default class DashboardHeading extends PureComponent {
       : 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg';
 
     return (
-      <View style={styleSheet.root}>
+      <View style={[style, styleSheet.root]}>
         <View style={styleSheet.content}>
           <View style={styleSheet.info}>
             <H2 inverse style={[styleSheet.infoLine, styleSheet.name]}>

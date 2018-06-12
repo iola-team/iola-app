@@ -220,5 +220,14 @@ export default (variables => ({
         },
       },
     },
+
+    'Sparkle.ScreenHeader': {
+      'NativeBase.Icon': {
+        fontSize: 35,
+        color: '#BDC0CB',
+        margin: 16,
+        marginRight: 22,
+      }
+    }
   }),
 }));

@@ -5,25 +5,15 @@ import { Platform } from 'react-native';
 import { constant } from 'lodash';
 import {
   View,
-  Text,
   Icon,
 } from 'native-base';
 
 
 import { withStyleSheet as styleSheet } from 'theme';
-import { BackButton } from 'components';
 
 @styleSheet('Sparkle.ScreenHeader', {
   header: {
     elevation: 0,
-  },
-
-  right: {
-
-  },
-
-  left: {
-
   },
 
   title: {
@@ -31,74 +21,58 @@ import { BackButton } from 'components';
     fontSize: 16,
     color: '#585A61',
     textAlign: 'center',
-    position: 'absolute',
-    left: 0,
-    right: 0,
+    flex: 1,
   }
 })
 export default class ScreenHeader extends PureComponent {
   static propTypes = {
     renderLeft: PropTypes.func,
     renderRight: PropTypes.func,
-
     title: PropTypes.string,
   };
   
-  getScreenOptions(screenDetails, { index }) {
-    const { styleSheet, renderLeft, renderRight, title } = this.props;
-
-    const hasLeft = index !== 0 || screenDetails.options.headerLeft || renderLeft;
-    const leftOffsetStyle = !hasLeft && Platform.OS === 'android' ? { left: 56 } : null;
-    const defaultLeft = index === 0 ? constant(null) : ({ onPress }) => (
-      <BackButton style={{ alignSelf: 'center' }} onPress={onPress} />
-    );
+  getSceneOptions(scene) {
+    const { index, descriptor: { options } } = scene;
+    const leftPlaceholder = index > 0 ? undefined : <View />;
+    const {
+      styleSheet,
+      renderLeft: headerLeft = options.headerLeft || leftPlaceholder,
+      renderRight = constant(options.headerRight || <View />),
+      title = options.title,
+    } = this.props;
 
     return {
-      ...screenDetails.options,
+      ...options,
 
-      title: title || screenDetails.options.title,
-      headerLeft: (props) => (
-        <View style={styleSheet.left}>
-          {
-            renderLeft
-              ? renderLeft(screenDetails, props)
-              : (screenDetails.options.headerLeft || defaultLeft(props))
-          }
-        </View>
-      ),
-      headerRight: (
-        <View style={styleSheet.right}>
-          {
-            renderRight
-              ? renderRight(screenDetails)
-              : (screenDetails.options.headerRight || null)
-          }
-        </View>
-      ),
-
-      headerStyle: [styleSheet.header, screenDetails.options.headerStyle],
-      headerTitleStyle: [styleSheet.title, leftOffsetStyle, screenDetails.options.headerTitleStyle],
+      title,
+      headerBackImage: <Icon name="ios-arrow-back" />,
+      headerLeft,
+      headerRight: renderRight(scene),
+      headerStyle: [styleSheet.header, options.headerStyle],
+      headerTitleStyle: [styleSheet.title, options.headerTitleStyle],
     };
   }
 
   render() {
+    const { scene } = this.props;
+
     const headerProps = {
       ...this.props,
 
-      getScreenDetails: (scene) => {
-        const originalDetails = this.props.getScreenDetails(scene);
-
-        return {
-          ...originalDetails,
+      scene: {
+        ...scene,
+        descriptor: {
+          ...scene.descriptor,
           options: {
-            ...this.getScreenOptions(originalDetails, scene),
-          }
-        }
-      }
-    }
+            ...scene.options,
+            ...this.getSceneOptions(scene),
+          },
+        },
+      },
+    };
 
     return (
       <Header {...headerProps} />
-    )
+    );
   }
 }
