@@ -16,7 +16,7 @@ import {
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import { UserHeading, UserBriefCard, UserFriendsCard, UserPhotosCard, PhotoPreview } from 'components';
+import { UserHeading, UserBriefCard, UserFriendsCard, UserPhotosCard, ImageView } from 'components';
 import * as routes from '../roteNames';
 
 const propsToVariables = props => ({
@@ -71,9 +71,9 @@ export default class UserScreen extends Component {
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
                   <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
-                  <PhotoPreview photos={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
+                  <ImageView photos={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
                     {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
-                  </PhotoPreview>
+                  </ImageView>
                 </View>
               </View>
             ) : (

@@ -12,9 +12,9 @@ function loadStories() {
   require('../components/ImagePicker/ImagePicker.stories');
   require('../components/ImagePickerActionSheet/ImagePickerActionSheet.stories');
   require('../components/ImageProgress/ImageProgress.stories');
+  require('../components/ImageView/ImageView.stories');
   require('../components/PhotoEdit/PhotoEdit.stories');
   require('../components/PhotoGrid/PhotoGrid.stories');
-  require('../components/PhotoPreview/PhotoPreview.stories');
   require('./stories/Button.stories');
   
 }
@@ -27,9 +27,9 @@ const stories = [
   '../components/ImagePicker/ImagePicker.stories',
   '../components/ImagePickerActionSheet/ImagePickerActionSheet.stories',
   '../components/ImageProgress/ImageProgress.stories',
+  '../components/ImageView/ImageView.stories',
   '../components/PhotoEdit/PhotoEdit.stories',
   '../components/PhotoGrid/PhotoGrid.stories',
-  '../components/PhotoPreview/PhotoPreview.stories',
   './stories/Button.stories',
   
 ];

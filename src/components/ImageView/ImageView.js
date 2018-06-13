@@ -17,7 +17,7 @@ const RightBlock = connectToStyleSheet('rightBlock', View);
 const ShareButton = connectToStyleSheet('footerButton', IoniconsIcon).withProps({ name: 'ios-share-alt' });
 const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withProps({ name: 'trash' });
 
-@styleSheet('Sparkle.PhotoPreview', {
+@styleSheet('Sparkle.ImageView', {
   indicator: {
     width: '100%',
     position: 'absolute',
@@ -72,7 +72,7 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
     color: '#BDC0CB',
   },
 })
-export default class PhotoPreview extends Component {
+export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     photos: PropTypes.array.isRequired,
