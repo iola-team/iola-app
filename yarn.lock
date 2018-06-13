@@ -5081,9 +5081,9 @@ graphql-cli-prepare@1.4.19:
     graphql-static-binding "0.9.3"
     lodash "4.17.5"
 
-graphql-cli@^2.16.2:
-  version "2.16.2"
-  resolved "https://registry.yarnpkg.com/graphql-cli/-/graphql-cli-2.16.2.tgz#13910cccc0e0e6b37f93613534b85ee7c8795649"
+graphql-cli@^2.16.3:
+  version "2.16.3"
+  resolved "https://registry.yarnpkg.com/graphql-cli/-/graphql-cli-2.16.3.tgz#3042b7dbcdca33fe4108862de64bd42834ff5bec"
   dependencies:
     adm-zip "0.4.7"
     apollo-codegen "^0.19.1"
@@ -9134,9 +9134,9 @@ react-navigation-tabs@0.5.1, react-navigation-tabs@^0.5.1:
     react-native-safe-area-view "^0.7.0"
     react-native-tab-view "^1.0.0"
 
-react-navigation@^2.3.0:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-2.3.0.tgz#1f3cdbc5223b25ea8196b655d85daf8f14d21e84"
+react-navigation@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-2.3.1.tgz#f0734ecc64a0af70395f889d9ffa8f610642eed5"
   dependencies:
     clamp "^1.0.1"
     create-react-context "^0.2.1"
