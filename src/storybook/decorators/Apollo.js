@@ -6,6 +6,7 @@ import { ApolloLink } from 'apollo-link';
 import { SchemaLink } from 'apollo-link-schema';
 import MockAsyncStorage from 'mock-async-storage';
 import delay from 'promise-delay';
+import { Buffer } from 'buffer';
 import {
   makeExecutableSchema,
   addMockFunctionsToSchema,
@@ -13,6 +14,11 @@ import {
 } from 'graphql-tools';
 
 import { createClient } from 'graph';
+
+/**
+ * Set buffer polyfill, required by `graphql-relay`
+ */
+window.Buffer = Buffer;
 
 function createSchemaLink({ typeDefs, mocks, resolvers, dataStore = {} }) {
   const schema = makeExecutableSchema({
