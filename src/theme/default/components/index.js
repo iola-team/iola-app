@@ -4,6 +4,14 @@ import getTheme from 'native-base/src/theme/components';
 export default (variables => ({
   ...variables,
   ...merge(getTheme(variables), {
+    'Sparkle.TouchableOpacity': {
+      '.disabled': {
+        opacity: 0.3,
+      },
+
+      'NativeBase.Icon': {},
+    },
+
     'NativeBase.Container': {
       backgroundColor: '#FFFFFF',
     },
@@ -24,6 +32,12 @@ export default (variables => ({
       '.highlight': {
         backgroundColor: '#F8F9FB',
       },
+    },
+
+    'NativeBase.Item': {
+      '.last': {
+        borderWidth: 0,
+      }
     },
 
     'NativeBase.Thumbnail': {
@@ -57,6 +71,11 @@ export default (variables => ({
       '.transparent': {
         '.secondary': {
           backgroundColor: null,
+        },
+
+        '.disabled': {
+          backgroundColor: null,
+          opacity: 0.3,
         }
       },
 
@@ -172,7 +191,19 @@ export default (variables => ({
         },
 
         '.padder': {
+          padding: variables.contentPadding,
+        },
+
+        '.horizontalPadder': {
           paddingHorizontal: variables.contentPadding,
+        },
+
+        '.highlight': {
+          backgroundColor: '#F8F9FB',
+        },
+
+        '.cardBody': {
+          flexDirection: 'column',
         }
       },
 
@@ -194,5 +225,14 @@ export default (variables => ({
         },
       },
     },
+
+    'Sparkle.ScreenHeader': {
+      'NativeBase.Icon': {
+        fontSize: 35,
+        color: '#BDC0CB',
+        margin: 16,
+        marginRight: 22,
+      }
+    }
   }),
 }));

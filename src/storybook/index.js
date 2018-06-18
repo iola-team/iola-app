@@ -30,6 +30,10 @@ export default class StorybookHMR extends Component {
     configure();
   }
 
+  componentDidCatch(error, info) {
+    console.error(error);
+  }
+
   render() {
     const Storybook = this.Storybook;
 

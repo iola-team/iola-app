@@ -3,7 +3,7 @@ import propTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
 import { Button, Form, Text, View } from 'native-base';
 import { withFormik } from 'formik';
-import yup from 'yup';
+import * as yup from 'yup';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';

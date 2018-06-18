@@ -24,19 +24,23 @@ stories.add('Picker', () => {
 
   return (
     <ImagePicker {...props}>
-      {(pick, [image], clear) => (
+      {({ pick, fromCamera, fromGallery }, [image], clear) => (
         <Fragment>
           <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 10 }}>
             <Button onPress={pick} style={{ marginRight: 8 }}>
+              <Text>Pick</Text>
+            </Button>
+            <Button onPress={fromGallery} style={{ marginRight: 8 }}>
               <Text>Pick from gallery</Text>
             </Button>
-            <Button onPress={pick} style={{ marginRight: 8 }}>
+            <Button onPress={fromCamera} style={{ marginRight: 8 }}>
               <Text>Pick camera</Text>
             </Button>
-            <Button warning onPress={clear}>
-              <Text>Clear</Text>
-            </Button>
           </View>
+          <Button block warning onPress={clear} style={{ marginBottom: 20 }}>
+            <Text>Clear</Text>
+          </Button>
+
           {
             image && (
               <Image source={{ uri: image.path }} style={{ width: image.width, height: image.height, alignSelf: 'center' }} />
