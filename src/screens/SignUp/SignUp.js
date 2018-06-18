@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { ImageBackground } from 'react-native';
-import { Button, Container, Text, View } from 'native-base';
+import { ImageBackground, TouchableOpacity } from 'react-native';
+import { Container, Text, View } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 import { LAUNCH } from '../roteNames';
@@ -14,11 +14,11 @@ const Content = connectToStyleSheet('content', View);
 const TermsContainer = connectToStyleSheet('termsContainer', View);
 const TermsText = connectToStyleSheet('termsText', Text);
 const TermsSubcontainer = connectToStyleSheet('termsSubcontainer', View);
-const TermsButton = connectToStyleSheet('termsButton', Button);
+const TermsButton = connectToStyleSheet('termsButton', TouchableOpacity);
 const TermsButtonText = connectToStyleSheet('termsButtonText', Text);
 const AlreadyHaveAnAccountContainer = connectToStyleSheet('alreadyHaveAnAccountContainer', View);
 const AlreadyHaveAnAccountText = connectToStyleSheet('alreadyHaveAnAccountText', Text);
-const ButtonSignIn = connectToStyleSheet('buttonSignIn', Button);
+const ButtonSignIn = connectToStyleSheet('buttonSignIn', TouchableOpacity);
 const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 
 @styleSheet('Sparkle.SignUpScreen', {
@@ -53,16 +53,14 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
   },
 
   termsButton: {
-    height: 29,
-    marginTop: -5,
-    marginHorizontal: -11,
-    backgroundColor: 'transparent',
+    paddingHorizontal: 4,
   },
 
   termsButtonText: {
     fontSize: 14,
     lineHeight: 19,
     textDecorationLine: 'underline',
+    color: '#FFFFFF',
   },
 
   termsSubcontainer: {
@@ -82,18 +80,14 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
   },
 
   buttonSignIn: {
-    height: 30,
-    marginTop: -5,
-    marginHorizontal: -4,
-    backgroundColor: 'transparent',
+    paddingHorizontal: 4,
   },
 
   buttonSignInText: {
     fontSize: 14,
     lineHeight: 19,
-    paddingVertical: 0,
-    paddingHorizontal: 10,
     textDecorationLine: 'underline',
+    color: '#FFFFFF',
   },
 })
 export default class SignUpScreen extends Component {

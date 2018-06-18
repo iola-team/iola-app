@@ -1,58 +1,41 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
+import { TouchableOpacity } from 'react-native';
+import { Button, Form, Text, View } from 'native-base';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, Form, Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
-const ItemEmailOrLogin = connectToStyleSheet('itemEmailOrLogin', Item).withProps({ regular: true });
-const ItemPassword = connectToStyleSheet('itemPassword', Item).withProps({ regular: true });
-const InputTransparent = connectToStyleSheet('inputTransparent', Input).withProps({ placeholderTextColor: '#FFFFFF' });
-const ErrorText = connectToStyleSheet('errorText', Text);
-const itemStyle = {
-  paddingHorizontal: 10,
-  borderRadius: 8,
-  borderColor: 'rgba(255, 255, 255, .6)',
-};
-const ForgotPasswordButton = connectToStyleSheet('forgotPasswordButton', Button);
+import TextInputItem from '../../components/Form/TextInputItem';
+
+const InfoBlock = connectToStyleSheet('infoBlock', View);
+const CommonErrorText = connectToStyleSheet('commonErrorText', Text);
 const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
 const SubmitButton = connectToStyleSheet('submitButton', Button);
 
+readTokenQuery = gql`
+  {
+    auth @client {
+      token
+    }
+  }
+`;
+
 @styleSheet('Sparkle.SignInForm', {
-  itemEmailOrLogin: {
-    ...itemStyle,
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
-    borderBottomWidth: 0,
+  infoBlock: {
+    justifyContent: 'space-between',
+    flexDirection: 'row-reverse',
   },
 
-  itemPassword: {
-    ...itemStyle,
-    paddingRight: 5,
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-  },
-
-  inputTransparent: {
-    fontSize: 16,
-    lineHeight: 17,
-    color: '#FFFFFF',
-  },
-
-  errorText: {
+  commonErrorText: {
     fontSize: 12,
-    fontWeight: 'normal',
     color: '#FF8787',
-  },
-
-  forgotPasswordButton: {
-    marginRight: -8,
-    alignSelf: 'center',
   },
 
   forgotPasswordText: {
     fontSize: 12,
-    fontWeight: 'normal',
     color: '#FFFFFF',
   },
 
@@ -66,45 +49,63 @@ class SignInForm extends Component {
     onForgotPasswordPress: propTypes.func.isRequired,
   };
 
-  renderFieldError(name) {
-    const { touched, errors } = this.props;
+  isAuthIsValid(token) {
+    const { isSubmitting, submitCount, status } = this.props;
 
-    return touched[name] && errors[name] ? <ErrorText>{errors[name]}</ErrorText> : null;
+    return !isSubmitting && !!submitCount && !token && !status.changed;
   }
 
   render() {
-    const { onForgotPasswordPress, values, setFieldValue, setFieldTouched, handleSubmit, isValid } = this.props;
+    const { onForgotPasswordPress, handleSubmit, isValid } = this.props;
 
     return (
-      <Form>
-        <ItemEmailOrLogin>
-          <InputTransparent
-            placeholder="Email or login"
-            onChangeText={text => setFieldValue('login', text)}
-            onBlur={() => setFieldTouched('login')}
-            value={values.login}
-          />
-          {this.renderFieldError('login')}
-        </ItemEmailOrLogin>
+      <Query query={readTokenQuery}>
+        {({ data: { auth: { token } } }) => {
+          const error = this.isAuthIsValid(token);
 
-        <ItemPassword>
-          <InputTransparent
-            placeholder="Password"
-            onChangeText={text => setFieldValue('password', text)}
-            onBlur={() => setFieldTouched('password')}
-            value={values.password}
-            secureTextEntry
-          />
-          <ForgotPasswordButton transparent small onPress={() => onForgotPasswordPress()}>
-            <ForgotPasswordText>Forgot password?</ForgotPasswordText>
-          </ForgotPasswordButton>
-          {this.renderFieldError('password')}
-        </ItemPassword>
+          return (
+            <Form>
+              <TextInputItem
+                name="login"
+                placeholder="Email or login"
+                customStyle={{
+                  marginBottom: 0,
+                  borderBottomLeftRadius: 0,
+                  borderBottomRightRadius: 0,
+                  borderBottomWidth: 0,
+                }}
+                error={error}
+                {...this.props}
+              />
 
-        <SubmitButton block onPress={handleSubmit} disabled={!isValid}>
-          <Text>Submit</Text>
-        </SubmitButton>
-      </Form>
+              <TextInputItem
+                name="password"
+                placeholder="Password"
+                infoText="At least 4 characters"
+                customStyle={{
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 0,
+                }}
+                error={error}
+                secureTextEntry
+                {...this.props}
+              />
+
+              <InfoBlock>
+                <TouchableOpacity onPress={() => onForgotPasswordPress()}>
+                  <ForgotPasswordText>Forgot password?</ForgotPasswordText>
+                </TouchableOpacity>
+
+                {error ? <CommonErrorText>Wrong login or password</CommonErrorText> : null}
+              </InfoBlock>
+
+              <SubmitButton block onPress={handleSubmit} disabled={!isValid}>
+                <Text>Submit</Text>
+              </SubmitButton>
+            </Form>
+          );
+        }}
+      </Query>
     );
   }
 }
@@ -115,7 +116,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ login: 'demo5@oxpro.org', password: 'demo1986' }),
-  handleSubmit: (values, { props }) => props.onSubmit(values),
+  mapPropsToValues: props => ({ login: 'demo5@oxpro.or', password: 'demo1986' }),
+  handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
   validationSchema,
 })(SignInForm);

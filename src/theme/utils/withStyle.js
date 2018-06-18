@@ -2,7 +2,7 @@ import composeStyles from './composeStyles';
 import normalizeStyle from './normalizeStyle';
 import { connectStyle } from 'native-base';
 import { withProps, compose, hoistStatics } from 'recompose';
-import mapPropsToStyleNames from 'native-base/src/Utils/mapPropsToStyleNames';
+import mapPropsToStyleNames from 'native-base/src/utils/mapPropsToStyleNames';
 
 export default (componentName, ...componentStyles) => {
   const { staticStyles, getDynamicStyles } = composeStyles(...componentStyles);
