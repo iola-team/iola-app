@@ -63,9 +63,11 @@ export default (variables => ({
         fontWeight: '500',
       },
 
-      '.disabled': {
-        backgroundColor: '#5F96F2',
-        opacity: 0.5,
+      '.primary': {
+        '.disabled': {
+          backgroundColor: '#5F96F2',
+          opacity: 0.5,
+        },
       },
 
       '.transparent': {
