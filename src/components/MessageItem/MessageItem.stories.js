@@ -2,7 +2,7 @@ import React from 'react';
 import { find } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
+import { selectV2 as select, boolean, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 
@@ -20,7 +20,21 @@ stories.addDecorator(getContentDecorator({ padder: true }));
 const messages = [
   {
     id: `Message:1`,
-    content: 'Hello World',
+    content: 'Hi how are you?',
+    createdAt: new Date(),
+    user: {
+      id: 'User:1',
+      name: 'Roman Banan',
+      avatar: {
+        id: 'Avatar:1',
+        url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
+      },
+    },
+  },
+
+  {
+    id: `Message:2`,
+    content: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning?',
     createdAt: new Date(),
     user: {
       id: 'User:1',
@@ -62,21 +76,15 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    node: (root, { id }, { dataStore: { messages } }) => {
-      const message = find(messages, { id });
-
-      console.log('Messsss', message);
-
-      return message;
-    },
+    node: (root, { id }, { dataStore: { messages } }) => find(messages, { id }),
   },
 };
 
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
 const messageQuery = gql`
-  query {
-    message: node(id: "Message:1") {
+  query($id: ID!) {
+    message: node(id: $id) {
       id
       ...on Message {
         id
@@ -89,13 +97,52 @@ const messageQuery = gql`
 `;
 
 // Stories
-stories.add('Default', () => {
+stories.add('Short text', () => {
+  const side = select('Side', {
+    'Left': 'left',
+    'Right': 'right',
+  }, 'left');
+
+  const first = boolean('First', false);
+  const last = boolean('Last', false);
+
   return (
-    <Query query={messageQuery}>
+    <Query query={messageQuery}  variables={{ id: 'Message:1' }}>
       {({ data, loading }) => !loading && (
 
         <MessageItem
           message={data.message}
+          left={side === 'left'}
+          right={side === 'right'}
+          last={last}
+          first={first}
+        />
+
+      )}
+    </Query>
+  );
+});
+
+
+stories.add('Long text', () => {
+  const side = select('Side', {
+    'Left': 'left',
+    'Right': 'right',
+  }, 'left');
+
+  const first = boolean('First', false);
+  const last = boolean('Last', false);
+
+  return (
+    <Query query={messageQuery} variables={{ id: 'Message:2' }}>
+      {({ data, loading }) => !loading && (
+
+        <MessageItem
+          message={data.message}
+          left={side === 'left'}
+          right={side === 'right'}
+          last={last}
+          first={first}
         />
 
       )}

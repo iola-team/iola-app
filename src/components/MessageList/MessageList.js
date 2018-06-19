@@ -2,11 +2,10 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { View } from 'native-base';
-import { FlatList } from 'react-native';
+import { FlatList, View as ViewRN } from 'react-native';
 
 import MessageItem from '../MessageItem';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
+import { withStyle } from 'theme';
 
 const edgeFragment = gql`
   fragment MessageList_edge on MessageEdge {
@@ -20,12 +19,22 @@ const edgeFragment = gql`
   ${MessageItem.fragments.message}
 `;
 
-const Root = connectToStyleSheet('root', View);
+@withStyle('Sparkle.MessageList', {
+  'Sparkle.MessageItem': {
+    marginBottom: 5,
 
-@styleSheet('Sparkle.MessageList', {
-  root: {
+    '.left': {
+      alignSelf: 'flex-start',
+    },
 
-  }
+    '.right': {
+      alignSelf: 'flex-end',
+    },
+
+    '.last': {
+      marginBottom: 15,
+    }
+  },
 })
 export default class MessageList extends PureComponent {
   static fragments = {
@@ -34,17 +43,30 @@ export default class MessageList extends PureComponent {
 
   static propTypes = {
     edges: PropTypes.arrayOf(fragmentProp(edgeFragment).isRequired).isRequired,
+    getItemSide: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
 
   };
 
-  renderItem = ({ item }) => {
+  renderItem = ({ item, index }) => {
+    const { getItemSide, edges } = this.props;
     const { node } = item;
+    const prevNode = index === 0 ? null : edges[index - 1] && edges[index - 1].node;
+    const nextNode = edges[index + 1] && edges[index + 1].node;
+    const side = getItemSide(node);
+    const last = !nextNode || getItemSide(nextNode) !== side;
+    const first = !prevNode || getItemSide(prevNode) !== side;
 
     return (
-      <MessageItem message={node} />
+      <MessageItem
+        message={node}
+        right={side === 'right'}
+        left={side === 'left'}
+        last={last}
+        first={first}
+      />
     );
   }
 
@@ -54,13 +76,13 @@ export default class MessageList extends PureComponent {
     const { style, edges } = this.props;
 
     return (
-      <Root style={style}>
+      <ViewRN style={style}>
         <FlatList
           data={edges}
           keyExtractor={this.getKeyForItem}
           renderItem={this.renderItem}
         />
-      </Root>
+      </ViewRN>
     );
   }
 }

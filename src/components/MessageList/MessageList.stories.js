@@ -165,6 +165,7 @@ stories.add('Default', () => {
 
         <MessageList
           edges={data.chat.messages.edges}
+          getItemSide={({ user }) => user.id === 'User:1' ? 'left' : 'right'}
         />
 
       )}

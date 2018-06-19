@@ -228,6 +228,13 @@ export default (variables => ({
         margin: 16,
         marginRight: 22,
       }
-    }
+    },
+
+    'Sparkle.MessageList': {
+      'Sparkle.MessageItem': {
+        '.left': {},
+        '.right': {},
+      }
+    },
   }),
 }));
