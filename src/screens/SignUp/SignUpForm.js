@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
-import yup from 'yup';
-import { Button, Form, Input, Item, Text } from 'native-base';
+import * as yup from 'yup';
+import { Button, Form, Text } from 'native-base';
 import { graphql, ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { debounce, find, get, isEmpty } from 'lodash';
+import { debounce, get } from 'lodash';
+
+import TextInputItem from '../../components/Form/TextInputItem';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
@@ -31,9 +33,6 @@ const signUpUserMutation = gql`
   }
 `;
 
-const FormItem = connectToStyleSheet('formItem', Item).withProps({ regular: true });
-const FormInput = connectToStyleSheet('formInput', Input).withProps({ placeholderTextColor: '#FFFFFF' });
-const ErrorText = connectToStyleSheet('errorText', Text);
 const SubmitButton = connectToStyleSheet('submitButton', Button).withProps(({ disabled }) => ({
   disabled,
   block: true,
@@ -49,24 +48,6 @@ const SubmitButton = connectToStyleSheet('submitButton', Button).withProps(({ di
   }),
 })
 @styleSheet('Sparkle.SignUpForm', {
-  formItem: {
-    marginBottom: 8,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    borderColor: 'rgba(255, 255, 255, .6)',
-  },
-
-  formInput: {
-    fontSize: 16,
-    color: '#FFFFFF',
-  },
-
-  errorText: {
-    fontSize: 12,
-    fontWeight: 'normal',
-    color: '#FF8787',
-  },
-
   submitButton: {
     marginTop: 40,
   },
@@ -121,53 +102,33 @@ class SignUpForm extends Component {
     if (success) onSubmit();
   }
 
-  renderFieldError(name, secondaryErrorText) {
-    const { touched, errors } = this.props;
-    const errorText = touched[name] && errors[name] ? errors[name] : secondaryErrorText;
-
-    return errorText ? <ErrorText>{errorText}</ErrorText> : null;
-  }
-
   render() {
-    const { values, isValid, setFieldValue, setFieldTouched } = this.props;
+    const { isValid } = this.props;
     const { emailIsDuplicated } = this.state;
 
     return (
       <Form>
-        <FormItem>
-          <FormInput
-            placeholder="Full Name"
-            onChangeText={text => setFieldValue('name', text)}
-            onBlur={() => setFieldTouched('name')}
-            value={values.name}
-          />
-          {this.renderFieldError('name')}
-        </FormItem>
+        <TextInputItem name="name" placeholder="Full Name" {...this.props} />
 
         <ApolloConsumer>
           {client => (
-            <FormItem>
-              <FormInput
-                placeholder="Email"
-                onChangeText={text => this.onChangeEmail(text, client)}
-                onBlur={() => setFieldTouched('email')}
-                value={values.email}
-              />
-              {this.renderFieldError('email', emailIsDuplicated && 'Email is taken')}
-            </FormItem>
+            <TextInputItem
+              name="email"
+              placeholder="Email"
+              onChangeText={text => this.onChangeEmail(text, client)}
+              secondaryErrorText={emailIsDuplicated && 'Email is taken'}
+              {...this.props}
+            />
           )}
         </ApolloConsumer>
 
-        <FormItem>
-          <FormInput
-            placeholder="Password"
-            onChangeText={text => setFieldValue('password', text)}
-            onBlur={() => setFieldTouched('password')}
-            value={values.password}
-            secureTextEntry
-          />
-          {this.renderFieldError('password')}
-        </FormItem>
+        <TextInputItem
+          name="password"
+          placeholder="Password"
+          infoText="At least 4 characters"
+          secureTextEntry
+          {...this.props}
+        />
 
         <Mutation mutation={signUpUserMutation}>
           {signUpUser => (

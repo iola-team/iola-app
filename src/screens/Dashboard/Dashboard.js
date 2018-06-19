@@ -27,10 +27,14 @@ import LogoutButton from './LogoutButton';
 @styleSheet('Sparkle.DashboardScreen')
 export default class Dashboard extends Component {
   static navigationOptions = {
-    title: 'Dashboard',
     tabBarIcon: ({ focused, tintColor }) => (
       <Icon name="ios-settings-outline" style={{ color: tintColor }} />
     ),
+
+    headerStyle: {
+      backgroundColor: '#F8F9FB'
+    },
+
     headerRight: <LogoutButton />,
   };
 
@@ -38,7 +42,7 @@ export default class Dashboard extends Component {
     const { styleSheet, data: { user }, navigation: { navigate } } = this.props;
 
     return (
-      <Container>
+      <Container style={styleSheet.container}>
         <Content>
           {
             user ? (

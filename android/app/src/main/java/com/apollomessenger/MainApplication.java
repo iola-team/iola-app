@@ -3,6 +3,7 @@ package com.apollomessenger;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.wheelpicker.WheelPickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -30,6 +31,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new WheelPickerPackage(),
             new RNFetchBlobPackage(),
             new PickerPackage(),
             new LinearGradientPackage(),
