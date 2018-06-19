@@ -1,19 +1,7 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ImageBackground, Image } from 'react-native';
-import {
-  Container,
-  Content,
-  View,
-  Text,
-  Button,
-  Icon,
-  Spinner,
-  Card,
-  CardItem,
-  Body,
-} from 'native-base';
+import { Container, Content, View, Spinner } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import { UserHeading, UserBriefCard, UserFriendsCard, UserPhotosCard, ImageView } from 'components';
