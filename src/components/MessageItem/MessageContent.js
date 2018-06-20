@@ -7,30 +7,24 @@ import { Text } from 'native-base';
 
 import { withStyle } from 'theme';
 import Status from './MessageStatus';
+import TextContent from './TextContent';
 
 const messageFragment = gql`
   fragment MessageContent_message on Message {
     id
-    content
     createdAt
+    
+    ...MessageTextContent_message
   }
+  
+  ${TextContent.fragments.message}
 `;
 
 @withStyle('Sparkle.MessageContent', {
   borderWidth: StyleSheet.hairlineWidth,
   borderRadius: 8,
   borderColor: '#BDC0CB',
-  backgroundColor: '#FFFFFF',
-  paddingHorizontal: 15,
-  paddingVertical: 10,
-  alignItems: 'center',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-
-  'Sparkle.MessageStatus': {
-    paddingLeft: 10,
-    marginLeft: 'auto',
-  },
+  overflow: 'hidden',
 
   '.left': {
     borderBottomLeftRadius: 4,
@@ -38,25 +32,10 @@ const messageFragment = gql`
   },
 
   '.right': {
-    backgroundColor: '#5F96F2',
     borderTopRightRadius: 4,
     borderBottomRightRadius: 4,
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
-
-    'NativeBase.Text': {
-      color: '#FFFFFF',
-    },
-
-    'Sparkle.MessageStatus': {
-      'NativeBase.Icon': {
-        color: '#A3C5FF',
-      },
-
-      'NativeBase.Text': {
-        color: '#A3C5FF',
-      },
-    },
   },
 
   '.first': {
@@ -96,13 +75,28 @@ export default class MessageContent extends PureComponent {
 
   };
 
+  /**
+   * Returns message content component, detected from props
+   *
+   * @returns Component
+   */
+  getContentComponent() {
+    return TextContent;
+  }
+
   render() {
     const { message, style, right } = this.props;
+    const contentProps = {
+      message,
+      inverse: right,
+      statusComponent: (<Status time={message.createdAt} hasStatus={right} />),
+    };
+
+    const Content = this.getContentComponent();
 
     return (
       <ViewRN style={style}>
-        <Text>{message.content}</Text>
-        <Status time={message.createdAt} hasStatus={right} />
+        <Content {...contentProps} />
       </ViewRN>
     );
   }
