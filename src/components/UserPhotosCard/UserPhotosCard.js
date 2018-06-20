@@ -40,7 +40,7 @@ const userFragment = gql`
     height: 100,
     marginRight: 8,
     borderRadius: 8,
-  }
+  },
 })
 export default class UserPhotosCard extends PureComponent {
   static propTypes = {

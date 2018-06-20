@@ -22,7 +22,7 @@ function loadStories() {
   require('../components/PhotoGrid/PhotoGrid.stories');
   require('../components/TextPicker/TextPicker.stories');
   require('./stories/Button.stories');
-
+  
 }
 
 const stories = [
@@ -43,7 +43,7 @@ const stories = [
   '../components/PhotoGrid/PhotoGrid.stories',
   '../components/TextPicker/TextPicker.stories',
   './stories/Button.stories',
-
+  
 ];
 
 module.exports = {

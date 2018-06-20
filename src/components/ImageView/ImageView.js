@@ -75,7 +75,7 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
 export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
-    photos: PropTypes.array.isRequired,
+    images: PropTypes.array.isRequired,
   };
 
   state = {
@@ -100,6 +100,10 @@ export default class ImageView extends Component {
   }
 
   renderFooter() {
+    const { images } = this.props;
+    const { index } = this.state;
+    console.log(images);
+
     return (
       <Footer>
         <View>
@@ -115,7 +119,7 @@ export default class ImageView extends Component {
   }
 
   render() {
-    const { children, photos } = this.props;
+    const { children, images } = this.props;
     const { index, visible } = this.state;
     const footerContainerStyle = ({
       width: '100%',
@@ -130,17 +134,17 @@ export default class ImageView extends Component {
 
         <Modal
           visible={visible}
-          transparent={true}
           animationType="fade"
           onRequestClose={::this.onClose}
+          transparent
         >
           <ImageViewer
             renderHeader={::this.renderHeader}
             renderIndicator={this.renderIndicator}
-            renderFooter={this.renderFooter}
+            renderFooter={::this.renderFooter}
             footerContainerStyle={footerContainerStyle}
             index={index}
-            imageUrls={photos}
+            imageUrls={images}
             failImageSource={{ uri: '@TODO' }}
             loadingRender={() => null /* '@TODO' */}
             onSwipeDown={::this.onClose}

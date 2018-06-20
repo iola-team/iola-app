@@ -64,7 +64,7 @@ export default class UserScreen extends Component {
                       navigate({ routeName: routes.USER, params: { id }, key: id })
                     }}
                   />
-                  <ImageView photos={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
+                  <ImageView images={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
                     {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
                   </ImageView>
                 </View>

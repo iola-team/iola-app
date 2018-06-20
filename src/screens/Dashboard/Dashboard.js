@@ -56,7 +56,7 @@ export default class Dashboard extends Component {
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
                   <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
-                  <ImageView photos={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
+                  <ImageView images={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
                     {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
                   </ImageView>
                 </View>
