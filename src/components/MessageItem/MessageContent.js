@@ -13,11 +13,12 @@ const messageFragment = gql`
   fragment MessageContent_message on Message {
     id
     createdAt
-    
-    ...MessageTextContent_message
+    content {
+      ...MessageTextContent_content  
+    }
   }
   
-  ${TextContent.fragments.message}
+  ${TextContent.fragments.content}
 `;
 
 @withStyle('Sparkle.MessageContent', {
@@ -87,7 +88,7 @@ export default class MessageContent extends PureComponent {
   render() {
     const { message, style, right } = this.props;
     const contentProps = {
-      message,
+      content: message.content,
       inverse: right,
       statusComponent: (<Status time={message.createdAt} hasStatus={right} />),
     };

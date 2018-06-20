@@ -20,7 +20,9 @@ stories.addDecorator(getContentDecorator({ padder: true }));
 const messages = [
   {
     id: `Message:1`,
-    content: 'Hi how are you?',
+    content: {
+      text: 'Hi how are you?',
+    },
     createdAt: new Date(),
     user: {
       id: 'User:1',
@@ -34,7 +36,9 @@ const messages = [
 
   {
     id: `Message:2`,
-    content: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning?',
+    content: {
+      text: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning?',
+    },
     createdAt: new Date(),
     user: {
       id: 'User:1',
@@ -66,9 +70,13 @@ const typeDefs = gql`
     avatar: Avatar
   }
 
+  type MessageContent {
+    text: String
+  }
+  
   type Message {
     id: ID!
-    content: String
+    content: MessageContent
     createdAt: Date!
     user: User!
   }

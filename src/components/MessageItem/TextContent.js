@@ -7,10 +7,9 @@ import gql from 'graphql-tag';
 
 import { withStyle } from 'theme';
 
-const messageFragment = gql`
-  fragment MessageTextContent_message on Message {
-    id
-    content
+const contentFragment = gql`
+  fragment MessageTextContent_content on MessageContent {
+    text
   }
 `;
 
@@ -47,20 +46,20 @@ const messageFragment = gql`
 })
 export default class TextContent extends Component {
   static fragments = {
-    message: messageFragment,
+    content: contentFragment,
   }
 
   static propTypes = {
     statusComponent: PropTypes.element.isRequired,
-    message: fragmentProp(messageFragment).isRequired,
+    content: fragmentProp(contentFragment).isRequired,
   };
 
   render() {
-    const { message, style, statusComponent } = this.props;
+    const { content, style, statusComponent } = this.props;
 
     return (
       <View style={style}>
-        <Text>{message.content}</Text>
+        <Text>{content.text}</Text>
         {statusComponent}
       </View>
     );

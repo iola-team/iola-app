@@ -48,9 +48,11 @@ const chats = [
   },
 ];
 
-const messages = range(100).map((index) => ({
+const messages = range(50).map((index) => ({
   id: `Message:${index + 1}`,
-  content: faker.hacker.phrase(),
+  content: {
+    text: faker.hacker.phrase(),
+  },
   createdAt: faker.date.recent(),
   user: faker.random.arrayElement(find(chats, { id: 'Chat:1' }).participants),
   chat: find(chats, { id: 'Chat:1' }),
@@ -93,11 +95,15 @@ const typeDefs = gql`
     messages(first: Int, after: Cursor, last: Int, before: Cursor): ChatMessagesConnection!
   }
 
+  type MessageContent {
+    text: String
+  }
+  
   type Message {
     id: ID!
     user: User!
     chat: Chat!
-    content: String
+    content: MessageContent
     createdAt: Date!
   }
 

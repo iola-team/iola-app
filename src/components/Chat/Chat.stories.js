@@ -16,7 +16,7 @@ const stories = storiesOf('Components/Chat', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator());
+stories.addDecorator(getContentDecorator({ padder: true }));
 
 const users = [
   {
@@ -49,9 +49,11 @@ const chats = [
   },
 ];
 
-const messages = range(100).map((index) => ({
+const messages = range(50).map((index) => ({
   id: `Message:${index + 1}`,
-  content: faker.hacker.phrase(),
+  content: {
+    text: faker.hacker.phrase(),
+  },
   createdAt: faker.date.recent(),
   user: faker.random.arrayElement(find(chats, { id: 'Chat:1' }).participants),
   chat: find(chats, { id: 'Chat:1' }),
@@ -116,11 +118,15 @@ const typeDefs = gql`
     totalCount: Int
   }
 
+  type MessageContent {
+    text: String
+  }
+
   type Message implements Node {
     id: ID!
     user: User!
     chat: Chat!
-    content: String
+    content: MessageContent
     createdAt: Date!
   }
 

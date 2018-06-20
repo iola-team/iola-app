@@ -55,6 +55,8 @@ export default class Chat extends Component {
 
   };
 
+  getItemSide = ({ user }) => this.props.user.id === user.id ? 'right' : 'left';
+
   render() {
     const { style, user, chat } = this.props;
     console.log('Chat', chat);
@@ -63,6 +65,7 @@ export default class Chat extends Component {
       <View style={style}>
         <MessageList
           edges={chat.messages.edges}
+          getItemSide={this.getItemSide}
         />
       </View>
     );
