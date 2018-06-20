@@ -19,23 +19,7 @@ const edgeFragment = gql`
   ${MessageItem.fragments.message}
 `;
 
-@withStyle('Sparkle.MessageList', {
-  'Sparkle.MessageItem': {
-    marginBottom: 5,
-
-    '.left': {
-      alignSelf: 'flex-start',
-    },
-
-    '.right': {
-      alignSelf: 'flex-end',
-    },
-
-    '.last': {
-      marginBottom: 15,
-    }
-  },
-})
+@withStyle('Sparkle.MessageList')
 export default class MessageList extends PureComponent {
   static fragments = {
     edge: edgeFragment,
@@ -66,6 +50,7 @@ export default class MessageList extends PureComponent {
         left={side === 'left'}
         last={last}
         first={first}
+        hasAvatar={side === 'left'}
       />
     );
   }

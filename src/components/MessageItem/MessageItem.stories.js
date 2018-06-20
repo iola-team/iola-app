@@ -103,8 +103,9 @@ stories.add('Short text', () => {
     'Right': 'right',
   }, 'left');
 
-  const first = boolean('First', false);
+  const first = boolean('First', true);
   const last = boolean('Last', false);
+  const hasAvatar = boolean('Has Avatar', true);
 
   return (
     <Query query={messageQuery}  variables={{ id: 'Message:1' }}>
@@ -116,6 +117,7 @@ stories.add('Short text', () => {
           right={side === 'right'}
           last={last}
           first={first}
+          hasAvatar={hasAvatar}
         />
 
       )}
@@ -130,8 +132,9 @@ stories.add('Long text', () => {
     'Right': 'right',
   }, 'left');
 
-  const first = boolean('First', false);
+  const first = boolean('First', true);
   const last = boolean('Last', false);
+  const hasAvatar = boolean('Has Avatar', true);
 
   return (
     <Query query={messageQuery} variables={{ id: 'Message:2' }}>
@@ -143,6 +146,7 @@ stories.add('Long text', () => {
           right={side === 'right'}
           last={last}
           first={first}
+          hasAvatar={hasAvatar}
         />
 
       )}

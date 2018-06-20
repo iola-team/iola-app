@@ -7,87 +7,57 @@ import { Text } from 'native-base';
 
 import { withStyle } from 'theme';
 import Status from './MessageStatus';
+import Content from './MessageContent';
+import Avatar from '../UserAvatar';
 
 const messageFragment = gql`
   fragment MessageItem_message on Message {
     id
-    content
-    createdAt
     user {
       id
-      name
-      avatar {
-        id
-        url
-      }
+      ...UserAvatar_user
     }
+
+    ...MessageContent_message
   }
+  
+  ${Content.fragments.message}
+  ${Avatar.fragments.user}
 `;
 
 @withStyle('Sparkle.MessageItem', {
-  borderWidth: StyleSheet.hairlineWidth,
-  borderRadius: 8,
-  borderColor: '#BDC0CB',
-  backgroundColor: '#FFFFFF',
-  paddingHorizontal: 15,
-  paddingVertical: 10,
-  maxWidth: '80%',
-  alignItems: 'center',
-  alignSelf: 'center',
   flexDirection: 'row',
-  flexWrap: 'wrap',
+  justifyContent: 'flex-start',
+  marginBottom: 5,
+  width: '90%',
 
-  'Sparkle.MessageStatus': {
-    paddingLeft: 10,
-    marginLeft: 'auto',
-  },
-
-  '.left': {
-    alignSelf: 'flex-start',
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
-  },
-
-  '.right': {
-    alignSelf: 'flex-end',
-    backgroundColor: '#5F96F2',
-    borderTopRightRadius: 4,
-    borderBottomRightRadius: 4,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
-
-    'NativeBase.Text': {
-      color: '#FFFFFF',
-    },
-
-    'Sparkle.MessageStatus': {
-      'NativeBase.Icon': {
-        color: '#A3C5FF',
-      },
-
-      'NativeBase.Text': {
-        color: '#A3C5FF',
-      },
-    },
-  },
-
-  '.first': {
-    '.left': {
-      borderTopLeftRadius: 8,
-    },
-
-    '.right': {
-      borderTopRightRadius: 8,
-    },
+  'NativeBase.Thumbnail': {
+    position: 'absolute',
+    left: 0,
+    top: 0,
   },
 
   '.last': {
-    '.left': {
-      borderBottomLeftRadius: 8,
+    marginBottom: 15,
+  },
+
+  '.hasAvatar': {
+    paddingLeft: 50,
+  },
+
+  '.right': {
+    width: '80%',
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+
+    '.hasAvatar': {
+      paddingRight: 50,
+      paddingLeft: 0,
     },
 
-    '.right': {
-      borderBottomRightRadius: 8,
+    'NativeBase.Thumbnail': {
+      left: null,
+      right: 0,
     },
   },
 })
@@ -102,6 +72,7 @@ export default class MessageItem extends PureComponent {
     right: PropTypes.bool,
     last: PropTypes.bool,
     first: PropTypes.bool,
+    hasAvatar: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -109,12 +80,17 @@ export default class MessageItem extends PureComponent {
   };
 
   render() {
-    const { message, style, right } = this.props;
+    const { message, first, hasAvatar, style, ...props } = this.props;
+    const showAvatar = hasAvatar && first;
 
     return (
       <ViewRN style={style}>
-        <Text>{message.content}</Text>
-        <Status time={message.createdAt} hasStatus={right} />
+        {showAvatar && <Avatar user={message.user} />}
+        <Content
+          message={message}
+          first={first}
+          {...props}
+        />
       </ViewRN>
     );
   }
