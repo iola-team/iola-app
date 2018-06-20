@@ -2,10 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { FlatList, View as ViewRN } from 'react-native';
+import { SectionList } from 'react-native';
+import { groupBy, map } from 'lodash';
 
-import MessageItem from '../MessageItem';
 import { withStyle } from 'theme';
+import MessageItem from '../MessageItem';
+import SectionHeader from './SectionHeader';
 
 const edgeFragment = gql`
   fragment MessageList_edge on MessageEdge {
@@ -34,8 +36,27 @@ export default class MessageList extends PureComponent {
 
   };
 
-  renderItem = ({ item, index }) => {
-    const { getItemSide, edges } = this.props;
+  splitToSections(edges) {
+    const grouped = groupBy(edges, ({ node }) => {
+      const createdAt = new Date(node.createdAt);
+
+      return [
+        createdAt.getFullYear(),
+        createdAt.getMonth(),
+        createdAt.getDate(),
+      ].join('/');
+    });
+
+    return map(grouped, (edges, time) => ({
+      time: new Date(time).toISOString(),
+      data: edges,
+    }));
+  }
+
+  getKeyForItem = item => item.node.id;
+
+  renderItem = ({ item, index, section: { data: edges } }) => {
+    const { getItemSide } = this.props;
     const { node } = item;
     const prevNode = index === 0 ? null : edges[index - 1] && edges[index - 1].node;
     const nextNode = edges[index + 1] && edges[index + 1].node;
@@ -55,19 +76,23 @@ export default class MessageList extends PureComponent {
     );
   }
 
-  getKeyForItem = item => item.node.id;
+  renderSectionHeader = ({ section }) => (
+    <SectionHeader time={section.time} />
+  );
 
   render() {
     const { style, edges } = this.props;
+    const sections = this.splitToSections(edges);
 
     return (
-      <ViewRN style={style}>
-        <FlatList
-          data={edges}
-          keyExtractor={this.getKeyForItem}
-          renderItem={this.renderItem}
-        />
-      </ViewRN>
+      <SectionList
+        style={style}
+        stickySectionHeadersEnabled={false}
+        renderSectionHeader={this.renderSectionHeader}
+        sections={sections}
+        keyExtractor={this.getKeyForItem}
+        renderItem={this.renderItem}
+      />
     );
   }
 }
