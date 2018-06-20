@@ -13,7 +13,7 @@ export default (componentName, ...componentStyles) => {
         ...props,
         style: normalizeStyle([props.style, getDynamicStyles(props)]),
       })),
-      connectStyle(componentName, staticStyles || {}, mapPropsToStyleNames),
+      connectStyle(componentName, staticStyles, mapPropsToStyleNames),
     )
   );
 }
