@@ -20,3 +20,7 @@
         - Build Storybook app: `yarn run:android-storybook`
         - Web UI: http://localhost:7007/
 3) `yarn postinstall` // @TODO: remove when Apollo fix this: https://github.com/apollographql/apollo-client/issues/3236
+
+## Code style
+- [Airbnb Code Style](https://github.com/airbnb/javascript)
+- destructuring: in one line if length < 100 but in multiple lines if has default values
