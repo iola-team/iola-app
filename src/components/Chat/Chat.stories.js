@@ -9,14 +9,16 @@ import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import { connectionFromArray } from 'graphql-relay';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook/index';
+import { getContainerDecorator, getApolloDecorator } from 'storybook/index';
 import Chat from './Chat';
 
 const stories = storiesOf('Components/Chat', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({ padder: true }));
+stories.addDecorator(getContainerDecorator({
+  backgroundColor: '#F8F9FB'
+}));
 
 const users = [
   {

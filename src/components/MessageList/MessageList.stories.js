@@ -16,7 +16,9 @@ const stories = storiesOf('Components/MessageList', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContainerDecorator());
+stories.addDecorator(getContainerDecorator({
+  backgroundColor: '#F8F9FB'
+}));
 
 const users = [
   {
