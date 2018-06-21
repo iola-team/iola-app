@@ -65,7 +65,7 @@ export default class UserList extends Component {
         keyExtractor={::this.extractItemKey}
         renderItem={::this.renderItem}
         getItemLayout={::this.getItemLayout}
-        removeClippedSubviews={true}
+        removeClippedSubviews={false}
       />
     );
   }

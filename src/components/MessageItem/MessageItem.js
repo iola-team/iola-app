@@ -30,6 +30,7 @@ const messageFragment = gql`
   justifyContent: 'flex-start',
   marginBottom: 5,
   width: '90%',
+  marginHorizontal: 10,
 
   'NativeBase.Thumbnail': {
     position: 'absolute',

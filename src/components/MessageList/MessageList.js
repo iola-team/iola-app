@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { SectionList } from 'react-native';
-import { groupBy, map } from 'lodash';
+import { groupBy, map, noop } from 'lodash';
 
 import { withStyle } from 'theme';
 import MessageItem from '../MessageItem';
@@ -30,10 +30,11 @@ export default class MessageList extends PureComponent {
   static propTypes = {
     edges: PropTypes.arrayOf(fragmentProp(edgeFragment).isRequired).isRequired,
     getItemSide: PropTypes.func.isRequired,
+    loadMore: PropTypes.func,
   };
 
   static defaultProps = {
-
+    loadMore: noop,
   };
 
   splitToSections(edges) {
@@ -56,10 +57,12 @@ export default class MessageList extends PureComponent {
   getKeyForItem = item => item.node.id;
 
   renderItem = ({ item, index, section: { data: edges } }) => {
-    const { getItemSide } = this.props;
+    const { getItemSide, inverted } = this.props;
+    const dir = inverted === true ? -1 : 1;
+
     const { node } = item;
-    const prevNode = index === 0 ? null : edges[index - 1] && edges[index - 1].node;
-    const nextNode = edges[index + 1] && edges[index + 1].node;
+    const prevNode = edges[index - dir] && edges[index - dir].node;
+    const nextNode = edges[index + dir] && edges[index + dir].node;
     const side = getItemSide(node);
     const last = !nextNode || getItemSide(nextNode) !== side;
     const first = !prevNode || getItemSide(prevNode) !== side;
@@ -81,14 +84,21 @@ export default class MessageList extends PureComponent {
   );
 
   render() {
-    const { style, edges } = this.props;
+    const { style, edges, inverted, ...listProps } = this.props;
     const sections = this.splitToSections(edges);
+
+    const sectionProps = {
+      [inverted ? 'renderSectionFooter' : 'renderSectionHeader']: this.renderSectionHeader,
+    };
 
     return (
       <SectionList
+        {...listProps}
+        {...sectionProps}
+
         style={style}
+        inverted={inverted}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={this.renderSectionHeader}
         sections={sections}
         keyExtractor={this.getKeyForItem}
         renderItem={this.renderItem}
