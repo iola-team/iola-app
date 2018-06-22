@@ -95,9 +95,19 @@ const chatQuery = gql`
   }
 })
 @styleSheet('Sparkle.Chat', {
+  root: {
+    flex: 1,
+  },
+
   list: {
     backgroundColor: '#F8F9FB',
+    flex: 1,
   },
+
+  footer: {
+    height: 50,
+    backgroundColor: '#FFFFFF',
+  }
 })
 export default class Chat extends Component {
   static propTypes = {
@@ -118,22 +128,26 @@ export default class Chat extends Component {
     const isReady = networkStatus !== NetworkStatus.loading;
 
     return (
-      <View style={style}>
-        {isReady && (
-          <MessageList
-            style={styles.list}
-            edges={chat.messages.edges}
-            getItemSide={this.getItemSide}
-            loadingMore={chat.messages.pageInfo.hasNextPage}
+      <View style={[styles.root, style]}>
+        <View style={styles.list}>
+          {isReady && (
+            <MessageList
+              edges={chat.messages.edges}
+              getItemSide={this.getItemSide}
+              loadingMore={chat.messages.pageInfo.hasNextPage}
 
-            inverted={true}
-            initialNumToRender={15}
-            onEndReachedThreshold={1}
-            onEndReached={loadEarlierMessages}
-            onRefresh={loadNewMessages}
-            refreshing={networkStatus === NetworkStatus.refetch}
-          />
-        )}
+              inverted={true}
+              initialNumToRender={15}
+              onEndReachedThreshold={1}
+              onEndReached={loadEarlierMessages}
+              onRefresh={loadNewMessages}
+              refreshing={networkStatus === NetworkStatus.refetch}
+            />
+          )}
+        </View>
+        <View style={styles.footer}>
+          <Text>Form will go here...</Text>
+        </View>
       </View>
     );
   }
