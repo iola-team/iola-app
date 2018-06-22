@@ -6,7 +6,7 @@ import { from, ApolloLink } from 'apollo-link';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 import { CachePersistor } from 'apollo-cache-persist';
-import { setContext } from "apollo-link-context";
+import { setContext } from 'apollo-link-context';
 import { createUploadLink } from 'apollo-upload-client';
 import { disableFragmentWarnings } from 'graphql-tag';
 
