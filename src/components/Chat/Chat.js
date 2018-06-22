@@ -44,7 +44,7 @@ const chatQuery = gql`
   props({ data }) {
     return {
       data,
-      loadMoreMessages() {
+      loadEarlierMessages() {
         const {
           networkStatus,
           fetchMore,
@@ -74,6 +74,13 @@ const chatQuery = gql`
             });
           },
         });
+      },
+
+      /**
+       * TODO: Find a better way of loading new messages instead of full reload
+       */
+      loadNewMessages() {
+        return data.refetch();
       }
     };
   },
@@ -96,7 +103,13 @@ export default class Chat extends Component {
   getItemSide = ({ user }) => this.props.data.me.id === user.id ? 'right' : 'left';
 
   render() {
-    const { style, loadMoreMessages, data: { networkStatus, chat } } = this.props;
+    const {
+      style,
+      data: { networkStatus, chat },
+      loadEarlierMessages,
+      loadNewMessages
+    } = this.props;
+
     const isReady = networkStatus !== NetworkStatus.loading;
 
     return (
@@ -106,12 +119,13 @@ export default class Chat extends Component {
             edges={chat.messages.edges}
             getItemSide={this.getItemSide}
             loadingMore={chat.messages.pageInfo.hasNextPage}
-            // loadingMore={networkStatus === NetworkStatus.fetchMore}
 
             inverted={true}
             initialNumToRender={15}
             onEndReachedThreshold={1}
-            onEndReached={loadMoreMessages}
+            onEndReached={loadEarlierMessages}
+            onRefresh={loadNewMessages}
+            refreshing={networkStatus === NetworkStatus.refetch}
           />
         )}
       </View>
