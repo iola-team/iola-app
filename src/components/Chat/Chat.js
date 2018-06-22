@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
+import { NetworkStatus } from 'apollo-client';
+import { graphql } from 'react-apollo';
+import update from 'immutability-helper';
 import {
   View,
   Text,
@@ -9,29 +12,26 @@ import {
 } from 'native-base';
 
 import MessageList from '../MessageList';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
-const userFragment = gql`
-  fragment Chat_user on User {
-    id
-    name
-  }
-`;
-
-const chatFragment = gql`
-  fragment Chat_chat on Chat {
-    id
-    user {
-      name
-    }
-    participants {
+const chatQuery = gql`
+  query ChatQuery($id: ID! $first: Int $last: Int $after: Cursor $before: Cursor) {
+    me {
       id
-      name
     }
-    messages {
-      totalCount
-      edges {
-        ...MessageList_edge
+
+    chat: node(id: $id) {
+      id
+      ...on Chat {
+        messages(last: $last after: $after first: $first before: $before) {
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+          edges {
+            ...MessageList_edge
+          }
+        }
       }
     }
   }
@@ -40,33 +40,79 @@ const chatFragment = gql`
 `;
 
 @styleSheet('Sparkle.Chat')
-export default class Chat extends Component {
-  static fragments = {
-    user: userFragment,
-    chat: chatFragment,
+@graphql(chatQuery, {
+  props({ data }) {
+    return {
+      data,
+      loadMoreMessages() {
+        const {
+          networkStatus,
+          fetchMore,
+          chat: {
+            messages: { pageInfo }
+          }
+        } = data;
+
+        if (networkStatus === NetworkStatus.fetchMore || !pageInfo.hasNextPage) {
+          return;
+        }
+
+        const variables = {
+          after: pageInfo.endCursor,
+        };
+
+        return fetchMore({
+          variables,
+          updateQuery(prev, { fetchMoreResult: { chat } }) {
+            return update(prev, {
+              chat: {
+                messages: {
+                  edges: { $push: chat.messages.edges },
+                  pageInfo: { $set: chat.messages.pageInfo },
+                },
+              },
+            });
+          },
+        });
+      }
+    };
+  },
+
+  options({ chatId }) {
+    return {
+      notifyOnNetworkStatusChange: true,
+      variables: {
+        id: chatId,
+        first: 50,
+      },
+    };
   }
-
+})
+export default class Chat extends Component {
   static propTypes = {
-    user: fragmentProp(userFragment).isRequired,
-    chat: fragmentProp(chatFragment).isRequired,
+    chatId: PropTypes.string.isRequired,
   };
 
-  static defaultProps = {
-
-  };
-
-  getItemSide = ({ user }) => this.props.user.id === user.id ? 'right' : 'left';
+  getItemSide = ({ user }) => this.props.data.me.id === user.id ? 'right' : 'left';
 
   render() {
-    const { style, user, chat } = this.props;
-    console.log('Chat', chat);
+    const { style, loadMoreMessages, data: { networkStatus, chat } } = this.props;
+    const isReady = networkStatus !== NetworkStatus.loading;
 
     return (
       <View style={style}>
-        <MessageList
-          edges={chat.messages.edges}
-          getItemSide={this.getItemSide}
-        />
+        {isReady && (
+          <MessageList
+            edges={chat.messages.edges}
+            getItemSide={this.getItemSide}
+            loadingMore={chat.messages.pageInfo.hasNextPage}
+            // loadingMore={networkStatus === NetworkStatus.fetchMore}
+
+            initialNumToRender={15}
+            onEndReachedThreshold={1}
+            onEndReached={loadMoreMessages}
+          />
+        )}
       </View>
     );
   }

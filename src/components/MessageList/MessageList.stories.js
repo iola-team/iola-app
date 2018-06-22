@@ -199,8 +199,9 @@ stories.add('Fake messages', () => {
     last: number('Count', 50),
   };
 
-  const refreshing = boolean('Refreshing', false)
-  const inverted = boolean('Inverted', true)
+  const refreshing = boolean('Refreshing', false);
+  const inverted = boolean('Inverted', true);
+  const isLoadingMore = boolean('Loading more', true);
 
   return (
     <Query query={chatQuery} variables={variables}>
@@ -212,6 +213,7 @@ stories.add('Fake messages', () => {
           }}
           edges={data.chat.messages.edges}
           getItemSide={({ user }) => user.id === 'User:1' ? 'left' : 'right'}
+          loadingMore={isLoadingMore}
 
           inverted={inverted}
           refreshing={refreshing}
@@ -233,6 +235,7 @@ stories.add('Num messages', () => {
 
   const refreshing = boolean('Refreshing', false)
   const inverted = boolean('Inverted', true)
+  const isLoadingMore = boolean('Loading more', true)
 
   return (
     <Query query={chatQuery} variables={variables}>
@@ -241,6 +244,7 @@ stories.add('Num messages', () => {
         <MessageList
           edges={data.chat.messages.edges}
           getItemSide={({ user }) => user.id === 'User:1' ? 'left' : 'right'}
+          loadingMore={isLoadingMore}
 
           inverted={inverted}
           refreshing={refreshing}

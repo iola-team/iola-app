@@ -1,13 +1,14 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { SectionList } from 'react-native';
-import { groupBy, map, noop } from 'lodash';
+import { groupBy, map } from 'lodash';
 
 import { withStyle } from 'theme';
 import MessageItem from '../MessageItem';
 import SectionHeader from './SectionHeader';
+import LoadIndicator from './LoadIndicator';
 
 const edgeFragment = gql`
   fragment MessageList_edge on MessageEdge {
@@ -22,7 +23,7 @@ const edgeFragment = gql`
 `;
 
 @withStyle('Sparkle.MessageList')
-export default class MessageList extends PureComponent {
+export default class MessageList extends Component {
   static fragments = {
     edge: edgeFragment,
   }
@@ -30,11 +31,11 @@ export default class MessageList extends PureComponent {
   static propTypes = {
     edges: PropTypes.arrayOf(fragmentProp(edgeFragment).isRequired).isRequired,
     getItemSide: PropTypes.func.isRequired,
-    loadMore: PropTypes.func,
+    loadingMore: PropTypes.bool,
   };
 
   static defaultProps = {
-    loadMore: noop,
+    loadingMore: false,
   };
 
   splitToSections(edges) {
@@ -52,7 +53,7 @@ export default class MessageList extends PureComponent {
       time: new Date(time).toISOString(),
       data: edges,
     }));
-  }
+  };
 
   getKeyForItem = item => item.node.id;
 
@@ -83,10 +84,17 @@ export default class MessageList extends PureComponent {
     <SectionHeader time={section.time} />
   );
 
+  renderLoadIndicator = () => {
+    const { loadingMore } = this.props;
+
+    return loadingMore && (
+      <LoadIndicator />
+    );
+  };
+
   render() {
     const { style, edges, inverted, ...listProps } = this.props;
     const sections = this.splitToSections(edges);
-
     const sectionProps = {
       [inverted ? 'renderSectionFooter' : 'renderSectionHeader']: this.renderSectionHeader,
     };
@@ -102,6 +110,7 @@ export default class MessageList extends PureComponent {
         sections={sections}
         keyExtractor={this.getKeyForItem}
         renderItem={this.renderItem}
+        ListFooterComponent={this.renderLoadIndicator}
       />
     );
   }

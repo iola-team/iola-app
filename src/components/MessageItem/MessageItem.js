@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -62,7 +62,7 @@ const messageFragment = gql`
     },
   },
 })
-export default class MessageItem extends PureComponent {
+export default class MessageItem extends Component {
   static fragments = {
     message: messageFragment,
   }

@@ -1,16 +1,17 @@
 import React from 'react';
-import { find, filter, uniqueId, range } from 'lodash';
+import { find, filter, uniqueId, range, orderBy } from 'lodash';
 import { withHandlers } from 'recompose';
-import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { number, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import { connectionFromArray } from 'graphql-relay';
+import delay from 'promise-delay';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook/index';
 import Chat from './Chat';
+import moment from 'moment/moment'
 
 const stories = storiesOf('Components/Chat', module);
 
@@ -49,9 +50,18 @@ const chats = [
       find(users, { id: 'User:2' }),
     ],
   },
+
+  {
+    id: 'Chat:2',
+    user: find(users, { id: 'User:1' }),
+    participants: [
+      find(users, { id: 'User:1' }),
+      find(users, { id: 'User:2' }),
+    ],
+  },
 ];
 
-const messages = range(50).map((index) => ({
+const unOrderedFakeMessages = range(100).map((index) => ({
   id: `Message:${index + 1}`,
   content: {
     text: faker.hacker.phrase(),
@@ -60,6 +70,23 @@ const messages = range(50).map((index) => ({
   user: faker.random.arrayElement(find(chats, { id: 'Chat:1' }).participants),
   chat: find(chats, { id: 'Chat:1' }),
 }));
+
+const orderedNumMessages = range(300).map((index) => {
+  return {
+    id: `Message:${unOrderedFakeMessages.length + index}`,
+    content: {
+      text: (index + 1).toString(),
+    },
+    createdAt: moment().add(index, 'h').toDate(),
+    user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
+    chat: find(chats, { id: 'Chat:2' }),
+  };
+});
+
+const messages = [
+  ...orderBy(unOrderedFakeMessages, 'createdAt'),
+  ...orderedNumMessages,
+];
 
 const dataStore = {
   users,
@@ -72,6 +99,7 @@ const typeDefs = gql`
   scalar Cursor
   
   type Query {
+    me: User
     node(id: ID!): Node!
   }
 
@@ -147,6 +175,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
+    me: (root, args, { dataStore: { users } }) => find(users, {id: 'User:1'}),
     node: (root, { id }, { dataStore: { users, chats } }) => {
       const [type] = id.split(':');
       const nodes = type === 'User' ? users : chats;
@@ -156,7 +185,8 @@ const resolvers = {
   },
 
   Chat: {
-    messages(chat, args, { dataStore: { messages } }) {
+    async messages(chat, args, { dataStore: { messages } }) {
+      await delay(1000);
       const chatMessages = filter(messages, ['chat.id', chat.id]);
 
       const connection = connectionFromArray(
@@ -182,41 +212,15 @@ const resolvers = {
 
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
-const userQuery = gql`
-  query {
-    user: node(id: "User:1") {
-      id
-      ...on User {
-        id
-        ...Chat_user
-      }
-    }
-
-    chat: node(id: "Chat:1") {
-      id
-      ...on Chat {
-        id
-        ...Chat_chat
-      }
-    }
-  }
-  
-  ${Chat.fragments.user}
-  ${Chat.fragments.chat}
-`;
-
 // Stories
-stories.add('Default', () => {
+stories.add('Fake messages', () => {
   return (
-    <Query query={userQuery}>
-      {({ data, loading }) => !loading && (
+    <Chat chatId={'Chat:1'} />
+  );
+});
 
-        <Chat
-          user={data.user}
-          chat={data.chat}
-        />
-
-      )}
-    </Query>
+stories.add('Num messages', () => {
+  return (
+    <Chat chatId={'Chat:2'} />
   );
 });
