@@ -11,6 +11,7 @@ export DashboardHeading from './DashboardHeading';
 export AvatarEdit from './AvatarEdit';
 export PhotoEdit from './PhotoEdit';
 export ProfileFieldsEdit from './ProfileFieldsEdit';
+export Chat from './Chat';
 
 // Navigation
 export ScreenHeader from './ScreenHeader';

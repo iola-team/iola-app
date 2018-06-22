@@ -25,7 +25,10 @@ import { withStyle } from 'theme';
 })
 export default class MessageStatus extends PureComponent {
   static propTypes = {
-    time: PropTypes.instanceOf(Date).isRequired,
+    time: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.instanceOf(Date),
+    ]).isRequired,
     hasStatus: PropTypes.bool,
   };
 

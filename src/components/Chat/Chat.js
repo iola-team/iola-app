@@ -39,7 +39,6 @@ const chatQuery = gql`
   ${MessageList.fragments.edge}
 `;
 
-@styleSheet('Sparkle.Chat')
 @graphql(chatQuery, {
   props({ data }) {
     return {
@@ -95,6 +94,11 @@ const chatQuery = gql`
     };
   }
 })
+@styleSheet('Sparkle.Chat', {
+  list: {
+    backgroundColor: '#F8F9FB',
+  },
+})
 export default class Chat extends Component {
   static propTypes = {
     chatId: PropTypes.string.isRequired,
@@ -105,6 +109,7 @@ export default class Chat extends Component {
   render() {
     const {
       style,
+      styleSheet: styles,
       data: { networkStatus, chat },
       loadEarlierMessages,
       loadNewMessages
@@ -116,6 +121,7 @@ export default class Chat extends Component {
       <View style={style}>
         {isReady && (
           <MessageList
+            style={styles.list}
             edges={chat.messages.edges}
             getItemSide={this.getItemSide}
             loadingMore={chat.messages.pageInfo.hasNextPage}
