@@ -5,6 +5,7 @@ export UserList from './UserList';
 export UserListItem from './UserListItem';
 export SearchBar from './SearchBar';
 export UserBriefCard from './UserBriefCard';
+export UserPhotos from './UserPhotos';
 export UserPhotosCard from './UserPhotosCard';
 export UserFriendsCard from './UserFriendsCard';
 export UserHeading from './UserHeading';

@@ -4,7 +4,13 @@ import gql from 'graphql-tag';
 import { Container, Content, View, Icon, Spinner } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import { DashboardHeading, UserBriefCard, UserFriendsCard, UserPhotosCard, ImageView } from 'components';
+import {
+  DashboardHeading,
+  UserBriefCard,
+  UserFriendsCard,
+  UserPhotosCard,
+  UserPhotos,
+} from 'components';
 import * as routes from '../roteNames';
 import LogoutButton from './LogoutButton';
 
@@ -56,9 +62,7 @@ export default class Dashboard extends Component {
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
                   <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
-                  <ImageView images={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
-                    {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
-                  </ImageView>
+                  <UserPhotos user={user} />
                 </View>
               </View>
             ) : (

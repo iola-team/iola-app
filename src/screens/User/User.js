@@ -4,7 +4,13 @@ import gql from 'graphql-tag';
 import { Container, Content, View, Spinner } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import { UserHeading, UserBriefCard, UserFriendsCard, UserPhotosCard, ImageView } from 'components';
+import {
+  UserHeading,
+  UserBriefCard,
+  UserFriendsCard,
+  UserPhotosCard,
+  UserPhotos,
+} from 'components';
 import * as routes from '../roteNames';
 
 const propsToVariables = props => ({
@@ -64,9 +70,7 @@ export default class UserScreen extends Component {
                       navigate({ routeName: routes.USER, params: { id }, key: id })
                     }}
                   />
-                  <ImageView images={user.photos.edges.map(({ node }) => ({ url: node.url }))}>
-                    {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
-                  </ImageView>
+                  <UserPhotos user={user} />
                 </View>
               </View>
             ) : (

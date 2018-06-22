@@ -5,6 +5,7 @@ import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import FoundationIcon from 'react-native-vector-icons/Foundation';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import ExtraDimensions from 'react-native-extra-dimensions-android';
+import moment from 'moment';
 
 import { BackButton } from 'components';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
@@ -87,6 +88,10 @@ export default class ImageView extends Component {
     this.setState({ index, visible: true });
   }
 
+  onChange(index) {
+    this.setState({ index });
+  }
+
   onClose() {
     this.setState({ visible: false });
   }
@@ -102,13 +107,15 @@ export default class ImageView extends Component {
   renderFooter() {
     const { images } = this.props;
     const { index } = this.state;
-    console.log(images);
+    const { createdAt } = images[index];
+    const date = moment.duration(moment(createdAt * 1000).diff(moment())).humanize();
+    const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
 
     return (
       <Footer>
         <View>
           <Title>Natalie Rose</Title>
-          <DateTime>Today at 18:16</DateTime>
+          <DateTime>{dateFormatted}</DateTime>
         </View>
         <RightBlock>
           <ShareButton onPress={() => alert('Share')} />
@@ -139,15 +146,16 @@ export default class ImageView extends Component {
           transparent
         >
           <ImageViewer
+            imageUrls={images}
+            index={index}
+            onChange={::this.onChange}
+            onSwipeDown={::this.onClose}
             renderHeader={::this.renderHeader}
             renderIndicator={this.renderIndicator}
             renderFooter={::this.renderFooter}
-            footerContainerStyle={footerContainerStyle}
-            index={index}
-            imageUrls={images}
             failImageSource={{ uri: '@TODO' }}
             loadingRender={() => null /* '@TODO' */}
-            onSwipeDown={::this.onClose}
+            footerContainerStyle={footerContainerStyle}
             backgroundColor="rgba(46, 48, 55, 0.95)"
           />
         </Modal>

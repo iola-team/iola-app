@@ -53,6 +53,7 @@ const userFragment = gql`
         node {
           id
           url
+          createdAt
         }
       }
     }

@@ -16,6 +16,7 @@ const userFragment = gql`
         node {
           id
           url
+          createdAt
         }
       }
     }
@@ -27,7 +28,7 @@ const userFragment = gql`
     height: 208,
     flexDirection: 'column',
     flexWrap: 'wrap',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
 
   firstItem: {
