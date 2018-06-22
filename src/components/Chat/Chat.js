@@ -108,6 +108,7 @@ export default class Chat extends Component {
             loadingMore={chat.messages.pageInfo.hasNextPage}
             // loadingMore={networkStatus === NetworkStatus.fetchMore}
 
+            inverted={true}
             initialNumToRender={15}
             onEndReachedThreshold={1}
             onEndReached={loadMoreMessages}

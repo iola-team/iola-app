@@ -84,8 +84,8 @@ const orderedNumMessages = range(300).map((index) => {
 });
 
 const messages = [
-  ...orderBy(unOrderedFakeMessages, 'createdAt'),
-  ...orderedNumMessages,
+  ...orderBy(unOrderedFakeMessages, 'createdAt', 'asc'),
+  ...orderBy(orderedNumMessages, 'createdAt', 'asc'),
 ];
 
 const dataStore = {
