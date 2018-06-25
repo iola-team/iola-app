@@ -14,7 +14,7 @@ const messageFragment = gql`
     id
     createdAt
     content {
-      ...MessageTextContent_content  
+      ...MessageTextContent_content
     }
   }
   
@@ -22,10 +22,9 @@ const messageFragment = gql`
 `;
 
 @withStyle('Sparkle.MessageContent', {
-  borderWidth: StyleSheet.hairlineWidth,
   borderRadius: 8,
-  borderColor: '#BDC0CB',
   overflow: 'hidden',
+  elevation: 0.5,
 
   '.left': {
     borderBottomLeftRadius: 4,

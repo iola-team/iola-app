@@ -12,7 +12,9 @@ import {
 } from 'native-base';
 
 import MessageList from '../MessageList';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import ChatFooter from '../ChatFooter';
+import Shadow from '../Shadow';
+import { withStyleSheet as styleSheet } from 'theme';
 
 const chatQuery = gql`
   query ChatQuery($id: ID! $first: Int $last: Int $after: Cursor $before: Cursor) {
@@ -97,17 +99,16 @@ const chatQuery = gql`
 @styleSheet('Sparkle.Chat', {
   root: {
     flex: 1,
+    backgroundColor: '#F8F9FB',
   },
 
   list: {
-    backgroundColor: '#F8F9FB',
     flex: 1,
   },
 
   footer: {
-    height: 50,
-    backgroundColor: '#FFFFFF',
-  }
+
+  },
 })
 export default class Chat extends Component {
   static propTypes = {
@@ -129,7 +130,12 @@ export default class Chat extends Component {
 
     return (
       <View style={[styles.root, style]}>
-        <View style={styles.list}>
+        <Shadow
+          style={styles.list}
+          top
+          bottom
+          inset
+        >
           {isReady && (
             <MessageList
               edges={chat.messages.edges}
@@ -144,10 +150,8 @@ export default class Chat extends Component {
               refreshing={networkStatus === NetworkStatus.refetch}
             />
           )}
-        </View>
-        <View style={styles.footer}>
-          <Text>Form will go here...</Text>
-        </View>
+        </Shadow>
+        <ChatFooter style={styles.footer} onSend={() => {}} />
       </View>
     );
   }

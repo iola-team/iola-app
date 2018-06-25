@@ -216,6 +216,8 @@ export default (variables => ({
 
     'Sparkle.Divider': {},
 
+    'Sparkle.Shadow': {},
+
     'Sparkle.UserListItem': {
       'NativeBase.ListItem': {
         'NativeBase.Body': {
