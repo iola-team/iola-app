@@ -33,7 +33,7 @@ const propsToVariables = props => ({
   ${UserFriendsCard.fragments.user}
   ${UserPhotosCard.fragments.user}
 `, {
-  options: (props) => ({
+  options: props => ({
     variables: propsToVariables(props),
   }),
 })
@@ -66,11 +66,11 @@ export default class UserScreen extends Component {
                   <UserBriefCard user={user} />
                   <UserFriendsCard
                     user={user}
-                    onItemPress={id => {
+                    onItemPress={id => (
                       navigate({ routeName: routes.USER, params: { id }, key: id })
-                    }}
+                    )}
                   />
-                  <UserPhotos user={user} />
+                  <UserPhotos userId={user.id} />
                 </View>
               </View>
             ) : (

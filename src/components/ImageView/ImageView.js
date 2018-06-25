@@ -12,8 +12,10 @@ import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 const Indicator = connectToStyleSheet('indicator', Text);
 const Footer = connectToStyleSheet('footer', View);
-const Title = connectToStyleSheet('title', Text);
+const Name = connectToStyleSheet('name', Text);
+const Caption = connectToStyleSheet('caption', Text);
 const DateTime = connectToStyleSheet('dateTime', Text);
+const LeftBlock = connectToStyleSheet('leftBlock', View);
 const RightBlock = connectToStyleSheet('rightBlock', View);
 const ShareButton = connectToStyleSheet('footerButton', IoniconsIcon).withProps({ name: 'ios-share-alt' });
 const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withProps({ name: 'trash' });
@@ -32,19 +34,35 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
   },
 
   footer: {
-    marginHorizontal: 17,
     marginBottom: 31,
+    paddingTop: 25,
+    paddingBottom: 29,
+    paddingHorizontal: 17,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: 'rgba(46, 48, 55, .15)',
+    // backgroundColor: 'red',
   },
 
-  title: {
-    paddingBottom: 6,
+  leftBlock: {
+
+  },
+
+  name: {
+    paddingBottom: 7,
     fontFamily: 'SF Pro Text',
     fontSize: 16,
     fontWeight: '600',
     letterSpacing: -0.06,
     lineHeight: 19,
+    color: '#FFFFFF',
+  },
+
+  caption: {
+    paddingBottom: 19,
+    fontFamily: 'SF Pro Text',
+    fontSize: 14,
+    lineHeight: 17,
     color: '#FFFFFF',
   },
 
@@ -107,16 +125,17 @@ export default class ImageView extends Component {
   renderFooter() {
     const { images } = this.props;
     const { index } = this.state;
-    const { createdAt } = images[index];
+    const { name, caption, createdAt } = images[index];
     const date = moment.duration(moment(createdAt * 1000).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
 
     return (
       <Footer>
-        <View>
-          <Title>Natalie Rose</Title>
+        <LeftBlock>
+          <Name>{name}</Name>
+          <Caption>{caption}</Caption>
           <DateTime>{dateFormatted}</DateTime>
-        </View>
+        </LeftBlock>
         <RightBlock>
           <ShareButton onPress={() => alert('Share')} />
           <DeleteButton onPress={() => alert('Delete')} />
@@ -130,9 +149,7 @@ export default class ImageView extends Component {
     const { index, visible } = this.state;
     const footerContainerStyle = ({
       width: '100%',
-      position: 'absolute',
-      bottom: ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT'), // @TODO: iOS
-      zIndex: 9999,
+      // height: 85 + ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT'), // @TODO: check iOS ExtraDimensions
     });
 
     return (

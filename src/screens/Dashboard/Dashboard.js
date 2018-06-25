@@ -38,7 +38,7 @@ export default class Dashboard extends Component {
     ),
 
     headerStyle: {
-      backgroundColor: '#F8F9FB'
+      backgroundColor: '#F8F9FB',
     },
 
     headerRight: <LogoutButton />,
@@ -62,7 +62,7 @@ export default class Dashboard extends Component {
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
                   <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
-                  <UserPhotos user={user} />
+                  <UserPhotos userId={user.id} />
                 </View>
               </View>
             ) : (
