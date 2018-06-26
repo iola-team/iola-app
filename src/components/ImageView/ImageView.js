@@ -27,7 +27,7 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
     position: 'absolute',
     top: 0,
     left: 0,
-    height: Dimensions.get('window').height - StatusBar.currentHeight,// ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT'),
+    height: Dimensions.get('window').height - StatusBar.currentHeight,
     width: Dimensions.get('window').width,
     backgroundColor: 'red',
   },

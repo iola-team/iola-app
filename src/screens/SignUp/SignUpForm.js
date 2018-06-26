@@ -7,9 +7,8 @@ import { graphql, ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { debounce, get } from 'lodash';
 
-import TextInputItem from '../../components/Form/TextInputItem';
-
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import TextInputItem from '../../components/Form/TextInputItem';
 
 const validateEmailQuery = gql`
   query validateEmailQuery($email: String = "") {
