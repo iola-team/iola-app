@@ -1,15 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Modal, Text, View } from 'react-native';
+import { Dimensions, StatusBar, Modal, Text, View } from 'react-native';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import FoundationIcon from 'react-native-vector-icons/Foundation';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import ExtraDimensions from 'react-native-extra-dimensions-android';
 import moment from 'moment';
 
-import { BackButton } from 'components';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { BackButton } from 'components';
 
+const ModalContent = connectToStyleSheet('modalContent', View);
+const Header = connectToStyleSheet('header', View);
 const Indicator = connectToStyleSheet('indicator', Text);
 const Footer = connectToStyleSheet('footer', View);
 const Name = connectToStyleSheet('name', Text);
@@ -21,6 +22,20 @@ const ShareButton = connectToStyleSheet('footerButton', IoniconsIcon).withProps(
 const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withProps({ name: 'trash' });
 
 @styleSheet('Sparkle.ImageView', {
+  modalContent: {
+    flex: 1,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: Dimensions.get('window').height - StatusBar.currentHeight,// ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT'),
+    width: Dimensions.get('window').width,
+    backgroundColor: 'red',
+  },
+
+  header: {
+    position: 'absolute',
+  },
+
   indicator: {
     width: '100%',
     position: 'absolute',
@@ -34,18 +49,16 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
   },
 
   footer: {
-    marginBottom: 31,
     paddingTop: 25,
     paddingBottom: 29,
     paddingHorizontal: 17,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(46, 48, 55, .15)',
-    // backgroundColor: 'red',
+    backgroundColor: 'rgba(46, 48, 55, 0.3)',
   },
 
   leftBlock: {
-
+    flexShrink: 1,
   },
 
   name: {
@@ -74,6 +87,7 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
   },
 
   rightBlock: {
+    flexShrink: 0,
     width: (24 * 2 + 14),
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -115,7 +129,11 @@ export default class ImageView extends Component {
   }
 
   renderHeader() {
-    return <BackButton onPress={::this.onClose} />;
+    return (
+      <Header>
+        <BackButton onPress={::this.onClose} />
+      </Header>
+    );
   }
 
   renderIndicator(currentIndex, allSize) {
@@ -147,10 +165,6 @@ export default class ImageView extends Component {
   render() {
     const { children, images } = this.props;
     const { index, visible } = this.state;
-    const footerContainerStyle = ({
-      width: '100%',
-      // height: 85 + ExtraDimensions.get('SOFT_MENU_BAR_HEIGHT'), // @TODO: check iOS ExtraDimensions
-    });
 
     return (
       <Fragment>
@@ -162,19 +176,21 @@ export default class ImageView extends Component {
           onRequestClose={::this.onClose}
           transparent
         >
-          <ImageViewer
-            imageUrls={images}
-            index={index}
-            onChange={::this.onChange}
-            onSwipeDown={::this.onClose}
-            renderHeader={::this.renderHeader}
-            renderIndicator={this.renderIndicator}
-            renderFooter={::this.renderFooter}
-            failImageSource={{ uri: '@TODO' }}
-            loadingRender={() => null /* '@TODO' */}
-            footerContainerStyle={footerContainerStyle}
-            backgroundColor="rgba(46, 48, 55, 0.95)"
-          />
+          <ModalContent>
+            <ImageViewer
+              imageUrls={images}
+              index={index}
+              onChange={::this.onChange}
+              onSwipeDown={::this.onClose}
+              renderHeader={::this.renderHeader}
+              renderIndicator={this.renderIndicator}
+              renderFooter={::this.renderFooter}
+              failImageSource={{ uri: '@TODO' }}
+              loadingRender={() => null /* '@TODO' */}
+              footerContainerStyle={{ width: '100%' }}
+              backgroundColor="rgba(46, 48, 55, 0.95)"
+            />
+          </ModalContent>
         </Modal>
       </Fragment>
     );

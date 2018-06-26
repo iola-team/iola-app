@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { Query } from 'react-apollo';
 import { PropTypes } from 'prop-types';
 
 import ImageView from '../ImageView';
@@ -24,7 +24,7 @@ const userFragment = gql`
   }
 `;
 
-@graphql(gql`
+const userPhotosQuery = gql`
   query UserPhotosQuery($id: ID!) {
     user: node(id: $id) {
       ...UserPhotos_user
@@ -32,13 +32,8 @@ const userFragment = gql`
   }
 
   ${userFragment}
-`, {
-  options: ({ userId }) => ({
-    variables: {
-      id: userId,
-    },
-  }),
-})
+`;
+
 export default class UserPhotos extends Component {
   static fragments = {
     user: userFragment,
@@ -49,12 +44,16 @@ export default class UserPhotos extends Component {
   };
 
   render() {
-    const { data: { user, loading } } = this.props;
+    const { userId } = this.props;
 
-    return loading ? null : (
-      <ImageView images={user.photos.edges.map(({ node }) => ({ name: user.name, ...node }))}>
-        {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
-      </ImageView>
+    return (
+      <Query query={userPhotosQuery} variables={{ id: userId }}>
+        {({ loading, data: { user } }) => (loading ? null : (
+          <ImageView images={user.photos.edges.map(({ node }) => ({ name: user.name, ...node }))}>
+            {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
+          </ImageView>
+        ))}
+      </Query>
     );
   }
 }
