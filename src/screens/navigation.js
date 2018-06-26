@@ -11,6 +11,7 @@ import * as routes from './roteNames';
 // Screens
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import ForgotPassword from './ForgotPassword';
 import Launch from './Launch';
 import Channels from './Channels';
 import Contacts from './Contacts';
@@ -53,8 +54,15 @@ export default createSwitchNavigator({
         header: null,
       },
     },
+
+    [routes.FORGOT_PASSWORD]: {
+      screen: ForgotPassword,
+      navigationOptions: {
+        header: null,
+      },
+    },
   }, {
-    initialRouteName: routes.SIGN_IN,
+    initialRouteName: routes.FORGOT_PASSWORD,
   }),
 
   [routes.APPLICATION]: createStackNavigator({
