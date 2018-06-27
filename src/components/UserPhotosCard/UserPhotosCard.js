@@ -43,13 +43,13 @@ const userFragment = gql`
   },
 })
 export default class UserPhotosCard extends PureComponent {
+  static fragments = {
+    user: userFragment,
+  };
+
   static propTypes = {
     user: fragmentProp(userFragment).isRequired,
     onPress: PropTypes.func.isRequired,
-  };
-
-  static fragments = {
-    user: userFragment,
   };
 
   renderEdge({ node }, index) {

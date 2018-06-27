@@ -7,7 +7,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { BackButton } from 'components';
+import BackButton from '../BackButton';
 
 const ModalContent = connectToStyleSheet('modalContent', View);
 const Header = connectToStyleSheet('header', View);
@@ -23,17 +23,18 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
 
 @styleSheet('Sparkle.ImageView', {
   modalContent: {
+    // @TODO: use mixin
     flex: 1,
     position: 'absolute',
     top: 0,
     left: 0,
     height: Dimensions.get('window').height - StatusBar.currentHeight,
     width: Dimensions.get('window').width,
-    backgroundColor: 'red',
   },
 
   header: {
     position: 'absolute',
+    zIndex: 1000,
   },
 
   indicator: {
@@ -45,7 +46,7 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
     fontSize: 14,
     lineHeight: 17,
     color: '#BDC0CB',
-    zIndex: 9999,
+    zIndex: 999,
   },
 
   footer: {
@@ -144,7 +145,7 @@ export default class ImageView extends Component {
     const { images } = this.props;
     const { index } = this.state;
     const { name, caption, createdAt } = images[index];
-    const date = moment.duration(moment(createdAt * 1000).diff(moment())).humanize();
+    const date = moment.duration(moment(createdAt).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
 
     return (
