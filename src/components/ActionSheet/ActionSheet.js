@@ -2,9 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { noop } from 'lodash';
 import PropTypes from 'prop-types';
 import ActionSheetRN from 'react-native-actionsheet';
-import { View } from 'react-native';
-
-import { withStyleSheet as styleSheet } from 'theme/index';
 
 export default class ActionSheet extends Component {
   static propTypes = {
@@ -41,7 +38,7 @@ export default class ActionSheet extends Component {
   };
 
   render() {
-    const { style, styleSheet, children, ...props } = this.props;
+    const { children, ...props } = this.props;
 
     return (
       <Fragment>

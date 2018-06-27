@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
-import { withStyle } from 'theme/index';
+import { withStyle } from 'theme';
 
 @withStyle('Sparkle.PhotoGridItem', {
   flex: 1,
@@ -17,6 +17,11 @@ import { withStyle } from 'theme/index';
   },
 })
 export default class PhotoGridItem extends Component {
+  static propTypes = {
+    style: PropTypes.object,
+    children: PropTypes.any,
+  };
+
   render() {
     const { style, children } = this.props;
 
