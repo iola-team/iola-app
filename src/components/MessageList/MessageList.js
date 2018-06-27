@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { SectionList } from 'react-native';
-import { groupBy, map } from 'lodash';
+import { groupBy, orderBy, map } from 'lodash';
 
 import { withStyle } from 'theme';
 import MessageItem from '../MessageItem';
@@ -95,6 +95,7 @@ export default class MessageList extends Component {
   render() {
     const { style, edges, inverted, ...listProps } = this.props;
     const sections = this.splitToSections(edges);
+
     const sectionProps = {
       [inverted ? 'renderSectionFooter' : 'renderSectionHeader']: this.renderSectionHeader,
     };

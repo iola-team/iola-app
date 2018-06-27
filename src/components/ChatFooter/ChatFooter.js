@@ -20,6 +20,7 @@ import Button from '../TouchableOpacity';
 
   input: {
     backgroundColor: '#F8F9FB',
+    borderWidth: 0,
     borderRadius: 8,
     height: 40,
     flex: 1,
@@ -48,11 +49,12 @@ export default class ChatFooter extends Component {
     this.setState({ text });
   };
 
-  onSend = () => {
+  onSend = async () => {
     const { text } = this.state;
     const { onSend } = this.props;
 
-    onSend(text);
+    await onSend(text);
+    this.setState({ text: '' });
   };
 
   render() {
@@ -64,7 +66,7 @@ export default class ChatFooter extends Component {
         <Item rounded style={styles.input}>
           <Input placeholder="Type Message" onChangeText={this.onChange} value={text} />
         </Item>
-        <Button style={styles.sendButton} onPress={onSend}>
+        <Button style={styles.sendButton} onPress={this.onSend}>
           <Icon style={styles.sendIcon} name="md-send" />
         </Button>
       </View>
