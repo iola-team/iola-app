@@ -272,6 +272,9 @@ const resolvers = {
       return {
         ...connection,
         totalCount: chatMessages.length,
+        metaInfo: {
+          firstCursor: offsetToCursor(0),
+        }
       }
     }
   },

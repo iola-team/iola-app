@@ -12,7 +12,6 @@ import LoadIndicator from './LoadIndicator';
 
 const edgeFragment = gql`
   fragment MessageList_edge on MessageEdge {
-    cursor
     node {
       id
       ...MessageItem_message

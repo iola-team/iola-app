@@ -29,6 +29,9 @@ const chatQuery = gql`
       id
       ...on Chat {
         messages(last: $last after: $after first: $first before: $before) {
+          metaInfo {
+            firstCursor
+          }
           pageInfo {
             hasNextPage
             endCursor
@@ -46,8 +49,21 @@ const chatQuery = gql`
 `;
 
 const newMessageMutation = gql`
-  mutation NewChatMessageMutation($input: MessageInput!, $after: Cursor, $at: Cursor) {
+  mutation NewChatMessageMutation(
+    $input: MessageInput! 
+    $after: Cursor
+    $at: Cursor
+    $pageCount: Int
+  ) {
     addMessage(input: $input, after: $after, at: $at) {
+      chat {
+        messages(first: $pageCount) {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
+        }
+      }
       edge {
         ...MessageList_edge
       }
@@ -124,15 +140,17 @@ const newMessageMutation = gql`
               text,
             },
           },
+          at: chat.messages.metaInfo.firstCursor,
+          pageCount: chat.messages.edges.length + 1,
         };
 
         const optimisticResponse = {
           __typename: 'Mutation',
           addMessage: {
             __typename: 'MessageCreatePayload',
+            chat,
             edge: {
               __typename: 'MessageEdge',
-              cursor: 'tmpcursor',
               node: {
                 __typename: 'Message',
                 id: uuid(),
@@ -164,6 +182,9 @@ const newMessageMutation = gql`
                   messages: {
                     edges: {
                       $unshift: [result.edge]
+                    },
+                    pageInfo: {
+                      $set: result.chat.messages.pageInfo,
                     },
                   },
                 },
