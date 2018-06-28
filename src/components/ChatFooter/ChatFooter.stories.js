@@ -1,6 +1,5 @@
 import React from 'react';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
-import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs/react';
 import { storiesOf } from '@storybook/react-native';
 
 import { getContainerDecorator } from 'storybook/index';
@@ -18,8 +17,4 @@ stories.addDecorator(getContainerDecorator({
 }));
 
 // Stories
-stories.add('Default', () => {
-  return (
-    <ChatFooter />
-  );
-});
+stories.add('Default', () => <ChatFooter />);

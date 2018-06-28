@@ -1,9 +1,7 @@
 import React from 'react';
 import { find, filter, uniqueId, range, orderBy } from 'lodash';
-import { withHandlers } from 'recompose';
 import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
-import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs/react';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import { connectionFromArray, cursorToOffset, offsetToCursor } from 'graphql-relay';
@@ -18,7 +16,7 @@ const stories = storiesOf('Components/Chat', module);
 // Decorators
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator({
-  backgroundColor: '#F8F9FB'
+  backgroundColor: '#F8F9FB',
 }));
 
 const users = [
@@ -261,7 +259,9 @@ const resolvers = {
     async messages(chat, args, { dataStore: { messages } }) {
       await delay(1000);
       const chatMessages = orderBy(
-        filter(messages, ['chat.id', chat.id]), 'createdAt', 'desc'
+        filter(messages, ['chat.id', chat.id]),
+        'createdAt',
+        'desc'
       );
 
       const connection = connectionFromArray(
@@ -291,20 +291,6 @@ const resolvers = {
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
 // Stories
-stories.add('Fake messages', () => {
-  return (
-    <Chat chatId={'Chat:1'} />
-  );
-});
-
-stories.add('Num messages', () => {
-  return (
-    <Chat chatId={'Chat:2'} />
-  );
-});
-
-stories.add('Empty', () => {
-  return (
-    <Chat chatId={'Chat:3'} />
-  );
-});
+stories.add('Fake messages', () => <Chat chatId={'Chat:1'} />);
+stories.add('Num messages', () => <Chat chatId={'Chat:2'} />);
+stories.add('Empty', () => <Chat chatId={'Chat:3'} />);

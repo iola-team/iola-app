@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { View as ViewRN, StyleSheet } from 'react-native';
-import { Text } from 'native-base';
+import { View as ViewRN } from 'react-native';
 
 import { withStyle } from 'theme';
 import Status from './MessageStatus';
@@ -61,7 +60,7 @@ const messageFragment = gql`
 export default class MessageContent extends PureComponent {
   static fragments = {
     message: messageFragment,
-  }
+  };
 
   static propTypes = {
     message: fragmentProp(messageFragment).isRequired,
@@ -89,7 +88,7 @@ export default class MessageContent extends PureComponent {
     const contentProps = {
       content: message.content,
       inverse: right,
-      statusComponent: (<Status time={message.createdAt} hasStatus={right} />),
+      statusComponent: <Status time={message.createdAt} hasStatus={right} />,
     };
 
     const Content = this.getContentComponent();
