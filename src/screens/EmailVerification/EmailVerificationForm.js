@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, Form, Text } from 'native-base';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 import TextInputItem from '../../components/Form/TextInputItem';
 
@@ -11,24 +12,28 @@ class ForgotPasswordForm extends Component {
     onSubmit: PropTypes.func.isRequired,
   };
 
-  state = { emailDoesNotExist: false };
+  state = { invalidCode: false };
+
+  async onSubmit() {
+    this.props.onSubmit();
+  }
 
   render() {
     const { isValid, handleSubmit } = this.props;
-    const { emailDoesNotExist } = this.state;
-    const disabled = !(isValid && !emailDoesNotExist);
+    const { invalidCode } = this.state;
+    const disabled = !(isValid && !invalidCode);
 
     return (
       <Form>
         <TextInputItem
-          name="email"
-          placeholder="Email"
-          secondaryErrorText={emailDoesNotExist && 'Email does not exist'}
+          name="code"
+          placeholder="code"
+          secondaryErrorText={invalidCode && 'Invalid code'}
           {...this.props}
         />
 
-        <Button onPress={handleSubmit} disabled={disabled} block>
-          <Text>Get new password</Text>
+        <Button onPress={handleSubmit} disabled={disabled} block bordered>
+          <Text>Resend the verification code</Text>
         </Button>
       </Form>
     );
@@ -36,11 +41,10 @@ class ForgotPasswordForm extends Component {
 }
 
 const validationSchema = yup.object().shape({
-  email: yup.string().required('Email is required').email('Invalid email'),
+  code: yup.string().required('Code is required'),
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ email: 'roman@banan.com' }),
   handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
   validationSchema,
 })(ForgotPasswordForm);

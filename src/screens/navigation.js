@@ -12,6 +12,7 @@ import * as routes from './roteNames';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import ForgotPassword from './ForgotPassword';
+import EmailVerification from './EmailVerification';
 import Launch from './Launch';
 import Channels from './Channels';
 import Contacts from './Contacts';
@@ -61,8 +62,15 @@ export default createSwitchNavigator({
         header: null,
       },
     },
+
+    [routes.EMAIL_VERIFICATION]: {
+      screen: EmailVerification,
+      navigationOptions: {
+        header: null,
+      },
+    },
   }, {
-    initialRouteName: routes.FORGOT_PASSWORD,
+    initialRouteName: routes.FORGOT_PASSWORD, // @TODO: SIGN_IN
   }),
 
   [routes.APPLICATION]: createStackNavigator({

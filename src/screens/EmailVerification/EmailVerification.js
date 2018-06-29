@@ -1,24 +1,19 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity } from 'react-native';
+import { ImageBackground } from 'react-native';
 import { Container, Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import ForgotPasswordForm from './ForgotPasswordForm';
-import { EMAIL_VERIFICATION } from '../roteNames';
+import ForgotPasswordForm from './EmailVerificationForm';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
   source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
 });
 const Content = connectToStyleSheet('content', View);
 const Header = connectToStyleSheet('header', View);
-const LockIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'lock' });
+const EmailIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'envelope-letter' });
 const Title = connectToStyleSheet('title', Text);
 const Description = connectToStyleSheet('description', Text);
-const Footer = connectToStyleSheet('footer', View);
-const FooterText = connectToStyleSheet('footerText', Text);
-const ButtonSignIn = connectToStyleSheet('buttonSignIn', TouchableOpacity);
-const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 
 @styleSheet('Sparkle.ForgotPasswordScreen', {
   background: {
@@ -64,65 +59,36 @@ color: 'red',
     textAlign: 'center',
     color: '#FFFFFF',
   },
-
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 33,
-  },
-
-  footerText: {
-    fontSize: 14,
-    lineHeight: 19,
-    color: '#FFFFFF',
-  },
-
-  buttonSignIn: {
-    paddingHorizontal: 4,
-  },
-
-  buttonSignInText: {
-    fontSize: 14,
-    lineHeight: 19,
-    textDecorationLine: 'underline',
-    color: '#FFFFFF',
-  },
 })
-export default class ForgotPasswordScreen extends Component {
-  async onSubmit({ email }, { setSubmitting, status, setStatus }) {
-    const success = true; // @TODO: await this.props.onForgotPassword(email);
+export default class EmailVerificationScreen extends Component {
+  async onSubmit({ code }, { setSubmitting, status, setStatus }) {
+    const { navigation: { goBack } } = this.props;
+    const success = true; // @TODO: await this.props.onEmailVerification(email);
 
     setStatus({ success });
     setSubmitting(false);
 
-    if (success) this.props.navigation.navigate(EMAIL_VERIFICATION);
+    if (success) {
+      alert('Ooookie');
+      goBack();
+    }
   }
 
   render() {
-    const { navigation: { goBack } } = this.props;
-
     return (
       <Container>
         <Background>
           <Content>
             <Header>
-              <LockIcon />
-              <Title>Forgot your password?</Title>
+              <EmailIcon />
+              <Title>Email verification</Title>
               <Description>
-                Enter your email below and we’ll{'\n'}
-                send you password reset{'\n'}
-                instructions
+                Verification code has been sent to:{'\n'}
+                roman.banan@gmail.com (@TODO)
               </Description>
             </Header>
 
             <ForgotPasswordForm onSubmit={::this.onSubmit} />
-
-            <Footer>
-              <FooterText>Remember your password?</FooterText>
-              <ButtonSignIn onPress={() => goBack()}>
-                <ButtonSignInText>Sign in</ButtonSignInText>
-              </ButtonSignIn>
-            </Footer>
           </Content>
         </Background>
       </Container>

@@ -46,7 +46,7 @@ readTokenQuery = gql`
 class SignInForm extends Component {
   static propTypes = {
     onSubmit: propTypes.func.isRequired,
-    onForgotPasswordPress: propTypes.func.isRequired,
+    onForgotPassword: propTypes.func.isRequired,
   };
 
   isAuthIsValid(token) {
@@ -56,7 +56,7 @@ class SignInForm extends Component {
   }
 
   render() {
-    const { onForgotPasswordPress, handleSubmit, isValid } = this.props;
+    const { onForgotPassword, handleSubmit, isValid } = this.props;
 
     return (
       <Query query={readTokenQuery}>
@@ -92,7 +92,7 @@ class SignInForm extends Component {
               />
 
               <InfoBlock>
-                <TouchableOpacity onPress={() => onForgotPasswordPress()}>
+                <TouchableOpacity onPress={() => onForgotPassword()}>
                   <ForgotPasswordText>Forgot password?</ForgotPasswordText>
                 </TouchableOpacity>
 
