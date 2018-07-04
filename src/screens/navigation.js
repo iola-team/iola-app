@@ -15,7 +15,7 @@ import ForgotPassword from './ForgotPassword';
 import EmailVerification from './EmailVerification';
 import Launch from './Launch';
 import Channels from './Channels';
-import Contacts from './Contacts';
+import Users from './Users';
 import Dashboard from './Dashboard';
 import User from './User';
 import Channel from './Channel';
@@ -24,8 +24,8 @@ import Settings from './Settings';
 
 // Navigator
 const TabsNavigator = createBottomTabNavigator({
-  [routes.CONTACTS]: {
-    screen: Contacts,
+  [routes.USERS]: {
+    screen: Users,
   },
 
   [routes.CHANNELS]: {
@@ -36,7 +36,7 @@ const TabsNavigator = createBottomTabNavigator({
     screen: Dashboard,
   },
 }, {
-  initialRouteName: routes.CONTACTS,
+  initialRouteName: routes.USERS,
   tabBarComponent: BottomTabBar,
 });
 

@@ -14,12 +14,14 @@ function loadStories() {
   require('../components/ImagePicker/ImagePicker.stories');
   require('../components/ImagePickerActionSheet/ImagePickerActionSheet.stories');
   require('../components/ImageProgress/ImageProgress.stories');
+  require('../components/ImageView/ImageView.stories');
   require('../components/Input/Input.stories');
   require('../components/ListPicker/ListPicker.stories');
   require('../components/Modal/Modal.stories');
   require('../components/PhotoEdit/PhotoEdit.stories');
   require('../components/PhotoGrid/PhotoGrid.stories');
   require('../components/TextPicker/TextPicker.stories');
+  require('../components/UserPhotos/UserPhotos.stories');
   require('./stories/Button.stories');
   
 }
@@ -34,12 +36,14 @@ const stories = [
   '../components/ImagePicker/ImagePicker.stories',
   '../components/ImagePickerActionSheet/ImagePickerActionSheet.stories',
   '../components/ImageProgress/ImageProgress.stories',
+  '../components/ImageView/ImageView.stories',
   '../components/Input/Input.stories',
   '../components/ListPicker/ListPicker.stories',
   '../components/Modal/Modal.stories',
   '../components/PhotoEdit/PhotoEdit.stories',
   '../components/PhotoGrid/PhotoGrid.stories',
   '../components/TextPicker/TextPicker.stories',
+  '../components/UserPhotos/UserPhotos.stories',
   './stories/Button.stories',
   
 ];

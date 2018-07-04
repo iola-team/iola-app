@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
-import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import * as routes from '../roteNames';

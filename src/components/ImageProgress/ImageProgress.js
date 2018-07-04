@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import { noop } from 'lodash';
 import PropTypes from 'prop-types';
-import {
-  StyleSheet,
-  ImageBackground,
-} from 'react-native';
-import {
-  View,
-  Button,
-  Icon,
-} from 'native-base';
+import { StyleSheet, ImageBackground } from 'react-native';
+import { View, Button, Icon } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import CircularProgress from '../CircularProgress';
 
 const Root = connectToStyleSheet('root', View);
@@ -79,7 +72,7 @@ export default class ImageProgress extends Component {
                 <Progress animated={progress !== null} progress={progress || 0}>
                   {cancelable && (
                     <Button block light transparent rounded onPress={onCancel}>
-                      <Icon name={'md-close'} />
+                      <Icon name="md-close" />
                     </Button>
                   )}
                 </Progress>
