@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { ImageBackground, TouchableOpacity } from 'react-native';
-import { Container, Text, View } from 'native-base';
+import {Button, Container, Text, View} from 'native-base';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
+import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import ForgotPasswordForm from './ForgotPasswordForm';
-import { EMAIL_VERIFICATION } from '../roteNames';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
   source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
@@ -17,8 +17,9 @@ const Title = connectToStyleSheet('title', Text);
 const Description = connectToStyleSheet('description', Text);
 const Footer = connectToStyleSheet('footer', View);
 const FooterText = connectToStyleSheet('footerText', Text);
-const ButtonSignIn = connectToStyleSheet('buttonSignIn', TouchableOpacity);
-const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
+const SignInLink = connectToStyleSheet('signInLink', TouchableOpacity);
+const SignInLinkText = connectToStyleSheet('signInLinkText', Text);
+const SignInButton = connectToStyleSheet('signInButton', Button);
 
 @styleSheet('Sparkle.ForgotPasswordScreen', {
   background: {
@@ -51,18 +52,22 @@ color: 'red',
   },
 
   title: {
+    paddingBottom: 22,
     alignSelf: 'center',
     fontSize: 30,
     color: '#FFFFFF',
   },
 
   description: {
-    paddingTop: 22,
     fontFamily: 'SF Pro Text',
     fontSize: 16,
     lineHeight: 20,
     textAlign: 'center',
     color: '#FFFFFF',
+  },
+
+  signInButton: {
+    marginTop: 22,
   },
 
   footer: {
@@ -77,11 +82,11 @@ color: 'red',
     color: '#FFFFFF',
   },
 
-  buttonSignIn: {
+  signInLink: {
     paddingHorizontal: 4,
   },
 
-  buttonSignInText: {
+  signInLinkText: {
     fontSize: 14,
     lineHeight: 19,
     textDecorationLine: 'underline',
@@ -89,17 +94,34 @@ color: 'red',
   },
 })
 export default class ForgotPasswordScreen extends Component {
-  async onSubmit({ email }, { setSubmitting, status, setStatus }) {
+  state = {
+    email: '',
+    emailWasSent: false,
+  };
+
+  onSubmit({ email }, { setSubmitting }) {
     const success = true; // @TODO: await this.props.onForgotPassword(email);
 
-    setStatus({ success });
     setSubmitting(false);
+    this.setState({ email, emailWasSent: success });
+  }
 
-    if (success) this.props.navigation.navigate(EMAIL_VERIFICATION);
+  isValidEmail(email) {
+    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
+  }
+
+  goBack() {
+    const { navigation } = this.props;
+
+    navigation.goBack();
+    navigation.state.params.defaultEmail = 'rr@oo.man';
   }
 
   render() {
-    const { navigation: { goBack } } = this.props;
+    const { navigation: { goBack, state } } = this.props;
+    const { email, emailWasSent } = this.state;
+    const login = get(state, 'params.login');
+    const defaultEmail = this.isValidEmail(login) ? login : '';
 
     return (
       <Container>
@@ -108,21 +130,44 @@ export default class ForgotPasswordScreen extends Component {
             <Header>
               <LockIcon />
               <Title>Forgot your password?</Title>
-              <Description>
-                Enter your email below and we’ll{'\n'}
-                send you password reset{'\n'}
-                instructions
-              </Description>
+              {
+                emailWasSent ? (
+                  <Fragment>
+                    <Description>
+                      A new password has been sent to
+                    </Description>
+                    <Description>
+                      {email}
+                    </Description>
+                    <SignInButton block onPress={() => goBack()}>
+                      <Text>Sign in</Text>
+                    </SignInButton>
+                  </Fragment>
+                ) : (
+                  <Description>
+                    Enter your email below and we’ll{'\n'}
+                    send you password reset{'\n'}
+                    instructions
+                  </Description>
+                )
+              }
             </Header>
+            {
+              emailWasSent ? null : (
+                <Fragment>
+                  <ForgotPasswordForm onSubmit={::this.onSubmit} defaultEmail={defaultEmail} />
 
-            <ForgotPasswordForm onSubmit={::this.onSubmit} />
-
-            <Footer>
-              <FooterText>Remember your password?</FooterText>
-              <ButtonSignIn onPress={() => goBack()}>
-                <ButtonSignInText>Sign in</ButtonSignInText>
-              </ButtonSignIn>
-            </Footer>
+                  <Footer>
+                    <FooterText>
+                      Remember your password?
+                    </FooterText>
+                    <SignInLink onPress={this.goBack}>
+                      <SignInLinkText>Sign in</SignInLinkText>
+                    </SignInLink>
+                  </Footer>
+                </Fragment>
+              )
+            }
           </Content>
         </Background>
       </Container>

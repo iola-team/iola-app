@@ -1,50 +1,92 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { withFormik } from 'formik';
-import * as yup from 'yup';
-import { Button, Form, Text } from 'native-base';
+import { Button, Form, Text, Toast } from 'native-base';
+import CodeInput from 'react-native-confirmation-code-input';
+
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
-import TextInputItem from '../../components/Form/TextInputItem';
+const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode, onFulfill }) => ({
+  compareWithCode,
+  onFulfill,
+  autoFocus: true,
+  ignoreCase: true,
+  secureTextEntry: false,
+  inputPosition: 'center',
+}));
+const ResendButtonText = connectToStyleSheet('resendButtonText', Text);
+const ResendButton = connectToStyleSheet('resendButton', Button);
 
-class ForgotPasswordForm extends Component {
+@styleSheet('Sparkle.ForgotPasswordForm', {
+  code: {
+    width: 40,
+    height: 64,
+    borderRadius: 8,
+    textAlign: 'center',
+    marginRight: 8,
+    backgroundColor: '#FFFFFF',
+    color: '#585A61',
+    fontFamily: 'SF Pro Text',
+    fontSize: 24,
+    fontWeight: '600',
+  },
+
+  activeColor: 'red',
+  inactiveColor: 'lime',
+
+  containerStyle: {
+    flexBasis: 64,
+    flexGrow: 0,
+    marginTop: 0,
+    marginBottom: 32,
+    marginLeft: 8,
+  },
+
+  resendButton: {
+    borderColor: '#FFFFFF',
+  },
+
+  resendButtonText: {
+    color: '#FFFFFF',
+  },
+})
+export default class ForgotPasswordForm extends Component {
   static propTypes = {
-    onSubmit: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func.isRequired,
+    onResend: PropTypes.func.isRequired,
   };
 
-  state = { invalidCode: false };
+  async onSubmit(code) {
+    const isValid = (code === '12345'); // @TODO
 
-  async onSubmit() {
-    this.props.onSubmit();
+    if (isValid) {
+      this.props.onSuccess();
+    } else {
+      Toast.show({
+        text: 'Verification code is invalid.',
+        duration: 5000,
+        buttonText: 'Ok',
+        type: 'danger',
+      });
+    }
   }
 
   render() {
-    const { isValid, handleSubmit } = this.props;
-    const { invalidCode } = this.state;
-    const disabled = !(isValid && !invalidCode);
+    const { styleSheet, onResend } = this.props;
+    const { code: { color }, containerStyle } = styleSheet;
 
     return (
       <Form>
-        <TextInputItem
-          name="code"
-          placeholder="code"
-          secondaryErrorText={invalidCode && 'Invalid code'}
-          {...this.props}
+        <Code
+          onFulfill={::this.onSubmit}
+          activeColor={color}
+          inactiveColor={color}
+          containerStyle={containerStyle}
         />
 
-        <Button onPress={handleSubmit} disabled={disabled} block bordered>
-          <Text>Resend the verification code</Text>
-        </Button>
+        <ResendButton onPress={onResend} block bordered>
+          <ResendButtonText>Resend the verification code</ResendButtonText>
+        </ResendButton>
       </Form>
     );
   }
 }
-
-const validationSchema = yup.object().shape({
-  code: yup.string().required('Code is required'),
-});
-
-export default withFormik({
-  handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
-  validationSchema,
-})(ForgotPasswordForm);

@@ -9,14 +9,15 @@ import TextInputItem from '../../components/Form/TextInputItem';
 class ForgotPasswordForm extends Component {
   static propTypes = {
     onSubmit: PropTypes.func.isRequired,
+    defaultEmail: PropTypes.string,
   };
 
   state = { emailDoesNotExist: false };
 
   render() {
-    const { isValid, handleSubmit } = this.props;
+    const { isValid, handleSubmit, defaultEmail } = this.props;
     const { emailDoesNotExist } = this.state;
-    const disabled = !(isValid && !emailDoesNotExist);
+    const disabled = !(isValid && !emailDoesNotExist || defaultEmail);
 
     return (
       <Form>
@@ -40,7 +41,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ email: 'roman@banan.com' }),
+  mapPropsToValues: ({ defaultEmail }) => ({ email: defaultEmail }),
   handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
   validationSchema,
 })(ForgotPasswordForm);

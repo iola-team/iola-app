@@ -31,7 +31,7 @@ const Description = connectToStyleSheet('description', Text);
   header: {
     alignItems: 'center',
     marginTop: 34,
-    marginBottom: 45,
+    marginBottom: 28,
   },
 
   lockIcon: {
@@ -61,17 +61,12 @@ color: 'red',
   },
 })
 export default class EmailVerificationScreen extends Component {
-  async onSubmit({ code }, { setSubmitting, status, setStatus }) {
-    const { navigation: { goBack } } = this.props;
-    const success = true; // @TODO: await this.props.onEmailVerification(email);
+  onSuccess() {
+    alert('Success!');
+  }
 
-    setStatus({ success });
-    setSubmitting(false);
-
-    if (success) {
-      alert('Ooookie');
-      goBack();
-    }
+  onResend() {
+    alert('Resend the verification code');
   }
 
   render() {
@@ -88,7 +83,7 @@ export default class EmailVerificationScreen extends Component {
               </Description>
             </Header>
 
-            <ForgotPasswordForm onSubmit={::this.onSubmit} />
+            <ForgotPasswordForm onSuccess={::this.onSuccess} onResend={this.onResend} />
           </Content>
         </Background>
       </Container>

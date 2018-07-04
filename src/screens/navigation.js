@@ -70,7 +70,7 @@ export default createSwitchNavigator({
       },
     },
   }, {
-    initialRouteName: routes.FORGOT_PASSWORD, // @TODO: SIGN_IN
+    initialRouteName: routes.SIGN_IN
   }),
 
   [routes.APPLICATION]: createStackNavigator({

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { get } from 'lodash';
 
-import { LAUNCH, SIGN_UP, FORGOT_PASSWORD } from '../roteNames';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import * as routes from '../roteNames';
 import SignInForm from './SignInForm';
 import Divider from './Divider';
 
@@ -49,7 +50,7 @@ export default class SignInScreen extends Component {
     setStatus({ ...status, success });
     setSubmitting(false);
 
-    if (success) this.props.navigation.navigate(LAUNCH);
+    if (success) this.props.navigation.navigate(routes.LAUNCH);
   };
 
   render() {
@@ -69,10 +70,13 @@ export default class SignInScreen extends Component {
 
             <SignInForm
               onSubmit={this.onSubmit}
-              onForgotPassword={() => navigate(FORGOT_PASSWORD)}
+              onForgotPassword={login => navigate({
+                routeName: routes.FORGOT_PASSWORD,
+                params: { login },
+              })}
             />
 
-            <SignUpButton block bordered light onPress={() => navigate(SIGN_UP)}>
+            <SignUpButton block bordered light onPress={() => navigate(routes.SIGN_UP)}>
               <Text>Sign up</Text>
             </SignUpButton>
           </Content>

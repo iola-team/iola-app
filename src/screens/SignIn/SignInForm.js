@@ -56,7 +56,7 @@ class SignInForm extends Component {
   }
 
   render() {
-    const { onForgotPassword, handleSubmit, isValid } = this.props;
+    const { values: { login }, onForgotPassword, handleSubmit, isValid } = this.props;
 
     return (
       <Query query={readTokenQuery}>
@@ -92,7 +92,7 @@ class SignInForm extends Component {
               />
 
               <InfoBlock>
-                <TouchableOpacity onPress={() => onForgotPassword()}>
+                <TouchableOpacity onPress={() => onForgotPassword(login)}>
                   <ForgotPasswordText>Forgot password?</ForgotPasswordText>
                 </TouchableOpacity>
 
