@@ -54,7 +54,7 @@ export default class SignInScreen extends Component {
 
   render() {
     const { navigation: { navigate }, styleSheet } = this.props;
-
+console.log('params', this.props.navigation.state.params); // @TODO
     return (
       <Container>
         <Background>

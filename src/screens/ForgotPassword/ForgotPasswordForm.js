@@ -12,6 +12,10 @@ class ForgotPasswordForm extends Component {
     defaultEmail: PropTypes.string,
   };
 
+  static defaultProps = {
+    defaultEmail: '',
+  };
+
   state = { emailDoesNotExist: false };
 
   render() {
@@ -41,7 +45,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: ({ defaultEmail }) => ({ email: defaultEmail }),
+  mapPropsToValues: ({ defaultEmail }) => (alert('>>'+defaultEmail),({ email: defaultEmail })),
   handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
   validationSchema,
 })(ForgotPasswordForm);

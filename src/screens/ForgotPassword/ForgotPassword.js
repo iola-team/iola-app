@@ -111,10 +111,10 @@ export default class ForgotPasswordScreen extends Component {
   }
 
   goBack() {
-    const { navigation } = this.props;
+    const { navigation: { goBack, state } } = this.props;
 
-    navigation.goBack();
-    navigation.state.params.defaultEmail = 'rr@oo.man';
+    goBack();
+    state.params.defaultEmail = 'rr@oo.man'; // @TODO
   }
 
   render() {
@@ -139,7 +139,7 @@ export default class ForgotPasswordScreen extends Component {
                     <Description>
                       {email}
                     </Description>
-                    <SignInButton block onPress={() => goBack()}>
+                    <SignInButton block onPress={::this.goBack}>
                       <Text>Sign in</Text>
                     </SignInButton>
                   </Fragment>
@@ -161,7 +161,7 @@ export default class ForgotPasswordScreen extends Component {
                     <FooterText>
                       Remember your password?
                     </FooterText>
-                    <SignInLink onPress={this.goBack}>
+                    <SignInLink onPress={::this.goBack}>
                       <SignInLinkText>Sign in</SignInLinkText>
                     </SignInLink>
                   </Footer>

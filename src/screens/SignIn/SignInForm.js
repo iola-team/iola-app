@@ -92,7 +92,7 @@ class SignInForm extends Component {
               />
 
               <InfoBlock>
-                <TouchableOpacity onPress={() => onForgotPassword(login)}>
+                <TouchableOpacity onPress={() => (alert(login), onForgotPassword(login))}>
                   <ForgotPasswordText>Forgot password?</ForgotPasswordText>
                 </TouchableOpacity>
 
