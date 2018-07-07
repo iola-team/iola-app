@@ -17,10 +17,10 @@ import introspectionQueryResultData from './meta/fragmentTypes';
 disableFragmentWarnings();
 
 export async function createClient({
-  terminatingLink,
-  persistorStorage = AsyncStorage,
-  restoreCache = true,
-}) {
+                                     terminatingLink,
+                                     persistorStorage = AsyncStorage,
+                                     restoreCache = true,
+                                   }) {
   const fragmentMatcher = new IntrospectionFragmentMatcher({
     introspectionQueryResultData,
   });
@@ -96,7 +96,7 @@ export async function createClient({
 
 export default async () => {
   const httpLink = createUploadLink({
-    uri: 'http://172.27.1.46/ox/oxwall-1.8.4.1/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM',
+    uri: 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM',
     fetch: (uri, allOptions, ...restArgs) => {
       const {
         uploadProgress,
