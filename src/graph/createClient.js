@@ -17,10 +17,10 @@ import introspectionQueryResultData from './meta/fragmentTypes';
 disableFragmentWarnings();
 
 export async function createClient({
-                                     terminatingLink,
-                                     persistorStorage = AsyncStorage,
-                                     restoreCache = true,
-                                   }) {
+  terminatingLink,
+  persistorStorage = AsyncStorage,
+  restoreCache = true,
+}) {
   const fragmentMatcher = new IntrospectionFragmentMatcher({
     introspectionQueryResultData,
   });
