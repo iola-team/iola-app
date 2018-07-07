@@ -41,7 +41,7 @@ const Description = connectToStyleSheet('description', Text);
     fontSize: 24,
     lineHeight: 48,
     textAlign: 'center',
-color: 'red',
+    color: 'red',
     backgroundColor: '#FFFFFF',
   },
 
@@ -83,7 +83,7 @@ export default class EmailVerificationScreen extends Component {
               </Description>
             </Header>
 
-            <ForgotPasswordForm onSuccess={::this.onSuccess} onResend={this.onResend} />
+            <ForgotPasswordForm onSuccess={this.onSuccess} onResend={this.onResend} />
           </Content>
         </Background>
       </Container>

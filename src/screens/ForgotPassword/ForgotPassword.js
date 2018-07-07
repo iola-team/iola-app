@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { isValidEmail } from 'utils';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
@@ -47,7 +48,7 @@ const SignInButton = connectToStyleSheet('signInButton', Button);
     fontSize: 24,
     lineHeight: 48,
     textAlign: 'center',
-color: 'red',
+    color: 'red',
     backgroundColor: '#FFFFFF',
   },
 
@@ -106,22 +107,19 @@ export default class ForgotPasswordScreen extends Component {
     this.setState({ email, emailWasSent: success });
   }
 
-  isValidEmail(email) {
-    return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
-  }
-
   goBack() {
     const { navigation: { goBack, state } } = this.props;
+    const { email } = this.state;
+    const setDefaultEmail = get(state, 'params.setDefaultEmail');
 
+    setDefaultEmail(email);
     goBack();
-    state.params.defaultEmail = 'rr@oo.man'; // @TODO
   }
 
   render() {
-    const { navigation: { goBack, state } } = this.props;
     const { email, emailWasSent } = this.state;
-    const login = get(state, 'params.login');
-    const defaultEmail = this.isValidEmail(login) ? login : '';
+    const defaultLogin = get(this.props, 'navigation.state.params.defaultLogin');
+    const defaultEmail = isValidEmail(defaultLogin) ? defaultLogin : '';
 
     return (
       <Container>

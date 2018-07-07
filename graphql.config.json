@@ -6,7 +6,7 @@
   "endpoints": [
     {
       "name": "Oxwall",
-      "url": "http://172.27.0.74/ow/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM"
+      "url": "http://172.27.1.46/ox/oxwall-1.8.4.1/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM"
     }
   ]
 }

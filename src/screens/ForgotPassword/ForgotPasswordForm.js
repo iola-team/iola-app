@@ -45,7 +45,8 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: ({ defaultEmail }) => (alert('>>'+defaultEmail),({ email: defaultEmail })),
+  enableReinitialize: true,
+  mapPropsToValues: ({ defaultEmail }) => ({ email: defaultEmail }),
   handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
   validationSchema,
 })(ForgotPasswordForm);

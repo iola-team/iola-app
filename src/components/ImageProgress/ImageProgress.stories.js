@@ -1,12 +1,9 @@
-import React, { Component } from 'react';
-import { withHandlers } from 'recompose';
 import { number, boolean, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { Image } from 'react-native';
-import { Button, View, Text } from 'native-base';
 
-import { getContentDecorator } from 'storybook/index';
+import { getContentDecorator } from 'storybook';
 import ImageProgress from './ImageProgress';
 
 const stories = storiesOf('Components/ImageProgress', module);

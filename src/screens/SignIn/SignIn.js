@@ -43,18 +43,21 @@ const SignUpButton = connectToStyleSheet('signUpButton', Button);
   },
 })
 export default class SignInScreen extends Component {
+  state = { defaultEmail: '' };
+
   onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }) => {
-    const success = await this.props.authenticate(login, password);
+    const { authenticate, navigation: { navigate } } = this.props;
+    const success = await authenticate(login, password);
 
     setStatus({ ...status, success });
     setSubmitting(false);
 
-    if (success) this.props.navigation.navigate(routes.LAUNCH);
+    if (success) navigate(routes.LAUNCH);
   };
 
   render() {
     const { navigation: { navigate }, styleSheet } = this.props;
-console.log('params', this.props.navigation.state.params); // @TODO
+
     return (
       <Container>
         <Background>
@@ -69,9 +72,13 @@ console.log('params', this.props.navigation.state.params); // @TODO
 
             <SignInForm
               onSubmit={this.onSubmit}
+              defaultEmail={this.state.defaultEmail}
               onForgotPassword={login => navigate({
                 routeName: routes.FORGOT_PASSWORD,
-                params: { login },
+                params: {
+                  defaultLogin: login,
+                  setDefaultEmail: defaultEmail => this.setState({ defaultEmail }),
+                },
               })}
             />
 

@@ -1,14 +1,12 @@
 import React from 'react';
 import { uniqueId, find, without, orderBy } from 'lodash';
 import delay from 'promise-delay';
-import { withHandlers } from 'recompose';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
-import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs/react';
 import { storiesOf } from '@storybook/react-native';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook/index';
+import { getContentDecorator, getApolloDecorator } from 'storybook';
 import PhotoEdit from './PhotoEdit';
 
 const stories = storiesOf('Components/PhotoEdit', module);
@@ -39,11 +37,10 @@ const dataStore = {
         },
       ],
     },
-
     {
       id: 'User:2',
       photos: [],
-    }
+    },
   ],
 };
 
@@ -130,7 +127,7 @@ const resolvers = {
       const node = {
         id: `Photo:${uniqueId()}`,
         url: input.file.blobPath,
-      }
+      };
 
       user.photos.unshift(node);
 
@@ -172,22 +169,18 @@ const query = gql`
 `;
 
 // Stories
-stories.add('With photos', () => {
-  return (
-    <Query query={query} variables={{ userId: 'User:1' }}>
-      {({ data, loading }) => !loading && (
-        <PhotoEdit user={data.user} />
-      )}
-    </Query>
-  );
-});
+stories.add('With photos', () => (
+  <Query query={query} variables={{ userId: 'User:1' }}>
+    {({ data, loading }) => !loading && (
+      <PhotoEdit user={data.user} />
+    )}
+  </Query>
+));
 
-stories.add('No photos', () => {
-  return (
-    <Query query={query} variables={{ userId: 'User:2' }}>
-      {({ data, loading }) => !loading && (
-        <PhotoEdit user={data.user} />
-      )}
-    </Query>
-  );
-});
+stories.add('No photos', () => (
+  <Query query={query} variables={{ userId: 'User:2' }}>
+    {({ data, loading }) => !loading && (
+      <PhotoEdit user={data.user} />
+    )}
+  </Query>
+));

@@ -4,6 +4,14 @@ import { storiesOf } from '@storybook/react-native';
 import ForgotPassword from './ForgotPassword';
 
 const stories = storiesOf('Screens/ForgotPassword', module);
-// @TODO: navigation
+
+// @TODO: try to do it with decorator in the future: https://github.com/storybooks/storybook/issues/340
+const mockNavigation = {
+  goBack: () => alert('Sign in'),
+  state: {
+    params: {},
+  },
+};
+
 // Stories
-stories.add('Screen', () => <ForgotPassword />);
+stories.add('Screen', () => <ForgotPassword navigation={mockNavigation} />);
