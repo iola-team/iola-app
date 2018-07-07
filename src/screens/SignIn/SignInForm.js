@@ -45,8 +45,13 @@ readTokenQuery = gql`
 })
 class SignInForm extends Component {
   static propTypes = {
+    defaultEmail: propTypes.string,
     onSubmit: propTypes.func.isRequired,
     onForgotPassword: propTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    defaultEmail: '',
   };
 
   isAuthIsValid(token) {

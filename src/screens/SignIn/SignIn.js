@@ -71,8 +71,8 @@ export default class SignInScreen extends Component {
             <Divider>or</Divider>
 
             <SignInForm
-              onSubmit={this.onSubmit}
               defaultEmail={this.state.defaultEmail}
+              onSubmit={this.onSubmit}
               onForgotPassword={login => navigate({
                 routeName: routes.FORGOT_PASSWORD,
                 params: {
