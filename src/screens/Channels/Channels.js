@@ -1,22 +1,11 @@
 import React, { Component } from 'react';
-import {
-  Container,
-  Content,
-  Header,
-  Body,
-  Title,
-  Text,
-  Icon
-} from 'native-base';
+import { Container, Content, Text, Icon } from 'native-base';
 
 export default class Channels extends Component {
   static navigationOptions = {
     title: 'Chats',
     tabBarIcon: ({ focused, tintColor }) => (
-      <Icon
-        style={{ color: tintColor }}
-        name={'ios-chatbubbles-outline'}
-      />
+      <Icon name="ios-chatbubbles-outline" style={{ color: tintColor }} />
     ),
   };
 

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, Form, Text } from 'native-base';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import { graphql, ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { debounce, get } from 'lodash';
 
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import TextInputItem from '../../components/Form/TextInputItem';
 
 const validateEmailQuery = gql`

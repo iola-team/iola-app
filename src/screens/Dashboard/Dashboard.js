@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ImageBackground, Image } from 'react-native';
-import {
-  Container,
-  Content,
-  View,
-  Text,
-  Button,
-  Icon,
-  Spinner,
-  Card,
-  CardItem,
-  Body,
-} from 'native-base';
+import { Container, Content, View, Icon, Spinner } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { DashboardHeading, UserBriefCard, UserFriendsCard, UserPhotosCard } from 'components';
+import { withStyleSheet as styleSheet } from 'theme';
+import {
+  DashboardHeading,
+  UserBriefCard,
+  UserFriendsCard,
+  UserPhotosCard,
+  UserPhotos,
+} from 'components';
 import * as routes from '../roteNames';
 import LogoutButton from './LogoutButton';
 
@@ -40,19 +34,14 @@ import LogoutButton from './LogoutButton';
 export default class Dashboard extends Component {
   static navigationOptions = {
     tabBarIcon: ({ focused, tintColor }) => (
-      <Icon
-        style={{ color: tintColor }}
-        name={'ios-settings-outline'}
-      />
+      <Icon name="ios-settings-outline" style={{ color: tintColor }} />
     ),
 
     headerStyle: {
-      backgroundColor: '#F8F9FB'
+      backgroundColor: '#F8F9FB',
     },
 
-    headerRight: (
-      <LogoutButton />
-    ),
+    headerRight: <LogoutButton />,
   };
 
   render() {
@@ -73,7 +62,7 @@ export default class Dashboard extends Component {
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
                   <UserFriendsCard user={user} onItemPress={id => navigate(routes.USER, { id })} />
-                  <UserPhotosCard user={user} />
+                  <UserPhotos userId={user.id} />
                 </View>
               </View>
             ) : (

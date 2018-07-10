@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Circle, CircleSnail } from 'react-native-progress';
+import { Circle } from 'react-native-progress';
 import { View, StyleSheet } from 'react-native';
 
-import { connectToStyleSheet, withStyle } from 'theme/index';
+import { withStyle } from 'theme';
 
 const styleSheet = StyleSheet.create({
   content: {

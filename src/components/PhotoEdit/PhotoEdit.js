@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { get, uniqueId, find, findIndex, without, noop } from 'lodash';
 import update from 'immutability-helper';
-import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
@@ -15,7 +14,7 @@ import {
   CardItem,
 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme/index';
+import { withStyleSheet as styleSheet } from 'theme';
 import PhotoGrid, { Item } from '../PhotoGrid';
 import ImagePicker from '../ImagePicker';
 import ImageProgress from '../ImageProgress';
@@ -111,12 +110,12 @@ const deletePhotoMutation = gql`
 
   gridWrap: {
     flex: 1,
-  }
+  },
 })
 export default class PhotoEdit extends Component {
   static fragments = {
     user: userFragment,
-  }
+  };
 
   static propTypes = {
     user: fragmentProp(userFragment).isRequired,
@@ -229,7 +228,7 @@ export default class PhotoEdit extends Component {
           </Mutation>
         </ImageProgress>
       </Item>
-    )
+    );
   }
 
   renderAddButton() {
@@ -241,7 +240,7 @@ export default class PhotoEdit extends Component {
           mutation={addPhotoMutation}
           ignoreResults
         >
-          {(addPhoto) => (
+          {addPhoto => (
             <ImagePicker
               multiple
               width={1000}
@@ -261,15 +260,15 @@ export default class PhotoEdit extends Component {
                         this.updateSlot(slot, {
                           progress: received / total,
                         });
-                      }
-                    }
+                      },
+                    },
                   },
                   update: (cache, { data: { addUserPhoto: result } }) => {
                     this.updateSlot(slot, createSlot({
                       ...result.node,
                       url: slot.url,
                     }));
-                  }
+                  },
                 }).catch(noop));
               }}
             >
@@ -290,12 +289,11 @@ export default class PhotoEdit extends Component {
           )}
         </Mutation>
       </Item>
-    )
+    );
   }
 
   renderItem(index) {
     const { slots } = this.state;
-
     const slot = slots[index];
 
     if (slot) {
