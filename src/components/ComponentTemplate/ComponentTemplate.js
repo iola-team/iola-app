@@ -2,13 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import {
-  View,
-  Text,
-  Button,
-} from 'native-base';
+import { View, Text, Button } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 /**
  * Component fragment sample
@@ -33,7 +29,7 @@ export default class ComponentTemplate extends Component {
    */
   static fragments = {
     user: userFragment,
-  }
+  };
 
   static propTypes = {
     /**

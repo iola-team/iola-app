@@ -1,17 +1,9 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import PropTypes from 'prop-types';
-import { Image, ScrollView } from 'react-native';
-import {
-  Card,
-  CardItem,
-  Icon,
-  Text,
-  Col,
-  Row,
-  Grid,
-} from 'native-base';
+import { Image, ScrollView, TouchableOpacity } from 'react-native';
+import { Card, CardItem, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 
@@ -35,7 +27,7 @@ const userFragment = gql`
     height: 208,
     flexDirection: 'column',
     flexWrap: 'wrap',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
 
   firstItem: {
@@ -48,7 +40,7 @@ const userFragment = gql`
     height: 100,
     marginRight: 8,
     borderRadius: 8,
-  }
+  },
 })
 export default class UserPhotosCard extends PureComponent {
   static fragments = {
@@ -57,17 +49,19 @@ export default class UserPhotosCard extends PureComponent {
 
   static propTypes = {
     user: fragmentProp(userFragment).isRequired,
+    onPress: PropTypes.func.isRequired,
   };
 
   renderEdge({ node }, index) {
-    const { styleSheet, onItemPress  } = this.props;
+    const { onPress, styleSheet } = this.props;
 
     return (
+      <TouchableOpacity key={node.id} onPress={() => onPress(index)}>
         <Image
-          key={node.id}
           style={[styleSheet.item, index === 0 ? styleSheet.firstItem : null]}
           source={{ uri: node.url }}
         />
+      </TouchableOpacity>
     );
   }
 
@@ -75,17 +69,15 @@ export default class UserPhotosCard extends PureComponent {
     const { user: { photos }, styleSheet } = this.props;
     const { edges, totalCount } = photos;
 
-
     return (
       <Card transparent topBorder>
         <CardItem header>
           <Text>Photos {totalCount}</Text>
         </CardItem>
+
         <CardItem>
           <ScrollView horizontal contentContainerStyle={styleSheet.list}>
-            {
-              edges.map(::this.renderEdge)
-            }
+            {edges.map(::this.renderEdge)}
           </ScrollView>
         </CardItem>
       </Card>

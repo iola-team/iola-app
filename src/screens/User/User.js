@@ -1,22 +1,16 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { ImageBackground, Image } from 'react-native';
-import {
-  Container,
-  Content,
-  View,
-  Text,
-  Button,
-  Icon,
-  Spinner,
-  Card,
-  CardItem,
-  Body,
-} from 'native-base';
+import { Container, Content, View, Spinner } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { UserHeading, UserBriefCard, UserFriendsCard, UserPhotosCard } from 'components';
+import { withStyleSheet as styleSheet } from 'theme';
+import {
+  UserHeading,
+  UserBriefCard,
+  UserFriendsCard,
+  UserPhotosCard,
+  UserPhotos,
+} from 'components';
 import * as routes from '../roteNames';
 
 const propsToVariables = props => ({
@@ -39,7 +33,7 @@ const propsToVariables = props => ({
   ${UserFriendsCard.fragments.user}
   ${UserPhotosCard.fragments.user}
 `, {
-  options: (props) => ({
+  options: props => ({
     variables: propsToVariables(props),
   }),
 })
@@ -66,19 +60,17 @@ export default class UserScreen extends Component {
                   style={styleSheet.head}
                   user={user}
                   onBackPress={() => goBack()}
-                  onChatPress={() => navigate(routes.CHANNEL, {
-                    userId: user.id,
-                  })}
+                  onChatPress={() => navigate(routes.CHANNEL, { userId: user.id })}
                 />
                 <View horizontalPadder>
                   <UserBriefCard user={user} />
                   <UserFriendsCard
                     user={user}
-                    onItemPress={id => {
+                    onItemPress={id => (
                       navigate({ routeName: routes.USER, params: { id }, key: id })
-                    }}
+                    )}
                   />
-                  <UserPhotosCard user={user} />
+                  <UserPhotos userId={user.id} />
                 </View>
               </View>
             ) : (

@@ -1,31 +1,17 @@
 import { debounce } from 'lodash';
 import React, { PureComponent } from 'react';
-import Moment from 'react-moment';
-import { FlatList } from "react-native";
-import { NetworkStatus } from 'apollo-client';
-import {
-  Container,
-  Content,
-  Header,
-  Body,
-  Title,
-  Icon,
-  View,
-} from 'native-base';
+import { Container, Icon } from 'native-base';
 
 import { SearchBar } from 'components';
 import { USER } from '../roteNames';
 import UsersConnection from './UsersConnection';
 import * as routes from '../roteNames'
 
-export default class Contacts extends PureComponent {
+export default class Users extends PureComponent {
   static navigationOptions = {
     title: 'Users',
     tabBarIcon: ({ focused, tintColor }) => (
-      <Icon
-        style={{ color: tintColor, fontSize: 35 }}
-        name={'ios-people-outline'}
-      />
+      <Icon name="ios-people-outline" style={{ color: tintColor, fontSize: 35 }} />
     ),
   };
 
