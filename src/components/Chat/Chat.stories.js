@@ -2,12 +2,14 @@ import React from 'react';
 import { find, filter, uniqueId, range, orderBy } from 'lodash';
 import { withHandlers } from 'recompose';
 import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
+import { button, number, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import { connectionFromArray, cursorToOffset, offsetToCursor } from 'graphql-relay';
 import delay from 'promise-delay';
+import uuid from 'uuid/v4';
+import { PubSub } from 'graphql-subscriptions';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook/index';
 import Chat from './Chat';
@@ -21,6 +23,7 @@ stories.addDecorator(getContainerDecorator({
   backgroundColor: '#F8F9FB'
 }));
 
+const subscriptions = new PubSub();
 const users = [
   {
     id: 'User:1',
@@ -106,6 +109,10 @@ const dataStore = {
 const typeDefs = gql`
   scalar Date
   scalar Cursor
+  
+  type Subscription {
+    onMessageAdd(chatId: ID!): Message!
+  }
   
   type Mutation {
     addMessage(input: MessageInput!, after: Cursor, before: Cursor, at: Cursor): MessageCreatePayload!
@@ -203,7 +210,30 @@ const typeDefs = gql`
   }
 `;
 
+const createTempMessage = text => ({
+  id: uuid(),
+  createdAt: new Date(),
+});
+
 const resolvers = {
+  Subscription: {
+    onMessageAdd: {
+      resolve: ({ content, userId, chatId }, args, { dataStore }) => {
+        const user = find(dataStore.users, { id: userId });
+        const chat = find(dataStore.chats, { id: chatId });
+
+        return {
+          id: uuid(),
+          content,
+          createdAt: new Date(),
+          user,
+          chat,
+        };
+      },
+      subscribe: () => subscriptions.asyncIterator('onNewMessage'),
+    },
+  },
+
   Mutation: {
     async addMessage(root, args, { dataStore }) {
       const { input, at, after, before } = args;
@@ -304,6 +334,14 @@ stories.add('Num messages', () => {
 });
 
 stories.add('Empty', () => {
+  button('Fire subscription', () => subscriptions.publish('onNewMessage', {
+    userId: 'User:1',
+    chatId: 'Chat:3',
+    content: {
+      text: faker.hacker.phrase(),
+    },
+  }));
+
   return (
     <Chat chatId={'Chat:3'} />
   );

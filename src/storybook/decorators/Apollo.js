@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { isFunction, cloneDeep, range } from 'lodash';
 import { ApolloProvider } from 'react-apollo';
 import { setContext } from "apollo-link-context";
-import { ApolloLink } from 'apollo-link';
+import { ApolloLink, Observable, split } from 'apollo-link';
 import { SchemaLink } from 'apollo-link-schema';
+import { subscribe } from 'graphql';
+import { toIdValue, getMainDefinition } from 'apollo-utilities';
 import MockAsyncStorage from 'mock-async-storage';
 import delay from 'promise-delay';
 import { Buffer } from 'buffer';
@@ -19,6 +21,37 @@ import { createClient } from 'graph';
  * Set buffer polyfill, required by `graphql-relay`
  */
 window.Buffer = Buffer;
+
+class SubscriptionLink extends ApolloLink {
+  constructor({ schema, context }) {
+    super();
+
+    this.schema = schema;
+    this.context = context;
+  }
+
+  request({ query, variables, operationName }) {
+    return new Observable(async observer => {
+      let iterator;
+      try {
+        iterator = await subscribe(this.schema, query, null, this.context, variables, operationName);
+      } catch (error) {
+        !observer.closed && observer.error(error);
+
+        return;
+      }
+
+      while (true) {
+        if (observer.closed) {
+          break;
+        }
+
+        const result = await iterator.next();
+        observer.next(result.value);
+      }
+    });
+  }
+}
 
 function createSchemaLink({ typeDefs, mocks, resolvers, dataStore = {} }) {
   const schema = makeExecutableSchema({
@@ -42,12 +75,21 @@ function createSchemaLink({ typeDefs, mocks, resolvers, dataStore = {} }) {
     });
   }
 
-  return new SchemaLink({
-    schema,
-    context: {
-      dataStore,
+  const context = {
+    dataStore,
+  };
+
+  const queryLink = new SchemaLink({ schema, context });
+  const subscriptionLink = new SubscriptionLink({ schema, context });
+
+  return split(
+    ({ query }) => {
+      const { kind, operation } = getMainDefinition(query);
+      return kind === 'OperationDefinition' && operation === 'subscription';
     },
-  });
+    subscriptionLink,
+    queryLink,
+  );
 }
 
 function createProgressLink({ progressOptions = {} }) {

@@ -73,6 +73,24 @@ const newMessageMutation = gql`
   ${MessageList.fragments.edge}
 `
 
+const subscriptionQuery = gql`
+  subscription NewChatMessageSubscription($chatId: ID!) {
+    onMessageAdd(chatId: $chatId) {
+      id
+      content {
+        text
+      }
+      user {
+        id
+        name
+      }
+      chat {
+        id
+      }
+    }
+  }
+`;
+
 @graphql(chatQuery, {
   props({ data }) {
     return {
@@ -214,6 +232,20 @@ export default class Chat extends Component {
   static propTypes = {
     chatId: PropTypes.string.isRequired,
   };
+
+  componentDidMount() {
+    const { chatId, data } = this.props;
+
+    this.props.data.subscribeToMore({
+      document: subscriptionQuery,
+      variables: {
+        chatId,
+      },
+      updateQuery: (prev, { subscriptionData: { onMessageAdd: payload } }) => {
+        console.log('subscriptionData', payload);
+      },
+    })
+  }
 
   getConnection() {
     const { data: { networkStatus, chat } } = this.props;
