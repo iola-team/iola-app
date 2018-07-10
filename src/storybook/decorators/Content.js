@@ -11,7 +11,7 @@ export default ({ padder = false, centered = false, backgroundColor } = {}) => (
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor,
-    } : {}}>
+    } : { backgroundColor }}>
       {story()}
     </Content>
   </Container>

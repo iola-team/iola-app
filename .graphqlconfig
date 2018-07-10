@@ -1,8 +1,12 @@
 {
-  "schemaPath": ".tmp/schemas/server.graphql",
-  "extensions": {
-    "endpoints": {
-      "default": "http://172.27.0.74/ow/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM"
+  "projects": {
+    "Sparkle": {
+      "schemaPath": ".tmp/schemas/server.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": "http://172.27.0.74/ow/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM"
+        }
+      }
     }
   }
 }

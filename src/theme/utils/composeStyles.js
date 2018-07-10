@@ -18,7 +18,7 @@ export default (...styles) => {
 
     return s;
   }, {
-    staticStyles: null,
+    staticStyles: {},
     getDynamicStyles: () => (null),
   });
 };
