@@ -1,22 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { NetworkStatus } from 'apollo-client';
 import { graphql } from 'react-apollo';
 import update from 'immutability-helper';
-import uuid from 'uuid'
-import {
-  View,
-  Text,
-  Button,
-} from 'native-base';
+import uuid from 'uuid';
+import { View } from 'native-base';
 
 import MessageList from '../MessageList';
 import ChatFooter from '../ChatFooter';
 import Shadow from '../Shadow';
 import { withStyleSheet as styleSheet } from 'theme';
-import UserAvatar from '../UserAvatar/UserAvatar'
+import UserAvatar from '../UserAvatar/UserAvatar';
 
 const chatQuery = gql`
   query ChatQuery($id: ID! $first: Int = 20 $last: Int $after: Cursor $before: Cursor) {
@@ -71,7 +66,7 @@ const newMessageMutation = gql`
   }
   
   ${MessageList.fragments.edge}
-`
+`;
 
 const subscriptionQuery = gql`
   subscription NewChatMessageSubscription($chatId: ID!) {

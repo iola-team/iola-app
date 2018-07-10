@@ -1,12 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Text,
-  Item,
-  Input,
-  Icon,
-} from 'native-base';
+import { View, Item, Input, Icon } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import Button from '../TouchableOpacity';

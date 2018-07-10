@@ -18,7 +18,7 @@ const Content = (props) => (
       Each object specifies the property that will be transformed as the key, and the value to use in the transformation.
     </Text>
   </View>
-)
+);
 
 // Stories
 stories.add('Default', () => {
@@ -27,11 +27,7 @@ stories.add('Default', () => {
   const bottom = boolean('Bottom', true);
 
   return (
-    <Shadow
-      top={top}
-      bottom={bottom}
-      inset={inset}
-    >
+    <Shadow top={top} bottom={bottom} inset={inset}>
       <Content />
     </Shadow>
   );
