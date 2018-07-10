@@ -236,7 +236,13 @@ export default class Chat extends Component {
       variables: {
         chatId,
       },
-      updateQuery: (prev, { subscriptionData: { onMessageAdd: payload } }) => {
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev;
+        }
+
+        const { onMessageAdd: payload } = subscriptionData.data;
+
         console.log('subscriptionData', payload);
       },
     })
