@@ -1,13 +1,13 @@
 import React from 'react';
 import { find, filter, uniqueId, range, orderBy } from 'lodash';
-import { withHandlers } from 'recompose';
 import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
-import { action } from '@storybook/addon-actions';
+import { button, number, withKnobs } from '@storybook/addon-knobs/react';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
-import { connectionFromArray } from 'graphql-relay';
+import { connectionFromArray, cursorToOffset, offsetToCursor } from 'graphql-relay';
 import delay from 'promise-delay';
+import uuid from 'uuid/v4';
+import { PubSub } from 'graphql-subscriptions';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook/index';
 import Chat from './Chat';
@@ -18,9 +18,10 @@ const stories = storiesOf('Components/Chat', module);
 // Decorators
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator({
-  backgroundColor: '#F8F9FB'
+  backgroundColor: '#F8F9FB',
 }));
 
+const subscriptions = new PubSub();
 const users = [
   {
     id: 'User:1',
@@ -59,6 +60,15 @@ const chats = [
       find(users, { id: 'User:2' }),
     ],
   },
+
+  {
+    id: 'Chat:3',
+    user: find(users, { id: 'User:1' }),
+    participants: [
+      find(users, { id: 'User:1' }),
+      find(users, { id: 'User:2' }),
+    ],
+  },
 ];
 
 const unOrderedFakeMessages = range(100).map((index) => ({
@@ -77,15 +87,15 @@ const orderedNumMessages = range(300).map((index) => {
     content: {
       text: (index + 1).toString(),
     },
-    createdAt: moment().add(index, 'h').toDate(),
+    createdAt: moment().subtract(1, 'months').add(index, 'h').toDate(),
     user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
     chat: find(chats, { id: 'Chat:2' }),
   };
 });
 
 const messages = [
-  ...orderBy(unOrderedFakeMessages, 'createdAt', 'asc'),
-  ...orderBy(orderedNumMessages, 'createdAt', 'asc'),
+  ...unOrderedFakeMessages,
+  ...orderedNumMessages,
 ];
 
 const dataStore = {
@@ -97,6 +107,14 @@ const dataStore = {
 const typeDefs = gql`
   scalar Date
   scalar Cursor
+  
+  type Subscription {
+    onMessageAdd(chatId: ID!): Message!
+  }
+  
+  type Mutation {
+    addMessage(input: MessageInput!, after: Cursor, before: Cursor, at: Cursor): MessageCreatePayload!
+  }
   
   type Query {
     me: User
@@ -171,9 +189,92 @@ const typeDefs = gql`
     edges: [MessageEdge!]!
     totalCount: Int
   }
+
+  input MessageContentInput {
+    text: String,
+  }
+
+  input MessageInput {
+    userId: ID!
+    chatId: ID!
+    content: MessageContentInput!
+  }
+
+  type MessageCreatePayload {
+    user: User!
+    chat: Chat!
+    node: Message!
+    edge: MessageEdge!
+  }
 `;
 
+const createTempMessage = text => ({
+  id: uuid(),
+  createdAt: new Date(),
+});
+
 const resolvers = {
+  Subscription: {
+    onMessageAdd: {
+      resolve: ({ content, userId, chatId }, args, { dataStore }) => {
+        const user = find(dataStore.users, { id: userId });
+        const chat = find(dataStore.chats, { id: chatId });
+
+        return {
+          id: uuid(),
+          content,
+          createdAt: new Date(),
+          user,
+          chat,
+        };
+      },
+      subscribe: () => subscriptions.asyncIterator('onNewMessage'),
+    },
+  },
+
+  Mutation: {
+    async addMessage(root, args, { dataStore }) {
+      const { input, at, after, before } = args;
+      const { messages, users, chats } = dataStore;
+
+      const user = find(users, { id: input.userId });
+      const chat = find(chats, { id: input.chatId });
+      const node = {
+        id: `Message:${messages.length}`,
+        content: {
+          ...input.content,
+        },
+        createdAt: new Date(),
+        user,
+        chat,
+      };
+
+      messages.push(node);
+
+      let cursor = at || offsetToCursor(0);
+
+      if (before) {
+        cursor = offsetToCursor(Math.max(cursorToOffset(before) - 1, 0));
+      }
+
+      if (after) {
+        cursor = offsetToCursor(cursorToOffset(before) + 1);
+      }
+
+      await delay(2000);
+
+      return {
+        node,
+        user,
+        chat,
+        edge: {
+          cursor: cursor,
+          node,
+        },
+      };
+    }
+  },
+
   Query: {
     me: (root, args, { dataStore: { users } }) => find(users, {id: 'User:1'}),
     node: (root, { id }, { dataStore: { users, chats } }) => {
@@ -187,16 +288,23 @@ const resolvers = {
   Chat: {
     async messages(chat, args, { dataStore: { messages } }) {
       await delay(1000);
-      const chatMessages = filter(messages, ['chat.id', chat.id]);
+      const chatMessages = orderBy(
+        filter(messages, ['chat.id', chat.id]),
+        'createdAt',
+        'desc'
+      );
 
       const connection = connectionFromArray(
-        filter(messages, ['chat.id', chat.id]),
+        chatMessages,
         args,
       );
 
       return {
         ...connection,
         totalCount: chatMessages.length,
+        metaInfo: {
+          firstCursor: offsetToCursor(0),
+        }
       }
     }
   },
@@ -222,5 +330,19 @@ stories.add('Fake messages', () => {
 stories.add('Num messages', () => {
   return (
     <Chat chatId={'Chat:2'} />
+  );
+});
+
+stories.add('Empty', () => {
+  button('Fire subscription', () => subscriptions.publish('onNewMessage', {
+    userId: 'User:1',
+    chatId: 'Chat:3',
+    content: {
+      text: faker.hacker.phrase(),
+    },
+  }));
+
+  return (
+    <Chat chatId={'Chat:3'} />
   );
 });

@@ -8,6 +8,7 @@ function loadStories() {
   require('../components/ActionSheet/ActionSheet.stories');
   require('../components/AvatarInput/AvatarInput.stories');
   require('../components/Chat/Chat.stories');
+  require('../components/ChatFooter/ChatFooter.stories');
   require('../components/CircularProgress/CircularProgress.stories');
   require('../components/ComponentTemplate/ComponentTemplate.stories');
   require('../components/DatePicker/DatePicker.stories');
@@ -23,6 +24,7 @@ function loadStories() {
   require('../components/Modal/Modal.stories');
   require('../components/PhotoEdit/PhotoEdit.stories');
   require('../components/PhotoGrid/PhotoGrid.stories');
+  require('../components/Shadow/Shadow.stories');
   require('../components/TextPicker/TextPicker.stories');
   require('../components/UserPhotos/UserPhotos.stories');
   require('./stories/Button.stories');
@@ -33,6 +35,7 @@ const stories = [
   '../components/ActionSheet/ActionSheet.stories',
   '../components/AvatarInput/AvatarInput.stories',
   '../components/Chat/Chat.stories',
+  '../components/ChatFooter/ChatFooter.stories',
   '../components/CircularProgress/CircularProgress.stories',
   '../components/ComponentTemplate/ComponentTemplate.stories',
   '../components/DatePicker/DatePicker.stories',
@@ -48,6 +51,7 @@ const stories = [
   '../components/Modal/Modal.stories',
   '../components/PhotoEdit/PhotoEdit.stories',
   '../components/PhotoGrid/PhotoGrid.stories',
+  '../components/Shadow/Shadow.stories',
   '../components/TextPicker/TextPicker.stories',
   '../components/UserPhotos/UserPhotos.stories',
   './stories/Button.stories',

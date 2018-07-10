@@ -8,7 +8,7 @@ import createApiClient from 'graph';
 import Theme from 'theme';
 import Application from 'application';
 import Storybook from 'storybook';
-import Root from './components/Root/Root'
+import { Root } from 'components';
 
 class ApplicationRoot extends Component {
   state = {

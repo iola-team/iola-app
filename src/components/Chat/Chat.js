@@ -1,29 +1,32 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { NetworkStatus } from 'apollo-client';
 import { graphql } from 'react-apollo';
 import update from 'immutability-helper';
-import {
-  View,
-  Text,
-  Button,
-} from 'native-base';
+import uuid from 'uuid';
+import { View } from 'native-base';
 
 import MessageList from '../MessageList';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import ChatFooter from '../ChatFooter';
+import Shadow from '../Shadow';
+import { withStyleSheet as styleSheet } from 'theme';
+import UserAvatar from '../UserAvatar/UserAvatar';
 
 const chatQuery = gql`
-  query ChatQuery($id: ID! $first: Int $last: Int $after: Cursor $before: Cursor) {
+  query ChatQuery($id: ID! $first: Int = 20 $last: Int $after: Cursor $before: Cursor) {
     me {
       id
+      ...UserAvatar_user
     }
 
     chat: node(id: $id) {
       id
       ...on Chat {
         messages(last: $last after: $after first: $first before: $before) {
+          metaInfo {
+            firstCursor
+          }
           pageInfo {
             hasNextPage
             endCursor
@@ -36,7 +39,51 @@ const chatQuery = gql`
     }
   }
   
+  ${UserAvatar.fragments.user}
   ${MessageList.fragments.edge}
+`;
+
+const newMessageMutation = gql`
+  mutation NewChatMessageMutation(
+    $input: MessageInput! 
+    $after: Cursor
+    $at: Cursor
+    $pageCount: Int
+  ) {
+    addMessage(input: $input, after: $after, at: $at) {
+      chat {
+        messages(first: $pageCount) {
+          pageInfo {
+            endCursor
+            hasNextPage
+          }
+        }
+      }
+      edge {
+        ...MessageList_edge
+      }
+    }
+  }
+  
+  ${MessageList.fragments.edge}
+`;
+
+const subscriptionQuery = gql`
+  subscription NewChatMessageSubscription($chatId: ID!) {
+    onMessageAdd(chatId: $chatId) {
+      id
+      content {
+        text
+      }
+      user {
+        id
+        name
+      }
+      chat {
+        id
+      }
+    }
+  }
 `;
 
 @graphql(chatQuery, {
@@ -89,29 +136,132 @@ const chatQuery = gql`
       notifyOnNetworkStatusChange: true,
       variables: {
         id: chatId,
-        first: 50,
       },
     };
   }
 })
+@graphql(newMessageMutation, {
+  props({ mutate, ownProps }) {
+    return {
+      addMessage(text) {
+        const { chat, me, variables: queryVariables } = ownProps.data;
+        const variables = {
+          input: {
+            chatId: chat.id,
+            userId: me.id,
+            content: {
+              text,
+            },
+          },
+          at: chat.messages.metaInfo.firstCursor,
+          pageCount: chat.messages.edges.length + 1,
+        };
+
+        const optimisticResponse = {
+          __typename: 'Mutation',
+          addMessage: {
+            __typename: 'MessageCreatePayload',
+            chat,
+            edge: {
+              __typename: 'MessageEdge',
+              node: {
+                __typename: 'Message',
+                id: uuid(),
+                createdAt: new Date(),
+                content: {
+                  __typename: 'MessageContent',
+                  text,
+                },
+                user: me,
+                chat,
+              },
+            },
+          },
+        };
+
+        return mutate({
+          variables,
+          optimisticResponse,
+          update(cache, { data: { addMessage: result } }) {
+            const query = chatQuery;
+            const variables = queryVariables;
+            const data = cache.readQuery({ query, variables });
+
+            cache.writeQuery({
+              query,
+              variables,
+              data: update(data, {
+                chat: {
+                  messages: {
+                    edges: {
+                      $unshift: [result.edge]
+                    },
+                    pageInfo: {
+                      $set: result.chat.messages.pageInfo,
+                    },
+                  },
+                },
+              }),
+            });
+          }
+        });
+      },
+    };
+  },
+})
 @styleSheet('Sparkle.Chat', {
   root: {
     flex: 1,
+    backgroundColor: '#F8F9FB',
   },
 
   list: {
-    backgroundColor: '#F8F9FB',
     flex: 1,
   },
 
   footer: {
-    height: 50,
-    backgroundColor: '#FFFFFF',
-  }
+
+  },
 })
 export default class Chat extends Component {
   static propTypes = {
     chatId: PropTypes.string.isRequired,
+  };
+
+  componentDidMount() {
+    const { chatId, data } = this.props;
+
+    this.props.data.subscribeToMore({
+      document: subscriptionQuery,
+      variables: {
+        chatId,
+      },
+      updateQuery: (prev, { subscriptionData: { onMessageAdd: payload } }) => {
+        console.log('subscriptionData', payload);
+      },
+    })
+  }
+
+  getConnection() {
+    const { data: { networkStatus, chat } } = this.props;
+
+    if (networkStatus === NetworkStatus.loading) {
+      return {
+        hasMore: false,
+        edges: [],
+      };
+    }
+
+    return {
+      edges: chat.messages.edges,
+      hasMore: chat.messages.pageInfo.hasNextPage,
+    };
+  }
+
+  onSend = (text) => {
+    const { addMessage } = this.props;
+
+    addMessage(text);
   };
 
   getItemSide = ({ user }) => this.props.data.me.id === user.id ? 'right' : 'left';
@@ -122,32 +272,30 @@ export default class Chat extends Component {
       styleSheet: styles,
       data: { networkStatus, chat },
       loadEarlierMessages,
-      loadNewMessages
+      loadNewMessages,
+      addMessage,
     } = this.props;
 
-    const isReady = networkStatus !== NetworkStatus.loading;
+    const { hasMore, edges } = this.getConnection();
 
     return (
       <View style={[styles.root, style]}>
-        <View style={styles.list}>
-          {isReady && (
-            <MessageList
-              edges={chat.messages.edges}
-              getItemSide={this.getItemSide}
-              loadingMore={chat.messages.pageInfo.hasNextPage}
+        <Shadow top bottom inset style={styles.list}>
+          <MessageList
+            edges={edges}
+            loadingMore={hasMore}
+            getItemSide={this.getItemSide}
 
-              inverted={true}
-              initialNumToRender={15}
-              onEndReachedThreshold={1}
-              onEndReached={loadEarlierMessages}
-              onRefresh={loadNewMessages}
-              refreshing={networkStatus === NetworkStatus.refetch}
-            />
-          )}
-        </View>
-        <View style={styles.footer}>
-          <Text>Form will go here...</Text>
-        </View>
+            inverted={true}
+            initialNumToRender={15}
+            onEndReachedThreshold={1}
+            onEndReached={loadEarlierMessages}
+            onRefresh={loadNewMessages}
+            refreshing={networkStatus === NetworkStatus.refetch}
+          />
+        </Shadow>
+
+        <ChatFooter style={styles.footer} onSend={this.onSend} />
       </View>
     );
   }
