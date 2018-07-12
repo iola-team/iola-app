@@ -37,8 +37,7 @@ export class SubscriptionClient {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body),
-      timeout: 1000,
+      body: body && JSON.stringify(body),
     });
 
     return res.json();

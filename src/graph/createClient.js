@@ -96,8 +96,8 @@ export async function createClient({
 }
 
 export default async () => {
-  const queryUri = 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql';
-  const subscriptionUri = 'http://172.27.0.74/ow/oxwall/everywhere/api/subscriptions';
+  const queryUri = 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM';
+  const subscriptionUri = 'http://172.27.0.74/ow/oxwall/everywhere/api/subscriptions?XDEBUG_SESSION_START=PHPSTORM';
 
   const httpLink = createUploadLink({
     uri: queryUri,
