@@ -109,7 +109,7 @@ const typeDefs = gql`
   scalar Cursor
   
   type Subscription {
-    onMessageAdd(chatId: ID!): Message!
+    onMessageAdd(chatId: ID!): MessageCreatePayload!
   }
   
   type Mutation {
@@ -219,13 +219,24 @@ const resolvers = {
       resolve: ({ content, userId, chatId }, args, { dataStore }) => {
         const user = find(dataStore.users, { id: userId });
         const chat = find(dataStore.chats, { id: chatId });
-
-        return {
+        const node = {
           id: uuid(),
           content,
           createdAt: new Date(),
           user,
           chat,
+        }
+
+        const cursor = "first";
+
+        return {
+          node,
+          chat,
+          user,
+          edge: {
+            cursor,
+            node,
+          }
         };
       },
       subscribe: () => subscriptions.asyncIterator('onNewMessage'),
@@ -268,7 +279,7 @@ const resolvers = {
         user,
         chat,
         edge: {
-          cursor: cursor,
+          cursor,
           node,
         },
       };
@@ -334,8 +345,16 @@ stories.add('Num messages', () => {
 });
 
 stories.add('Empty', () => {
-  button('Fire subscription', () => subscriptions.publish('onNewMessage', {
+  button('User 1 message', () => subscriptions.publish('onNewMessage', {
     userId: 'User:1',
+    chatId: 'Chat:3',
+    content: {
+      text: faker.hacker.phrase(),
+    },
+  }));
+
+  button('User 2 message', () => subscriptions.publish('onNewMessage', {
+    userId: 'User:2',
     chatId: 'Chat:3',
     content: {
       text: faker.hacker.phrase(),

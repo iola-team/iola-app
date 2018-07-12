@@ -11,11 +11,11 @@ const fetch = new Fetch({
   ],
 }).build();
 
-global.Blob = Blob;
-global.File = File;
-global.FileReader = FileReader;
-global.XMLHttpRequest = XMLHttpRequest;
-global.fetch = fetch;
+// global.Blob = Blob;
+// global.File = File;
+// global.FileReader = FileReader;
+// global.XMLHttpRequest = XMLHttpRequest;
+// global.fetch = fetch;
 
 export {
   Blob,
