@@ -1,9 +1,3 @@
-/**
- * Shim global modules to make some third party libs working
- * TODO: maybe remove
- */
-import './shim';
-
 import { AppRegistry, NativeModules, Platform, YellowBox } from 'react-native';
 
 import Application from './src';

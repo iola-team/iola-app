@@ -11,11 +11,17 @@ const fetch = new Fetch({
   ],
 }).build();
 
-// global.Blob = Blob;
-// global.File = File;
-// global.FileReader = FileReader;
-// global.XMLHttpRequest = XMLHttpRequest;
-// global.fetch = fetch;
+
+/**
+ * Polyfill all networking related types from `react-native-fetch-blob`,
+ * except `XMLHttpRequest` - it does not support streams, which are required for SSE.
+ *
+ * @type {Blob}
+ */
+global.Blob = Blob;
+global.File = File;
+global.FileReader = FileReader;
+global.fetch = fetch;
 
 export {
   Blob,
