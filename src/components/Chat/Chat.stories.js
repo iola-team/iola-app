@@ -345,6 +345,12 @@ stories.add('Num messages', () => {
 });
 
 stories.add('Empty', () => {
+  return (
+    <Chat chatId={'Chat:3'} />
+  );
+});
+
+stories.add('New message subscriptions', () => {
   button('User 1 message', () => subscriptions.publish('onNewMessage', {
     userId: 'User:1',
     chatId: 'Chat:3',
