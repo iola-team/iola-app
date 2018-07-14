@@ -68,7 +68,7 @@ const newMessageMutation = gql`
   ${MessageList.fragments.edge}
 `;
 
-const subscriptionQuery = gql`
+const newMessageSubscription = gql`
   subscription NewChatMessageSubscription($chatId: ID!) {
     onMessageAdd(chatId: $chatId) {
       node {
@@ -228,10 +228,8 @@ export default class Chat extends Component {
   componentDidMount() {
     const { chatId, data } = this.props;
 
-    console.log('Subscription start');
-
     this.props.data.subscribeToMore({
-      document: subscriptionQuery,
+      document: newMessageSubscription,
       variables: {
         chatId,
       },
