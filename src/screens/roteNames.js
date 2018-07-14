@@ -3,6 +3,8 @@ export const APPLICATION = 'application';
 
 export const SIGN_IN = 'signIn';
 export const SIGN_UP = 'signUp';
+export const FORGOT_PASSWORD = 'forgotPassword';
+export const EMAIL_VERIFICATION = 'emailVerification';
 export const LAUNCH = 'launch';
 export const USER = 'user';
 

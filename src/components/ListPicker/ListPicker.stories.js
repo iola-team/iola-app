@@ -1,12 +1,11 @@
 import React from 'react';
-import { without, includes, union } from 'lodash';
 import { withKnobs, boolean, array } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
 import { Button, Text } from 'native-base';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook/index';
+import { getContentDecorator } from 'storybook';
 import ListPicker from './ListPicker';
 
 const stories = storiesOf('Components/ListPicker', module);
@@ -54,7 +53,7 @@ stories.add('Static', () => {
 
   return (
     <ListPicker
-      label={'Favourite food'}
+      label="Favourite food"
       options={options}
       value={value}
       onChange={action('onChange')}
@@ -72,37 +71,35 @@ stories.add('Static', () => {
 stories.add('Multi select wrapper', () => {
   return (
     <Select
-      label={'Multi select'}
-      multiple={true}
-      invitation={'Choose multiple'}
+      label="Multi select"
+      invitation="Choose multiple"
       options={options}
       onCancel={action('onCancel')}
       onDone={action('onDone')}
       onShow={action('onShow')}
       onDismiss={action('onDismiss')}
       onRequestClose={action('onRequestClose')}
+      multiple
     >
       {renderChildren}
     </Select>
   );
 });
 
-stories.add('Single select wrapper', () => {
-  return (
-    <Select
-      label={'Single select'}
-      invitation={'Choose one'}
-      options={options}
-      onCancel={action('onCancel')}
-      onDone={action('onDone')}
-      onShow={action('onShow')}
-      onDismiss={action('onDismiss')}
-      onRequestClose={action('onRequestClose')}
-    >
-      {renderChildren}
-    </Select>
-  );
-});
+stories.add('Single select wrapper', () => (
+  <Select
+    label="Single select"
+    invitation="Choose one"
+    options={options}
+    onCancel={action('onCancel')}
+    onDone={action('onDone')}
+    onShow={action('onShow')}
+    onDismiss={action('onDismiss')}
+    onRequestClose={action('onRequestClose')}
+  >
+    {renderChildren}
+  </Select>
+));
 
 stories.add('Controlled by isVisible prop', () => {
   const value = array('Selected', ['2', '5']);
@@ -113,8 +110,8 @@ stories.add('Controlled by isVisible prop', () => {
       multiple
       value={value}
       isVisible={isVisible}
-      label={'Single select'}
-      invitation={'Choose one'}
+      label="Single select"
+      invitation="Choose one"
       options={options}
       onCancel={action('onCancel')}
       onDone={action('onDone')}

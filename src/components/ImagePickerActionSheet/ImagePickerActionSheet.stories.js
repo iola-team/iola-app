@@ -1,14 +1,10 @@
 import React from 'react';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
+import { withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
-import {
-  View,
-  Button,
-  Text,
-} from 'native-base';
+import { Button, Text } from 'native-base';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook/index';
+import { getContentDecorator } from 'storybook';
 import ImagePickerActionSheet from './ImagePickerActionSheet';
 
 const stories = storiesOf('Components/ImagePickerActionSheet', module);
@@ -17,23 +13,21 @@ const stories = storiesOf('Components/ImagePickerActionSheet', module);
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator({ padder: true }));
 
-const renderButton = callbacks => (show) => (
+const renderButton = callbacks => show => (
   <Button onPress={() => show(callbacks)}>
     <Text>Show</Text>
   </Button>
-)
+);
 
 // Stories
-stories.add('Default', () => {
-  return (
-      <ImagePickerActionSheet
-        onSourceSelect={action('onSelectSource')}
-        onCancel={action('onCancel')}
-      >
-        {renderButton()}
-      </ImagePickerActionSheet>
-  );
-});
+stories.add('Default', () => (
+  <ImagePickerActionSheet
+    onSourceSelect={action('onSelectSource')}
+    onCancel={action('onCancel')}
+  >
+    {renderButton()}
+  </ImagePickerActionSheet>
+));
 
 stories.add('With extra option', () => {
   const options = [

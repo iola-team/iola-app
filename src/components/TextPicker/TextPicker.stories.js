@@ -1,12 +1,11 @@
 import React from 'react';
-import { without, includes, union } from 'lodash';
 import { withKnobs, boolean, text } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
 import { Button, Text } from 'native-base';
 
-import { getContentDecorator } from 'storybook/index';
+import { getContentDecorator } from 'storybook';
 import TextPicker from './TextPicker';
 
 const stories = storiesOf('Components/TextPicker', module);
@@ -26,9 +25,7 @@ const StatefulText = compose(
 const renderChildren = (show, value) => (
   <Button transparent onPress={show}>
     <Text>
-      {
-        value || 'Enter text'
-      }
+      {value || 'Enter text'}
     </Text>
   </Button>
 );
@@ -39,9 +36,9 @@ stories.add('Static', () => {
 
   return (
     <TextPicker
-      label={'Description'}
+      label="Description"
       value={value}
-      placeholder={"Enter text here"}
+      placeholder="Enter text here"
       onChange={action('onChange')}
       onCancel={action('onCancel')}
       onDone={action('onDone')}
@@ -56,8 +53,8 @@ stories.add('Static', () => {
 stories.add('Dynamic value', () => {
   return (
     <StatefulText
-      label={'Description'}
-      placeholder={"Enter text here"}
+      label="Description"
+      placeholder="Enter text here"
       onChange={action('onChange')}
       onCancel={action('onCancel')}
       onDone={action('onDone')}
@@ -75,8 +72,8 @@ stories.add('Controlled by isVisible prop', () => {
   return (
     <StatefulText
       isVisible={isVisible}
-      label={'Description'}
-      placeholder={"Enter text here"}
+      label="Description"
+      placeholder="Enter text here"
       onChange={action('onChange')}
       onCancel={action('onCancel')}
       onDone={action('onDone')}

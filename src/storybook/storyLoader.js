@@ -27,6 +27,8 @@ function loadStories() {
   require('../components/Shadow/Shadow.stories');
   require('../components/TextPicker/TextPicker.stories');
   require('../components/UserPhotos/UserPhotos.stories');
+  require('../screens/EmailVerification/EmailVerification.stories');
+  require('../screens/ForgotPassword/ForgotPassword.stories');
   require('./stories/Button.stories');
   
 }
@@ -54,6 +56,8 @@ const stories = [
   '../components/Shadow/Shadow.stories',
   '../components/TextPicker/TextPicker.stories',
   '../components/UserPhotos/UserPhotos.stories',
+  '../screens/EmailVerification/EmailVerification.stories',
+  '../screens/ForgotPassword/ForgotPassword.stories',
   './stories/Button.stories',
   
 ];

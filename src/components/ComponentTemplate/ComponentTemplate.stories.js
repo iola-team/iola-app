@@ -1,13 +1,11 @@
 import React from 'react';
-import { withHandlers } from 'recompose';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { number, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
-import { MockList } from 'graphql-tools';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook/index';
+import { getContentDecorator, getApolloDecorator } from 'storybook';
 import ComponentTemplate from './ComponentTemplate';
 
 const stories = storiesOf('Components/ComponentTemplate', module);
@@ -57,13 +55,11 @@ stories.add('Default', () => {
   return (
     <Query query={userQuery}>
       {({ data, loading }) => !loading && (
-
         <ComponentTemplate
           user={data.user}
           something={something}
           onSomething={action('onSomething')}
         />
-
       )}
     </Query>
   );

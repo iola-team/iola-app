@@ -45,8 +45,13 @@ readTokenQuery = gql`
 })
 class SignInForm extends Component {
   static propTypes = {
+    defaultEmail: propTypes.string,
     onSubmit: propTypes.func.isRequired,
-    onForgotPasswordPress: propTypes.func.isRequired,
+    onForgotPassword: propTypes.func.isRequired,
+  };
+
+  static defaultProps = {
+    defaultEmail: '',
   };
 
   isAuthIsValid(token) {
@@ -56,7 +61,8 @@ class SignInForm extends Component {
   }
 
   render() {
-    const { onForgotPasswordPress, handleSubmit, isValid } = this.props;
+    const { values: { login }, onForgotPassword, handleSubmit, isValid } = this.props;
+    const disabled = !(isValid || login);
 
     return (
       <Query query={readTokenQuery}>
@@ -92,14 +98,14 @@ class SignInForm extends Component {
               />
 
               <InfoBlock>
-                <TouchableOpacity onPress={() => onForgotPasswordPress()}>
+                <TouchableOpacity onPress={() => onForgotPassword(login)}>
                   <ForgotPasswordText>Forgot password?</ForgotPasswordText>
                 </TouchableOpacity>
 
                 {error ? <CommonErrorText>Wrong login or password</CommonErrorText> : null}
               </InfoBlock>
 
-              <SubmitButton block onPress={handleSubmit} disabled={!isValid}>
+              <SubmitButton block onPress={handleSubmit} disabled={disabled}>
                 <Text>Submit</Text>
               </SubmitButton>
             </Form>
@@ -116,7 +122,12 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: props => ({ login: 'demo5@oxpro.or', password: 'demo1986' }),
+  enableReinitialize: true,
+  mapPropsToValues: ({ defaultEmail }) => {
+    return defaultEmail
+      ? ({ login: defaultEmail, password: '' })
+      : ({ login: 'demo5@oxpro.org', password: 'demo1986' }); // @TODO: remove it
+  },
   handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
   validationSchema,
 })(SignInForm);

@@ -2,12 +2,12 @@ import React from 'react';
 import { find, union, uniqueId } from 'lodash';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { number, button, withKnobs } from '@storybook/addon-knobs/react';
+import { button, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
-import delay from 'promise-delay'
+import delay from 'promise-delay';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook/index';
+import { getContentDecorator, getApolloDecorator } from 'storybook';
 import FieldForm from './FieldForm';
 
 const stories = storiesOf('Components/FieldForm', module);
@@ -21,16 +21,14 @@ const sections = [
     id: 'Section:1',
     label: 'Basic Information',
   },
-
   {
     id: 'Section:2',
     label: 'About me',
   },
-
   {
     id: 'Section:3',
     label: 'Other information',
-  }
+  },
 ];
 
 const fields = [
@@ -40,7 +38,7 @@ const fields = [
     label: 'Username',
     presentation: 'TEXT',
     isRequired: true,
-    section: find(sections, { id: 'Section:1'}),
+    section: find(sections, { id: 'Section:1' }),
     configs: {
       presentation: 'TEXT',
       isEmail: null,
@@ -58,7 +56,7 @@ const fields = [
     label: 'Password',
     presentation: 'TEXT',
     isRequired: true,
-    section: find(sections, { id: 'Section:1'}),
+    section: find(sections, { id: 'Section:1' }),
     configs: {
       presentation: 'TEXT',
       format: null,
@@ -75,7 +73,7 @@ const fields = [
     label: 'Real Name',
     presentation: 'TEXT',
     isRequired: true,
-    section: find(sections, { id: 'Section:2'}),
+    section: find(sections, { id: 'Section:2' }),
     configs: {
       presentation: 'TEXT',
       format: null,
@@ -92,14 +90,14 @@ const fields = [
     label: 'Gender',
     presentation: 'SELECT',
     isRequired: true,
-    section: find(sections, { id: 'Section:2'}),
+    section: find(sections, { id: 'Section:2' }),
     configs: {
       presentation: 'SELECT',
       multiple: null,
       options: [
         { label: 'Female', value: '1' },
         { label: 'Male', value: '2' },
-      ]
+      ],
     },
   },
   {
@@ -108,7 +106,7 @@ const fields = [
     label: 'Favourite food',
     presentation: 'SELECT',
     isRequired: true,
-    section: find(sections, { id: 'Section:2'}),
+    section: find(sections, { id: 'Section:2' }),
     configs: {
       presentation: 'SELECT',
       multiple: true,
@@ -118,7 +116,7 @@ const fields = [
         { label: 'Pizza', value: '3' },
         { label: 'Pasta', value: '4' },
         { label: 'Avocados', value: '5' },
-      ]
+      ],
     },
   },
   {
@@ -127,7 +125,7 @@ const fields = [
     label: 'Description',
     presentation: 'TEXT',
     isRequired: false,
-    section: find(sections, { id: 'Section:3'}),
+    section: find(sections, { id: 'Section:3' }),
     configs: {
       presentation: 'TEXT',
       format: null,
@@ -138,40 +136,37 @@ const fields = [
       maxLength: 200,
     },
   },
-
   {
     id: 'Field:7',
     name: 'birthdate',
     label: 'Birthdate',
     presentation: 'DATE',
     isRequired: true,
-    section: find(sections, { id: 'Section:3'}),
+    section: find(sections, { id: 'Section:3' }),
     configs: {
       presentation: 'DATE',
       minDate: new Date('1980'),
       maxDate: new Date(),
     },
   },
-
   {
     id: 'Field:8',
     name: 'tos',
     label: 'I agree',
     presentation: 'SWITCH',
     isRequired: true,
-    section: find(sections, { id: 'Section:3'}),
+    section: find(sections, { id: 'Section:3' }),
     configs: {
       presentation: 'SWITCH',
     },
   },
-
   {
     id: 'Field:9',
     name: 'email',
     label: 'Email',
     presentation: 'TEXT',
     isRequired: true,
-    section: find(sections, { id: 'Section:1'}),
+    section: find(sections, { id: 'Section:1' }),
     configs: {
       presentation: 'TEXT',
       format: 'EMAIL',
@@ -182,14 +177,13 @@ const fields = [
       maxLength: 50,
     },
   },
-
   {
     id: 'Field:10',
     name: 'url',
     label: 'Url',
     presentation: 'TEXT',
     isRequired: true,
-    section: find(sections, { id: 'Section:1'}),
+    section: find(sections, { id: 'Section:1' }),
     configs: {
       presentation: 'TEXT',
       format: 'URL',
@@ -205,7 +199,7 @@ const fields = [
 const values = [
   {
     id: 'Value:1',
-    field: find(fields, { id: 'Field:1'}),
+    field: find(fields, { id: 'Field:1' }),
     data: {
       presentation: 'TEXT',
       value: 'rroman',
@@ -213,7 +207,7 @@ const values = [
   },
   {
     id: 'Value:2',
-    field: find(fields, { id: 'Field:2'}),
+    field: find(fields, { id: 'Field:2' }),
     data: {
       presentation: 'TEXT',
       value: '1234',
@@ -221,7 +215,7 @@ const values = [
   },
   {
     id: 'Value:3',
-    field: find(fields, { id: 'Field:3'}),
+    field: find(fields, { id: 'Field:3' }),
     data: {
       presentation: 'TEXT',
       value: 'Roman Banan',
@@ -229,7 +223,7 @@ const values = [
   },
   {
     id: 'Value:4',
-    field: find(fields, { id: 'Field:4'}),
+    field: find(fields, { id: 'Field:4' }),
     data: {
       presentation: 'SELECT',
       value: ['1'],
@@ -237,7 +231,7 @@ const values = [
   },
   {
     id: 'Value:5',
-    field: find(fields, { id: 'Field:5'}),
+    field: find(fields, { id: 'Field:5' }),
     data: {
       presentation: 'SELECT',
       value: ['2', '3'],
@@ -245,7 +239,7 @@ const values = [
   },
   {
     id: 'Value:6',
-    field: find(fields, { id: 'Field:6'}),
+    field: find(fields, { id: 'Field:6' }),
     data: {
       presentation: 'TEXT',
       value: 'Roman is a good boy',
@@ -253,7 +247,7 @@ const values = [
   },
   {
     id: 'Value:7',
-    field: find(fields, { id: 'Field:7'}),
+    field: find(fields, { id: 'Field:7' }),
     data: {
       presentation: 'DATE',
       value: new Date('1988'),
@@ -261,7 +255,7 @@ const values = [
   },
   {
     id: 'Value:8',
-    field: find(fields, { id: 'Field:8'}),
+    field: find(fields, { id: 'Field:8' }),
     data: {
       presentation: 'SWITCH',
       value: true,
@@ -280,7 +274,6 @@ const users = [
       values: () => values,
     },
   },
-
   {
     id: 'User:2',
     profile: {
@@ -291,7 +284,6 @@ const users = [
       values: [],
     },
   },
-
   {
     id: 'User:3',
     profile: {
@@ -583,7 +575,7 @@ const WithData = ({ userId: id }) => {
                           values: values,
                         },
                       },
-                    })
+                    });
                   }}
                 />
               )}
@@ -596,18 +588,9 @@ const WithData = ({ userId: id }) => {
 };
 
 // Stories
-stories.add('With filled data', () => {
-  return (
-    <WithData userId={'User:1'} />
-  );
-});
-
-stories.add('No data', () => {
-  return (
-    <WithData userId={'User:2'} />
-  );
-});
-
+stories.add('With filled data', () => <WithData userId="User:1" />);
+stories.add('No data', () => <WithData userId="User:2" />);
+stories.add('With async data', () => <WithData userId={'User:3'} />);
 stories.add('Loading data', () => {
   const id = 'User:1';
 
@@ -621,11 +604,5 @@ stories.add('Loading data', () => {
         />
       )}
     </Query>
-  );
-});
-
-stories.add('With async data', () => {
-  return (
-    <WithData userId={'User:3'} />
   );
 });

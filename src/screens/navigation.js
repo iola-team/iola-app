@@ -11,6 +11,8 @@ import * as routes from './roteNames';
 // Screens
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import ForgotPassword from './ForgotPassword';
+import EmailVerification from './EmailVerification';
 import Launch from './Launch';
 import Channels from './Channels';
 import Users from './Users';
@@ -49,6 +51,20 @@ export default createSwitchNavigator({
 
     [routes.SIGN_UP]: {
       screen: SignUp,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    [routes.FORGOT_PASSWORD]: {
+      screen: ForgotPassword,
+      navigationOptions: {
+        header: null,
+      },
+    },
+
+    [routes.EMAIL_VERIFICATION]: {
+      screen: EmailVerification,
       navigationOptions: {
         header: null,
       },

@@ -1,12 +1,11 @@
 import React from 'react';
-import { withHandlers } from 'recompose';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
+import { withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { Image } from 'react-native';
-import { Button, View, Text } from 'native-base';
+import { Button, Text } from 'native-base';
 
-import { getContentDecorator } from 'storybook/index';
+import { getContentDecorator } from 'storybook';
 
 import Item from './PhotoGridItem';
 import PhotoGrid from './PhotoGrid';
@@ -21,14 +20,13 @@ stories.addDecorator(getContentDecorator({ padder: true }));
 // Stories
 stories.add('Empty grid with numbers', () => {
   return (
-    <PhotoGrid renderItem={(index) => (
-      <Item placeholder style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <Text>{index}</Text>
-      </Item>
-    )} />
+    <PhotoGrid
+      renderItem={index => (
+        <Item placeholder style={{ alignItems: 'center', justifyContent: 'center' }}>
+          <Text>{index}</Text>
+        </Item>
+      )}
+    />
   );
 });
 
@@ -37,20 +35,24 @@ const imagePreview = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAAQABAAD/4QAYRXh
 
 stories.add('Loading first image', () => {
   return (
-    <PhotoGrid renderItem={(index) => index === 0 ? (
-      <Item>
-        <ImageProgress
-          style={{ flex: 1 }}
-          blurRadius={1}
-          previewUrl={imagePreview}
-          active={true}
-          progress={0.3}
-          onCancel={action('onCancel')}
-        >
-          <Image source={{ uri: imageUrl }} />
-        </ImageProgress>
-      </Item>
-    ) : null} />
+    <PhotoGrid
+      renderItem={
+        index => (index === 0) ? (
+          <Item>
+            <ImageProgress
+              style={{ flex: 1 }}
+              blurRadius={1}
+              previewUrl={imagePreview}
+              progress={0.3}
+              onCancel={action('onCancel')}
+              active
+            >
+              <Image source={{ uri: imageUrl }} />
+            </ImageProgress>
+          </Item>
+        ) : null
+      }
+    />
   );
 });
 
@@ -58,28 +60,28 @@ stories.add('Loading first image', () => {
 stories.add('Complex example', () => {
   const items = [];
 
-  items.push(
+  items.push((
     <Item>
       <Image source={{ uri: imageUrl }} style={{ flex: 1 }} />
     </Item>
-  );
+  ));
 
-  items.push(
+  items.push((
     <Item>
       <ImageProgress
         style={{ flex: 1 }}
         blurRadius={1}
         previewUrl={imagePreview}
-        active={true}
         progress={0.3}
         onCancel={action('onCancel')}
+        active
       >
         <Image source={{ uri: imageUrl }} />
       </ImageProgress>
     </Item>
-  );
+  ));
 
-  items.push(
+  items.push((
     <Item placeholder>
       <Button
         style={{ flex: 1 }}
@@ -89,9 +91,9 @@ stories.add('Complex example', () => {
         <Text>Button</Text>
       </Button>
     </Item>
-  );
+  ));
 
   return (
-    <PhotoGrid renderItem={(index) => items[index]} />
+    <PhotoGrid renderItem={index => items[index]} />
   );
 });

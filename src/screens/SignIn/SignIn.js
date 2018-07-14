@@ -3,7 +3,7 @@ import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { SIGN_UP, LAUNCH } from '../roteNames';
+import * as routes from '../roteNames';
 import SignInForm from './SignInForm';
 import Divider from './Divider';
 
@@ -43,13 +43,16 @@ const SignUpButton = connectToStyleSheet('signUpButton', Button);
   },
 })
 export default class SignInScreen extends Component {
+  state = { defaultEmail: '' };
+
   onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }) => {
-    const success = await this.props.authenticate(login, password);
+    const { authenticate, navigation: { navigate } } = this.props;
+    const success = await authenticate(login, password);
 
     setStatus({ ...status, success });
     setSubmitting(false);
 
-    if (success) this.props.navigation.navigate(LAUNCH);
+    if (success) navigate(routes.LAUNCH);
   };
 
   render() {
@@ -67,9 +70,19 @@ export default class SignInScreen extends Component {
 
             <Divider>or</Divider>
 
-            <SignInForm onSubmit={this.onSubmit} onForgotPasswordPress={() => alert('Forgot password?')} />
+            <SignInForm
+              defaultEmail={this.state.defaultEmail}
+              onSubmit={this.onSubmit}
+              onForgotPassword={login => navigate({
+                routeName: routes.FORGOT_PASSWORD,
+                params: {
+                  defaultLogin: login,
+                  setDefaultEmail: defaultEmail => this.setState({ defaultEmail }),
+                },
+              })}
+            />
 
-            <SignUpButton block bordered light onPress={() => navigate(SIGN_UP)}>
+            <SignUpButton block bordered light onPress={() => navigate(routes.SIGN_UP)}>
               <Text>Sign up</Text>
             </SignUpButton>
           </Content>

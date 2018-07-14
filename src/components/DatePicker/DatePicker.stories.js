@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
 import { Button, Text } from 'native-base';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook/index';
+import { getContentDecorator } from 'storybook';
 import DatePicker from './DatePicker';
 
 const stories = storiesOf('Components/DatePicker', module);
@@ -22,9 +22,7 @@ function dateKnob(name, defaultValue) {
 const renderChildren = (show, date) => (
   <Button transparent onPress={show}>
     <Text>
-      {
-        date ? date.toString() : 'Pick date'
-      }
+      {date ? date.toString() : 'Pick date'}
     </Text>
   </Button>
 );
@@ -67,7 +65,7 @@ stories.add('Fixed value prop', () => {
   return (
     <DatePicker
       value={new Date()}
-      label={'Birthdate'}
+      label="Birthdate"
       onChange={action('onChange')}
       onCancel={action('onCancel')}
       onDone={action('onDone')}
@@ -83,12 +81,12 @@ stories.add('Fixed value prop', () => {
 });
 
 stories.add('Dynamic value prop', () => {
-  const minDate = dateKnob('Min date', new Date('1980'))
-  const maxDate = dateKnob('Max date', new Date())
+  const minDate = dateKnob('Min date', new Date('1980'));
+  const maxDate = dateKnob('Max date', new Date());
 
   return (
     <DatePickerWithState
-      label={'Birthdate'}
+      label="Birthdate"
       onChange={action('onChange')}
       onCancel={action('onCancel')}
       onDone={action('onDone')}
@@ -104,14 +102,14 @@ stories.add('Dynamic value prop', () => {
 });
 
 stories.add('Controlled with isVisible prop', () => {
-  const minDate = dateKnob('Min date', new Date('1980'))
-  const maxDate = dateKnob('Max date', new Date())
+  const minDate = dateKnob('Min date', new Date('1980'));
+  const maxDate = dateKnob('Max date', new Date());
   const isVisible = boolean('isVisible', false);
 
   return (
     <DatePickerWithState
       isVisible={isVisible}
-      label={'Birthdate'}
+      label="Birthdate"
       onChange={action('onChange')}
       onCancel={action('onCancel')}
       onDone={action('onDone')}
