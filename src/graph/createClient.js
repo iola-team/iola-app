@@ -1,17 +1,18 @@
 import { assign } from 'lodash';
 import { AsyncStorage } from 'react-native';
-import { toIdValue } from 'apollo-utilities';
+import { toIdValue, getMainDefinition } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
-import { from, ApolloLink } from 'apollo-link';
+import { from, split, ApolloLink } from 'apollo-link';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 import { CachePersistor } from 'apollo-cache-persist';
 import { setContext } from 'apollo-link-context';
 import { createUploadLink } from 'apollo-upload-client';
 import { disableFragmentWarnings } from 'graphql-tag';
+import EventSource from 'react-native-event-source';
 
+import { AuthLink, ErrorLink, SSELink } from './links';
 import resolvers from './resolvers';
-import { AuthLink, ErrorLink } from './links';
 import introspectionQueryResultData from './meta/fragmentTypes';
 
 disableFragmentWarnings();
@@ -95,8 +96,14 @@ export async function createClient({
 }
 
 export default async () => {
+  const debug = false;
+  const debugQuery = debug ? '?XDEBUG_SESSION_START=PHPSTORM' : '';
+
+  const queryUri = `http://172.27.0.74/ow/oxwall/everywhere/api/graphql${debugQuery}`;
+  const subscriptionUri = `http://172.27.0.74/ow/oxwall/everywhere/api/subscriptions${debugQuery}`;
+
   const httpLink = createUploadLink({
-    uri: 'http://172.27.0.74/ow/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM',
+    uri: queryUri,
     fetch: (uri, allOptions, ...restArgs) => {
       const {
         uploadProgress,
@@ -112,7 +119,22 @@ export default async () => {
     }
   });
 
+  const sseLink = new SSELink({
+    uri: subscriptionUri,
+    streamId: 'app',
+    EventSourceImpl: EventSource,
+  });
+
+  const terminatingLink = split(
+    ({ query }) => {
+      const { kind, operation } = getMainDefinition(query);
+      return kind === 'OperationDefinition' && operation === 'subscription';
+    },
+    sseLink,
+    httpLink,
+  );
+
   return createClient({
-    terminatingLink: httpLink,
+    terminatingLink,
   });
 };
