@@ -14,7 +14,8 @@ const graphqlConfigs = JSON.parse(
   fs.readFileSync(path.join(__dirname, '..', '.graphqlconfig'), 'utf8'),
 );
 
-const endpoint = graphqlConfigs.extensions.endpoints.default;
+const projectName = 'Sparkle';
+const endpoint = graphqlConfigs.projects[projectName].extensions.endpoints.default;
 
 fetch(endpoint, {
   method: 'POST',

@@ -8,7 +8,6 @@ import {
   Icon,
 } from 'native-base';
 
-
 import { withStyleSheet as styleSheet } from 'theme';
 
 @styleSheet('Sparkle.ScreenHeader', {

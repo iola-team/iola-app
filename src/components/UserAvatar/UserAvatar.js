@@ -8,6 +8,8 @@ import {
   Thumbnail,
 } from 'native-base';
 
+import { withStyle } from 'theme';
+
 const userFragment = gql`    
   fragment UserAvatar_user on User {
     id

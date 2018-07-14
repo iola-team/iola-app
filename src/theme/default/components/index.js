@@ -216,6 +216,8 @@ export default (variables => ({
 
     'Sparkle.Divider': {},
 
+    'Sparkle.Shadow': {},
+
     'Sparkle.UserListItem': {
       'NativeBase.ListItem': {
         'NativeBase.Body': {
@@ -235,6 +237,6 @@ export default (variables => ({
         margin: 16,
         marginRight: 22,
       }
-    }
+    },
   }),
 }));

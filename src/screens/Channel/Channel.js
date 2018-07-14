@@ -12,6 +12,7 @@ import {
 import { withStyleSheet as styleSheet } from 'theme';
 import { ScreenHeader, UserAvatar } from 'components';
 import ChannelHeader from './ChannelHeader';
+import { Chat } from 'components';
 
 const propsToVariables = props => ({
   userId: props.navigation.state.params.userId,
@@ -46,9 +47,7 @@ export default class Channel extends Component {
   render() {
     return (
       <Container>
-        <Content padder>
-          <Text>Channel</Text>
-        </Content>
+        <Chat chatId={'Chat:68'} />
       </Container>
     );
   }
