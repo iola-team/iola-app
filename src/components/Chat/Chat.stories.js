@@ -4,14 +4,15 @@ import gql from 'graphql-tag';
 import { button, number, withKnobs } from '@storybook/addon-knobs/react';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
-import { connectionFromArray, cursorToOffset, offsetToCursor } from 'graphql-relay';
+import { cursorToOffset, offsetToCursor } from 'graphql-relay';
 import delay from 'promise-delay';
 import uuid from 'uuid/v4';
+import moment from 'moment'
 import { PubSub } from 'graphql-subscriptions';
 
-import { getContainerDecorator, getApolloDecorator } from 'storybook/index';
+import { getContainerDecorator, getApolloDecorator } from 'storybook';
+import { createConnection } from 'storybook/decorators/Apollo';
 import Chat from './Chat';
-import moment from 'moment/moment'
 
 const stories = storiesOf('Components/Chat', module);
 
@@ -305,18 +306,7 @@ const resolvers = {
         'desc'
       );
 
-      const connection = connectionFromArray(
-        chatMessages,
-        args,
-      );
-
-      return {
-        ...connection,
-        totalCount: chatMessages.length,
-        metaInfo: {
-          firstCursor: offsetToCursor(0),
-        }
-      }
+      return createConnection(chatMessages, args);
     }
   },
 

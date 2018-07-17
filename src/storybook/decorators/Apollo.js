@@ -14,6 +14,7 @@ import {
   addMockFunctionsToSchema,
   addResolveFunctionsToSchema,
 } from 'graphql-tools';
+import { connectionFromArray, cursorToOffset, offsetToCursor } from 'graphql-relay';
 
 import { createClient } from 'graph';
 
@@ -167,6 +168,21 @@ class Provider extends Component {
     );
   }
 }
+
+export const createConnection = (nodes, args) => {
+  const connection = connectionFromArray(
+    nodes,
+    args,
+  );
+
+  return {
+    ...connection,
+    totalCount: nodes.length,
+    metaInfo: {
+      firstCursor: offsetToCursor(0),
+    },
+  };
+};
 
 export default ({
   typeDefs,

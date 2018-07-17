@@ -9,6 +9,7 @@ function loadStories() {
   require('../components/AvatarInput/AvatarInput.stories');
   require('../components/Chat/Chat.stories');
   require('../components/ChatFooter/ChatFooter.stories');
+  require('../components/ChatList/ChatList.stories');
   require('../components/CircularProgress/CircularProgress.stories');
   require('../components/ComponentTemplate/ComponentTemplate.stories');
   require('../components/DatePicker/DatePicker.stories');
@@ -38,6 +39,7 @@ const stories = [
   '../components/AvatarInput/AvatarInput.stories',
   '../components/Chat/Chat.stories',
   '../components/ChatFooter/ChatFooter.stories',
+  '../components/ChatList/ChatList.stories',
   '../components/CircularProgress/CircularProgress.stories',
   '../components/ComponentTemplate/ComponentTemplate.stories',
   '../components/DatePicker/DatePicker.stories',
