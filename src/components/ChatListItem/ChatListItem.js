@@ -39,7 +39,7 @@ const chatFragment = gql`
   'NativeBase.ListItem': {
     'NativeBase.Right': {
       'Sparkle.MessageStateIndicator': {
-        height: 20,
+        marginTop: 3,
       },
     },
   },
@@ -81,11 +81,11 @@ export default class ChatListItem extends Component {
         </Body>
         <Right>
           <Moment headline time note element={Text} format="HH:mm">{lastMessage.createdAt}</Moment>
-          {/*<Badge primary>*/}
-            {/*<Text>2</Text>*/}
-          {/*</Badge>*/}
+          <Badge primary>
+            <Text>2</Text>
+          </Badge>
 
-          <MessageStateIndicator />
+          {/*<MessageStateIndicator />*/}
         </Right>
       </ListItem>
     );

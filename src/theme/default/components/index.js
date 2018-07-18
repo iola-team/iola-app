@@ -179,8 +179,6 @@ export default (variables => ({
       },
 
       'NativeBase.Right': {
-        alignItems: 'center',
-
         'NativeBase.Text': {
           '.headline': {
             lineHeight: 20,

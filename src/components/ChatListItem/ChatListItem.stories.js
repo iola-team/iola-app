@@ -47,6 +47,24 @@ const chats = [
       find(users, { id: 'User:2' }),
     ],
   },
+
+  {
+    id: 'Chat:2',
+    user: find(users, { id: 'User:1' }),
+    participants: [
+      find(users, { id: 'User:1' }),
+      find(users, { id: 'User:2' }),
+    ],
+  },
+
+  {
+    id: 'Chat:3',
+    user: find(users, { id: 'User:1' }),
+    participants: [
+      find(users, { id: 'User:1' }),
+      find(users, { id: 'User:2' }),
+    ],
+  },
 ];
 
 const messages = [
@@ -58,6 +76,46 @@ const messages = [
     createdAt: faker.date.recent(),
     user: find(users, { id: 'User:1' }),
     chat: find(chats, { id: 'Chat:1' }),
+  },
+
+  {
+    id: `Message:2`,
+    content: {
+      text: faker.hacker.phrase(),
+    },
+    createdAt: faker.date.recent(),
+    user: find(users, { id: 'User:1' }),
+    chat: find(chats, { id: 'Chat:2' }),
+  },
+
+  {
+    id: `Message:3`,
+    content: {
+      text: faker.hacker.phrase(),
+    },
+    createdAt: faker.date.recent(),
+    user: find(users, { id: 'User:1' }),
+    chat: find(chats, { id: 'Chat:3' }),
+  },
+
+  {
+    id: `Message:4`,
+    content: {
+      text: faker.hacker.phrase(),
+    },
+    createdAt: faker.date.recent(),
+    user: find(users, { id: 'User:1' }),
+    chat: find(chats, { id: 'Chat:3' }),
+  },
+
+  {
+    id: `Message:5`,
+    content: {
+      text: faker.hacker.phrase(),
+    },
+    createdAt: faker.date.recent(),
+    user: find(users, { id: 'User:1' }),
+    chat: find(chats, { id: 'Chat:3' }),
   },
 ];
 
