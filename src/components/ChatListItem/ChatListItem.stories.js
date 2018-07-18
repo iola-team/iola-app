@@ -9,13 +9,13 @@ import faker from 'faker';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
-import ChatItem from './ChatItem';
+import ChatListItem from './ChatListItem';
 
-const stories = storiesOf('Components/ChatItem', module);
+const stories = storiesOf('Components/ChatListItem', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({ padder: true }));
+stories.addDecorator(getContentDecorator());
 
 
 const users = [
@@ -72,6 +72,7 @@ const typeDefs = gql`
   scalar Date
 
   type Query {
+    me: User
     node(id: ID!): Chat!
   }
 
@@ -86,9 +87,15 @@ const typeDefs = gql`
     endCursor: Cursor
   }
 
+  enum AvatarSize {
+    SMALL
+    MEDIUM
+    BIG
+  }
+  
   type Avatar {
     id: ID!
-    url: String!
+    url(size: AvatarSize = SMALL): String!
   }
   
   type User {
@@ -131,6 +138,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
+    me: (root, args, { dataStore: { users } }) => find(users, { id: 'User:1' }),
     node: (root, { id }, { dataStore: { users, chats } }) => find(chats, { id }),
   },
 
@@ -158,13 +166,16 @@ stories.addDecorator(getApolloDecorator({
 
 const chatQuery = gql`
   query ChatQuery($id: ID!){
+    me {
+      id
+    }
     chat: node(id: $id) {
       id
-      ...ChatItem_chat
+      ...ChatListItem_chat
     }
   }
-  
-  ${ChatItem.fragments.chat}
+
+  ${ChatListItem.fragments.chat}
 `;
 
 // Stories
@@ -172,8 +183,9 @@ stories.add('Default', () => {
   return (
     <Query query={chatQuery} variables={{ id: 'Chat:1' }}>
       {({ data, loading }) => !loading && (
-        <ChatItem
+        <ChatListItem
           chat={data.chat}
+          currentUserId={data.me.id}
         />
       )}
     </Query>
