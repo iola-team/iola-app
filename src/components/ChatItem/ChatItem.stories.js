@@ -6,17 +6,17 @@ import { number, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
-import moment from 'moment'
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
-import ChatList from './ChatList';
+import ChatItem from './ChatItem';
 
-const stories = storiesOf('Components/ChatList', module);
+const stories = storiesOf('Components/ChatItem', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator({ padder: true }));
+
 
 const users = [
   {
@@ -50,7 +50,15 @@ const chats = [
 ];
 
 const messages = [
-
+  {
+    id: `Message:1`,
+    content: {
+      text: faker.hacker.phrase(),
+    },
+    createdAt: faker.date.recent(),
+    user: find(users, { id: 'User:1' }),
+    chat: find(chats, { id: 'Chat:1' }),
+  },
 ];
 
 const dataStore = {
@@ -60,28 +68,11 @@ const dataStore = {
 };
 
 const typeDefs = gql`
-  scalar Date
   scalar Cursor
+  scalar Date
 
   type Query {
-    me: User
-    node(id: ID!): Node!
-  }
-
-  interface Node {
-    id: ID!
-  }
-
-  type Avatar {
-    id: ID!
-    url: String!
-  }
-
-  type User implements Node {
-    id: ID!
-    name: String!
-    avatar: Avatar
-    chats(first: Int, after: Cursor, last: Int, before: Cursor): UserChatsConnection!
+    node(id: ID!): Chat!
   }
 
   type ConnectionMetaInfo {
@@ -95,30 +86,29 @@ const typeDefs = gql`
     endCursor: Cursor
   }
 
-  type Chat implements Node {
+  type Avatar {
+    id: ID!
+    url: String!
+  }
+  
+  type User {
+    id: ID!
+    name: String!
+    avatar: Avatar
+  }
+
+  type Chat {
     id: ID!
     user: User!
     participants: [User!]!
     messages(first: Int, after: Cursor, last: Int, before: Cursor): ChatMessagesConnection!
   }
 
-  type ChatEdge {
-    node: Chat!
-    cursor: Cursor!
-  }
-
-  type UserChatsConnection {
-    pageInfo: PageInfo!
-    metaInfo: ConnectionMetaInfo!
-    edges: [ChatEdge!]!
-    totalCount: Int
-  }
-
   type MessageContent {
     text: String
   }
-
-  type Message implements Node {
+  
+  type Message {
     id: ID!
     user: User!
     chat: Chat!
@@ -141,16 +131,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    me: (root, args, { dataStore: { users } }) => find(users, {id: 'User:1'}),
     node: (root, { id }, { dataStore: { users, chats } }) => find(chats, { id }),
-  },
-
-  User: {
-    async chats(user, args, { dataStore: { chats } }) {
-      const userChats = filter(chats, ['user.id', user.id]);
-
-      return createConnection(userChats, args);
-    }
   },
 
   Chat: {
@@ -164,40 +145,35 @@ const resolvers = {
       return createConnection(chatMessages, args);
     }
   },
-
-  Node: {
-    __resolveType: ({ id }) => {
-      const [type] = id.split(':');
-
-      return type;
-    }
-  }
 };
 
-stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
+/**
+ * Apollo decorator example
+ */
+stories.addDecorator(getApolloDecorator({
+  typeDefs,
+  resolvers,
+  dataStore,
+}));
 
-const userQuery = gql`
-  query {
-    user: me {
+const chatQuery = gql`
+  query ChatQuery($id: ID!){
+    chat: node(id: $id) {
       id
-      chats {
-        edges {
-          ...ChatList_edge
-        }
-      }
+      ...ChatItem_chat
     }
   }
   
-  ${ChatList.fragments.edge}
+  ${ChatItem.fragments.chat}
 `;
 
 // Stories
 stories.add('Default', () => {
   return (
-    <Query query={userQuery}>
+    <Query query={chatQuery} variables={{ id: 'Chat:1' }}>
       {({ data, loading }) => !loading && (
-        <ChatList
-          edges={data.user.chats.edges}
+        <ChatItem
+          chat={data.chat}
         />
       )}
     </Query>

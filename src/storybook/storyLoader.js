@@ -9,6 +9,7 @@ function loadStories() {
   require('../components/AvatarInput/AvatarInput.stories');
   require('../components/Chat/Chat.stories');
   require('../components/ChatFooter/ChatFooter.stories');
+  require('../components/ChatItem/ChatItem.stories');
   require('../components/ChatList/ChatList.stories');
   require('../components/CircularProgress/CircularProgress.stories');
   require('../components/ComponentTemplate/ComponentTemplate.stories');
@@ -39,6 +40,7 @@ const stories = [
   '../components/AvatarInput/AvatarInput.stories',
   '../components/Chat/Chat.stories',
   '../components/ChatFooter/ChatFooter.stories',
+  '../components/ChatItem/ChatItem.stories',
   '../components/ChatList/ChatList.stories',
   '../components/CircularProgress/CircularProgress.stories',
   '../components/ComponentTemplate/ComponentTemplate.stories',
