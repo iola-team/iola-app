@@ -1,5 +1,5 @@
 import React from 'react';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
+import { boolean, withKnobs } from '@storybook/addon-knobs/react';
 import { storiesOf } from '@storybook/react-native';
 import { View } from 'native-base';
 
@@ -14,9 +14,11 @@ stories.addDecorator(getContentDecorator({ padder: true, centered: true, backgro
 
 // Stories
 stories.add('Default', () => {
+  const done = boolean('Done', false);
+
   return (
     <View style={{ backgroundColor: '#FFFFFF' }}>
-      <MessageStateIndicator />
+      <MessageStateIndicator done={done} />
     </View>
   );
 });

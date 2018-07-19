@@ -26,6 +26,7 @@ const messages = [
     content: {
       text: 'Hi how are you?',
     },
+    status: null,
     createdAt: new Date(),
     user: {
       id: 'User:1',
@@ -42,6 +43,75 @@ const messages = [
     content: {
       text: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning?',
     },
+    status: null,
+    createdAt: new Date(),
+    user: {
+      id: 'User:1',
+      name: 'Roman Banan',
+      avatar: {
+        id: 'Avatar:1',
+        url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
+      },
+    },
+  },
+
+  {
+    id: `Message:3`,
+    content: {
+      text: 'Hi how are you?',
+    },
+    createdAt: new Date(),
+    status: 'DELIVERED',
+    user: {
+      id: 'User:1',
+      name: 'Roman Banan',
+      avatar: {
+        id: 'Avatar:1',
+        url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
+      },
+    },
+  },
+
+  {
+    id: `Message:4`,
+    content: {
+      text: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning?',
+    },
+    status: 'DELIVERED',
+    createdAt: new Date(),
+    user: {
+      id: 'User:1',
+      name: 'Roman Banan',
+      avatar: {
+        id: 'Avatar:1',
+        url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
+      },
+    },
+  },
+
+  {
+    id: `Message:5`,
+    content: {
+      text: 'Hi how are you?',
+    },
+    createdAt: new Date(),
+    status: 'READ',
+    user: {
+      id: 'User:1',
+      name: 'Roman Banan',
+      avatar: {
+        id: 'Avatar:1',
+        url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
+      },
+    },
+  },
+
+  {
+    id: `Message:6`,
+    content: {
+      text: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning?',
+    },
+    status: 'READ',
     createdAt: new Date(),
     user: {
       id: 'User:1',
@@ -76,9 +146,15 @@ const typeDefs = gql`
   type MessageContent {
     text: String
   }
+
+  enum MessageStatus {
+    DELIVERED
+    READ
+  }
   
   type Message {
     id: ID!
+    status: MessageStatus
     content: MessageContent
     createdAt: Date!
     user: User!
@@ -114,12 +190,18 @@ stories.add('Short text', () => {
     'Right': 'right',
   }, 'left');
 
+  const messageId = select('Status', {
+    'Null': 'Message:1',
+    'DELIVERED': 'Message:3',
+    'READ': 'Message:5',
+  }, 'Message:1');
+
   const first = boolean('First', true);
   const last = boolean('Last', false);
   const hasAvatar = boolean('Has Avatar', true);
 
   return (
-    <Query query={messageQuery}  variables={{ id: 'Message:1' }}>
+    <Query query={messageQuery}  variables={{ id: messageId }}>
       {({ data, loading }) => !loading && (
 
         <MessageItem

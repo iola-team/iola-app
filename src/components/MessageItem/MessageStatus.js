@@ -1,21 +1,20 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, Icon } from 'native-base';
 
 import { withStyle } from 'theme';
+import MessageStateIndicator from '../MessageStateIndicator';
 
 @withStyle('Sparkle.MessageStatus', {
   flexDirection: 'row',
   alignItems: 'center',
   height: 20,
 
-  'NativeBase.Icon': {
-    fontSize: 35,
+  'Sparkle.MessageStateIndicator': {
     color: '#BDC0CB',
     marginLeft: 5,
-    alignItems: 'center',
   },
 
   'NativeBase.Text': {
@@ -37,12 +36,16 @@ export default class MessageStatus extends PureComponent {
   };
 
   render() {
-    const { time, style, hasStatus } = this.props;
+    const { time, style, hasStatus, status } = this.props;
+    const { color, ...flatStyle } = StyleSheet.flatten(style);
+    const colorStyle = color && { color };
 
     return (
-      <View style={style}>
-        <Moment element={Text} format="HH:mm">{time}</Moment>
-        {hasStatus && <Icon name={'ios-done-all'} />}
+      <View style={flatStyle}>
+        <Moment style={colorStyle} element={Text} format="HH:mm">{time}</Moment>
+        {hasStatus && (
+          <MessageStateIndicator style={colorStyle} done={status === 'READ'} />
+        )}
       </View>
     );
   }

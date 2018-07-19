@@ -24,7 +24,7 @@ const users = [
     name: 'Roman Banan',
     avatar: {
       id: 'Avatar:1',
-      url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
+      url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
     },
   },
 
@@ -33,7 +33,7 @@ const users = [
     name: 'Grey Rabbit',
     avatar: {
       id: 'Avatar:2',
-      url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
+      url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
     },
   },
 ];

@@ -68,8 +68,8 @@ const newMessageMutation = gql`
   ${MessageList.fragments.edge}
 `;
 
-const newMessageSubscription = gql`
-  subscription NewChatMessageSubscription($chatId: ID!) {
+const messageAddSubscription = gql`
+  subscription ChatMessageAddSubscription($chatId: ID!) {
     onMessageAdd(chatId: $chatId) {
       node {
         id
@@ -82,6 +82,18 @@ const newMessageSubscription = gql`
 
   ${MessageList.fragments.edge}
 `;
+
+const messageUpdateSubscription = gql`
+  subscription ChatMessageUpdateSubscription($chatId: ID!) {
+    onMessageUpdate(chatId: $chatId) {
+      edge {
+        ...MessageList_edge
+      }
+    }
+  }
+  
+  ${MessageList.fragments.edge}
+`
 
 @graphql(chatQuery, {
   props({ data }) {
@@ -164,6 +176,7 @@ const newMessageSubscription = gql`
               node: {
                 __typename: 'Message',
                 id: uuid(),
+                status: null,
                 createdAt: new Date(),
                 content: {
                   __typename: 'MessageContent',
@@ -228,11 +241,16 @@ export default class Chat extends Component {
   componentDidMount() {
     const { chatId, data } = this.props;
 
+    const variables = {
+      chatId,
+    };
+
+    /**
+     * Subscribe to new messages and add them into apollo cache in `updateQuery` method
+     */
     this.props.data.subscribeToMore({
-      document: newMessageSubscription,
-      variables: {
-        chatId,
-      },
+      document: messageAddSubscription,
+      variables,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev;
@@ -250,7 +268,16 @@ export default class Chat extends Component {
           },
         });
       },
-    })
+    });
+
+    /**
+     * Subscribe to message updates
+     * `updateQuery` is not needed here - apollo cache will automatically manage updates
+     */
+    this.props.data.subscribeToMore({
+      document: messageUpdateSubscription,
+      variables,
+    });
   }
 
   getConnection() {
@@ -281,7 +308,8 @@ export default class Chat extends Component {
     const {
       style,
       styleSheet: styles,
-      data: { networkStatus, chat },
+      chatId,
+      data: { networkStatus },
       loadEarlierMessages,
       loadNewMessages,
       addMessage,

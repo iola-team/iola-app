@@ -77,6 +77,7 @@ const unOrderedFakeMessages = range(100).map((index) => ({
   content: {
     text: faker.hacker.phrase(),
   },
+  status: 'READ',
   createdAt: faker.date.recent(),
   user: faker.random.arrayElement(find(chats, { id: 'Chat:1' }).participants),
   chat: find(chats, { id: 'Chat:1' }),
@@ -88,6 +89,7 @@ const orderedNumMessages = range(300).map((index) => {
     content: {
       text: (index + 1).toString(),
     },
+    status: 'READ',
     createdAt: moment().subtract(1, 'months').add(index, 'h').toDate(),
     user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
     chat: find(chats, { id: 'Chat:2' }),
@@ -110,7 +112,8 @@ const typeDefs = gql`
   scalar Cursor
   
   type Subscription {
-    onMessageAdd(chatId: ID!): MessageCreatePayload!
+    onMessageAdd(chatId: ID!): MessageSubscriptionPayload!
+    onMessageUpdate(chatId: ID!): MessageSubscriptionPayload!
   }
   
   type Mutation {
@@ -171,12 +174,17 @@ const typeDefs = gql`
     text: String
   }
 
-  type Message implements Node {
+  enum MessageStatus {
+    DELIVERED
+    READ
+  }
+
+  type Message {
     id: ID!
-    user: User!
-    chat: Chat!
+    status: MessageStatus
     content: MessageContent
     createdAt: Date!
+    user: User!
   }
 
   type MessageEdge {
@@ -201,6 +209,13 @@ const typeDefs = gql`
     content: MessageContentInput!
   }
 
+  type MessageSubscriptionPayload {
+    user: User!
+    chat: Chat!
+    node: Message!
+    edge: MessageEdge!
+  }
+  
   type MessageCreatePayload {
     user: User!
     chat: Chat!
@@ -223,6 +238,7 @@ const resolvers = {
         const node = {
           id: uuid(),
           content,
+          status: 'READ',
           createdAt: new Date(),
           user,
           chat,
@@ -240,7 +256,26 @@ const resolvers = {
           }
         };
       },
-      subscribe: () => subscriptions.asyncIterator('onNewMessage'),
+      subscribe: () => subscriptions.asyncIterator('onMessageAdd'),
+    },
+
+    onMessageUpdate: {
+      resolve: ({ content, messageId }, args, { dataStore }) => {
+        const node = find(dataStore.messages, { id: messageId });
+        const cursor = "first";
+
+        return {
+          node,
+          chat: node.chat,
+          user: node.user,
+          edge: {
+            cursor,
+            node,
+          }
+        };
+      },
+
+      subscribe: () => subscriptions.asyncIterator('onMessageUpdate'),
     },
   },
 
@@ -256,6 +291,7 @@ const resolvers = {
         content: {
           ...input.content,
         },
+        status: 'DELIVERED',
         createdAt: new Date(),
         user,
         chat,
@@ -273,7 +309,18 @@ const resolvers = {
         cursor = offsetToCursor(cursorToOffset(before) + 1);
       }
 
-      await delay(2000);
+      await delay(1000);
+
+      /**
+       * Emit message update subscription after 2 seconds
+       */
+      setTimeout(() => {
+        node.status = 'READ';
+
+        subscriptions.publish('onMessageUpdate', {
+          messageId: node.id,
+        });
+      }, 2000);
 
       return {
         node,
@@ -341,7 +388,7 @@ stories.add('Empty', () => {
 });
 
 stories.add('New message subscriptions', () => {
-  button('User 1 message', () => subscriptions.publish('onNewMessage', {
+  button('User 1 message', () => subscriptions.publish('onMessageAdd', {
     userId: 'User:1',
     chatId: 'Chat:3',
     content: {
@@ -349,7 +396,7 @@ stories.add('New message subscriptions', () => {
     },
   }));
 
-  button('User 2 message', () => subscriptions.publish('onNewMessage', {
+  button('User 2 message', () => subscriptions.publish('onMessageAdd', {
     userId: 'User:2',
     chatId: 'Chat:3',
     content: {
