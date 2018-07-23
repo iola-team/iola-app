@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import moment from 'moment'
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContainerDecorator, getApolloDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
 import ChatList from './ChatList';
 
@@ -16,7 +16,7 @@ const stories = storiesOf('Components/ChatList', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({ padder: true }));
+stories.addDecorator(getContainerDecorator());
 
 const users = [
   {
@@ -36,6 +36,24 @@ const users = [
       url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
     },
   },
+
+  {
+    id: 'User:3',
+    name: 'Jk KK',
+    avatar: {
+      id: 'Avatar:3',
+      url: 'https://avatarfiles.alphacoders.com/458/45801.jpg',
+    },
+  },
+
+  {
+    id: 'User:4',
+    name: 'Brad Pitt',
+    avatar: {
+      id: 'Avatar:4',
+      url: 'https://pbs.twimg.com/profile_images/631273849435230208/LSWD16F9_400x400.jpg',
+    },
+  },
 ];
 
 const chats = [
@@ -47,10 +65,69 @@ const chats = [
       find(users, { id: 'User:2' }),
     ],
   },
+  {
+    id: 'Chat:2',
+    user: find(users, { id: 'User:1' }),
+    participants: [
+      find(users, { id: 'User:1' }),
+      find(users, { id: 'User:3' }),
+    ],
+  },
+
+  {
+    id: 'Chat:3',
+    user: find(users, { id: 'User:1' }),
+    participants: [
+      find(users, { id: 'User:1' }),
+      find(users, { id: 'User:4' }),
+    ],
+  },
 ];
 
 const messages = [
+  {
+    id: `Message:1`,
+    status: 'DELIVERED',
+    content: {
+      text: faker.hacker.phrase(),
+    },
+    createdAt: faker.date.recent(),
+    user: find(users, { id: 'User:1' }),
+    chat: find(chats, { id: 'Chat:1' }),
+  },
 
+  {
+    id: `Message:2`,
+    status: 'READ',
+    content: {
+      text: faker.hacker.phrase(),
+    },
+    createdAt: faker.date.recent(),
+    user: find(users, { id: 'User:2' }),
+    chat: find(chats, { id: 'Chat:2' }),
+  },
+
+  {
+    id: `Message:3`,
+    status: 'DELIVERED',
+    content: {
+      text: faker.hacker.phrase(),
+    },
+    createdAt: faker.date.recent(),
+    user: find(users, { id: 'User:1' }),
+    chat: find(chats, { id: 'Chat:3' }),
+  },
+
+  {
+    id: `Message:4`,
+    status: 'DELIVERED',
+    content: {
+      text: faker.hacker.phrase(),
+    },
+    createdAt: faker.date.recent(),
+    user: find(users, { id: 'User:3' }),
+    chat: find(chats, { id: 'Chat:3' }),
+  },
 ];
 
 const dataStore = {
@@ -68,15 +145,15 @@ const typeDefs = gql`
     node(id: ID!): Node!
   }
 
-  interface Node {
-    id: ID!
-  }
-
   type Avatar {
     id: ID!
     url: String!
   }
 
+  interface Node {
+    id: ID!
+  }
+  
   type User implements Node {
     id: ID!
     name: String!
@@ -95,11 +172,15 @@ const typeDefs = gql`
     endCursor: Cursor
   }
 
-  type Chat implements Node {
+  input ChatMessagesFilterInput {
+    notReadBy: ID
+  }
+  
+  type Chat {
     id: ID!
     user: User!
     participants: [User!]!
-    messages(first: Int, after: Cursor, last: Int, before: Cursor): ChatMessagesConnection!
+    messages(filter: ChatMessagesFilterInput, first: Int, after: Cursor, last: Int, before: Cursor): ChatMessagesConnection!
   }
 
   type ChatEdge {
@@ -118,8 +199,14 @@ const typeDefs = gql`
     text: String
   }
 
-  type Message implements Node {
+  enum MessageStatus {
+    DELIVERED
+    READ
+  }
+
+  type Message {
     id: ID!
+    status: MessageStatus
     user: User!
     chat: Chat!
     content: MessageContent
@@ -142,7 +229,7 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     me: (root, args, { dataStore: { users } }) => find(users, {id: 'User:1'}),
-    node: (root, { id }, { dataStore: { users, chats } }) => find(chats, { id }),
+    node: (root, { id }, { dataStore: { users } }) => find(users, { id }),
   },
 
   User: {
@@ -155,8 +242,17 @@ const resolvers = {
 
   Chat: {
     async messages(chat, args, { dataStore: { messages } }) {
+      const { notReadBy } = args.filter || {};
+      let allChatMessages = filter(messages, ['chat.id', chat.id]);
+
+      if (notReadBy) {
+        allChatMessages = filter(allChatMessages, ({ status, user }) => (
+          status === 'DELIVERED' && user.id !== notReadBy
+        ));
+      }
+
       const chatMessages = orderBy(
-        filter(messages, ['chat.id', chat.id]),
+        allChatMessages,
         'createdAt',
         'desc'
       );
@@ -177,29 +273,51 @@ const resolvers = {
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
 const userQuery = gql`
-  query {
-    user: me {
+  query($userId: ID!) {
+    user: node(id: $userId) {
       id
-      chats {
-        edges {
-          ...ChatList_edge
-        }
+      ...ChatList_user
+      ...on User {
+        allChats: chats {
+          edges {
+            node {
+              unreadMessages: messages(filter: {
+                notReadBy: $userId
+              }) {
+                totalCount
+              }
+            }
+            ...ChatList_edge
+          }
+        }  
       }
     }
   }
   
   ${ChatList.fragments.edge}
+  ${ChatList.fragments.user}
 `;
 
 // Stories
 stories.add('Default', () => {
   return (
-    <Query query={userQuery}>
-      {({ data, loading }) => !loading && (
-        <ChatList
-          edges={data.user.chats.edges}
-        />
-      )}
+    <Query query={userQuery} variables={{ userId: 'User:1' }}>
+      {({ data, loading }) => {
+        if (loading) {
+          return null;
+        }
+
+        const edges = data.user.allChats.edges;
+        const unreadCountList = edges.map(({ node }) => node.unreadMessages.totalCount);
+
+        return (
+          <ChatList
+            user={data.user}
+            edges={data.user.allChats.edges}
+            unreadCounts={unreadCountList}
+          />
+        );
+      }}
     </Query>
   );
 });

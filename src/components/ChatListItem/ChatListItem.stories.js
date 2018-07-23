@@ -2,7 +2,7 @@ import React from 'react';
 import { find, filter, range, orderBy } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
+import { number, selectV2 as select, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
@@ -70,6 +70,7 @@ const chats = [
 const messages = [
   {
     id: `Message:1`,
+    status: 'DELIVERED',
     content: {
       text: faker.hacker.phrase(),
     },
@@ -80,6 +81,7 @@ const messages = [
 
   {
     id: `Message:2`,
+    status: 'READ',
     content: {
       text: faker.hacker.phrase(),
     },
@@ -90,6 +92,7 @@ const messages = [
 
   {
     id: `Message:3`,
+    status: 'DELIVERED',
     content: {
       text: faker.hacker.phrase(),
     },
@@ -100,6 +103,7 @@ const messages = [
 
   {
     id: `Message:4`,
+    status: 'DELIVERED',
     content: {
       text: faker.hacker.phrase(),
     },
@@ -110,6 +114,7 @@ const messages = [
 
   {
     id: `Message:5`,
+    status: 'DELIVERED',
     content: {
       text: faker.hacker.phrase(),
     },
@@ -172,9 +177,15 @@ const typeDefs = gql`
   type MessageContent {
     text: String
   }
+
+  enum MessageStatus {
+    DELIVERED
+    READ
+  }
   
   type Message {
     id: ID!
+    status: MessageStatus
     user: User!
     chat: Chat!
     content: MessageContent
@@ -238,12 +249,20 @@ const chatQuery = gql`
 
 // Stories
 stories.add('Default', () => {
+  const chatId = select('Status', {
+    'DELIVERED': 'Chat:1',
+    'READ': 'Chat:2',
+  }, 'Chat:1');
+
+  const unreadCount = number('Unread count', 0);
+
   return (
-    <Query query={chatQuery} variables={{ id: 'Chat:1' }}>
+    <Query query={chatQuery} variables={{ id: chatId }}>
       {({ data, loading }) => !loading && (
         <ChatListItem
           chat={data.chat}
           currentUserId={data.me.id}
+          unreadMessagesCount={unreadCount}
         />
       )}
     </Query>

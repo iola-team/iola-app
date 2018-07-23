@@ -19,10 +19,10 @@ const chatFragment = gql`
       ...UserAvatar_user
     }
     messages(last: 1) {
-      totalCount
       edges {
         node {
           id
+          status
           createdAt
           content {
             text
@@ -51,15 +51,25 @@ export default class ChatListItem extends Component {
 
   static propTypes = {
     chat: fragmentProp(chatFragment).isRequired,
+    unreadMessagesCount: PropTypes.number,
     currentUserId: PropTypes.string.isRequired,
+    onPress: PropTypes.func,
   };
 
   static defaultProps = {
-
+    onPress: () => {},
+    unreadMessagesCount: 0,
   };
 
   render() {
-    const { style, styleSheet: styles, chat, currentUserId } = this.props;
+    const {
+      style,
+      styleSheet: styles,
+      chat,
+      currentUserId,
+      unreadMessagesCount,
+      onPress,
+    } = this.props;
     const { messages, participants } = chat;
 
     const recipient = filter(participants, ({ id }) => id !== currentUserId)[0];
@@ -70,7 +80,7 @@ export default class ChatListItem extends Component {
         style={style}
         button
         avatar
-        onPress={() => console.log('On press')}
+        onPress={onPress}
       >
         <Left>
           <UserAvatar user={recipient} />
@@ -81,11 +91,14 @@ export default class ChatListItem extends Component {
         </Body>
         <Right>
           <Moment headline time note element={Text} format="HH:mm">{lastMessage.createdAt}</Moment>
-          <Badge primary>
-            <Text>2</Text>
-          </Badge>
 
-          {/*<MessageStateIndicator />*/}
+          {unreadMessagesCount ? (
+            <Badge primary>
+              <Text>{unreadMessagesCount}</Text>
+            </Badge>
+          ) : (
+            <MessageStateIndicator done={lastMessage.status === 'READ'} />
+          )}
         </Right>
       </ListItem>
     );
