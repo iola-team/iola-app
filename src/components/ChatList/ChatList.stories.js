@@ -2,15 +2,18 @@ import React from 'react';
 import { find, filter, range, orderBy } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
+import { button, number, withKnobs } from '@storybook/addon-knobs/react';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import moment from 'moment'
+import uuid from 'uuid/v4'
+import { PubSub } from 'graphql-subscriptions';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
 import ChatList from './ChatList';
+import ChatListContainer from './index';
 
 const stories = storiesOf('Components/ChatList', module);
 
@@ -18,6 +21,7 @@ const stories = storiesOf('Components/ChatList', module);
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator());
 
+const subscriptions = new PubSub();
 const users = [
   {
     id: 'User:1',
@@ -145,6 +149,17 @@ const typeDefs = gql`
     node(id: ID!): Node!
   }
 
+  type Subscription {
+    onMessageAdd(chatId: ID, userId: ID): MessageSubscriptionPayload!
+  }
+
+  type MessageSubscriptionPayload {
+    user: User!
+    chat: Chat!
+    node: Message!
+    edge: MessageEdge!
+  }
+
   type Avatar {
     id: ID!
     url: String!
@@ -232,11 +247,54 @@ const resolvers = {
     node: (root, { id }, { dataStore: { users } }) => find(users, { id }),
   },
 
-  User: {
-    async chats(user, args, { dataStore: { chats } }) {
-      const userChats = filter(chats, ['user.id', user.id]);
+  Subscription: {
+    onMessageAdd: {
+      resolve: ({ content, userId, chatId }, args, { dataStore }) => {
+        const user = find(dataStore.users, { id: args.userId });
+        const messageUser = find(dataStore.users, { id: userId });
+        const chat = find(dataStore.chats, { id: chatId });
+        const node = {
+          id: uuid(),
+          content,
+          status: 'DELIVERED',
+          createdAt: new Date(),
+          user: messageUser,
+          chat,
+        }
 
-      return createConnection(userChats, args);
+        dataStore.messages.unshift(node);
+
+        const cursor = "first";
+
+        return {
+          node,
+          chat,
+          user,
+          edge: {
+            cursor,
+            node,
+          }
+        };
+      },
+      subscribe: () => {
+        console.log('Subscrive');
+
+        return subscriptions.asyncIterator('onMessageAdd');
+      }
+    },
+  },
+
+  User: {
+    async chats(user, args, { dataStore: { chats, messages } }) {
+      const userChats = filter(chats, ['user.id', user.id]);
+      const orderedChats = orderBy(userChats, [({ id }) => {
+        const chatMessages = filter(messages, ['chat.id', id]);
+        const orderedMessages = orderBy(chatMessages, ['createdAt', 'desc']);
+
+        return orderedMessages[0].createdAt;
+      }, 'desc'])
+
+      return createConnection(orderedChats, args);
     }
   },
 
@@ -254,7 +312,7 @@ const resolvers = {
       const chatMessages = orderBy(
         allChatMessages,
         'createdAt',
-        'desc'
+        'asc'
       );
 
       return createConnection(chatMessages, args);
@@ -299,7 +357,7 @@ const userQuery = gql`
 `;
 
 // Stories
-stories.add('Default', () => {
+stories.add('Static list', () => {
   return (
     <Query query={userQuery} variables={{ userId: 'User:1' }}>
       {({ data, loading }) => {
@@ -319,5 +377,36 @@ stories.add('Default', () => {
         );
       }}
     </Query>
+  );
+});
+
+
+stories.add('Container', () => {
+  button('Message from Brad', () => subscriptions.publish('onMessageAdd', {
+    userId: 'User:4',
+    chatId: 'Chat:3',
+    content: {
+      text: faker.hacker.phrase(),
+    },
+  }));
+
+  button('Message from JK', () => subscriptions.publish('onMessageAdd', {
+    userId: 'User:3',
+    chatId: 'Chat:2',
+    content: {
+      text: faker.hacker.phrase(),
+    },
+  }));
+
+  button('Message from Grey', () => subscriptions.publish('onMessageAdd', {
+    userId: 'User:2',
+    chatId: 'Chat:1',
+    content: {
+      text: faker.hacker.phrase(),
+    },
+  }));
+
+  return (
+    <ChatListContainer />
   );
 });

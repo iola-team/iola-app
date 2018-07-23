@@ -4,6 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { View, Text, Button } from 'native-base';
 import { FlatList } from "react-native";
+import { orderBy } from 'lodash';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import ChatListItem from '../ChatListItem'
@@ -14,15 +15,32 @@ const userFragment = gql`
   }
 `
 
-const edgeFragment = gql`
-  fragment ChatList_edge on ChatEdge {
-    node {
-      id
-      ...ChatListItem_chat
+const nodeFragment = gql`
+  fragment ChatList_node on Chat {
+    id
+    messages(last: 1) {
+      edges {
+        node {
+          id
+          createdAt
+        }
+      }
     }
+
+    ...ChatListItem_chat
   }
   
   ${ChatListItem.fragments.chat}
+`
+
+const edgeFragment = gql`
+  fragment ChatList_edge on ChatEdge {
+    node {
+      ...ChatList_node
+    }
+  }
+  
+  ${nodeFragment}
 `;
 
 @styleSheet('Sparkle.ChatList', {
@@ -32,6 +50,7 @@ export default class ChatList extends Component {
   static fragments = {
     edge: edgeFragment,
     user: userFragment,
+    node: nodeFragment,
   };
 
   static propTypes = {
@@ -39,21 +58,21 @@ export default class ChatList extends Component {
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment),
     ),
-    unreadCounts: PropTypes.arrayOf(PropTypes.number),
+    unreadCounts: PropTypes.object,
     onItemPress: PropTypes.func,
   };
 
   static defaultProps = {
     onItemPress: () => {},
-    unreadCounts: [],
+    unreadCounts: {},
   };
 
-  renderItem({ item, index }) {
+  renderItem({ item }) {
     const { onItemPress, user, unreadCounts } = this.props;
 
     return (
       <ChatListItem
-        unreadMessagesCount={unreadCounts[index]}
+        unreadMessagesCount={unreadCounts[item.node.id]}
         currentUserId={user.id}
         chat={item.node}
         onPress={() => onItemPress(item)}
@@ -68,10 +87,18 @@ export default class ChatList extends Component {
   render() {
     const { edges, ...listProps } = this.props;
 
+    /**
+     * TODO: Get rid of client side reordering - may lead to data inconsistency
+     */
+    const orderedEdges = orderBy(edges,
+      'node.messages.edges[0].node.createdAt',
+      'desc',
+    );
+
     return (
       <FlatList
         {...listProps}
-        data={edges}
+        data={orderedEdges}
         keyExtractor={::this.extractItemKey}
         renderItem={::this.renderItem}
       />
