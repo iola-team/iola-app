@@ -13,7 +13,7 @@ const userFragment = gql`
   fragment ChatList_user on User {
     id
   }
-`
+`;
 
 const nodeFragment = gql`
   fragment ChatList_node on Chat {
@@ -31,16 +31,6 @@ const nodeFragment = gql`
   }
   
   ${ChatListItem.fragments.chat}
-`
-
-const edgeFragment = gql`
-  fragment ChatList_edge on ChatEdge {
-    node {
-      ...ChatList_node
-    }
-  }
-  
-  ${nodeFragment}
 `;
 
 @styleSheet('Sparkle.ChatList', {
@@ -48,17 +38,18 @@ const edgeFragment = gql`
 })
 export default class ChatList extends Component {
   static fragments = {
-    edge: edgeFragment,
     user: userFragment,
     node: nodeFragment,
   };
 
   static propTypes = {
     user: fragmentProp(userFragment).isRequired,
-    edges: PropTypes.arrayOf(
-      fragmentProp(edgeFragment),
+    data: PropTypes.arrayOf(
+      PropTypes.shape({
+        unreadCount: PropTypes.number,
+        node: fragmentProp(nodeFragment).isRequired,
+      }),
     ),
-    unreadCounts: PropTypes.object,
     onItemPress: PropTypes.func,
   };
 
@@ -68,11 +59,11 @@ export default class ChatList extends Component {
   };
 
   renderItem({ item }) {
-    const { onItemPress, user, unreadCounts } = this.props;
+    const { onItemPress, user } = this.props;
 
     return (
       <ChatListItem
-        unreadMessagesCount={unreadCounts[item.node.id]}
+        unreadMessagesCount={item.unreadCount}
         currentUserId={user.id}
         chat={item.node}
         onPress={() => onItemPress(item)}
@@ -85,20 +76,12 @@ export default class ChatList extends Component {
   }
 
   render() {
-    const { edges, ...listProps } = this.props;
-
-    /**
-     * TODO: Get rid of client side reordering - may lead to data inconsistency
-     */
-    const orderedEdges = orderBy(edges,
-      'node.messages.edges[0].node.createdAt',
-      'desc',
-    );
+    const { data, ...listProps } = this.props;
 
     return (
       <FlatList
         {...listProps}
-        data={orderedEdges}
+        data={data}
         keyExtractor={::this.extractItemKey}
         renderItem={::this.renderItem}
       />

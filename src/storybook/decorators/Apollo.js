@@ -189,17 +189,22 @@ export default ({
   mocks,
   resolvers,
   dataStore = {},
-}) => story => (
-  <Provider
-    typeDefs={typeDefs}
-    mocks={mocks}
-    resolvers={resolvers}
-    dataStore={
-      isFunction(dataStore)
-        ? dataStore()
-        : cloneDeep(dataStore)
-    }
-  >
-    {story()}
-  </Provider>
-);
+  onReset = () => {},
+}) => story => {
+  onReset();
+
+  return (
+    <Provider
+      typeDefs={typeDefs}
+      mocks={mocks}
+      resolvers={resolvers}
+      dataStore={
+        isFunction(dataStore)
+          ? dataStore()
+          : cloneDeep(dataStore)
+      }
+    >
+      {story()}
+    </Provider>
+  );
+};

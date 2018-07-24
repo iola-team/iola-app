@@ -1,5 +1,5 @@
 import React from 'react';
-import { find, filter, range, orderBy } from 'lodash';
+import { find, filter, range, orderBy, cloneDeep } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { button, number, withKnobs } from '@storybook/addon-knobs/react';
@@ -12,8 +12,7 @@ import { PubSub } from 'graphql-subscriptions';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
-import ChatList from './ChatList';
-import ChatListContainer from './index';
+import ChatList from './index';
 
 const stories = storiesOf('Components/ChatList', module);
 
@@ -21,8 +20,10 @@ const stories = storiesOf('Components/ChatList', module);
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator());
 
-const subscriptions = new PubSub();
-const users = [
+let subscriptions;
+const dataStore = {};
+
+dataStore.users = [
   {
     id: 'User:1',
     name: 'Roman Banan',
@@ -39,6 +40,7 @@ const users = [
       id: 'Avatar:2',
       url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
     },
+    chats: () => getRandomChats('User:2'),
   },
 
   {
@@ -60,35 +62,35 @@ const users = [
   },
 ];
 
-const chats = [
+dataStore.chats = [
   {
     id: 'Chat:1',
-    user: find(users, { id: 'User:1' }),
+    user: find(dataStore.users, { id: 'User:1' }),
     participants: [
-      find(users, { id: 'User:1' }),
-      find(users, { id: 'User:2' }),
+      find(dataStore.users, { id: 'User:1' }),
+      find(dataStore.users, { id: 'User:2' }),
     ],
   },
   {
     id: 'Chat:2',
-    user: find(users, { id: 'User:1' }),
+    user: find(dataStore.users, { id: 'User:1' }),
     participants: [
-      find(users, { id: 'User:1' }),
-      find(users, { id: 'User:3' }),
+      find(dataStore.users, { id: 'User:1' }),
+      find(dataStore.users, { id: 'User:3' }),
     ],
   },
 
   {
     id: 'Chat:3',
-    user: find(users, { id: 'User:1' }),
+    user: find(dataStore.users, { id: 'User:1' }),
     participants: [
-      find(users, { id: 'User:1' }),
-      find(users, { id: 'User:4' }),
+      find(dataStore.users, { id: 'User:1' }),
+      find(dataStore.users, { id: 'User:4' }),
     ],
   },
 ];
 
-const messages = [
+dataStore.messages = [
   {
     id: `Message:1`,
     status: 'DELIVERED',
@@ -96,8 +98,8 @@ const messages = [
       text: faker.hacker.phrase(),
     },
     createdAt: faker.date.recent(),
-    user: find(users, { id: 'User:1' }),
-    chat: find(chats, { id: 'Chat:1' }),
+    user: find(dataStore.users, { id: 'User:1' }),
+    chat: find(dataStore.chats, { id: 'Chat:1' }),
   },
 
   {
@@ -107,8 +109,8 @@ const messages = [
       text: faker.hacker.phrase(),
     },
     createdAt: faker.date.recent(),
-    user: find(users, { id: 'User:2' }),
-    chat: find(chats, { id: 'Chat:2' }),
+    user: find(dataStore.users, { id: 'User:2' }),
+    chat: find(dataStore.chats, { id: 'Chat:2' }),
   },
 
   {
@@ -118,8 +120,8 @@ const messages = [
       text: faker.hacker.phrase(),
     },
     createdAt: faker.date.recent(),
-    user: find(users, { id: 'User:1' }),
-    chat: find(chats, { id: 'Chat:3' }),
+    user: find(dataStore.users, { id: 'User:1' }),
+    chat: find(dataStore.chats, { id: 'Chat:3' }),
   },
 
   {
@@ -129,16 +131,70 @@ const messages = [
       text: faker.hacker.phrase(),
     },
     createdAt: faker.date.recent(),
-    user: find(users, { id: 'User:3' }),
-    chat: find(chats, { id: 'Chat:3' }),
+    user: find(dataStore.users, { id: 'User:3' }),
+    chat: find(dataStore.chats, { id: 'Chat:3' }),
   },
 ];
 
-const dataStore = {
-  users,
-  chats,
-  messages,
-};
+const freshDataStore = cloneDeep(dataStore);
+
+const createRandomMessage = (user, participant, chat) => {
+  const message = {
+    id: faker.random.uuid(),
+    status: faker.random.arrayElement(['READ', 'DELIVERED']),
+    content: {
+      text: faker.hacker.phrase(),
+    },
+    createdAt: faker.date.recent(),
+    user: faker.random.arrayElement([user, participant]),
+    chat: () => chat,
+    __fake: true,
+  }
+
+  dataStore.messages.push(message);
+
+  return message;
+}
+
+const createRandomUser = (id = faker.random.uuid()) => {
+  const user = {
+    id,
+    name: faker.name.findName(),
+    avatar: {
+      id: faker.random.uuid(),
+      url: faker.image.avatar(),
+    },
+    __fake: true,
+  };
+
+  dataStore.users.push(user);
+
+  return user;
+}
+
+const createRandomChat = (userId, participantId, chatId, addRandomMessages = true) => {
+  const user = find(dataStore.users, { id: userId });
+  const participant = find(dataStore.users, { id: participantId }) || createRandomUser(participantId);
+
+  const chat = {
+    id: chatId || faker.random.uuid(),
+    user,
+    participants: [user, participant],
+    __fake: true,
+  };
+
+  if (addRandomMessages) {
+    chat.messages =  () => range(faker.random.arrayElement([1, 2, 3])).map(() => (
+      createRandomMessage(user, participant, chat)
+    ));
+  }
+
+  dataStore.chats.push(chat);
+
+  return chat;
+}
+
+const getRandomChats = (userId) => range(50).map(() => createRandomChat(userId));
 
 const typeDefs = gql`
   scalar Date
@@ -156,6 +212,7 @@ const typeDefs = gql`
   type MessageSubscriptionPayload {
     user: User!
     chat: Chat!
+    chatEdge: ChatEdge!
     node: Message!
     edge: MessageEdge!
   }
@@ -243,7 +300,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    me: (root, args, { dataStore: { users } }) => find(users, {id: 'User:1'}),
+    me: (root, args, { dataStore: { users } }) => find(users, { id: 'User:2' }),
     node: (root, { id }, { dataStore: { users } }) => find(users, { id }),
   },
 
@@ -251,8 +308,14 @@ const resolvers = {
     onMessageAdd: {
       resolve: ({ content, userId, chatId }, args, { dataStore }) => {
         const user = find(dataStore.users, { id: args.userId });
-        const messageUser = find(dataStore.users, { id: userId });
-        const chat = find(dataStore.chats, { id: chatId });
+        const messageUser = (
+          find(dataStore.users, { id: userId }) || createRandomUser(userId)
+        );
+
+        const chat = (
+          find(dataStore.chats, { id: chatId }) || createRandomChat(userId, args.userId, chatId, false)
+        );
+
         const node = {
           id: uuid(),
           content,
@@ -264,31 +327,41 @@ const resolvers = {
 
         dataStore.messages.unshift(node);
 
-        const cursor = "first";
+        const cursor = 'first';
+        const chatCursor = 'first';
 
         return {
-          node,
-          chat,
           user,
+          chat,
+          chatEdge: {
+            cursor: chatCursor,
+            node: chat,
+          },
+          node,
           edge: {
             cursor,
             node,
           }
         };
       },
-      subscribe: () => {
-        console.log('Subscrive');
-
-        return subscriptions.asyncIterator('onMessageAdd');
-      }
+      subscribe: () => subscriptions.asyncIterator('onMessageAdd'),
     },
   },
 
   User: {
     async chats(user, args, { dataStore: { chats, messages } }) {
-      const userChats = filter(chats, ['user.id', user.id]);
-      const orderedChats = orderBy(userChats, [({ id }) => {
-        const chatMessages = filter(messages, ['chat.id', id]);
+      let userChats = filter(chats, ['user.id', user.id]);
+      if (!userChats.length && user.chats) {
+        userChats = user.chats()
+      }
+
+      const orderedChats = orderBy(userChats, [(chat) => {
+        let chatMessages = filter(messages, ['chat.id', chat.id]);
+
+        if (!chatMessages.length && chat.messages) {
+          chatMessages = chat.messages()
+        }
+
         const orderedMessages = orderBy(chatMessages, ['createdAt', 'desc']);
 
         return orderedMessages[0].createdAt;
@@ -302,6 +375,10 @@ const resolvers = {
     async messages(chat, args, { dataStore: { messages } }) {
       const { notReadBy } = args.filter || {};
       let allChatMessages = filter(messages, ['chat.id', chat.id]);
+
+      if (!allChatMessages.length && chat.messages) {
+        allChatMessages = chat.messages();
+      }
 
       if (notReadBy) {
         allChatMessages = filter(allChatMessages, ({ status, user }) => (
@@ -328,31 +405,28 @@ const resolvers = {
   }
 };
 
-stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
+stories.addDecorator(getApolloDecorator({
+  typeDefs,
+  resolvers,
+
+  /**
+   * Pass dataStore as ref - preventing default deep cloning
+   */
+  dataStore: () => dataStore,
+  onReset() {
+    Object.assign(dataStore, cloneDeep(freshDataStore));
+    subscriptions = new PubSub();
+  },
+}));
 
 const userQuery = gql`
   query($userId: ID!) {
     user: node(id: $userId) {
       id
       ...ChatList_user
-      ...on User {
-        allChats: chats {
-          edges {
-            node {
-              unreadMessages: messages(filter: {
-                notReadBy: $userId
-              }) {
-                totalCount
-              }
-            }
-            ...ChatList_edge
-          }
-        }  
-      }
     }
   }
   
-  ${ChatList.fragments.edge}
   ${ChatList.fragments.user}
 `;
 
@@ -365,15 +439,8 @@ stories.add('Static list', () => {
           return null;
         }
 
-        const edges = data.user.allChats.edges;
-        const unreadCountList = edges.map(({ node }) => node.unreadMessages.totalCount);
-
         return (
-          <ChatList
-            user={data.user}
-            edges={data.user.allChats.edges}
-            unreadCounts={unreadCountList}
-          />
+          <ChatList user={data.user} />
         );
       }}
     </Query>
@@ -381,7 +448,7 @@ stories.add('Static list', () => {
 });
 
 
-stories.add('Container', () => {
+stories.add('Subscriptions', () => {
   button('Message from Brad', () => subscriptions.publish('onMessageAdd', {
     userId: 'User:4',
     chatId: 'Chat:3',
@@ -407,6 +474,92 @@ stories.add('Container', () => {
   }));
 
   return (
-    <ChatListContainer />
+    <Query query={userQuery} variables={{ userId: 'User:1' }}>
+      {({ data, loading }) => {
+        if (loading) {
+          return null;
+        }
+
+        return (
+          <ChatList user={data.user} />
+        );
+      }}
+    </Query>
+  );
+});
+
+stories.add('Long list', () => {
+  button('Add chat', () => subscriptions.publish('onMessageAdd', {
+    userId: faker.random.uuid(),
+    chatId: faker.random.uuid(),
+    content: {
+      text: faker.hacker.phrase(),
+    },
+  }));
+
+  button('Add message to random chat', () => {
+    const chat = faker.random.arrayElement(filter(dataStore.chats, '__fake'));
+
+    subscriptions.publish('onMessageAdd', {
+      userId: chat.participants[1].id,
+      chatId: chat.id,
+      content: {
+        text: faker.hacker.phrase(),
+      },
+    });
+  });
+
+  return (
+    <Query query={userQuery} variables={{ userId: 'User:2' }}>
+      {({ data, loading }) => {
+        if (loading) {
+          return null;
+        }
+
+        return (
+          <ChatList user={data.user} />
+        );
+      }}
+    </Query>
+  );
+});
+
+stories.add('Empty list', () => {
+  button('Add chat', () => subscriptions.publish('onMessageAdd', {
+    userId: faker.random.uuid(),
+    chatId: faker.random.uuid(),
+    content: {
+      text: faker.hacker.phrase(),
+    },
+  }));
+
+  button('Add message to random chat', () => {
+    const chat = faker.random.arrayElement(filter(dataStore.chats, '__fake'));
+
+    if (!chat) {
+      return;
+    }
+
+    subscriptions.publish('onMessageAdd', {
+      userId: chat.user.id,
+      chatId: chat.id,
+      content: {
+        text: faker.hacker.phrase(),
+      },
+    });
+  });
+
+  return (
+    <Query query={userQuery} variables={{ userId: 'User:3' }}>
+      {({ data, loading }) => {
+        if (loading) {
+          return null;
+        }
+
+        return (
+          <ChatList user={data.user} />
+        );
+      }}
+    </Query>
   );
 });

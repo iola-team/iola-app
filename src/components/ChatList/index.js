@@ -1,22 +1,13 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import update from 'immutability-helper';
+import { filter } from 'lodash';
+import { propType as fragmentProp } from 'graphql-anywhere';
 
 import ChatList from './ChatList';
 
-const meQuery = gql`
-  query {
-    user: me {
-      id
-      
-      ...ChatList_user
-    }
-  }
-  
-  ${ChatList.fragments.user}
-`;
-
-const unreadChats = gql`
+const chatsQuery = gql`
   query UnreadChatsQuery($userId: ID!) {
     user: node(id: $userId) {
       id
@@ -30,30 +21,11 @@ const unreadChats = gql`
               }) {
                 totalCount
               }
-            }
 
-            ...ChatList_edge
+              ...ChatList_node
+            }
           }
         }
-      }
-    }
-  }
-  
-  ${ChatList.fragments.edge}
-`
-
-const subscriptionQuery = gql`
-  subscription($userId: ID!) {
-    onMessageAdd(userId: $userId) {
-      chat {
-        id
-        unreadMessages: messages(filter: {
-          notReadBy: $userId
-        }) {
-          totalCount
-        }
-        
-        ...ChatList_node
       }
     }
   }
@@ -61,39 +33,78 @@ const subscriptionQuery = gql`
   ${ChatList.fragments.node}
 `
 
-@graphql(meQuery, { name: 'me' })
-@graphql(unreadChats, {
-  skip: ({ me }) => me.loading,
-  options: ({ me: { user } }) => ({
+const subscriptionQuery = gql`
+  subscription($userId: ID!) {
+    onMessageAdd(userId: $userId) {
+      chatEdge {
+        node {
+          id
+          unreadMessages: messages(filter: {
+            notReadBy: $userId
+          }) {
+            totalCount
+          }
+
+          ...ChatList_node
+        }
+      }
+    }
+  }
+  
+  ${ChatList.fragments.node}
+`;
+
+@graphql(chatsQuery, {
+  options: ({ user }) => ({
     variables: {
       userId: user.id,
     },
   }),
 })
-export default class extends Component {
+export default class ChatListContainer extends Component {
   static displayName = 'Container(ChatList)';
+  static fragments = {
+    user: ChatList.fragments.user,
+  };
 
-  componentDidUpdate(prev) {
-    const { data, me } = this.props;
+  static propTypes = {
+    user: fragmentProp(ChatList.fragments.user).isRequired,
+  };
 
-    !prev.data && data && data.subscribeToMore({
+  componentDidMount() {
+    const { data, user } = this.props;
+
+    data.subscribeToMore({
       document: subscriptionQuery,
       variables: {
-        userId: me.user.id,
+        userId: user.id,
       },
 
       updateQuery(prev, { subscriptionData }) {
-        console.log(subscriptionData);
+        if (!subscriptionData.data) {
+          return prev;
+        }
+
+        const { chatEdge } = subscriptionData.data.onMessageAdd;
+
+        return update(prev, {
+          user: {
+            chats: {
+              edges: {
+                $set: [
+                  chatEdge,
+                  ...filter(prev.user.chats.edges, ({ node }) => node.id !== chatEdge.node.id),
+                ],
+              },
+            },
+          },
+        });
       },
     });
   }
 
   render() {
-    const { data, me } = this.props;
-
-    if (me.loading) {
-      return null;
-    }
+    const { data, user } = this.props;
 
     /**
      * TODO: show pre-loader
@@ -102,22 +113,15 @@ export default class extends Component {
       return null;
     }
 
-    const edges = data.user.chats.edges;
-
-    /**
-     * TODO: Think about a better way of passing counts to the list
-     */
-    const unreadCountsMap = edges.reduce((counts, { node }) => {
-      counts[node.id] = node.unreadMessages.totalCount;
-
-      return counts;
-    }, {});
+    const listData = data.user.chats.edges.map(({ node }) => ({
+      node,
+      unreadCount: node.unreadMessages.totalCount,
+    }));
 
     return (
       <ChatList
-        user={me.user}
-        edges={edges}
-        unreadCounts={unreadCountsMap}
+        user={user}
+        data={listData}
       />
     );
   }
