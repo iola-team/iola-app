@@ -112,8 +112,8 @@ const typeDefs = gql`
   scalar Cursor
   
   type Subscription {
-    onMessageAdd(chatId: ID!): MessageSubscriptionPayload!
-    onMessageUpdate(chatId: ID!): MessageSubscriptionPayload!
+    onMessageAdd(chatId: ID, userId: ID): MessageCreatePayload!
+    onMessageUpdate(chatId: ID, userId: ID): MessageUpdatePayload!
   }
   
   type Mutation {
@@ -209,16 +209,18 @@ const typeDefs = gql`
     content: MessageContentInput!
   }
 
-  type MessageSubscriptionPayload {
-    user: User!
-    chat: Chat!
-    node: Message!
-    edge: MessageEdge!
-  }
-  
   type MessageCreatePayload {
     user: User!
     chat: Chat!
+    chatEdge: ChatEdge!
+    node: Message!
+    edge: MessageEdge!
+  }
+
+  type MessageUpdatePayload {
+    user: User!
+    chat: Chat!
+    chatEdge: ChatEdge!
     node: Message!
     edge: MessageEdge!
   }
@@ -244,12 +246,17 @@ const resolvers = {
           chat,
         }
 
-        const cursor = "first";
+        const cursor = 'first';
+        const chatCursor = 'first';
 
         return {
-          node,
-          chat,
           user,
+          chat,
+          chatEdge: {
+            cursor: chatCursor,
+            node: chat,
+          },
+          node,
           edge: {
             cursor,
             node,
@@ -262,12 +269,19 @@ const resolvers = {
     onMessageUpdate: {
       resolve: ({ content, messageId }, args, { dataStore }) => {
         const node = find(dataStore.messages, { id: messageId });
-        const cursor = "first";
+        const chat = node.chat;
+
+        const cursor = 'first';
+        const chatCursor = 'first';
 
         return {
+          user,
+          chat,
+          chatEdge: {
+            cursor: chatCursor,
+            node: chat,
+          },
           node,
-          chat: node.chat,
-          user: node.user,
           edge: {
             cursor,
             node,

@@ -47,7 +47,6 @@ export class SubscriptionClient {
     const { data, type, subscriptionId } = JSON.parse(event.data);
 
     if (type === 'SUBSCRIPTION_DATA' && this.subscriptions[subscriptionId]) {
-      console.log('Data', data.onMessageAdd.edge.node.content.text);
       this.subscriptions[subscriptionId].handlers.forEach(handler => handler(data));
     }
   };
