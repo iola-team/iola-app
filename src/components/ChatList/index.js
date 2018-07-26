@@ -34,7 +34,7 @@ const chatsQuery = gql`
 `
 
 const subscriptionQuery = gql`
-  subscription($userId: ID!) {
+  subscription ChatListMessageAddSubscription($userId: ID!) {
     onMessageAdd(userId: $userId) {
       chatEdge {
         node {
@@ -104,7 +104,7 @@ export default class ChatListContainer extends Component {
   }
 
   render() {
-    const { data, user } = this.props;
+    const { data, user, ...restProps } = this.props;
 
     /**
      * TODO: show pre-loader
@@ -120,6 +120,7 @@ export default class ChatListContainer extends Component {
 
     return (
       <ChatList
+        {...restProps}
         user={user}
         data={listData}
       />

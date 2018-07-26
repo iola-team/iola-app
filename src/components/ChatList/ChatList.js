@@ -18,7 +18,7 @@ const userFragment = gql`
 const nodeFragment = gql`
   fragment ChatList_node on Chat {
     id
-    messages(last: 1) {
+    messages(first: 1) {
       edges {
         node {
           id

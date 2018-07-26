@@ -18,7 +18,7 @@ const chatFragment = gql`
       name
       ...UserAvatar_user
     }
-    messages(last: 1) {
+    messages(first: 1) {
       edges {
         node {
           id

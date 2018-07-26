@@ -225,12 +225,16 @@ const typeDefs = gql`
   interface Node {
     id: ID!
   }
+
+  input UserChatsFilterInput {
+    hasUnreadMessages: Boolean,
+  }
   
   type User implements Node {
     id: ID!
     name: String!
     avatar: Avatar
-    chats(first: Int, after: Cursor, last: Int, before: Cursor): UserChatsConnection!
+    chats(filter: UserChatsFilterInput, first: Int, after: Cursor, last: Int, before: Cursor): UserChatsConnection!
   }
 
   type ConnectionMetaInfo {
