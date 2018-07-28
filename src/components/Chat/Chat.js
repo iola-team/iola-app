@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo';
 import update from 'immutability-helper';
 import uuid from 'uuid';
 import { View } from 'native-base';
+import { get } from 'lodash';
 
 import MessageList from '../MessageList';
 import ChatFooter from '../ChatFooter';
@@ -13,14 +14,31 @@ import Shadow from '../Shadow';
 import { withStyleSheet as styleSheet } from 'theme';
 import UserAvatar from '../UserAvatar/UserAvatar';
 
-const chatQuery = gql`
-  query ChatQuery($id: ID! $first: Int = 20 $last: Int $after: Cursor $before: Cursor) {
+const chatsWithUserQuery = gql`
+  query ChatsWithUserQuery($userId: ID!) {
+    me {
+      id
+      chats(filter: {
+        withUser: $userId
+      }) {
+        edges {
+          node {
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
+const messagesQuery = gql`
+  query ChatMessagesQuery($chatId: ID! $first: Int = 20 $last: Int $after: Cursor $before: Cursor) {
     me {
       id
       ...UserAvatar_user
     }
 
-    chat: node(id: $id) {
+    chat: node(id: $chatId) {
       id
       ...on Chat {
         messages(last: $last after: $after first: $first before: $before) {
@@ -95,10 +113,29 @@ const messageUpdateSubscription = gql`
   ${MessageList.fragments.edge}
 `
 
-@graphql(chatQuery, {
-  props({ data }) {
+@graphql(chatsWithUserQuery, {
+  skip: props => props.chatId || !props.userId,
+  options({ userId }) {
     return {
+      variables: {
+        userId,
+      },
+    };
+  },
+  props({ data, ownProps }) {
+    return {
+      ...ownProps,
       data,
+      chatId: get(data, 'me.chats.edges[0].node.id'),
+    };
+  }
+})
+@graphql(messagesQuery, {
+  skip: props => !props.chatId,
+  props({ data, ownProps }) {
+    return {
+      ...ownProps,
+      data: data || ownProps.data,
       loadEarlierMessages() {
         const {
           networkStatus,
@@ -144,7 +181,7 @@ const messageUpdateSubscription = gql`
     return {
       notifyOnNetworkStatusChange: true,
       variables: {
-        id: chatId,
+        chatId,
       },
     };
   }
@@ -152,18 +189,21 @@ const messageUpdateSubscription = gql`
 @graphql(newMessageMutation, {
   props({ mutate, ownProps }) {
     return {
+      ...ownProps,
       addMessage(text) {
+        const chatId = ownProps.chatId;
         const { chat, me, variables: queryVariables } = ownProps.data;
         const variables = {
           input: {
-            chatId: chat.id,
+            chatId,
+            recipientIds: ownProps.userId && [ownProps.userId],
             userId: me.id,
             content: {
               text,
             },
           },
-          at: chat.messages.metaInfo.firstCursor,
-          pageCount: chat.messages.edges.length + 1,
+          at: chat && chat.messages.metaInfo.firstCursor,
+          pageCount: chat && chat.messages.edges.length + 1,
         };
 
         const optimisticResponse = {
@@ -193,7 +233,8 @@ const messageUpdateSubscription = gql`
           variables,
           optimisticResponse,
           update(cache, { data: { addMessage: result } }) {
-            const query = chatQuery;
+
+            const query = messagesQuery;
             const variables = queryVariables;
             const data = cache.readQuery({ query, variables });
 
@@ -235,11 +276,16 @@ const messageUpdateSubscription = gql`
 })
 export default class Chat extends Component {
   static propTypes = {
-    chatId: PropTypes.string.isRequired,
+    chatId: PropTypes.string,
+    userId: PropTypes.string,
   };
 
-  componentDidMount() {
+  addSubscriptions() {
     const { chatId, data } = this.props;
+
+    if (!chatId) {
+      return;
+    }
 
     const variables = {
       chatId,
@@ -280,14 +326,23 @@ export default class Chat extends Component {
     });
   }
 
+  componentDidUpdate(prev) {
+    const { chatId, data } = this.props;
+
+    if (!prev.chatId && chatId) {
+      this.addSubscriptions();
+    }
+  }
+
+  componentDidMount() {
+    this.addSubscriptions();
+  }
+
   getConnection() {
     const { data: { networkStatus, chat } } = this.props;
 
-    if (networkStatus === NetworkStatus.loading) {
-      return {
-        hasMore: false,
-        edges: [],
-      };
+    if (!chat || networkStatus === NetworkStatus.loading) {
+      return null;
     }
 
     return {
@@ -308,14 +363,16 @@ export default class Chat extends Component {
     const {
       style,
       styleSheet: styles,
-      chatId,
-      data: { networkStatus },
       loadEarlierMessages,
       loadNewMessages,
       addMessage,
     } = this.props;
 
-    const { hasMore, edges } = this.getConnection();
+    const {
+      hasMore = false,
+      edges = [],
+      networkStatus = null,
+    } = this.getConnection() || {};
 
     return (
       <View style={[styles.root, style]}>

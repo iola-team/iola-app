@@ -41,6 +41,15 @@ const users = [
       url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
     },
   },
+
+  {
+    id: 'User:3',
+    name: 'Jk KK',
+    avatar: {
+      id: 'Avatar:3',
+      url: 'https://avatarfiles.alphacoders.com/458/45801.jpg',
+    },
+  },
 ];
 
 const chats = [
@@ -133,11 +142,17 @@ const typeDefs = gql`
     id: ID!
     url: String!
   }
+
+  input UserChatsFilterInput {
+    hasUnreadMessages: Boolean
+    withUser: ID
+  }
   
   type User implements Node {
     id: ID!
     name: String!
     avatar: Avatar
+    chats(filter: UserChatsFilterInput, first: Int, after: Cursor, last: Int, before: Cursor): UserChatsConnection!
   }
 
   type ConnectionMetaInfo {
@@ -205,7 +220,8 @@ const typeDefs = gql`
 
   input MessageInput {
     userId: ID!
-    chatId: ID!
+    chatId: ID
+    recipientIds: [ID!]
     content: MessageContentInput!
   }
 
@@ -270,6 +286,7 @@ const resolvers = {
       resolve: ({ content, messageId }, args, { dataStore }) => {
         const node = find(dataStore.messages, { id: messageId });
         const chat = node.chat;
+        const user = node.user;
 
         const cursor = 'first';
         const chatCursor = 'first';
@@ -371,6 +388,20 @@ const resolvers = {
     }
   },
 
+  User: {
+    async chats(user, args, { dataStore: { chats } }) {
+      let userChats = filter(chats, ['user.id', user.id]);
+
+      if (args.filter.withUser) {
+        userChats = userChats.filter(({ participants }) => {
+          return find(participants, ['id', args.filter.withUser]);
+        });
+      }
+
+      return createConnection(userChats, args);
+    },
+  },
+
   Node: {
     __resolveType: ({ id }) => {
       const [type] = id.split(':');
@@ -420,5 +451,17 @@ stories.add('New message subscriptions', () => {
 
   return (
     <Chat chatId={'Chat:3'} />
+  );
+});
+
+stories.add('Chat with user', () => {
+  return (
+    <Chat userId={'User:2'} />
+  );
+});
+
+stories.add('New chat with user', () => {
+  return (
+    <Chat userId={'User:3'} />
   );
 });
