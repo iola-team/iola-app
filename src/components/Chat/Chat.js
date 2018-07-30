@@ -1,75 +1,105 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { NetworkStatus } from 'apollo-client';
 import { graphql } from 'react-apollo';
+import { NetworkStatus } from 'apollo-client';
 import update from 'immutability-helper';
 import uuid from 'uuid';
 import { View } from 'native-base';
 import { get } from 'lodash';
 
-import MessageList from '../MessageList';
+import { withStyleSheet as styleSheet } from 'theme';
 import ChatFooter from '../ChatFooter';
 import Shadow from '../Shadow';
-import { withStyleSheet as styleSheet } from 'theme';
-import UserAvatar from '../UserAvatar/UserAvatar';
+import MessageList from '../MessageList';
+import UserAvatar from '../UserAvatar';
 
-const chatsWithUserQuery = gql`
-  query ChatsWithUserQuery($userId: ID!) {
-    me {
-      id
-      chats(filter: {
-        withUser: $userId
-      }) {
-        edges {
-          node {
-            id
-          }
-        }
-      }
+const connectionFragment = gql`
+  fragment Chat_messages on ChatMessagesConnection {
+    metaInfo {
+      firstCursor
+    }
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+    edges {
+      ...MessageList_edge
     }
   }
+
+  ${MessageList.fragments.edge}
 `;
 
-const messagesQuery = gql`
-  query ChatMessagesQuery($chatId: ID! $first: Int = 20 $last: Int $after: Cursor $before: Cursor) {
+const chatQuery = gql`
+  query ChatMessagesQuery($chatId: ID, $recipientId: ID, $first: Int = 20 $last: Int $after: Cursor $before: Cursor) {
     me {
       id
+      chat(id: $chatId, recipientId: $recipientId) {
+        id
+        messages(last: $last after: $after first: $first before: $before) {
+          ...Chat_messages
+        }
+      }
+      
       ...UserAvatar_user
     }
+  }
 
-    chat: node(id: $chatId) {
-      id
-      ...on Chat {
-        messages(last: $last after: $after first: $first before: $before) {
-          metaInfo {
-            firstCursor
-          }
-          pageInfo {
-            hasNextPage
-            endCursor
-          }
-          edges {
-            ...MessageList_edge
+  ${connectionFragment}
+  ${UserAvatar.fragments.user}
+`;
+
+const startChatMutation = gql`
+  mutation StartChatMessageMutation(
+  $input: MessageInput!
+  $chatId: ID
+  $recipientId: ID
+  ) {
+    addMessage(input: $input) {
+      user {
+        id
+        chat(id: $chatId, recipientId: $recipientId) {
+          id
+          messages(first: 20) {
+            ...Chat_messages
           }
         }
       }
     }
   }
   
-  ${UserAvatar.fragments.user}
-  ${MessageList.fragments.edge}
+  ${connectionFragment}
 `;
 
-const newMessageMutation = gql`
-  mutation NewChatMessageMutation(
-    $input: MessageInput! 
-    $after: Cursor
-    $at: Cursor
-    $pageCount: Int
+const createOptimisticChat = (messageEdges = []) => ({
+  __typename: 'Chat',
+  id: uuid(),
+  messages: {
+    __typename: 'ChatMessagesConnection',
+    pageInfo: {
+      __typename: 'PageInfo',
+      hasNextPage: false,
+      endCursor: '-',
+    },
+    metaInfo: {
+      __typename: 'ConnectionMetaInfo',
+      firstCursor: '-',
+    },
+    edges: messageEdges,
+  },
+});
+
+const addMessageMutation = gql`
+  mutation AddChatMessageMutation(
+  $input: MessageInput!
+  $after: Cursor
+  $at: Cursor
+  $pageCount: Int
   ) {
     addMessage(input: $input, after: $after, at: $at) {
       chat {
+        id
         messages(first: $pageCount) {
           pageInfo {
             endCursor
@@ -82,9 +112,24 @@ const newMessageMutation = gql`
       }
     }
   }
-  
+
   ${MessageList.fragments.edge}
 `;
+
+const createOptimisticMessageEdge = (content, user) => ({
+  __typename: 'MessageEdge',
+  node: {
+    __typename: 'Message',
+    id: uuid(),
+    status: null,
+    createdAt: new Date(),
+    content: {
+      __typename: 'MessageContent',
+      ...content,
+    },
+    user,
+  },
+});
 
 const messageAddSubscription = gql`
   subscription ChatMessageAddSubscription($chatId: ID!) {
@@ -109,156 +154,23 @@ const messageUpdateSubscription = gql`
       }
     }
   }
-  
+
   ${MessageList.fragments.edge}
-`
+`;
 
-@graphql(chatsWithUserQuery, {
-  skip: props => props.chatId || !props.userId,
-  options({ userId }) {
-    return {
-      variables: {
-        userId,
-      },
-    };
-  },
-  props({ data, ownProps }) {
-    return {
-      ...ownProps,
-      data,
-      chatId: get(data, 'me.chats.edges[0].node.id'),
-    };
-  }
+@graphql(chatQuery, {
+  options: ({ chatId, recipientId }) => ({
+    variables: {
+      chatId,
+      recipientId,
+    },
+  }),
 })
-@graphql(messagesQuery, {
-  skip: props => !props.chatId,
-  props({ data, ownProps }) {
-    return {
-      ...ownProps,
-      data: data || ownProps.data,
-      loadEarlierMessages() {
-        const {
-          networkStatus,
-          fetchMore,
-          chat: {
-            messages: { pageInfo }
-          }
-        } = data;
-
-        if (networkStatus === NetworkStatus.fetchMore || !pageInfo.hasNextPage) {
-          return;
-        }
-
-        const variables = {
-          after: pageInfo.endCursor,
-        };
-
-        return fetchMore({
-          variables,
-          updateQuery(prev, { fetchMoreResult: { chat } }) {
-            return update(prev, {
-              chat: {
-                messages: {
-                  edges: { $push: chat.messages.edges },
-                  pageInfo: { $set: chat.messages.pageInfo },
-                },
-              },
-            });
-          },
-        });
-      },
-
-      /**
-       * TODO: Find a better way of loading new messages instead of full reload
-       */
-      loadNewMessages() {
-        return data.refetch();
-      }
-    };
-  },
-
-  options({ chatId }) {
-    return {
-      notifyOnNetworkStatusChange: true,
-      variables: {
-        chatId,
-      },
-    };
-  }
+@graphql(startChatMutation, {
+  name: 'startChatMutation',
 })
-@graphql(newMessageMutation, {
-  props({ mutate, ownProps }) {
-    return {
-      ...ownProps,
-      addMessage(text) {
-        const chatId = ownProps.chatId;
-        const { chat, me, variables: queryVariables } = ownProps.data;
-        const variables = {
-          input: {
-            chatId,
-            recipientIds: ownProps.userId && [ownProps.userId],
-            userId: me.id,
-            content: {
-              text,
-            },
-          },
-          at: chat && chat.messages.metaInfo.firstCursor,
-          pageCount: chat && chat.messages.edges.length + 1,
-        };
-
-        const optimisticResponse = {
-          __typename: 'Mutation',
-          addMessage: {
-            __typename: 'MessageCreatePayload',
-            chat,
-            edge: {
-              __typename: 'MessageEdge',
-              node: {
-                __typename: 'Message',
-                id: uuid(),
-                status: null,
-                createdAt: new Date(),
-                content: {
-                  __typename: 'MessageContent',
-                  text,
-                },
-                user: me,
-                chat,
-              },
-            },
-          },
-        };
-
-        return mutate({
-          variables,
-          optimisticResponse,
-          update(cache, { data: { addMessage: result } }) {
-
-            const query = messagesQuery;
-            const variables = queryVariables;
-            const data = cache.readQuery({ query, variables });
-
-            cache.writeQuery({
-              query,
-              variables,
-              data: update(data, {
-                chat: {
-                  messages: {
-                    edges: {
-                      $unshift: [result.edge]
-                    },
-                    pageInfo: {
-                      $set: result.chat.messages.pageInfo,
-                    },
-                  },
-                },
-              }),
-            });
-          }
-        });
-      },
-    };
-  },
+@graphql(addMessageMutation, {
+  name: 'addMessageMutation',
 })
 @styleSheet('Sparkle.Chat', {
   root: {
@@ -276,19 +188,125 @@ const messageUpdateSubscription = gql`
 })
 export default class Chat extends Component {
   static propTypes = {
-    chatId: PropTypes.string,
-    userId: PropTypes.string,
+
   };
 
-  addSubscriptions() {
-    const { chatId, data } = this.props;
+  getConnection() {
+    const chat = get(this.props, 'data.me.chat');
 
-    if (!chatId) {
+    if (!chat) {
+      return null;
+    }
+
+    return {
+      edges: chat.messages.edges,
+      hasMore: chat.messages.pageInfo.hasNextPage,
+    };
+  }
+
+  async startChat(content) {
+    const {
+      recipientId,
+      data: { me },
+      startChatMutation,
+    } = this.props;
+
+    const variables = {
+      recipientId,
+      input: {
+        recipientIds: [recipientId],
+        userId: me.id,
+        content,
+      },
+    };
+
+    const optimisticResponse = {
+      __typename: 'Mutation',
+      addMessage: {
+        __typename: 'MessageCreatePayload',
+        user: {
+          ...me,
+          chat: createOptimisticChat([
+            createOptimisticMessageEdge(content, me)
+          ]),
+        },
+      },
+    };
+
+    await startChatMutation({
+      variables,
+      optimisticResponse
+    });
+
+    this.startSubscriptions();
+  }
+
+  addMessage(content) {
+    const {
+      data: { me: user , variables: queryVariables },
+      addMessageMutation,
+    } = this.props;
+
+    const chat = user.chat;
+    const variables = {
+      input: {
+        chatId: chat.id,
+        userId: user.id,
+        content,
+      },
+      at: chat.messages.metaInfo.firstCursor,
+      pageCount: chat.messages.edges.length + 1,
+    };
+
+    const optimisticResponse = {
+      __typename: 'Mutation',
+      addMessage: {
+        __typename: 'MessageCreatePayload',
+        chat,
+        edge: createOptimisticMessageEdge(content, user),
+      },
+    };
+
+    return addMessageMutation({
+      variables,
+      optimisticResponse,
+      update(cache, { data: { addMessage: result } }) {
+
+        const query = chatQuery;
+        const variables = queryVariables;
+        const data = cache.readQuery({ query, variables });
+
+        cache.writeQuery({
+          query,
+          variables,
+          data: update(data, {
+            me: {
+              chat: {
+                messages: {
+                  edges: {
+                    $unshift: [result.edge]
+                  },
+                  pageInfo: {
+                    $set: result.chat.messages.pageInfo,
+                  },
+                },
+              },
+            },
+          }),
+        });
+      },
+    });
+  }
+
+  startSubscriptions() {
+    const chat = get(this.props, 'data.me.chat');
+
+    if (!chat) {
       return;
     }
 
     const variables = {
-      chatId,
+      chatId: chat.id,
     };
 
     /**
@@ -305,10 +323,12 @@ export default class Chat extends Component {
         const { onMessageAdd: payload } = subscriptionData.data;
 
         return update(prev, {
-          chat: {
-            messages: {
-              edges: {
-                $unshift: [payload.edge]
+          me: {
+            chat: {
+              messages: {
+                edges: {
+                  $unshift: [payload.edge]
+                },
               },
             },
           },
@@ -326,36 +346,25 @@ export default class Chat extends Component {
     });
   }
 
-  componentDidUpdate(prev) {
-    const { chatId, data } = this.props;
-
-    if (!prev.chatId && chatId) {
-      this.addSubscriptions();
+  componentDidUpdate(prevProps) {
+    if (!prevProps.data.me && this.props.data.me) {
+      this.startSubscriptions();
     }
   }
 
   componentDidMount() {
-    this.addSubscriptions();
+    this.startSubscriptions();
   }
 
-  getConnection() {
-    const { data: { networkStatus, chat } } = this.props;
+  onSend = async (text) => {
+    const { data: { me } } = this.props;
 
-    if (!chat || networkStatus === NetworkStatus.loading) {
-      return null;
+    if (me.chat) {
+      await this.addMessage({ text });
+    } else {
+      await this.startChat({ text });
     }
-
-    return {
-      edges: chat.messages.edges,
-      hasMore: chat.messages.pageInfo.hasNextPage,
-    };
   }
-
-  onSend = (text) => {
-    const { addMessage } = this.props;
-
-    addMessage(text);
-  };
 
   getItemSide = ({ user }) => this.props.data.me.id === user.id ? 'right' : 'left';
 
@@ -363,15 +372,13 @@ export default class Chat extends Component {
     const {
       style,
       styleSheet: styles,
-      loadEarlierMessages,
-      loadNewMessages,
-      addMessage,
+      children,
+      chatId,
     } = this.props;
 
     const {
       hasMore = false,
       edges = [],
-      networkStatus = null,
     } = this.getConnection() || {};
 
     return (
@@ -381,13 +388,7 @@ export default class Chat extends Component {
             edges={edges}
             loadingMore={hasMore}
             getItemSide={this.getItemSide}
-
             inverted={true}
-            initialNumToRender={15}
-            onEndReachedThreshold={1}
-            onEndReached={loadEarlierMessages}
-            onRefresh={loadNewMessages}
-            refreshing={networkStatus === NetworkStatus.refetch}
           />
         </Shadow>
 

@@ -36,7 +36,7 @@ export default class Channel extends Component {
 
     return (
       <Container>
-        <Chat chatId={chatId} userId={userId} />
+        <Chat chatId={chatId} recipientId={userId} />
       </Container>
     );
   }

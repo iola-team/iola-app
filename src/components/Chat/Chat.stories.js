@@ -12,7 +12,7 @@ import { PubSub } from 'graphql-subscriptions';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
-import Chat from './Chat';
+import Chat from './index';
 
 const stories = storiesOf('Components/Chat', module);
 
@@ -143,16 +143,12 @@ const typeDefs = gql`
     url: String!
   }
 
-  input UserChatsFilterInput {
-    hasUnreadMessages: Boolean
-    withUser: ID
-  }
-  
   type User implements Node {
     id: ID!
     name: String!
     avatar: Avatar
-    chats(filter: UserChatsFilterInput, first: Int, after: Cursor, last: Int, before: Cursor): UserChatsConnection!
+    chat(id: ID, recipientId: ID): Chat
+    chats(first: Int, after: Cursor, last: Int, before: Cursor): UserChatsConnection!
   }
 
   type ConnectionMetaInfo {
@@ -316,7 +312,23 @@ const resolvers = {
       const { messages, users, chats } = dataStore;
 
       const user = find(users, { id: input.userId });
-      const chat = find(chats, { id: input.chatId });
+      let chat = input.chatId && find(chats, { id: input.chatId });
+
+      if (!chat && input.recipientIds) {
+        const recipients = users.filter(({ id }) => input.recipientIds.includes(id));
+
+        chat = {
+          id: `Chat:${chats.length}`,
+          user,
+          participants: [
+            user,
+            ...recipients,
+          ],
+        };
+
+        chats.push(chat);
+      }
+
       const node = {
         id: `Message:${messages.length}`,
         content: {
@@ -390,15 +402,25 @@ const resolvers = {
 
   User: {
     async chats(user, args, { dataStore: { chats } }) {
-      let userChats = filter(chats, ['user.id', user.id]);
-
-      if (args.filter.withUser) {
-        userChats = userChats.filter(({ participants }) => {
-          return find(participants, ['id', args.filter.withUser]);
-        });
-      }
+      const userChats = filter(chats, ['user.id', user.id]);
 
       return createConnection(userChats, args);
+    },
+
+    async chat(user, args, { dataStore: { chats } }) {
+      if (args.id) {
+        return find(chats, { id: args.id });
+      }
+
+      if (!args.recipientId) {
+        return null;
+      }
+
+      const userChats = filter(chats, ['user.id', user.id]).filter(({ participants }) => {
+        return find(participants, ['id', args.recipientId]);
+      });
+
+      return userChats[0] || null;
     },
   },
 
@@ -456,12 +478,12 @@ stories.add('New message subscriptions', () => {
 
 stories.add('Chat with user', () => {
   return (
-    <Chat userId={'User:2'} />
+    <Chat recipientId={'User:2'} />
   );
 });
 
 stories.add('New chat with user', () => {
   return (
-    <Chat userId={'User:3'} />
+    <Chat recipientId={'User:3'} />
   );
 });
