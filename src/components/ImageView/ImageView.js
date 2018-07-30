@@ -1,13 +1,15 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, StatusBar, Modal, Text, View } from 'react-native';
+import { Badge, Spinner } from 'native-base';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-import FoundationIcon from 'react-native-vector-icons/Foundation';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import BackButton from '../BackButton';
+import TouchableOpacity from '../TouchableOpacity';
 
 const ModalContent = connectToStyleSheet('modalContent', View);
 const Header = connectToStyleSheet('header', View);
@@ -16,10 +18,15 @@ const Footer = connectToStyleSheet('footer', View);
 const Name = connectToStyleSheet('name', Text);
 const Caption = connectToStyleSheet('caption', Text);
 const DateTime = connectToStyleSheet('dateTime', Text);
-const LeftBlock = connectToStyleSheet('leftBlock', View);
-const RightBlock = connectToStyleSheet('rightBlock', View);
-const ShareButton = connectToStyleSheet('footerButton', IoniconsIcon).withProps({ name: 'ios-share-alt' });
-const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withProps({ name: 'trash' });
+const InfoBlock = connectToStyleSheet('infoBlock', View);
+const ActionsBlock = connectToStyleSheet('actionsBlock', View);
+const LikeIcon = connectToStyleSheet('actionIcon', IoniconsIcon).withProps({ name: 'ios-heart-outline' });
+const CommentIcon = connectToStyleSheet('actionIcon', EvilIcons).withProps({ name: 'comment' });
+const ShareIcon = connectToStyleSheet('actionIcon', IoniconsIcon).withProps({ name: 'ios-share-alt' });
+const ActionButton = connectToStyleSheet('actionButton', TouchableOpacity);
+const ActionText = connectToStyleSheet('actionText', Text);
+const ActionBadge = connectToStyleSheet('actionBadge', Badge);
+const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
 
 @styleSheet('Sparkle.ImageView', {
   modalContent: {
@@ -53,13 +60,12 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
     paddingTop: 25,
     paddingBottom: 29,
     paddingHorizontal: 17,
-    flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'rgba(46, 48, 55, 0.3)',
   },
 
-  leftBlock: {
-    flexShrink: 1,
+  infoBlock: {
+    // flexShrink: 1,
   },
 
   name: {
@@ -87,23 +93,42 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
     color: '#BDC0CB',
   },
 
-  rightBlock: {
-    flexShrink: 0,
-    width: (24 * 2 + 14),
+  actionsBlock: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginTop: 10,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: '#BDC0CB',
   },
 
-  footerButton: {
-    height: 24,
-    width: 24,
-    borderWidth: 1.5,
-    borderColor: 'rgba(189, 192, 203, 0.25)',
-    borderRadius: 8,
-    textAlign: 'center',
-    lineHeight: 24,
-    fontSize: 14,
+  actionButton: {
+    flexDirection: 'row',
+  },
+
+  actionIcon: {
+    marginRight: 5,
+    fontSize: 18,
+    fontWeight: '700',
+    lineHeight: 30,
     color: '#BDC0CB',
+  },
+
+  actionText: {
+    color: '#BDC0CB',
+    fontSize: 18,
+    fontWeight: '700',
+    lineHeight: 30,
+  },
+
+  actionBadge: {
+    width: 20,
+    height: 20,
+    backgroundColor: '#BDC0CB',
+  },
+
+  actionBadgeText: {
+    color: '#FFFFFF',
   },
 })
 export default class ImageView extends Component {
@@ -144,21 +169,46 @@ export default class ImageView extends Component {
   renderFooter() {
     const { images } = this.props;
     const { index } = this.state;
-    const { name, caption, createdAt } = images[index];
+    const { name, caption, createdAt, totalCountLikes, totalCountComments } = images[index];
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
 
     return (
       <Footer>
-        <LeftBlock>
+        <InfoBlock>
           <Name>{name}</Name>
           <Caption>{caption}</Caption>
           <DateTime>{dateFormatted}</DateTime>
-        </LeftBlock>
-        <RightBlock>
-          <ShareButton onPress={() => alert('Share')} />
-          <DeleteButton onPress={() => alert('Delete')} />
-        </RightBlock>
+        </InfoBlock>
+
+        <ActionsBlock>
+          <ActionButton onPress={() => alert('Like')}>
+            <LikeIcon />
+            <ActionText>Like</ActionText>
+            {
+              totalCountLikes ? (
+                <ActionBadge>
+                  <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
+                </ActionBadge>
+              ) : null
+            }
+          </ActionButton>
+          <ActionButton onPress={() => alert('Comment')}>
+            <CommentIcon />
+            <ActionText>Comment</ActionText>
+            {
+              totalCountComments ? (
+                <ActionBadge>
+                  <ActionBadgeText>{totalCountComments}</ActionBadgeText>
+                </ActionBadge>
+              ) : null
+            }
+          </ActionButton>
+          <ActionButton onPress={() => alert('Share')}>
+            <ShareIcon />
+            <ActionText>Share</ActionText>
+          </ActionButton>
+        </ActionsBlock>
       </Footer>
     );
   }
@@ -186,8 +236,8 @@ export default class ImageView extends Component {
               renderHeader={::this.renderHeader}
               renderIndicator={this.renderIndicator}
               renderFooter={::this.renderFooter}
-              failImageSource={{ uri: '@TODO' }}
-              loadingRender={() => null /* '@TODO' */}
+              failImageSource={{ uri: 'https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif' }}
+              loadingRender={() => <Spinner />}
               footerContainerStyle={{ width: '100%' }}
               backgroundColor="rgba(46, 48, 55, 0.95)"
             />

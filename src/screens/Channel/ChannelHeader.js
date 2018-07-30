@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import { ScreenHeader, UserAvatar } from 'components';
@@ -21,14 +20,14 @@ import { ScreenHeader, UserAvatar } from 'components';
 `, {
   options: ({ userId }) => ({
     variables: {
-      userId
+      userId,
     },
   }),
 })
 @styleSheet('Sparkle.ChannelScreenHeader', {
   avatar: {
     marginHorizontal: 16,
-  }
+  },
 })
 export default class ChannelHeader extends Component {
 

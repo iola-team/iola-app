@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import {
-  Container,
-  Content,
-  Text,
-  Icon,
-  View,
-} from 'native-base';
+import { Container } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import { ScreenHeader, UserAvatar } from 'components';
@@ -28,7 +22,7 @@ const propsToVariables = props => ({
 
   ${UserAvatar.fragments.user}
 `, {
-  options: (props) => ({
+  options: props => ({
     variables: propsToVariables(props),
   }),
 })
@@ -41,13 +35,13 @@ export default class Channel extends Component {
         {...props}
         userId={navigation.state.params.userId}
       />
-    )
+    ),
   });
 
   render() {
     return (
       <Container>
-        <Chat chatId={'Chat:68'} />
+        <Chat chatId="Chat:68" />
       </Container>
     );
   }

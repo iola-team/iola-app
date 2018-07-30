@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import moment from 'moment';
 import faker from 'faker';
@@ -7,6 +7,7 @@ import { sampleSize } from 'lodash';
 import { withKnobs } from '@storybook/addon-knobs/react';
 
 import { getContentDecorator } from 'storybook';
+import TouchableOpacity from '../../components/TouchableOpacity';
 import ImageView from './ImageView';
 
 const stories = storiesOf('Components/ImageView', module);
@@ -30,6 +31,8 @@ stories.add('Render Prop', () => {
         url,
         caption: faker.lorem[sampleSize(['words', 'sentence', 'paragraph'], 1)](),
         createdAt: getRandomDate(),
+        totalCountLikes: faker.random.number({ min: 0, max: 20 }),
+        totalCountComments: faker.random.number({ min: 0, max: 5 }),
       })),
     };
   })();
