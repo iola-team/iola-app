@@ -13,6 +13,7 @@ import ChatFooter from '../ChatFooter';
 import Shadow from '../Shadow';
 import MessageList from '../MessageList';
 import UserAvatar from '../UserAvatar';
+import MessageUpdateSubscription from '../MessageUpdateSubscription';
 
 const connectionFragment = gql`
   fragment Chat_messages on ChatMessagesConnection {
@@ -136,19 +137,10 @@ const messageAddSubscription = gql`
     onMessageAdd(chatId: $chatId) {
       node {
         id
+        user {
+          id
+        }
       }
-      edge {
-        ...MessageList_edge
-      }
-    }
-  }
-
-  ${MessageList.fragments.edge}
-`;
-
-const messageUpdateSubscription = gql`
-  subscription ChatMessageUpdateSubscription($chatId: ID!) {
-    onMessageUpdate(chatId: $chatId) {
       edge {
         ...MessageList_edge
       }
@@ -164,6 +156,7 @@ const messageUpdateSubscription = gql`
       chatId,
       recipientId,
     },
+    fetchPolicy: 'cache-and-network',
   }),
 })
 @graphql(startChatMutation, {
@@ -299,7 +292,8 @@ export default class Chat extends Component {
   }
 
   startSubscriptions() {
-    const chat = get(this.props, 'data.me.chat');
+    const { data: { me } } = this.props;
+    const chat = get(me, 'chat');
 
     if (!chat) {
       return;
@@ -322,6 +316,14 @@ export default class Chat extends Component {
 
         const { onMessageAdd: payload } = subscriptionData.data;
 
+        /**
+         * Skip messages of current user
+         * TODO: Check case when currently logged in user sends messages from web
+         */
+        if (payload.node.user.id === me.id) {
+          return prev;
+        }
+
         return update(prev, {
           me: {
             chat: {
@@ -334,15 +336,6 @@ export default class Chat extends Component {
           },
         });
       },
-    });
-
-    /**
-     * Subscribe to message updates
-     * `updateQuery` is not needed here - apollo cache will automatically manage updates
-     */
-    this.props.data.subscribeToMore({
-      document: messageUpdateSubscription,
-      variables,
     });
   }
 
@@ -373,7 +366,7 @@ export default class Chat extends Component {
       style,
       styleSheet: styles,
       children,
-      chatId,
+      data: { me },
     } = this.props;
 
     const {
@@ -393,6 +386,7 @@ export default class Chat extends Component {
         </Shadow>
 
         <ChatFooter style={styles.footer} onSend={this.onSend} />
+        {me && <MessageUpdateSubscription userId={me.id} />}
       </View>
     );
   }

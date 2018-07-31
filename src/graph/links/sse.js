@@ -22,6 +22,7 @@ export class SubscriptionClient {
     this.uri = addPathPart(uri, [streamId]);
     this.fetch = fetchImpl || ((...args) => fetch(...args));
     this.EventSource = EventSourceImpl || EventSource;
+    this.lastEventId = null;
 
     this.eventSource = null;
     this.subscriptions = {};
@@ -45,6 +46,7 @@ export class SubscriptionClient {
 
   onMessage = (event) => {
     const { data, type, subscriptionId } = JSON.parse(event.data);
+    this.lastEventId = event.lastEventId
 
     if (type === 'SUBSCRIPTION_DATA' && this.subscriptions[subscriptionId]) {
       this.subscriptions[subscriptionId].handlers.forEach(handler => handler(data));
@@ -80,8 +82,17 @@ export class SubscriptionClient {
     return this.subscriptions[subscriptionId];
   }
 
-  async start() {
-    this.eventSource = new this.EventSource(this.uri);
+  async start(lastEventId = null) {
+    this.lastEventId = lastEventId;
+    const headers = {};
+
+    if (this.lastEventId) {
+      headers['Last-Event-ID'] = this.lastEventId;
+    }
+
+    this.eventSource = new this.EventSource(this.uri, {
+      headers,
+    });
 
     await new Promise((resolve, reject) => {
       this.eventSource.addEventListener('open', () => resolve(this.eventSource));
@@ -95,19 +106,24 @@ export class SubscriptionClient {
   }
 
   async stop() {
+    const lastEventId = this.lastEventId;
+    this.lastEventId = null;
+
     if (!this.started) {
-      return;
+      return lastEventId;
     }
 
     this.eventSource.close();
     this.eventSource = null;
+
+    return lastEventId;
   }
 
   async restart() {
-    await this.stop();
+    const lastEventId = await this.stop();
 
     if (!isEmpty(this.subscriptions)) {
-      return this.start();
+      return this.start(lastEventId);
     }
   }
 

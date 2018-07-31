@@ -13,6 +13,7 @@ import EventSource from 'react-native-event-source';
 
 import { AuthLink, ErrorLink, SSELink } from './links';
 import resolvers from './resolvers';
+import cacheRedirects from './cacheRedirects';
 import introspectionQueryResultData from './meta/fragmentTypes';
 
 disableFragmentWarnings();
@@ -29,13 +30,7 @@ export async function createClient({
   const cache = new InMemoryCache({
     fragmentMatcher,
     dataIdFromObject: object => object.id || null,
-    cacheRedirects: {
-      Query: {
-        node(root, { id }) {
-          return toIdValue(id);
-        }
-      }
-    },
+    cacheRedirects,
   });
 
   const cachePersistor = new CachePersistor({

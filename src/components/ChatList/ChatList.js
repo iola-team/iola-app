@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -8,6 +8,7 @@ import { orderBy } from 'lodash';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import ChatListItem from '../ChatListItem'
+import MessageUpdateSubscription from '../MessageUpdateSubscription';
 
 const userFragment = gql`
   fragment ChatList_user on User {
@@ -76,15 +77,19 @@ export default class ChatList extends Component {
   }
 
   render() {
-    const { data, ...listProps } = this.props;
+    const { data, user, ...listProps } = this.props;
 
     return (
-      <FlatList
-        {...listProps}
-        data={data}
-        keyExtractor={::this.extractItemKey}
-        renderItem={::this.renderItem}
-      />
+      <Fragment>
+        <FlatList
+          {...listProps}
+          data={data}
+          keyExtractor={::this.extractItemKey}
+          renderItem={::this.renderItem}
+        />
+
+        <MessageUpdateSubscription userId={user.id} />
+      </Fragment>
     );
   }
 }
