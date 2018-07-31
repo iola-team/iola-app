@@ -135,6 +135,7 @@ export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     images: PropTypes.array.isRequired,
+    onShowComments: PropTypes.func.isRequired,
   };
 
   state = {
@@ -142,7 +143,7 @@ export default class ImageView extends Component {
     visible: false,
   };
 
-  onOpen(index) {
+  onShowImage(index) {
     this.setState({ index, visible: true });
   }
 
@@ -167,7 +168,7 @@ export default class ImageView extends Component {
   }
 
   renderFooter() {
-    const { images } = this.props;
+    const { images, onShowComments } = this.props;
     const { index } = this.state;
     const { name, caption, createdAt, totalCountLikes, totalCountComments } = images[index];
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
@@ -185,24 +186,20 @@ export default class ImageView extends Component {
           <ActionButton onPress={() => alert('Like')}>
             <LikeIcon />
             <ActionText>Like</ActionText>
-            {
-              totalCountLikes ? (
-                <ActionBadge>
-                  <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
-                </ActionBadge>
-              ) : null
-            }
+            {totalCountLikes ? (
+              <ActionBadge>
+                <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
+              </ActionBadge>
+            ) : null}
           </ActionButton>
-          <ActionButton onPress={() => alert('Comment')}>
+          <ActionButton onPress={onShowComments}>
             <CommentIcon />
             <ActionText>Comment</ActionText>
-            {
-              totalCountComments ? (
-                <ActionBadge>
-                  <ActionBadgeText>{totalCountComments}</ActionBadgeText>
-                </ActionBadge>
-              ) : null
-            }
+            {totalCountComments ? (
+              <ActionBadge>
+                <ActionBadgeText>{totalCountComments}</ActionBadgeText>
+              </ActionBadge>
+            ) : null}
           </ActionButton>
           <ActionButton onPress={() => alert('Share')}>
             <ShareIcon />
@@ -219,7 +216,7 @@ export default class ImageView extends Component {
 
     return (
       <Fragment>
-        {children(::this.onOpen)}
+        {children(::this.onShowImage)}
 
         <Modal
           visible={visible}
