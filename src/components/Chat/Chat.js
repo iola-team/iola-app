@@ -6,7 +6,7 @@ import { NetworkStatus } from 'apollo-client';
 import update from 'immutability-helper';
 import uuid from 'uuid';
 import { View } from 'native-base';
-import { get } from 'lodash';
+import { filter, get } from 'lodash';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import ChatFooter from '../ChatFooter';
@@ -14,6 +14,21 @@ import Shadow from '../Shadow';
 import MessageList from '../MessageList';
 import UserAvatar from '../UserAvatar';
 import MessageUpdateSubscription from '../MessageUpdateSubscription';
+
+const chatMessagesEdgeFragment = gql`
+  fragment Chat_messageEdge on MessageEdge {
+    node {
+      id
+      user {
+        id
+      }
+    }
+
+    ...MessageList_edge
+  }
+
+  ${MessageList.fragments.edge}
+`;
 
 const connectionFragment = gql`
   fragment Chat_messages on ChatMessagesConnection {
@@ -25,11 +40,11 @@ const connectionFragment = gql`
       endCursor
     }
     edges {
-      ...MessageList_edge
+      ...Chat_messageEdge
     }
   }
 
-  ${MessageList.fragments.edge}
+  ${chatMessagesEdgeFragment}
 `;
 
 const chatQuery = gql`
@@ -109,12 +124,12 @@ const addMessageMutation = gql`
         }
       }
       edge {
-        ...MessageList_edge
+        ...Chat_messageEdge
       }
     }
   }
 
-  ${MessageList.fragments.edge}
+  ${chatMessagesEdgeFragment}
 `;
 
 const createOptimisticMessageEdge = (content, user) => ({
@@ -132,6 +147,19 @@ const createOptimisticMessageEdge = (content, user) => ({
   },
 });
 
+const markMessagesAsReadMutation = gql`
+  mutation MarkChatMessageAsReadMutation(
+  $input: MarkMessagesAsReadInput!
+  ) {
+    markMessagesAsRead(input: $input) {
+      node {
+        id
+        status
+      }
+    }
+  }
+`;
+
 const messageAddSubscription = gql`
   subscription ChatMessageAddSubscription($chatId: ID!) {
     onMessageAdd(chatId: $chatId) {
@@ -142,12 +170,12 @@ const messageAddSubscription = gql`
         }
       }
       edge {
-        ...MessageList_edge
+        ...Chat_messageEdge
       }
     }
   }
 
-  ${MessageList.fragments.edge}
+  ${chatMessagesEdgeFragment}
 `;
 
 @graphql(chatQuery, {
@@ -164,6 +192,9 @@ const messageAddSubscription = gql`
 })
 @graphql(addMessageMutation, {
   name: 'addMessageMutation',
+})
+@graphql(markMessagesAsReadMutation, {
+  name: 'markMessagesAsRead',
 })
 @styleSheet('Sparkle.Chat', {
   root: {
@@ -360,6 +391,28 @@ export default class Chat extends Component {
   }
 
   getItemSide = ({ user }) => this.props.data.me.id === user.id ? 'right' : 'left';
+  onMessagesRead = (nodes) => {
+    const { markMessagesAsRead, data: { me } } = this.props;
+
+    /**
+     * Filter user own messages
+     */
+    const messageIds = nodes.filter(({ user }) => user.id !== me.id).map(node => node.id);
+    if (!messageIds.length) {
+      return;
+    }
+
+    const variables = {
+      input: {
+        userId: me.id,
+        messageIds,
+      },
+    };
+
+    markMessagesAsRead({
+      variables,
+    });
+  };
 
   render() {
     const {
@@ -381,6 +434,7 @@ export default class Chat extends Component {
             edges={edges}
             loadingMore={hasMore}
             getItemSide={this.getItemSide}
+            onRead={this.onMessagesRead}
             inverted={true}
           />
         </Shadow>

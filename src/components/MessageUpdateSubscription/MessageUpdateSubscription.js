@@ -11,6 +11,14 @@ const messageUpdateSubscription = gql`
       edge {
         ...MessageList_edge
       }
+      chat {
+        id
+        unreadMessages: messages(filter: {
+          notReadBy: $userId
+        }) {
+          totalCount
+        }
+      }
     }
   }
 

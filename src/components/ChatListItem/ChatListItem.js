@@ -27,6 +27,9 @@ const chatFragment = gql`
           content {
             text
           }
+          user {
+            id
+          }
         }
       }
     }
@@ -61,6 +64,22 @@ export default class ChatListItem extends Component {
     unreadMessagesCount: 0,
   };
 
+  renderStatus(message, unreadCount) {
+    const { currentUserId } = this.props;
+
+    if (!unreadCount && currentUserId !== message.user.id) {
+      return null;
+    }
+
+    return unreadCount ? (
+      <Badge primary>
+        <Text>{unreadCount}</Text>
+      </Badge>
+    ) : (
+      <MessageStateIndicator done={message.status === 'READ'} />
+    );
+  }
+
   render() {
     const {
       style,
@@ -92,13 +111,7 @@ export default class ChatListItem extends Component {
         <Right>
           <Moment headline time note element={Text} format="HH:mm">{lastMessage.createdAt}</Moment>
 
-          {unreadMessagesCount ? (
-            <Badge primary>
-              <Text>{unreadMessagesCount}</Text>
-            </Badge>
-          ) : (
-            <MessageStateIndicator done={lastMessage.status === 'READ'} />
-          )}
+          {this.renderStatus(lastMessage, unreadMessagesCount)}
         </Right>
       </ListItem>
     );

@@ -86,7 +86,7 @@ const unOrderedFakeMessages = range(100).map((index) => ({
   content: {
     text: faker.hacker.phrase(),
   },
-  status: 'READ',
+  status: faker.random.arrayElement(['READ', 'DELIVERED']),
   createdAt: faker.date.recent(),
   user: faker.random.arrayElement(find(chats, { id: 'Chat:1' }).participants),
   chat: find(chats, { id: 'Chat:1' }),
@@ -127,6 +127,12 @@ const typeDefs = gql`
   
   type Mutation {
     addMessage(input: MessageInput!, after: Cursor, before: Cursor, at: Cursor): MessageCreatePayload!
+    markMessagesAsRead(input: MarkMessagesAsReadInput!): [MessageUpdatePayload!]!
+  }
+
+  input MarkMessagesAsReadInput {
+    userId: ID!
+    messageIds: [ID!]!
   }
   
   type Query {
@@ -374,7 +380,31 @@ const resolvers = {
           node,
         },
       };
-    }
+    },
+
+    async markMessagesAsRead(root, { input: { userId, messageIds } }, { dataStore: { messages, users } }) {
+      return messageIds.map((id) => {
+        const node = find(messages, { id });
+        const user = find(users, { id: userId });
+        const cursor = offsetToCursor(0);
+
+        node.status = 'READ';
+
+        subscriptions.publish('onMessageUpdate', {
+          messageId: id,
+        });
+
+        return {
+          node,
+          chat: node.chat,
+          user,
+          edge: {
+            cursor,
+            node,
+          },
+        };
+      });
+    },
   },
 
   Query: {
