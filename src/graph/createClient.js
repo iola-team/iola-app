@@ -1,4 +1,4 @@
-import { assign } from 'lodash';
+import { assign, find, isPlainObject, isArray } from 'lodash';
 import { AsyncStorage } from 'react-native';
 import { toIdValue, getMainDefinition } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
@@ -7,6 +7,7 @@ import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemo
 import { withClientState } from 'apollo-link-state';
 import { CachePersistor } from 'apollo-cache-persist';
 import { setContext } from 'apollo-link-context';
+import { BatchHttpLink } from 'apollo-link-batch-http';
 import { createUploadLink } from 'apollo-upload-client';
 import { disableFragmentWarnings } from 'graphql-tag';
 import EventSource from 'react-native-event-source';
@@ -98,7 +99,7 @@ export default async () => {
   const queryUri = `http://172.27.0.74/ow/oxwall/everywhere/api/graphql${debugQuery}`;
   const subscriptionUri = `http://172.27.0.74/ow/oxwall/everywhere/api/subscriptions${debugQuery}`;
 
-  const httpLink = createUploadLink({
+  const uploadLink = createUploadLink({
     uri: queryUri,
     fetch: (uri, allOptions, ...restArgs) => {
       const {
@@ -114,6 +115,28 @@ export default async () => {
       return promise;
     }
   });
+
+  const batchHttpLink = new BatchHttpLink({
+    uri: queryUri,
+  });
+
+  const hasFiles = node => isArray(node) || isPlainObject(node)
+      ? !!find(node, hasFiles)
+      : node instanceof File || node instanceof Blob;
+
+  const httpLink = split(
+    ({ query, variables }) => {
+      const { kind, operation } = getMainDefinition(query);
+
+      return (
+        kind === 'OperationDefinition'
+        && operation === 'mutation'
+        && hasFiles(variables)
+      );
+    },
+    uploadLink,
+    batchHttpLink,
+  );
 
   const sseLink = new SSELink({
     uri: subscriptionUri,
