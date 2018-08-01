@@ -11,6 +11,7 @@ import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import BackButton from '../BackButton';
 import TouchableOpacity from '../TouchableOpacity';
 
+const SpinnerContainer = connectToStyleSheet('spinnerContainer', View);
 const ModalContent = connectToStyleSheet('modalContent', View);
 const Header = connectToStyleSheet('header', View);
 const Indicator = connectToStyleSheet('indicator', Text);
@@ -18,7 +19,6 @@ const Footer = connectToStyleSheet('footer', View);
 const Name = connectToStyleSheet('name', Text);
 const Caption = connectToStyleSheet('caption', Text);
 const DateTime = connectToStyleSheet('dateTime', Text);
-const InfoBlock = connectToStyleSheet('infoBlock', View);
 const ActionsBlock = connectToStyleSheet('actionsBlock', View);
 const LikeIcon = connectToStyleSheet('actionIcon', IoniconsIcon).withProps({ name: 'ios-heart-outline' });
 const CommentIcon = connectToStyleSheet('actionIcon', EvilIcons).withProps({ name: 'comment' });
@@ -29,6 +29,14 @@ const ActionBadge = connectToStyleSheet('actionBadge', Badge);
 const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
 
 @styleSheet('Sparkle.ImageView', {
+  spinnerContainer: {
+    margin: 'auto',
+    width: '100%',
+    height: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   modalContent: {
     // @TODO: use mixin
     flex: 1,
@@ -64,12 +72,8 @@ const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
     backgroundColor: 'rgba(46, 48, 55, 0.3)',
   },
 
-  infoBlock: {
-    // flexShrink: 1,
-  },
-
   name: {
-    paddingBottom: 7,
+    paddingBottom: 10,
     fontFamily: 'SF Pro Text',
     fontSize: 16,
     fontWeight: '600',
@@ -87,6 +91,7 @@ const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
   },
 
   dateTime: {
+    paddingBottom: 19,
     fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 17,
@@ -96,10 +101,10 @@ const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
   actionsBlock: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
-    paddingTop: 10,
+    alignItems: 'center',
+    height: 58,
     borderTopWidth: 1,
-    borderTopColor: '#BDC0CB',
+    borderTopColor: 'rgba(189, 192, 203, 0.5)',
   },
 
   actionButton: {
@@ -108,26 +113,29 @@ const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
 
   actionIcon: {
     marginRight: 5,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '700',
-    lineHeight: 30,
     color: '#BDC0CB',
   },
 
   actionText: {
     color: '#BDC0CB',
-    fontSize: 18,
-    fontWeight: '700',
-    lineHeight: 30,
+    fontSize: 14,
+    fontFamily: 'SF Pro Text',
   },
 
   actionBadge: {
-    width: 20,
-    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 7,
+    height: 16,
     backgroundColor: '#BDC0CB',
   },
 
   actionBadgeText: {
+    paddingVertical: 0,
+    fontSize: 12,
+    lineHeight: 16,
     color: '#FFFFFF',
   },
 })
@@ -176,11 +184,11 @@ export default class ImageView extends Component {
 
     return (
       <Footer>
-        <InfoBlock>
+        <View>
           <Name>{name}</Name>
           <Caption>{caption}</Caption>
           <DateTime>{dateFormatted}</DateTime>
-        </InfoBlock>
+        </View>
 
         <ActionsBlock>
           <ActionButton onPress={() => alert('Like')}>
@@ -234,7 +242,7 @@ export default class ImageView extends Component {
               renderIndicator={this.renderIndicator}
               renderFooter={::this.renderFooter}
               failImageSource={{ uri: 'https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif' }}
-              loadingRender={() => <Spinner />}
+              loadingRender={() => <SpinnerContainer><Spinner /></SpinnerContainer>}
               footerContainerStyle={{ width: '100%' }}
               backgroundColor="rgba(46, 48, 55, 0.95)"
             />
