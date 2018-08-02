@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 import * as routes from '../roteNames'
-import { ChatList } from 'components';
+import { ChatList, SearchBar } from 'components';
 
 @graphql(gql`
   query {
@@ -33,11 +33,17 @@ export default class Channels extends Component {
     });
   };
 
+  onSearch = (searchPhrase) => {
+    console.log('Search', searchPhrase);
+  }
+
   render() {
     const { data: { me, loading } } = this.props;
 
     return (
       <Container>
+        <SearchBar onSearch={this.onSearch} />
+
         {!loading && (
           <ChatList
             user={me}
