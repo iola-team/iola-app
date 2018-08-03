@@ -485,15 +485,22 @@ stories.add('Empty', () => {
 });
 
 stories.add('New message subscriptions', () => {
-  button('User 1 message', () => subscriptions.publish('onMessageAdd', {
-    userId: 'User:1',
-    chatId: 'Chat:3',
-    content: {
-      text: faker.hacker.phrase(),
-    },
-  }));
 
-  button('User 2 message', () => subscriptions.publish('onMessageAdd', {
+  /**
+   * TODO:
+   * I had to disable this button, since subscription events about messages from current user are disabled in `Chat` component.
+   * First we need figure out how to make it possible to receive these events without producing message duplicates,
+   * than we will be able to enable the button back.
+   */
+  // button('User 1 message', () => subscriptions.publish('onMessageAdd', {
+  //   userId: 'User:1',
+  //   chatId: 'Chat:3',
+  //   content: {
+  //     text: faker.hacker.phrase(),
+  //   },
+  // }));
+
+  button('New message received', () => subscriptions.publish('onMessageAdd', {
     userId: 'User:2',
     chatId: 'Chat:3',
     content: {
