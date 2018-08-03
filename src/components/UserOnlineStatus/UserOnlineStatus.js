@@ -8,14 +8,14 @@ const Status = connectToStyleSheet('status', View).withProps(({ isOnline }) => (
   backgroundColor: isOnline ? '#3BC486' : '#BDC0CB',
 }));
 
-@styleSheet('Sparkle.OnlineStatus', {
+@styleSheet('Sparkle.UserOnlineStatus', {
   status: {
     width: 8,
     height: 8,
     borderRadius: 4,
   },
 })
-export default class OnlineStatus extends Component {
+export default class UserOnlineStatus extends Component {
   static propTypes = {
     isOnline: PropTypes.bool, // @TODO: make it isRequired after user data will be ready
   };

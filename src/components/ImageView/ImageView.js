@@ -9,7 +9,7 @@ import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import BackButton from '../BackButton';
-import OnlineStatus from '../OnlineStatus';
+import UserOnlineStatus from '../UserOnlineStatus';
 import TouchableOpacity from '../TouchableOpacity';
 
 const SpinnerContainer = connectToStyleSheet('spinnerContainer', View);
@@ -205,7 +205,7 @@ export default class ImageView extends Component {
         <View>
           <NameBlock>
             <Name>{name}</Name>
-            <OnlineStatus isOnline={isOnline} />
+            <UserOnlineStatus isOnline={isOnline} />
           </NameBlock>
           <Caption>{caption}</Caption>
           <DateTime>{dateFormatted}</DateTime>
