@@ -48,7 +48,7 @@
     "babel-eslint": "^8.2.3",
     "buffer": "^5.1.0",
     "eslint-plugin-react-native": "^3.2.1",
-    "formik": "1.0.0-alpha.5",
+    "formik": "1.0.2",
     "graphql": "^0.13.2",
     "graphql-anywhere": "^4.1.11",
     "graphql-tag": "^2.9.2",
