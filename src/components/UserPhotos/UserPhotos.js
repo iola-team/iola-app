@@ -39,7 +39,7 @@ export default class UserPhotos extends Component {
     return (
       <Query query={userPhotosQuery} variables={{ id: userId }}>
         {({ loading, data: { user } }) => (loading ? null : (
-          <ImageView images={user.photos.edges.map(({ node }) => ({ name: user.name, ...node }))}>
+          <ImageView images={user.photos.edges.map(({ node }) => ({ user, ...node }))}>
             {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
           </ImageView>
         ))}

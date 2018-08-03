@@ -27,7 +27,10 @@ stories.add('Default', () => {
     );
 
     return {
-      name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+      user: {
+        name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+        isOnline: faker.random.boolean(),
+      },
       photos: photos.map((url, id) => ({
         id,
         url,
@@ -63,7 +66,7 @@ stories.add('Default', () => {
     >
       {onShowImageComments => (
         <ImageView
-          images={data.photos.map(photo => ({ name: data.name, ...photo }))}
+          images={data.photos.map(photo => ({ user: data.user, ...photo }))}
           onShowComments={onShowImageComments}
         >
           {onShowImage => (

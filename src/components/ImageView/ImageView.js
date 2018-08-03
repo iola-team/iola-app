@@ -9,6 +9,7 @@ import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import BackButton from '../BackButton';
+import OnlineStatus from '../OnlineStatus';
 import TouchableOpacity from '../TouchableOpacity';
 
 const SpinnerContainer = connectToStyleSheet('spinnerContainer', View);
@@ -16,6 +17,7 @@ const ModalContent = connectToStyleSheet('modalContent', View);
 const Header = connectToStyleSheet('header', View);
 const Indicator = connectToStyleSheet('indicator', Text);
 const Footer = connectToStyleSheet('footer', View);
+const NameBlock = connectToStyleSheet('nameBlock', View);
 const Name = connectToStyleSheet('name', Text);
 const Caption = connectToStyleSheet('caption', Text);
 const DateTime = connectToStyleSheet('dateTime', Text);
@@ -72,8 +74,13 @@ const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
     backgroundColor: 'rgba(46, 48, 55, 0.3)',
   },
 
+  nameBlock: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
   name: {
-    paddingBottom: 10,
+    paddingRight: 7,
     fontFamily: 'SF Pro Text',
     fontSize: 16,
     fontWeight: '600',
@@ -83,6 +90,7 @@ const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
   },
 
   caption: {
+    paddingTop: 10,
     paddingBottom: 19,
     fontFamily: 'SF Pro Text',
     fontSize: 14,
@@ -128,6 +136,7 @@ const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 7,
+    marginTop: 2,
     height: 16,
     backgroundColor: '#BDC0CB',
   },
@@ -135,14 +144,14 @@ const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
   actionBadgeText: {
     paddingVertical: 0,
     fontSize: 12,
-    lineHeight: 16,
+    lineHeight: 58,
     color: '#FFFFFF',
   },
 })
 export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
-    images: PropTypes.array.isRequired,
+    images: PropTypes.array.isRequired, // @TODO
     onShowComments: PropTypes.func.isRequired,
   };
 
@@ -178,14 +187,26 @@ export default class ImageView extends Component {
   renderFooter() {
     const { images, onShowComments } = this.props;
     const { index } = this.state;
-    const { name, caption, createdAt, totalCountLikes, totalCountComments } = images[index];
+    const {
+      user: {
+        name,
+        isOnline,
+      },
+      caption,
+      createdAt,
+      totalCountLikes,
+      totalCountComments,
+    } = images[index];
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
 
     return (
       <Footer>
         <View>
-          <Name>{name}</Name>
+          <NameBlock>
+            <Name>{name}</Name>
+            <OnlineStatus isOnline={isOnline} />
+          </NameBlock>
           <Caption>{caption}</Caption>
           <DateTime>{dateFormatted}</DateTime>
         </View>
