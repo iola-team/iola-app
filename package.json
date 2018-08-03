@@ -120,7 +120,7 @@
     "faker": "^4.1.0",
     "generact": "^0.3.2",
     "glob-watcher": "^5.0.1",
-    "graphql-cli": "^2.16.3",
+    "graphql-cli": "^2.16.5",
     "graphql-relay": "^0.5.5",
     "graphql-subscriptions": "^0.5.8",
     "jest": "23.1.0",
