@@ -14,6 +14,7 @@ import {
   addMockFunctionsToSchema,
   addResolveFunctionsToSchema,
 } from 'graphql-tools';
+import { connectionFromArray, cursorToOffset, offsetToCursor } from 'graphql-relay';
 
 import { createClient } from 'graph';
 
@@ -168,22 +169,42 @@ class Provider extends Component {
   }
 }
 
+export const createConnection = (nodes, args) => {
+  const connection = connectionFromArray(
+    nodes,
+    args,
+  );
+
+  return {
+    ...connection,
+    totalCount: nodes.length,
+    metaInfo: {
+      firstCursor: offsetToCursor(0),
+    },
+  };
+};
+
 export default ({
   typeDefs,
   mocks,
   resolvers,
   dataStore = {},
-}) => story => (
-  <Provider
-    typeDefs={typeDefs}
-    mocks={mocks}
-    resolvers={resolvers}
-    dataStore={
-      isFunction(dataStore)
-        ? dataStore()
-        : cloneDeep(dataStore)
-    }
-  >
-    {story()}
-  </Provider>
-);
+  onReset = () => {},
+}) => story => {
+  onReset();
+
+  return (
+    <Provider
+      typeDefs={typeDefs}
+      mocks={mocks}
+      resolvers={resolvers}
+      dataStore={
+        isFunction(dataStore)
+          ? dataStore()
+          : cloneDeep(dataStore)
+      }
+    >
+      {story()}
+    </Provider>
+  );
+};

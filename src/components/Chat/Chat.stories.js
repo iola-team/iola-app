@@ -4,14 +4,15 @@ import gql from 'graphql-tag';
 import { button, number, withKnobs } from '@storybook/addon-knobs/react';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
-import { connectionFromArray, cursorToOffset, offsetToCursor } from 'graphql-relay';
+import { cursorToOffset, offsetToCursor } from 'graphql-relay';
 import delay from 'promise-delay';
 import uuid from 'uuid/v4';
+import moment from 'moment'
 import { PubSub } from 'graphql-subscriptions';
 
-import { getContainerDecorator, getApolloDecorator } from 'storybook/index';
-import Chat from './Chat';
-import moment from 'moment/moment'
+import { getContainerDecorator, getApolloDecorator } from 'storybook';
+import { createConnection } from 'storybook/decorators/Apollo';
+import Chat from './index';
 
 const stories = storiesOf('Components/Chat', module);
 
@@ -38,6 +39,15 @@ const users = [
     avatar: {
       id: 'Avatar:2',
       url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
+    },
+  },
+
+  {
+    id: 'User:3',
+    name: 'Jk KK',
+    avatar: {
+      id: 'Avatar:3',
+      url: 'https://avatarfiles.alphacoders.com/458/45801.jpg',
     },
   },
 ];
@@ -76,6 +86,7 @@ const unOrderedFakeMessages = range(100).map((index) => ({
   content: {
     text: faker.hacker.phrase(),
   },
+  status: faker.random.arrayElement(['READ', 'DELIVERED']),
   createdAt: faker.date.recent(),
   user: faker.random.arrayElement(find(chats, { id: 'Chat:1' }).participants),
   chat: find(chats, { id: 'Chat:1' }),
@@ -87,6 +98,7 @@ const orderedNumMessages = range(300).map((index) => {
     content: {
       text: (index + 1).toString(),
     },
+    status: 'READ',
     createdAt: moment().subtract(1, 'months').add(index, 'h').toDate(),
     user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
     chat: find(chats, { id: 'Chat:2' }),
@@ -109,11 +121,18 @@ const typeDefs = gql`
   scalar Cursor
   
   type Subscription {
-    onMessageAdd(chatId: ID!): MessageCreatePayload!
+    onMessageAdd(chatId: ID, userId: ID): MessageCreatePayload!
+    onMessageUpdate(chatId: ID, userId: ID): MessageUpdatePayload!
   }
   
   type Mutation {
     addMessage(input: MessageInput!, after: Cursor, before: Cursor, at: Cursor): MessageCreatePayload!
+    markMessagesAsRead(input: MarkMessagesAsReadInput!): [MessageUpdatePayload!]!
+  }
+
+  input MarkMessagesAsReadInput {
+    userId: ID!
+    messageIds: [ID!]!
   }
   
   type Query {
@@ -129,11 +148,13 @@ const typeDefs = gql`
     id: ID!
     url: String!
   }
-  
+
   type User implements Node {
     id: ID!
     name: String!
     avatar: Avatar
+    chat(id: ID, recipientId: ID): Chat
+    chats(first: Int, after: Cursor, last: Int, before: Cursor): UserChatsConnection!
   }
 
   type ConnectionMetaInfo {
@@ -170,12 +191,17 @@ const typeDefs = gql`
     text: String
   }
 
-  type Message implements Node {
+  enum MessageStatus {
+    DELIVERED
+    READ
+  }
+
+  type Message {
     id: ID!
-    user: User!
-    chat: Chat!
+    status: MessageStatus
     content: MessageContent
     createdAt: Date!
+    user: User!
   }
 
   type MessageEdge {
@@ -196,13 +222,23 @@ const typeDefs = gql`
 
   input MessageInput {
     userId: ID!
-    chatId: ID!
+    chatId: ID
+    recipientIds: [ID!]
     content: MessageContentInput!
   }
 
   type MessageCreatePayload {
     user: User!
     chat: Chat!
+    chatEdge: ChatEdge!
+    node: Message!
+    edge: MessageEdge!
+  }
+
+  type MessageUpdatePayload {
+    user: User!
+    chat: Chat!
+    chatEdge: ChatEdge!
     node: Message!
     edge: MessageEdge!
   }
@@ -222,24 +258,57 @@ const resolvers = {
         const node = {
           id: uuid(),
           content,
+          status: 'READ',
           createdAt: new Date(),
           user,
           chat,
         }
 
-        const cursor = "first";
+        const cursor = 'first';
+        const chatCursor = 'first';
 
         return {
-          node,
-          chat,
           user,
+          chat,
+          chatEdge: {
+            cursor: chatCursor,
+            node: chat,
+          },
+          node,
           edge: {
             cursor,
             node,
           }
         };
       },
-      subscribe: () => subscriptions.asyncIterator('onNewMessage'),
+      subscribe: () => subscriptions.asyncIterator('onMessageAdd'),
+    },
+
+    onMessageUpdate: {
+      resolve: ({ content, messageId }, args, { dataStore }) => {
+        const node = find(dataStore.messages, { id: messageId });
+        const chat = node.chat;
+        const user = node.user;
+
+        const cursor = 'first';
+        const chatCursor = 'first';
+
+        return {
+          user,
+          chat,
+          chatEdge: {
+            cursor: chatCursor,
+            node: chat,
+          },
+          node,
+          edge: {
+            cursor,
+            node,
+          }
+        };
+      },
+
+      subscribe: () => subscriptions.asyncIterator('onMessageUpdate'),
     },
   },
 
@@ -249,12 +318,29 @@ const resolvers = {
       const { messages, users, chats } = dataStore;
 
       const user = find(users, { id: input.userId });
-      const chat = find(chats, { id: input.chatId });
+      let chat = input.chatId && find(chats, { id: input.chatId });
+
+      if (!chat && input.recipientIds) {
+        const recipients = users.filter(({ id }) => input.recipientIds.includes(id));
+
+        chat = {
+          id: `Chat:${chats.length}`,
+          user,
+          participants: [
+            user,
+            ...recipients,
+          ],
+        };
+
+        chats.push(chat);
+      }
+
       const node = {
         id: `Message:${messages.length}`,
         content: {
           ...input.content,
         },
+        status: 'DELIVERED',
         createdAt: new Date(),
         user,
         chat,
@@ -272,7 +358,18 @@ const resolvers = {
         cursor = offsetToCursor(cursorToOffset(before) + 1);
       }
 
-      await delay(2000);
+      await delay(1000);
+
+      /**
+       * Emit message update subscription after 2 seconds
+       */
+      setTimeout(() => {
+        node.status = 'READ';
+
+        subscriptions.publish('onMessageUpdate', {
+          messageId: node.id,
+        });
+      }, 2000);
 
       return {
         node,
@@ -283,7 +380,31 @@ const resolvers = {
           node,
         },
       };
-    }
+    },
+
+    async markMessagesAsRead(root, { input: { userId, messageIds } }, { dataStore: { messages, users } }) {
+      return messageIds.map((id) => {
+        const node = find(messages, { id });
+        const user = find(users, { id: userId });
+        const cursor = offsetToCursor(0);
+
+        node.status = 'READ';
+
+        subscriptions.publish('onMessageUpdate', {
+          messageId: id,
+        });
+
+        return {
+          node,
+          chat: node.chat,
+          user,
+          edge: {
+            cursor,
+            node,
+          },
+        };
+      });
+    },
   },
 
   Query: {
@@ -305,19 +426,32 @@ const resolvers = {
         'desc'
       );
 
-      const connection = connectionFromArray(
-        chatMessages,
-        args,
-      );
-
-      return {
-        ...connection,
-        totalCount: chatMessages.length,
-        metaInfo: {
-          firstCursor: offsetToCursor(0),
-        }
-      }
+      return createConnection(chatMessages, args);
     }
+  },
+
+  User: {
+    async chats(user, args, { dataStore: { chats } }) {
+      const userChats = filter(chats, ['user.id', user.id]);
+
+      return createConnection(userChats, args);
+    },
+
+    async chat(user, args, { dataStore: { chats } }) {
+      if (args.id) {
+        return find(chats, { id: args.id });
+      }
+
+      if (!args.recipientId) {
+        return null;
+      }
+
+      const userChats = filter(chats, ['user.id', user.id]).filter(({ participants }) => {
+        return find(participants, ['id', args.recipientId]);
+      });
+
+      return userChats[0] || null;
+    },
   },
 
   Node: {
@@ -351,7 +485,7 @@ stories.add('Empty', () => {
 });
 
 stories.add('New message subscriptions', () => {
-  button('User 1 message', () => subscriptions.publish('onNewMessage', {
+  button('User 1 message', () => subscriptions.publish('onMessageAdd', {
     userId: 'User:1',
     chatId: 'Chat:3',
     content: {
@@ -359,7 +493,7 @@ stories.add('New message subscriptions', () => {
     },
   }));
 
-  button('User 2 message', () => subscriptions.publish('onNewMessage', {
+  button('User 2 message', () => subscriptions.publish('onMessageAdd', {
     userId: 'User:2',
     chatId: 'Chat:3',
     content: {
@@ -369,5 +503,17 @@ stories.add('New message subscriptions', () => {
 
   return (
     <Chat chatId={'Chat:3'} />
+  );
+});
+
+stories.add('Chat with user', () => {
+  return (
+    <Chat recipientId={'User:2'} />
+  );
+});
+
+stories.add('New chat with user', () => {
+  return (
+    <Chat recipientId={'User:3'} />
   );
 });
