@@ -9,7 +9,21 @@
     "import-graphql",
 
     ["module-resolver", {
-      "root": ["./src"]
+      "alias": {
+        "application": "./src/application",
+        "components": "./src/components",
+        "graph": "./src/graph",
+        "screens": "./src/screens",
+        "storybook": "./src/storybook",
+        "theme": "./src/theme",
+        "utils": "./src/utils"
+      },
+      "extensions": [
+        ".ios.js",
+        ".android.js",
+        ".js",
+        ".json"
+      ]
     }]
   ]
 }
