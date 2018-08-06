@@ -2,8 +2,6 @@ import React, { PureComponent } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { ImageBackground } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
 import {
   View,
   Icon,
@@ -13,36 +11,33 @@ import {
 } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-
-const Gradient = connectToStyleSheet('overlay', LinearGradient).withProps({
-  colors: [ 'rgba(0, 0, 0, 0.35)', 'rgba(0, 0, 0, 0.5)' ],
-});
+import UserAvatar from '../UserAvatar';
 
 const userFragment = gql`
   fragment UserHeading_user on User {
     id
     name
-    avatar {
-      id
-      url(size: MEDIUM)
-    }
     info {
       headline
     }
+    
+    ...UserAvatar_user
   }
+  
+  ${UserAvatar.fragments.user}
 `;
 
 @styleSheet('Sparkle.UserHeading', {
-  overlay: {
-    flex: 1,
-    paddingVertical: 30,
-    paddingHorizontal: 10,
+  root: {
+    alignItems: 'center',
   },
 
-  info: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+  avatar: {
+    marginBottom: 25,
+  },
+
+  buttons: {
+    flexDirection: 'row',
   },
 
   infoLine: {
@@ -58,13 +53,10 @@ const userFragment = gql`
     color: '#BDC0CB',
   },
 
-  chatButton: {
-    width: '38%',
+  button: {
+    width: '30%',
     alignSelf: 'center',
-  },
-
-  backgroundImage: {
-    resizeMode: 'cover',
+    marginHorizontal: 5,
   },
 })
 export default class UserHeading extends PureComponent {
@@ -80,27 +72,26 @@ export default class UserHeading extends PureComponent {
   render() {
     const { style, styleSheet, user, onChatPress } = this.props;
 
-    const avatarUrl = user.avatar
-      ? user.avatar.url
-      : 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg';
-
     return (
-      <ImageBackground source={{ uri: avatarUrl }} style={[styleSheet.root, style]} imageStyle={styleSheet.backgroundImage}>
-        <Gradient>
-          <View style={styleSheet.info}>
-            <H2 inverse style={[styleSheet.infoLine, styleSheet.infoLine1]}>
-              {user.name}
-            </H2>
-            <Text note style={[styleSheet.infoLine, styleSheet.infoLine2]}>
-              {user.info.headline}
-            </Text>
-          </View>
+      <View style={[styleSheet.root, style]}>
+        <UserAvatar style={styleSheet.avatar} user={user} size={'large'} />
+        <H2 style={[styleSheet.infoLine, styleSheet.infoLine1]}>
+          {user.name}
+        </H2>
+        <Text note style={[styleSheet.infoLine, styleSheet.infoLine2]}>
+          {user.info.headline}
+        </Text>
 
-          <Button block bordered light style={styleSheet.chatButton} onPress={onChatPress}>
+        <View style={styleSheet.buttons}>
+          <Button block style={styleSheet.button} onPress={onChatPress}>
             <Text>Chat</Text>
           </Button>
-        </Gradient>
-      </ImageBackground>
+
+          <Button light bordered secondary block style={styleSheet.button} onPress={() => {}}>
+            <Text>Friends</Text>
+          </Button>
+        </View>
+      </View>
     );
   }
 }

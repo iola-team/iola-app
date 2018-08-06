@@ -47,6 +47,8 @@ export default (variables => ({
 
       '.large': {
         borderRadius: 8,
+        height: 168,
+        width: 168,
       },
 
       width: 40,

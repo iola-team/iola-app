@@ -39,7 +39,7 @@ const propsToVariables = props => ({
 })
 @styleSheet('Sparkle.UserScreen', {
   head: {
-    height: 350,
+    marginTop: 55,
   },
 })
 export default class UserScreen extends Component {
@@ -55,7 +55,7 @@ export default class UserScreen extends Component {
         <Content>
           {
             user ? (
-              <View>
+              <View highlight>
                 <UserHeading
                   style={styleSheet.head}
                   user={user}
