@@ -265,8 +265,7 @@ export default (variables => ({
       'NativeBase.Icon': {
         fontSize: 35,
         color: '#BDC0CB',
-        margin: 16,
-        marginRight: 22,
+        margin: 7,
       }
     },
   }),
