@@ -19,8 +19,6 @@ import { withStyleSheet as styleSheet } from 'theme';
     fontWeight: '600',
     fontSize: 16,
     color: '#585A61',
-    textAlign: 'center',
-    flex: 1,
   }
 })
 export default class ScreenHeader extends PureComponent {
@@ -32,12 +30,11 @@ export default class ScreenHeader extends PureComponent {
   
   getSceneOptions(scene) {
     const { index, descriptor: { options } } = scene;
-    const leftPlaceholder = index > 0 ? undefined : <View />;
     const {
       styleSheet,
-      renderLeft: headerLeft = options.headerLeft || leftPlaceholder,
-      renderRight = constant(options.headerRight || <View />),
       title = options.title,
+      renderLeft = constant(options.headerLeft),
+      renderRight = constant(options.headerRight),
     } = this.props;
 
     return {
@@ -45,7 +42,7 @@ export default class ScreenHeader extends PureComponent {
 
       title,
       headerBackImage: <Icon name="ios-arrow-back" />,
-      headerLeft,
+      headerLeft: renderLeft(scene),
       headerRight: renderRight(scene),
       headerStyle: [styleSheet.header, options.headerStyle],
       headerTitleStyle: [styleSheet.title, options.headerTitleStyle],
@@ -58,6 +55,7 @@ export default class ScreenHeader extends PureComponent {
     const headerProps = {
       ...this.props,
 
+      layoutPreset: 'center',
       scene: {
         ...scene,
         descriptor: {
