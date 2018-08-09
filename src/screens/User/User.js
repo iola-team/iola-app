@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Container, Content, View, Spinner } from 'native-base';
+import { Dimensions, PanResponder } from 'react-native';
+import { Container, Content, View, Spinner, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import {
@@ -13,6 +14,10 @@ import {
 } from 'components';
 import * as routes from '../roteNames';
 
+import TabBar from './TabBar';
+
+const screenHeight = Dimensions.get("window").height;
+
 const propsToVariables = props => ({
   id: props.navigation.state.params.id,
 });
@@ -22,9 +27,6 @@ const propsToVariables = props => ({
     user: node(id: $id) {
       id
       ...UserHeading_user
-      ...UserBriefCard_user
-      ...UserFriendsCard_user
-      ...UserPhotosCard_user
     }
   }
 
@@ -48,35 +50,33 @@ export default class UserScreen extends Component {
   };
 
   render() {
-    const { styleSheet, data: { user }, navigation: { navigate } } = this.props;
+    const {
+      styleSheet, data: { user },
+      navigation,
+      children,
+    } = this.props;
 
     return (
       <Container>
-        <Content>
-          {
-            user ? (
-              <View highlight>
+        <Content contentContainerStyle={{ flex: 1 }}>
+        {
+          user ? (
+            <Fragment>
+              <View highlight style={{ marginBottom: 10 }}>
                 <UserHeading
                   style={styleSheet.head}
                   user={user}
-                  onBackPress={() => goBack()}
-                  onChatPress={() => navigate(routes.CHANNEL, { userId: user.id })}
+                  onBackPress={() => navigation.goBack()}
+                  onChatPress={() => navigation.navigate(routes.CHANNEL, { userId: user.id })}
                 />
-                <View horizontalPadder>
-                  <UserBriefCard user={user} />
-                  <UserFriendsCard
-                    user={user}
-                    onItemPress={id => (
-                      navigate({ routeName: routes.USER, params: { id }, key: id })
-                    )}
-                  />
-                  <UserPhotos userId={user.id} />
-                </View>
               </View>
-            ) : (
-              <Spinner />
-            )
-          }
+
+              <TabBar navigation={navigation}/>
+            </Fragment>
+          ) : (
+            <Spinner />
+          )
+        }
         </Content>
       </Container>
     );
