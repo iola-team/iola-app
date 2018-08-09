@@ -30,6 +30,7 @@ const propsToVariables = props => ({
 @styleSheet('Sparkle.UserScreenHead', {
   head: {
     marginTop: 55,
+    marginBottom: 40,
   },
 })
 export default class UserScreenHead extends Component {
@@ -39,20 +40,19 @@ export default class UserScreenHead extends Component {
       style,
       styleSheet, data: { user },
       navigation,
+      descriptors,
     } = this.props;
 
     return user ? (
-      <View style={style}>
-        <View highlight style={{ marginBottom: 10 }}>
-          <UserHeading
-            style={styleSheet.head}
-            user={user}
-            onBackPress={() => navigation.goBack()}
-            onChatPress={() => navigation.navigate(routes.CHANNEL, { userId: user.id })}
-          />
-        </View>
+      <View style={style} highlight>
+        <UserHeading
+          style={styleSheet.head}
+          user={user}
+          onBackPress={() => navigation.goBack()}
+          onChatPress={() => navigation.navigate(routes.CHANNEL, { userId: user.id })}
+        />
 
-        <TabBar navigation={navigation}/>
+        <TabBar navigation={navigation} descriptors={descriptors} />
       </View>
     ) : (
       <Spinner />

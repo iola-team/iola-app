@@ -1,28 +1,61 @@
 import React, { Component } from 'react';
-import { View, Button, Text } from 'native-base';
+import { View as ViewRN } from 'react-native';
+import { View, Text } from 'native-base';
+import { map } from 'lodash';
 
-import { USER_FRIENDS, USER_INFO, USER_PHOTOS } from 'screens';
 
+import { withStyle } from 'theme';
+import { TouchableOpacity } from 'components';
+
+@withStyle('Sparkle.UserTabBar', {
+  flexDirection: 'row',
+  paddingHorizontal: 20,
+
+  'Sparkle.TouchableOpacity': {
+    flex: 1,
+    alignItems: 'center',
+
+    'NativeBase.Text': {
+      lineHeight: 45,
+      borderBottomColor: 'transparent',
+      borderBottomWidth: 2,
+      paddingHorizontal: 10,
+    },
+
+    '.primary': {
+      'NativeBase.Text': {
+        borderBottomColor: '#5F96F2',
+      },
+    }
+  }
+})
 export default class TabBar extends Component {
-  render() {
-    const {
-      navigation,
-    } = this.props;
+  navigateToTab(key) {
+    const { navigation: { navigate } } = this.props;
+
+    setTimeout(() => navigate(key));
+  }
+
+  renderTab({ options, key }) {
+    const { navigation: { state, navigate } } = this.props;
+    const isActive = state.routes[state.index].key === key;
 
     return (
-      <View pointerEvents="box-none" style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
-        <Button onPress={() => navigation.navigate(USER_PHOTOS)}>
-          <Text>Photos</Text>
-        </Button>
+      <TouchableOpacity key={key} primary={isActive} onPress={() => this.navigateToTab(key)}>
+        <Text>{options.title || key}</Text>
+      </TouchableOpacity>
+    );
+  }
 
-        <Button onPress={() => navigation.navigate(USER_INFO)}>
-          <Text>Info</Text>
-        </Button>
+  render() {
+    const { style, descriptors } = this.props;
 
-        <Button onPress={() => navigation.navigate(USER_FRIENDS)}>
-          <Text>Friends</Text>
-        </Button>
-      </View>
+    return (
+      <ViewRN style={style}>
+        {
+          map(descriptors, ::this.renderTab)
+        }
+      </ViewRN>
     );
   }
 }

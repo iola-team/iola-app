@@ -10,6 +10,12 @@ export default (variables => ({
       },
 
       'NativeBase.Icon': {},
+
+      '.primary': {
+        'NativeBase.Text': {
+          color: variables.brandPrimary,
+        }
+      }
     },
 
     'NativeBase.Container': {

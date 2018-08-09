@@ -16,6 +16,7 @@ export ImageView from './ImageView';
 export ProfileFieldsEdit from './ProfileFieldsEdit';
 export Chat from './Chat';
 export ChatList from './ChatList';
+export TouchableOpacity from './TouchableOpacity';
 
 // Navigation
 export ScreenHeader from './ScreenHeader';

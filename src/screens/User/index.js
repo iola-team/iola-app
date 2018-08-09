@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Animated, Dimensions, ScrollView } from 'react-native';
 import { Text, View, Container, Content } from 'native-base';
-import { createMaterialTopTabNavigator } from 'react-navigation';
+import { createMaterialTopTabNavigator, createNavigator } from 'react-navigation';
 import { debounce } from 'lodash';
 
 export UserInfoTab from './UserInfoTab';
@@ -11,12 +11,16 @@ export UserPhotosTab from './UserPhotosTab';
 import UserScreenHead from './UserScreenHead';
 
 export default (routes, config = {}) => {
-  const Tabs = createMaterialTopTabNavigator(routes, {
+  const routerConfigs = {
+    ...config,
     tabBarComponent: props => null,
     animationEnabled: false,
     swipeEnabled: false,
     lazy: true,
-  });
+  }
+
+  const Tabs = createMaterialTopTabNavigator(routes, routerConfigs);
+  const Header = createNavigator(UserScreenHead, Tabs.router, routerConfigs);
 
   return class UserNavigator extends Component {
     static router = Tabs.router;
@@ -36,7 +40,7 @@ export default (routes, config = {}) => {
     render() {
       const { navigation } = this.props;
       const header = (
-        <UserScreenHead navigation={navigation} />
+        <Header navigation={navigation} />
       );
 
       const screenProps = {
