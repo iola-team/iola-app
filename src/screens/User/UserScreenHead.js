@@ -38,7 +38,8 @@ export default class UserScreenHead extends Component {
   render() {
     const {
       style,
-      styleSheet, data: { user },
+      styleSheet: styles,
+      data: { user },
       navigation,
       descriptors,
     } = this.props;
@@ -46,13 +47,16 @@ export default class UserScreenHead extends Component {
     return user ? (
       <View style={style} highlight>
         <UserHeading
-          style={styleSheet.head}
+          style={styles.head}
           user={user}
           onBackPress={() => navigation.goBack()}
           onChatPress={() => navigation.navigate(routes.CHANNEL, { userId: user.id })}
         />
 
-        <TabBar navigation={navigation} descriptors={descriptors} />
+        <TabBar
+          navigation={navigation}
+          descriptors={descriptors}
+        />
       </View>
     ) : (
       <Spinner />

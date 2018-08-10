@@ -17,6 +17,7 @@ export ProfileFieldsEdit from './ProfileFieldsEdit';
 export Chat from './Chat';
 export ChatList from './ChatList';
 export TouchableOpacity from './TouchableOpacity';
+export Shadow from './Shadow';
 
 // Navigation
 export ScreenHeader from './ScreenHeader';
