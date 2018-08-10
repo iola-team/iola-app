@@ -174,8 +174,8 @@ const resolvers = {
       return {
         ...connection,
         totalCount: chatMessages.length,
-      }
-    }
+      };
+    },
   },
 };
 
