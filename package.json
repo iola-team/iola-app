@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "info": "npm-scripts-info",
     "prestart": "yarn run schema:generate",
     "start": "concurrently -p name -n \"schemas,server\" \"yarn run schema:watch\" \"yarn run server:start\"",
     "server:start": "REACT_DEBUGGER=\"yarn run debugger\" react-native start --reset-cache --config $PWD/rn-cli.config.js",
@@ -23,6 +24,16 @@
     "storybook:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchStories.js",
     "tools:generate-component": "generact ./src/components/ComponentTemplate/index.js --root ./src/components/",
     "postinstall": "sh ./scripts/postinstall.sh"
+  },
+  "scripts-info": {
+    "info": "Displays information about the scripts",
+    "start": "Run the dev server",
+    "log:android": "Read the Android app logs",
+    "run:android": "Build the Android app",
+    "log:ios": "Read the iOS app logs",
+    "run:ios": "Build the iOS app",
+    "storybook": "Run the Storybook server",
+    "run:android-storybook": "Build the Storybook app for Android"
   },
   "config": {
     "react-native-storybook-loader": {
@@ -62,6 +73,7 @@
     "native-base": "^2.5.1",
     "native-base-shoutem-theme": "github:greyexpert/theme#master",
     "node-libs-react-native": "^1.0.2",
+    "npm-scripts-info": "^0.3.9",
     "promise-delay": "^2.1.0",
     "prop-types": "^15.6.2",
     "react": "16.3.2",
@@ -74,7 +86,6 @@
     "react-native-confirmation-code-input": "^1.0.4",
     "react-native-device-info": "^0.22.2",
     "react-native-event-source": "^1.0.1",
-    "react-native-extra-dimensions-android": "^0.21.0",
     "react-native-fetch-blob": "^0.10.8",
     "react-native-image-crop-picker": "^0.20.3",
     "react-native-image-zoom-viewer": "^2.2.5",
