@@ -6,7 +6,7 @@ import {
   Text,
 } from 'native-base';
 
-export default class FieldListSection extends PureComponent {
+export default class FieldSection extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
   };

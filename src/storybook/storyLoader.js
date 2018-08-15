@@ -15,6 +15,8 @@ function loadStories() {
   require('../components/ComponentTemplate/ComponentTemplate.stories');
   require('../components/DatePicker/DatePicker.stories');
   require('../components/FieldForm/FieldForm.stories');
+  require('../components/FieldInput/FieldInput.stories');
+  require('../components/FieldView/FieldView.stories');
   require('../components/FriendList/FriendList.stories');
   require('../components/ImagePicker/ImagePicker.stories');
   require('../components/ImagePickerActionSheet/ImagePickerActionSheet.stories');
@@ -50,6 +52,8 @@ const stories = [
   '../components/ComponentTemplate/ComponentTemplate.stories',
   '../components/DatePicker/DatePicker.stories',
   '../components/FieldForm/FieldForm.stories',
+  '../components/FieldInput/FieldInput.stories',
+  '../components/FieldView/FieldView.stories',
   '../components/FriendList/FriendList.stories',
   '../components/ImagePicker/ImagePicker.stories',
   '../components/ImagePickerActionSheet/ImagePickerActionSheet.stories',

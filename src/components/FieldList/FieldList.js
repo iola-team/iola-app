@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { View as ViewRN } from 'react-native';
 import { groupBy, map } from 'lodash'
 
-import Section from './FieldListSection';
+import Section from '../FieldSection';
 
 const renderSection = ({ key, label, items }, renderItem) => (
   <Section key={key} label={label}>

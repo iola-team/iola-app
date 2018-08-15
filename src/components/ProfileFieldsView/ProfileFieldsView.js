@@ -7,7 +7,7 @@ import { View as ViewRN } from 'react-native';
 import { Label, Body, Text } from 'native-base';
 
 import ProfileFieldList from '../ProfileFieldList';
-import { Item } from '../FieldList';
+import FieldItem from '../FieldItem';
 
 const fieldFragment = gql`
   fragment ProfileFieldsView_field on ProfileField {
@@ -32,12 +32,12 @@ export default class ProfileFieldsView extends Component {
 
   renderItem = (item) => {
     return (
-      <Item key={item.id}>
+      <FieldItem key={item.id}>
         <Label>{item.label}</Label>
         <Body>
           <Text>Body</Text>
         </Body>
-      </Item>
+      </FieldItem>
     );
   }
 

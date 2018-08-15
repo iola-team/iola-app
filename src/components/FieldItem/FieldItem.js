@@ -11,7 +11,7 @@ const iconTheme = {
   fontSize: 22,
 };
 
-export default withStyle('Sparkle.FieldListItem', {
+export default withStyle('Sparkle.FieldItem', {
   'NativeBase.Label': {
     flex: 1,
     color: '#585A61',

@@ -1,0 +1,32 @@
+import React, { Component, Fragment } from 'react';
+import { find } from 'lodash'
+import { Text } from 'native-base';
+
+import { withStyle } from 'theme';
+import FieldView from './FieldView';
+
+@withStyle('Sparkle.SelectView')
+export default class SelectView extends Component {
+  render() {
+    const {
+      value: rawValue,
+      label,
+      options,
+      ...props
+    } = this.props;
+
+    const value = rawValue || [];
+    const selectedLabels = value.map(value => find(options, { value }).label)
+
+    return (
+      <FieldView
+        label={label}
+        {...props}
+      >
+        <Text note={!value.length}>
+          {!!value.length ? selectedLabels.join(', ') : placeholder}
+        </Text>
+      </FieldView>
+    );
+  }
+}
