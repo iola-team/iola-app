@@ -21,12 +21,12 @@ const userFragment = gql`
       accountType {
         fields(on: EDIT) {
           id
-          ...FieldForm_field
+          ...ProfileFieldForm_field
         }
       }
       values {
         id
-        ...FieldForm_value
+        ...ProfileFieldForm_value
       }
     }
   }
@@ -47,11 +47,13 @@ const saveMutation = gql`
           headline
           location
         }
-      }
 
-      nodes {
-        id
-        ...FieldForm_value
+        profile {
+          values {
+            id
+            ...ProfileFieldForm_value
+          }
+        }
       }
     }
   }

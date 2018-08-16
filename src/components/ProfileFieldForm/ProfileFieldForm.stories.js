@@ -549,11 +549,9 @@ const mutationQuery = gql`
 `;
 
 const WithData = ({ userId: id }) => {
-  let form;
+  let formSubmit;
 
-  button('Submit', () => {
-    form._root.submit();
-  });
+  button('Submit', () => formSubmit());
 
   return (
     <Query query={fieldsQuery} variables={{ id }}>
@@ -563,7 +561,9 @@ const WithData = ({ userId: id }) => {
             <Mutation mutation={mutationQuery} onCompleted={action('onMutationComplete')}>
               {(mutate) => (
                 <ProfileFieldForm
-                  ref={r => form = r}
+                  onFormReady={({ submit }) => {
+                    formSubmit = submit;
+                  }}
                   fields={fieldsData.user.profile.accountType.fields}
                   values={loading ? undefined : valuesData.user.profile.values}
                   onSubmit={(values) => {

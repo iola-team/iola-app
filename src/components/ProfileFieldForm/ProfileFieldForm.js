@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
-import { groupBy, map, first, isUndefined, get, noop, filter } from 'lodash';
+import { groupBy, get, noop, filter } from 'lodash';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import * as Yup from 'yup';
-import {
-  View,
-  Text,
-  Button,
-} from 'native-base';
 
-import Section from '../FieldSection';
+import { withStyle } from 'theme';
+import ProfileFieldList from '../ProfileFieldList';
 import Formik from './Formik';
 import Field from './Field';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 const getValuesByField = (fields, values) => {
   const groups = groupBy(values || [], 'field.id');
@@ -40,15 +35,13 @@ const fieldFragment = gql`
     name
     label
     isRequired
-    section {
-      id
-      label
-    }
 
+    ...ProfileFieldList_field
     ...ProfileFieldFormField_field
   }
   
   ${Field.fragments.field}
+  ${ProfileFieldList.fragments.field}
 `;
 
 const valueFragment = gql`
@@ -58,13 +51,15 @@ const valueFragment = gql`
       id
     }
 
+    ...ProfileFieldList_value
     ...ProfileFieldFormField_value
   }
 
   ${Field.fragments.value}
+  ${ProfileFieldList.fragments.value}
 `;
 
-@styleSheet('Sparkle.ProfileFieldForm')
+@withStyle('Sparkle.ProfileFieldForm')
 export default class ProfileFieldForm extends Component {
   static fragments = {
     field: fieldFragment,
@@ -106,6 +101,10 @@ export default class ProfileFieldForm extends Component {
     return this.form.submitForm();
   }
 
+  renderItem = form => ({ field, ...props }) => (
+    <Field {...props} key={field.id} field={field} form={form} />
+  );
+
   render() {
     const { style, fields: profileFields, values, onSubmit, onSubmitError } = this.props;
     const valuesByField = getValuesByField(profileFields, values);
@@ -122,13 +121,6 @@ export default class ProfileFieldForm extends Component {
     });
 
     const validationSchema = Yup.object().shape(fieldSchemas);
-    const sections = map(
-      groupBy(profileFields, 'section.id'),
-      fields => ({
-        ...fields[0].section,
-        fields,
-      }),
-    );
 
     return (
       <Formik
@@ -153,25 +145,11 @@ export default class ProfileFieldForm extends Component {
         }}
       >
         {form => (
-          <View style={style}>
-            {
-              sections.map(({ id, label, fields }) => (
-                <Section key={id} label={label}>
-                  {
-                    fields.map((field, index) => (
-                      <Field
-                        key={field.id}
-                        field={field}
-                        value={valuesByField[field.id]}
-                        form={form}
-                        last={fields.length === (index + 1)}
-                      />
-                    ))
-                  }
-                </Section>
-              ))
-            }
-          </View>
+          <ProfileFieldList
+            fields={profileFields}
+            values={values}
+            renderItem={this.renderItem(form)}
+          />
         )}
       </Formik>
     );

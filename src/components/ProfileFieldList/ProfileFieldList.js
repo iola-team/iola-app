@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -6,6 +6,7 @@ import { View as ViewRN } from 'react-native';
 import { groupBy, map, get } from 'lodash'
 
 import FieldList from '../FieldList';
+import Field from '../ProfileFieldForm/Field'
 
 const fieldFragment = gql`
   fragment ProfileFieldList_field on ProfileField {
@@ -26,7 +27,7 @@ const valueFragment = gql`
   }
 `;
 
-export default class ProfileFieldList extends Component {
+export default class ProfileFieldList extends PureComponent {
   static fragments = {
     field: fieldFragment,
     value: valueFragment,
@@ -61,16 +62,22 @@ export default class ProfileFieldList extends Component {
   }
 
   buildItems(fields, values) {
-    const valuesByField = this.buildValues(values);
+    const valuesByField = this.buildValues(fields, values);
 
-    return fields.map(field => ({
+    return fields.map((field, index) => ({
       field,
-      value: get(valuesByField, [field.id, 0]),
+      value: valuesByField[field.id],
+      last: fields.length === (index + 1),
     }));
   }
 
-  buildValues(values) {
-    return groupBy(values, 'field.id');
+  buildValues(fields, values) {
+    const groupedByField = groupBy(values || [], 'field.id');
+
+    return fields.reduce((result, field) => ({
+      ...result,
+      [field.id]: values && get(groupedByField, [field.id, 0], null),
+    }), {});
   }
 
   render() {
