@@ -10,13 +10,12 @@ import {
   Toast,
 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme/index';
+import { withStyleSheet as styleSheet } from 'theme';
 import ProfileFieldForm from '../ProfileFieldForm';
 
 const userFragment = gql`
   fragment ProfileFieldsEdit_user on User {
     id
-    
     profile {
       accountType {
         fields(on: EDIT) {

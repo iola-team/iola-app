@@ -29,16 +29,10 @@ export default class ProfileFieldViewDate extends PureComponent {
     data: fragmentProp(dataFragment),
   };
 
-  static defaultProps = {
-    data: {
-      dateValue: undefined,
-    },
-  };
-
   render() {
     const {
       field: { label },
-      data: { dateValue },
+      data,
       ...props
     } = this.props;
 
@@ -47,7 +41,7 @@ export default class ProfileFieldViewDate extends PureComponent {
         {...props}
         type="date"
         label={label}
-        value={dateValue}
+        value={data && data.dateValue}
       />
     );
   }

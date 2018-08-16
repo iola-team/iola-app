@@ -38,16 +38,10 @@ export default class ProfileFieldViewSelect extends PureComponent {
     data: fragmentProp(valueFragment),
   };
 
-  static defaultProps = {
-    data: {
-      arrayValue: undefined,
-    },
-  };
-
   render() {
     const {
       field: { label, configs: { options } },
-      data: { arrayValue },
+      data,
       ...props
     } = this.props;
 
@@ -57,7 +51,7 @@ export default class ProfileFieldViewSelect extends PureComponent {
         type="select"
         options={options}
         label={label}
-        value={arrayValue}
+        value={data && data.arrayValue}
       />
     );
   }

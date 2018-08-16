@@ -436,63 +436,24 @@ const resolvers = {
 
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
-const fieldsQuery = gql`
+const userQuery = gql`
   query($id: ID!) {
     user: node(id: $id) {
       id
-      ...on User {
-        profile {
-          accountType {
-            fields {
-              ...ProfileFieldsView_field
-            }
-          }
-        }
-      }
+      ...ProfileFieldsView_user
     }
   }
 
-  ${ProfileFieldsView.fragments.field}
+  ${ProfileFieldsView.fragments.user}
 `;
 
-const valuesQuery = gql`
-  query($id: ID!) {
-    user: node(id: $id) {
-      id
-      ...on User {
-        profile {
-          values {
-            ...ProfileFieldsView_value
-          }
-        }
-      }
-    }
-  }
-
-  ${ProfileFieldsView.fragments.value}
-`;
-
-const WithData = ({ userId: id }) => {
-  return (
-    <Query query={fieldsQuery} variables={{ id }}>
-      {({ data: fieldsData, loading }) => !loading && (
-        <Query query={valuesQuery} variables={{ id }}>
-          {({ data: valuesData, loading }) => {
-            const fields = fieldsData.user.profile.accountType.fields;
-            const values = loading ? [] : valuesData.user.profile.values;
-
-            return (
-              <ProfileFieldsView
-                fields={fields}
-                values={values}
-              />
-            );
-          }}
-        </Query>
-      )}
-    </Query>
-  );
-};
+const WithData = ({ userId: id }) => (
+  <Query query={userQuery} variables={{ id }}>
+    {({ data, loading }) => !loading && (
+      <ProfileFieldsView user={data.user} />
+    )}
+  </Query>
+);
 
 // Stories
 stories.add('With filled data', () => <WithData userId="User:1" />);

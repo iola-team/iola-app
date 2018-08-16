@@ -29,16 +29,10 @@ export default class ProfileFieldViewSwitch extends PureComponent {
     data: fragmentProp(valueFragment),
   };
 
-  static defaultProps = {
-    data: {
-      booleanValue: undefined,
-    },
-  };
-
   render() {
     const {
       field: { label },
-      data: { booleanValue },
+      data,
       ...props
     } = this.props;
 
@@ -47,7 +41,7 @@ export default class ProfileFieldViewSwitch extends PureComponent {
         {...props}
         type="switch"
         label={label}
-        value={booleanValue}
+        value={data && data.booleanValue}
       />
     );
   }

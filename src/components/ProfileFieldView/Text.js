@@ -35,16 +35,10 @@ export default class ProfileFieldViewText extends PureComponent {
     data: fragmentProp(dataFragment),
   };
 
-  static defaultProps = {
-    data: {
-      stringValue: undefined,
-    },
-  };
-
   render() {
     const {
       field: { label, configs: { secure, multiline } },
-      data: { stringValue },
+      data,
       ...props
     } = this.props;
 
@@ -55,7 +49,7 @@ export default class ProfileFieldViewText extends PureComponent {
         secure={secure}
         multiline={multiline}
         label={label}
-        value={stringValue}
+        value={data && data.stringValue}
       />
     );
   }

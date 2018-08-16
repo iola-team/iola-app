@@ -6,63 +6,54 @@ import { graphql } from 'react-apollo';
 
 import ProfileFieldList from '../ProfileFieldList';
 import ProfileFieldView from '../ProfileFieldView';
+import ProfileFieldForm from '../ProfileFieldForm'
 
-const fieldFragment = gql`
-  fragment ProfileFieldsView_field on ProfileField {
+const userFragment = gql`
+  fragment ProfileFieldsView_user on User {
     id
-    ...ProfileFieldList_field
-    ...ProfileFieldView_field
+    profile {
+      accountType {
+        fields(on: VIEW) {
+          id
+          ...ProfileFieldForm_field
+          ...ProfileFieldList_field
+        }
+      }
+      values {
+        id
+        ...ProfileFieldForm_value
+        ...ProfileFieldList_value
+      }
+    }
   }
-  
-  ${ProfileFieldView.fragments.field}
-  ${ProfileFieldList.fragments.field}
-`;
 
-const valueFragment = gql`
-  fragment ProfileFieldsView_value on ProfileFieldValue {
-    id
-    ...ProfileFieldView_value
-    ...ProfileFieldList_value
-  }
-
-  ${ProfileFieldView.fragments.value}
+  ${ProfileFieldForm.fragments.field}
+  ${ProfileFieldForm.fragments.value}
   ${ProfileFieldList.fragments.value}
+  ${ProfileFieldList.fragments.field}
 `;
 
 export default class ProfileFieldsView extends Component {
   static fragments = {
-    field: fieldFragment,
-    value: valueFragment,
+    user: userFragment,
   }
 
   static propTypes = {
-    fields: PropTypes.arrayOf(
-      fragmentProp(fieldFragment).isRequired
-    ).isRequired,
-
-    values: PropTypes.arrayOf(
-      fragmentProp(fieldFragment).isRequired
-    ),
+    user: fragmentProp(userFragment).isRequired,
   };
 
-  renderItem = ({ field, value }) => {
-    return (
-      <ProfileFieldView
-        key={field.id}
-        field={field}
-        value={value}
-      />
-    );
-  }
+  renderItem = ({ field, ...props }) => (
+    <ProfileFieldView {...props} key={field.id} field={field} />
+  );
 
   render() {
-    const { style, fields, values } = this.props;
+    const { style, user: { profile } } = this.props;
 
     return (
       <ProfileFieldList
         style={style}
-        fields={fields}
-        values={values}
+        fields={profile.accountType.fields}
+        values={profile.values}
         renderItem={this.renderItem}
       />
     );
