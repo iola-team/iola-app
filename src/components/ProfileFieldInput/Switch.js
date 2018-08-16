@@ -34,6 +34,7 @@ export default class ProfileFieldInputSwitch extends PureComponent {
   };
 
   static propTypes = {
+    input: PropTypes.any,
     onChange: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
     data: fragmentProp(dataFragment),
@@ -43,7 +44,7 @@ export default class ProfileFieldInputSwitch extends PureComponent {
     const {
       field,
       data,
-      value,
+      input,
       ...props,
     } = this.props;
 
@@ -54,7 +55,7 @@ export default class ProfileFieldInputSwitch extends PureComponent {
 
         type="switch"
         label={field.label}
-        value={value || data && data.booleanValue}
+        value={input || data && data.booleanValue}
       />
     );
   }

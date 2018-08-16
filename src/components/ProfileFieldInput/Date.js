@@ -51,6 +51,7 @@ export default class FieldDate extends PureComponent {
   };
 
   static propTypes = {
+    input: PropTypes.any,
     field: fragmentProp(fieldFragment).isRequired,
     data: fragmentProp(valueFragment),
   };
@@ -59,7 +60,7 @@ export default class FieldDate extends PureComponent {
     const {
       field,
       data,
-      value,
+      input,
       ...props
     } = this.props;
 
@@ -70,7 +71,7 @@ export default class FieldDate extends PureComponent {
         type="date"
         placeholder={'Not specified'}
         label={field.label}
-        value={value || data && data.dateValue}
+        value={input || data && data.dateValue}
         minDate={new Date(field.configs.minDate)} // TODO: handle custom scalars on graph layer
         maxDate={new Date(field.configs.maxDate)} // TODO: handle custom scalars on graph layer
       />

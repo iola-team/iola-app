@@ -70,6 +70,7 @@ export default class ProfileFieldInputText extends PureComponent {
   };
 
   static propTypes = {
+    input: PropTypes.any,
     onChange: PropTypes.func.isRequired,
     onError: PropTypes.func.isRequired,
     error: PropTypes.string,
@@ -81,7 +82,7 @@ export default class ProfileFieldInputText extends PureComponent {
     const {
       field,
       data,
-      value,
+      input,
       ...props,
     } = this.props;
 
@@ -93,7 +94,7 @@ export default class ProfileFieldInputText extends PureComponent {
         type="text"
         placeholder="Enter here..."
         label={field.label}
-        value={value || data && data.stringValue}
+        value={input || data && data.stringValue}
       />
     );
   }

@@ -11,8 +11,7 @@ import {
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme/index';
-import FieldForm from '../FieldForm';
-import Field from '../FieldForm/Field'
+import ProfileFieldForm from '../ProfileFieldForm';
 
 const userFragment = gql`
   fragment ProfileFieldsEdit_user on User {
@@ -32,8 +31,8 @@ const userFragment = gql`
     }
   }
   
-  ${FieldForm.fragments.field}
-  ${FieldForm.fragments.value}
+  ${ProfileFieldForm.fragments.field}
+  ${ProfileFieldForm.fragments.value}
 `;
 
 const saveMutation = gql`
@@ -57,7 +56,7 @@ const saveMutation = gql`
     }
   }
   
-  ${FieldForm.fragments.value}
+  ${ProfileFieldForm.fragments.value}
 `
 @graphql(saveMutation, {
   name: 'saveValuesMutation',
@@ -125,7 +124,7 @@ export default class ProfileFieldsEdit extends Component {
 
     return (
       <View style={[styleSheet.root, style]}>
-        <FieldForm
+        <ProfileFieldForm
           fields={profile.accountType.fields}
           values={profile.values}
           onSubmit={this.onSubmit}

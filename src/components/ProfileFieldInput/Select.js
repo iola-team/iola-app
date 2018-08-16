@@ -43,6 +43,7 @@ export default class ProfileFieldInputSelect extends PureComponent {
   };
 
   static propTypes = {
+    input: PropTypes.any,
     onChange: PropTypes.func.isRequired,
     onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
@@ -53,7 +54,7 @@ export default class ProfileFieldInputSelect extends PureComponent {
     const {
       field,
       data,
-      value,
+      input,
       ...props
     } = this.props;
 
@@ -65,7 +66,7 @@ export default class ProfileFieldInputSelect extends PureComponent {
         type="select"
         placeholder="Not specified"
         label={field.label}
-        value={value || data && data.arrayValue}
+        value={input || data && data.arrayValue}
       />
     );
   }

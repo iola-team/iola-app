@@ -8,9 +8,9 @@ import { storiesOf } from '@storybook/react-native';
 import delay from 'promise-delay';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
-import FieldForm from './FieldForm';
+import ProfileFieldForm from './ProfileFieldForm';
 
-const stories = storiesOf('Components/FieldForm', module);
+const stories = storiesOf('Components/ProfileFieldForm', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
@@ -501,7 +501,7 @@ const fieldsQuery = gql`
             id
             fields {
               id
-              ...FieldForm_field
+              ...ProfileFieldForm_field
             }
           }
         }
@@ -509,7 +509,7 @@ const fieldsQuery = gql`
     }
   }
   
-  ${FieldForm.fragments.field}
+  ${ProfileFieldForm.fragments.field}
 `;
 
 const valuesQuery = gql`
@@ -520,14 +520,14 @@ const valuesQuery = gql`
         profile {
           values {
             id
-            ...FieldForm_value
+            ...ProfileFieldForm_value
           }
         }
       }
     }
   }
 
-  ${FieldForm.fragments.value}
+  ${ProfileFieldForm.fragments.value}
 `;
 
 const mutationQuery = gql`
@@ -535,16 +535,17 @@ const mutationQuery = gql`
     saveProfileFieldValues(input: $input) {
       user {
         id
-      }
-
-      nodes {
-        id
-        ...FieldForm_value
+        profile {
+          values {
+            id
+            ...ProfileFieldForm_value
+          }
+        }
       }
     }
   }
 
-  ${FieldForm.fragments.value}
+  ${ProfileFieldForm.fragments.value}
 `;
 
 const WithData = ({ userId: id }) => {
@@ -561,7 +562,7 @@ const WithData = ({ userId: id }) => {
           {({ data: valuesData, loading }) => (
             <Mutation mutation={mutationQuery} onCompleted={action('onMutationComplete')}>
               {(mutate) => (
-                <FieldForm
+                <ProfileFieldForm
                   ref={r => form = r}
                   fields={fieldsData.user.profile.accountType.fields}
                   values={loading ? undefined : valuesData.user.profile.values}
@@ -597,7 +598,7 @@ stories.add('Loading data', () => {
   return (
     <Query query={fieldsQuery} variables={{ id }} pollInterval={1000}>
       {({ data: fieldsData, loading }) => !loading && (
-        <FieldForm
+        <ProfileFieldForm
           fields={fieldsData.user.profile.accountType.fields}
           values={undefined}
           onSubmit={action('onSubmit')}

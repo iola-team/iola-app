@@ -53,7 +53,12 @@ const valueFragment = gql`
 const getFieldComponent = ({ field }) => types[field.presentation];
 
 export default class ProfileFieldInput extends Component {
-  static formOptions(props) {
+  static formOptions({ value, ...restProps }) {
+    const props = {
+      ...restProps,
+      data: value && value.data,
+    };
+
     const Component = getFieldComponent(props);
 
     return isFunction(Component.formOptions)
@@ -67,19 +72,19 @@ export default class ProfileFieldInput extends Component {
   };
 
   static propTypes = {
+    input: PropTypes.any,
     field: fragmentProp(fieldFragment).isRequired,
     value: fragmentProp(valueFragment),
   };
 
   render() {
-    const { value, field, ...props } = this.props;
+    const { value, field, input, ...props } = this.props;
     const Component = getFieldComponent(this.props);
-
-    console.log('Value', value);
 
     return (
       <Component
         {...props}
+        input={input}
         field={field}
         data={value && value.data}
       />

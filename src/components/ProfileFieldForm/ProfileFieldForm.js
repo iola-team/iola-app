@@ -15,27 +15,27 @@ import Formik from './Formik';
 import Field from './Field';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
-const getDataByField = (fields, values) => {
-  const valuesByField = groupBy(values || [], 'field.id');
+const getValuesByField = (fields, values) => {
+  const groups = groupBy(values || [], 'field.id');
 
   return fields.reduce((result, { id }) => ({
     ...result,
-    [id]: values && get(valuesByField, [id, 0, 'data'], null),
+    [id]: values && get(groups, [id, 0], null),
   }), {})
 };
 
-const mapFieldOptions = (fields, dataList, mapper) => fields.reduce((result, field) => {
-  const data = dataList[field.id];
-  const options = Field.getFormOptions({ field, data });
+const mapFieldOptions = (fields, valuesList, mapper) => fields.reduce((result, field) => {
+  const value = valuesList[field.id];
+  const options = Field.getFormOptions({ field, value });
 
   return {
     ...result,
-    [field.id]: mapper(options, field, data),
+    [field.id]: mapper(options, field, value),
   };
 }, {});
 
 const fieldFragment = gql`
-  fragment FieldForm_field on ProfileField {
+  fragment ProfileFieldForm_field on ProfileField {
     id
     name
     label
@@ -45,29 +45,27 @@ const fieldFragment = gql`
       label
     }
 
-    ...Field_field
+    ...ProfileFieldFormField_field
   }
   
   ${Field.fragments.field}
 `;
 
 const valueFragment = gql`
-  fragment FieldForm_value on ProfileFieldValue {
+  fragment ProfileFieldForm_value on ProfileFieldValue {
     id
     field {
       id
     }
 
-    data {
-      ...Field_data
-    }
+    ...ProfileFieldFormField_value
   }
 
-  ${Field.fragments.data}
+  ${Field.fragments.value}
 `;
 
-@styleSheet('Sparkle.FieldForm')
-export default class FieldForm extends Component {
+@styleSheet('Sparkle.ProfileFieldForm')
+export default class ProfileFieldForm extends Component {
   static fragments = {
     field: fieldFragment,
     value: valueFragment,
@@ -110,11 +108,11 @@ export default class FieldForm extends Component {
 
   render() {
     const { style, fields: profileFields, values, onSubmit, onSubmitError } = this.props;
-    const dataByField = getDataByField(profileFields, values);
+    const valuesByField = getValuesByField(profileFields, values);
     const fieldSchemas = {};
     const initialValues = {};
 
-    mapFieldOptions(profileFields, dataByField, (options, field) => {
+    mapFieldOptions(profileFields, valuesByField, (options, field) => {
       const { id, isRequired, label } = field;
 
       fieldSchemas[id] = (options.validationSchema || Yup.mixed()).nullable().label(label);
@@ -143,7 +141,7 @@ export default class FieldForm extends Component {
         onSubmitError={onSubmitError}
         onSubmit={async (values, bag) => {
           const changedFields = filter(profileFields, ({ id }) => values[id] !== initialValues[id]);
-          const resultValues = mapFieldOptions(changedFields, dataByField, ((options, { id }) => ({
+          const resultValues = mapFieldOptions(changedFields, valuesByField, ((options, { id }) => ({
             ...options.transformResult(values[id]),
             fieldId: id,
           })));
@@ -164,7 +162,7 @@ export default class FieldForm extends Component {
                       <Field
                         key={field.id}
                         field={field}
-                        data={dataByField[field.id]}
+                        value={valuesByField[field.id]}
                         form={form}
                         last={fields.length === (index + 1)}
                       />
