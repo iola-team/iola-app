@@ -10,10 +10,10 @@ import {
   Button,
 } from 'native-base';
 
+import Section from '../FieldSection';
 import Formik from './Formik';
-import Section from './Section';
 import Field from './Field';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 
 const getDataByField = (fields, values) => {
   const valuesByField = groupBy(values || [], 'field.id');
