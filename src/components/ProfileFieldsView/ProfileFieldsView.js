@@ -6,7 +6,6 @@ import { graphql } from 'react-apollo';
 
 import ProfileFieldList from '../ProfileFieldList';
 import ProfileFieldView from '../ProfileFieldView';
-import ProfileFieldForm from '../ProfileFieldForm'
 
 const userFragment = gql`
   fragment ProfileFieldsView_user on User {
@@ -15,20 +14,20 @@ const userFragment = gql`
       accountType {
         fields(on: VIEW) {
           id
-          ...ProfileFieldForm_field
+          ...ProfileFieldView_field
           ...ProfileFieldList_field
         }
       }
       values {
         id
-        ...ProfileFieldForm_value
+        ...ProfileFieldView_value
         ...ProfileFieldList_value
       }
     }
   }
 
-  ${ProfileFieldForm.fragments.field}
-  ${ProfileFieldForm.fragments.value}
+  ${ProfileFieldView.fragments.field}
+  ${ProfileFieldView.fragments.value}
   ${ProfileFieldList.fragments.value}
   ${ProfileFieldList.fragments.field}
 `;
