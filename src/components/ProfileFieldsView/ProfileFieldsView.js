@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { View as ViewRN } from 'react-native';
-import { Label, Body, Text } from 'native-base';
 
 import ProfileFieldList from '../ProfileFieldList';
-import FieldItem from '../FieldItem';
+import FieldView from '../FieldView';
 
 const fieldFragment = gql`
   fragment ProfileFieldsView_field on ProfileField {
@@ -32,12 +30,12 @@ export default class ProfileFieldsView extends Component {
 
   renderItem = (item) => {
     return (
-      <FieldItem key={item.id}>
-        <Label>{item.label}</Label>
-        <Body>
-          <Text>Body</Text>
-        </Body>
-      </FieldItem>
+      <FieldView
+        key={item.id}
+        label={item.label}
+        type={'text'}
+        value={'Text value'}
+      />
     );
   }
 
@@ -45,12 +43,11 @@ export default class ProfileFieldsView extends Component {
     const { style, fields } = this.props;
 
     return (
-      <ViewRN style={style}>
-        <ProfileFieldList
-          fields={fields}
-          renderItem={this.renderItem}
-        />
-      </ViewRN>
+      <ProfileFieldList
+        style={style}
+        fields={fields}
+        renderItem={this.renderItem}
+      />
     );
   }
 }

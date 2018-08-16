@@ -24,7 +24,7 @@ export default class SelectView extends Component {
         {...props}
       >
         <Text note={!value.length}>
-          {!!value.length ? selectedLabels.join(', ') : placeholder}
+          {!!value.length && selectedLabels.join(', ')}
         </Text>
       </FieldView>
     );
