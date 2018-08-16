@@ -13,15 +13,14 @@ const renderSection = ({ key, label, items }, renderItem) => (
   </Section>
 );
 
+const sectionShape = PropTypes.shape({
+  label: PropTypes.string.isRequired,
+  items: PropTypes.array.isRequired,
+}).isRequired;
+
 export default class FieldList extends Component {
   static propTypes = {
-    sections: PropTypes.arrayOf(
-      PropTypes.shape({
-        label: PropTypes.string.isRequired,
-        items: PropTypes.array.isRequired,
-      }).isRequired,
-    ).isRequired,
-
+    sections: PropTypes.arrayOf(sectionShape).isRequired,
     renderItem: PropTypes.func.isRequired,
     renderSection: PropTypes.func,
   };

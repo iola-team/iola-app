@@ -9,6 +9,7 @@ import delay from 'promise-delay';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
 import ProfileFieldsView from './ProfileFieldsView';
+import ProfileFieldView from '../ProfileFieldView/ProfileFieldView'
 
 const stories = storiesOf('Components/ProfileFieldsView', module);
 
@@ -442,9 +443,7 @@ const fieldsQuery = gql`
       ...on User {
         profile {
           accountType {
-            id
             fields {
-              id
               ...ProfileFieldsView_field
             }
           }
@@ -456,11 +455,40 @@ const fieldsQuery = gql`
   ${ProfileFieldsView.fragments.field}
 `;
 
+const valuesQuery = gql`
+  query($id: ID!) {
+    user: node(id: $id) {
+      id
+      ...on User {
+        profile {
+          values {
+            ...ProfileFieldsView_value
+          }
+        }
+      }
+    }
+  }
+
+  ${ProfileFieldsView.fragments.value}
+`;
+
 const WithData = ({ userId: id }) => {
   return (
     <Query query={fieldsQuery} variables={{ id }}>
       {({ data: fieldsData, loading }) => !loading && (
-        <ProfileFieldsView fields={fieldsData.user.profile.accountType.fields} />
+        <Query query={valuesQuery} variables={{ id }}>
+          {({ data: valuesData, loading }) => {
+            const fields = fieldsData.user.profile.accountType.fields;
+            const values = loading ? [] : valuesData.user.profile.values;
+
+            return (
+              <ProfileFieldsView
+                fields={fields}
+                values={values}
+              />
+            );
+          }}
+        </Query>
       )}
     </Query>
   );
@@ -468,20 +496,5 @@ const WithData = ({ userId: id }) => {
 
 // Stories
 stories.add('With filled data', () => <WithData userId="User:1" />);
-// stories.add('No data', () => <WithData userId="User:2" />);
-// stories.add('With async data', () => <WithData userId={'User:3'} />);
-// stories.add('Loading data', () => {
-//   const id = 'User:1';
-//
-//   return (
-//     <Query query={fieldsQuery} variables={{ id }} pollInterval={1000}>
-//       {({ data: fieldsData, loading }) => !loading && (
-//         <FieldForm
-//           fields={fieldsData.user.profile.accountType.fields}
-//           values={undefined}
-//           onSubmit={action('onSubmit')}
-//         />
-//       )}
-//     </Query>
-//   );
-// });
+stories.add('No data', () => <WithData userId="User:2" />);
+stories.add('With async data', () => <WithData userId={'User:3'} />);

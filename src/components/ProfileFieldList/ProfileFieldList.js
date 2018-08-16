@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { View as ViewRN } from 'react-native';
-import { groupBy, map } from 'lodash'
+import { groupBy, map, get } from 'lodash'
 
 import FieldList from '../FieldList';
 
@@ -17,9 +17,19 @@ const fieldFragment = gql`
   }
 `;
 
+const valueFragment = gql`
+  fragment ProfileFieldList_value on ProfileFieldValue {
+    id
+    field {
+      id
+    }
+  }
+`;
+
 export default class ProfileFieldList extends Component {
   static fragments = {
     field: fieldFragment,
+    value: valueFragment,
   }
 
   static propTypes = {
@@ -27,13 +37,16 @@ export default class ProfileFieldList extends Component {
       fragmentProp(fieldFragment).isRequired
     ).isRequired,
 
+    values: PropTypes.arrayOf(
+      fragmentProp(valueFragment).isRequired
+    ),
+
     renderItem: PropTypes.func.isRequired,
     renderSection: PropTypes.func,
   };
 
-  render() {
-    const { style, fields, ...listProps } = this.props;
-    const sections = map(
+  buildSections(fields, values) {
+    return map(
       groupBy(fields, 'section.id'),
       (fields) => {
         const section = fields[0].section;
@@ -41,14 +54,32 @@ export default class ProfileFieldList extends Component {
         return {
           key: section.id,
           label: section.label,
-          items: fields,
+          items: this.buildItems(fields, values),
         };
       },
     );
+  }
+
+  buildItems(fields, values) {
+    const valuesByField = this.buildValues(values);
+
+    return fields.map(field => ({
+      field,
+      value: get(valuesByField, [field.id, 0]),
+    }));
+  }
+
+  buildValues(values) {
+    return groupBy(values, 'field.id');
+  }
+
+  render() {
+    const { style, fields, values, ...listProps } = this.props;
+    const sections = this.buildSections(fields, values);
 
     return (
       <ViewRN style={style}>
-        <FieldList  {...listProps} sections={sections} />
+        <FieldList {...listProps} sections={sections} />
       </ViewRN>
     );
   }

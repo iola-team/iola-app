@@ -21,7 +21,7 @@ export default class TextView extends Component {
         {...props}
       >
         <Text>
-          {secure ? 'Secure' : value}
+          {value && (secure ? 'Secure' : value)}
         </Text>
       </FieldView>
     );
