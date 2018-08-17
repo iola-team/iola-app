@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { getStorybookUI } from '@storybook/react-native';
-import addons from '@storybook/addons';
 
 import configure from './config';
 
