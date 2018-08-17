@@ -3,7 +3,7 @@ import { isArray, isUndefined } from 'lodash';
 import PropTypes from 'prop-types';
 import { Text } from 'native-base';
 import Picker from 'react-native-image-crop-picker';
-import FetchBlob from 'react-native-fetch-blob';
+import FetchBlob from 'rn-fetch-blob';
 
 import ActionSheet from '../ImagePickerActionSheet';
 

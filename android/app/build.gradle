@@ -148,7 +148,7 @@ android {
 dependencies {
     compile project(':react-native-device-info')
     compile project(':react-native-wheel-picker-android')
-    compile project(':react-native-fetch-blob')
+    compile project(':rn-fetch-blob')
     compile project(':react-native-image-crop-picker')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-splash-screen')
