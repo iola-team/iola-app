@@ -2,38 +2,30 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-
-import InputItem from '../Input';
 import * as Yup from 'yup';
+import { isUndefined } from 'lodash';
+
+import FieldInput from '../FieldInput';
 
 const fieldFragment = gql`
-  fragment FieldSelect_field on ProfileField {
+  fragment ProfileFieldInputSwitch_field on ProfileField {
     id
     label
-    configs {
-      ...on ProfileFieldSelectConfigs {
-        multiple
-        options {
-          label
-          value
-        }
-      }
-    }
   }
 `;
 
 const dataFragment = gql`
-  fragment FieldSelect_data on ProfileFieldSelectValue {
-    arrayValue: value
+  fragment ProfileFieldInputSwitch_data on ProfileFieldSwitchValue {
+    booleanValue: value,
   }
 `;
 
-export default class FieldSelect extends PureComponent {
+export default class ProfileFieldInputSwitch extends PureComponent {
   static formOptions({ field, data }) {
     return {
-      validationSchema: Yup.array(),
-      initialValue: data && data.arrayValue,
-      transformResult: value => ({ arrayValue: value }),
+      validationSchema: Yup.boolean(),
+      initialValue: data && data.booleanValue,
+      transformResult: value => ({ booleanValue: !!value }),
     };
   }
 
@@ -43,8 +35,8 @@ export default class FieldSelect extends PureComponent {
   };
 
   static propTypes = {
+    input: PropTypes.any,
     onChange: PropTypes.func.isRequired,
-    onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
     data: fragmentProp(dataFragment),
   };
@@ -52,16 +44,18 @@ export default class FieldSelect extends PureComponent {
   render() {
     const {
       field,
-      ...props
+      data,
+      input,
+      ...props,
     } = this.props;
 
     return (
-      <InputItem
+      <FieldInput
         {...props}
-        type="select"
-        placeholder="Not specified"
+
+        type="switch"
         label={field.label}
-        {...field.configs}
+        value={isUndefined(input) ? data && data.booleanValue : input}
       />
     );
   }
