@@ -4,7 +4,7 @@ import { storiesOf } from '@storybook/react-native';
 import moment from 'moment';
 import faker from 'faker';
 import { sampleSize } from 'lodash';
-import { withKnobs } from '@storybook/addon-knobs/react';
+import { withKnobs } from '@storybook/addon-knobs';
 
 import { getContentDecorator } from 'storybook';
 import ImageView from './ImageView';

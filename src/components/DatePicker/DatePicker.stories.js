@@ -1,5 +1,5 @@
 import React from 'react';
-import { boolean, date, withKnobs } from '@storybook/addon-knobs/react';
+import { boolean, date, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
