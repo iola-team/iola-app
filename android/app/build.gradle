@@ -147,7 +147,6 @@ android {
 
 dependencies {
     compile project(':react-native-device-info')
-    compile project(':react-native-extra-dimensions-android') // @TODO: remove it?
     compile project(':react-native-wheel-picker-android')
     compile project(':react-native-fetch-blob')
     compile project(':react-native-image-crop-picker')

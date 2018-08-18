@@ -11,7 +11,7 @@ import { BatchHttpLink } from 'apollo-link-batch-http';
 import { createUploadLink } from 'apollo-upload-client';
 import { disableFragmentWarnings } from 'graphql-tag';
 import EventSource from 'react-native-event-source';
-import { getUniqueID } from 'react-native-device-info';
+import DeviceInfo from 'react-native-device-info';
 
 import { AuthLink, ErrorLink, SSELink } from './links';
 import resolvers from './resolvers';
@@ -140,7 +140,7 @@ export default async () => {
 
   const sseLink = new SSELink({
     uri: subscriptionUri,
-    streamId: getUniqueID(),
+    streamId: DeviceInfo.getUniqueID(),
     EventSourceImpl: EventSource,
   });
 

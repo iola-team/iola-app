@@ -63,3 +63,6 @@ buck-out/
 !.tmp/schemas
 .tmp/schemas/*
 !.tmp/schemas/.gitkeep
+
+# Remove it from here on production phase
+yarn.lock
