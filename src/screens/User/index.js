@@ -50,9 +50,11 @@ export default (routes, config = {}) => {
     };
 
     updateOffset = debounce(contentOffset => this.setState({ contentOffset }), 100);
+    renderTabBar = () => <TabBar navigation={this.props.navigation} />;
 
     render() {
       const { navigation } = this.props;
+
       const screenProps = ({ data }) => {
         return {
           renderHeader: (props) => (
@@ -60,7 +62,7 @@ export default (routes, config = {}) => {
               {...props}
               user={data.user}
               navigation={navigation}
-              renderTabBar={() => <TabBar navigation={navigation} />}
+              renderTabBar={this.renderTabBar}
             />
           ),
           // contentOffset: this.state.contentOffset,

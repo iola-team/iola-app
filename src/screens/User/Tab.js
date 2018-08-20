@@ -32,23 +32,30 @@ export default class UserFriendsTab extends Component {
   //   this.syncOffset();
   // }
 
+  renderHeader = () => {
+    const {
+      screenProps: {
+        renderHeader,
+      },
+      headerStyles,
+    } = this.props;
+
+    return renderHeader({
+      style: headerStyles,
+    });
+  };
+
   render() {
     const {
       children,
       screenProps: {
         onScroll,
         contentOffset,
-        renderHeader,
       },
       scrollComponent: Scroll = ScrollView,
       contentContainerStyle,
-      headerStyles,
       ...restProps
     } = this.props;
-
-    const styledHeader = renderHeader({
-      style: headerStyles,
-    });
 
     return (
       <Scroll
@@ -57,9 +64,9 @@ export default class UserFriendsTab extends Component {
         // contentOffset={contentOffset}
         // onScroll={onScroll}
         // contentContainerStyle={[contentContainerStyle, { minHeight: 1000 }]}
-        ListHeaderComponent={styledHeader}
+        ListHeaderComponent={this.renderHeader}
       >
-        {styledHeader}
+        {this.renderHeader()}
         {children}
       </Scroll>
     );

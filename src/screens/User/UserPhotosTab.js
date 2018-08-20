@@ -13,12 +13,12 @@ export default class UserPhotosTab extends Component {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, ...props } = this.props;
     const id = navigation.state.params.id;
 
     return (
       <Tab
-        {...this.props}
+        {...props}
         headerStyles={{ marginBottom: 28 }}
         columnWrapperStyle={{ paddingHorizontal: 20 }}
         scrollComponent={PhotoList}

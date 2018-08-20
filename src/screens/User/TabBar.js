@@ -3,7 +3,6 @@ import { View as ViewRN } from 'react-native';
 import { View, Text } from 'native-base';
 import { map } from 'lodash';
 
-
 import { withStyle } from 'theme';
 import { TouchableOpacity } from 'components';
 

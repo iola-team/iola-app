@@ -10,7 +10,7 @@ const userQuery = gql`
     user: node(id: $id) {
       ...on User {
         id
-        photos {
+        photos(first: 9) {
           edges {
             ...PhotoList_edge
           }
@@ -22,7 +22,7 @@ const userQuery = gql`
   ${PhotoList.fragments.edge}
 `;
 
-class PhotoListContainer extends Component {
+export default class PhotoListContainer extends Component {
   static displayName = 'Container(PhotoList)';
   static propTypes = {
     userId: PropTypes.string.isRequired,
@@ -41,6 +41,6 @@ class PhotoListContainer extends Component {
   }
 }
 
-export default React.forwardRef((props, ref) => (
-  <PhotoListContainer {...props} forwardedRef={ref} />
-));
+// export default React.forwardRef((props, ref) => (
+//   <PhotoListContainer {...props} forwardedRef={ref} />
+// ));

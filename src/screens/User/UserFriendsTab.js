@@ -11,12 +11,12 @@ export default class UserFriendsTab extends Component {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, ...props } = this.props;
     const id = navigation.state.params.id;
 
     return (
       <Tab
-        {...this.props}
+        {...props}
         scrollComponent={FriendList}
         userId={id}
       />

@@ -24,11 +24,11 @@ export default class UserInfoTab extends Component {
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, ...props } = this.props;
     const id = navigation.state.params.id;
 
     return (
-      <Tab {...this.props}>
+      <Tab {...props}>
         <Query query={userFieldsQuery} variables={{ id }}>
           {({ data, loading }) => !loading && (
             <ProfileFieldsView user={data.user} />

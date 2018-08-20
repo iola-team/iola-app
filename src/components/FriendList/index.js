@@ -22,7 +22,7 @@ const userQuery = gql`
   ${FriendList.fragments.edge}
 `;
 
-class FriendListContainer extends Component {
+export default class FriendListContainer extends Component {
   static displayName = 'Container(FriendList)';
   static propTypes = {
     userId: PropTypes.string.isRequired,
@@ -41,6 +41,6 @@ class FriendListContainer extends Component {
   }
 }
 
-export default React.forwardRef((props, ref) => (
-  <FriendListContainer {...props} forwardedRef={ref} />
-));
+// export default React.forwardRef((props, ref) => (
+//   <FriendListContainer {...props} forwardedRef={ref} />
+// ));

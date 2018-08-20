@@ -1,14 +1,13 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import { View, Spinner, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import { UserHeading } from 'components';
 import * as routes from '../roteNames';
-import TabBar from './TabBar';
-import PropTypes from "prop-types"
 
 const userFragment = gql`
   fragment UserScreenHead_user on User {
@@ -25,7 +24,7 @@ const userFragment = gql`
     marginBottom: 40,
   },
 })
-export default class UserScreenHead extends Component {
+export default class UserScreenHead extends PureComponent {
   static fragments = {
     user: userFragment,
   };
