@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { ScrollView } from 'react-native';
 import { Text, View } from 'native-base';
 
+import { FriendList } from 'components';
 import Tab from './Tab';
 
 export default class UserFriendsTab extends Component {
@@ -10,10 +11,15 @@ export default class UserFriendsTab extends Component {
   };
 
   render() {
+    const { navigation } = this.props;
+    const id = navigation.state.params.id;
+
     return (
-      <Tab {...this.props}>
-        <Text>User Friends tab</Text>
-      </Tab>
+      <Tab
+        {...this.props}
+        scrollComponent={FriendList}
+        userId={id}
+      />
     );
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { propType as fragmentProp } from 'graphql-anywhere';
 import { ScrollView } from 'react-native';
 import { View, Spinner, Text } from 'native-base';
 
@@ -8,25 +8,17 @@ import { withStyleSheet as styleSheet } from 'theme';
 import { UserHeading } from 'components';
 import * as routes from '../roteNames';
 import TabBar from './TabBar';
+import PropTypes from "prop-types"
 
-const propsToVariables = props => ({
-  id: props.navigation.state.params.id,
-});
-
-@graphql(gql`
-  query UserDetailsQuery($id: ID!) {
-    user: node(id: $id) {
-      id
-      ...UserHeading_user
-    }
+const userFragment = gql`
+  fragment UserScreenHead_user on User {
+    id
+    ...UserHeading_user
   }
 
   ${UserHeading.fragments.user}
-`, {
-  options: props => ({
-    variables: propsToVariables(props),
-  }),
-})
+`;
+
 @styleSheet('Sparkle.UserScreenHead', {
   head: {
     marginTop: 55,
@@ -34,32 +26,41 @@ const propsToVariables = props => ({
   },
 })
 export default class UserScreenHead extends Component {
+  static fragments = {
+    user: userFragment,
+  };
+
+  static propTypes = {
+    user: fragmentProp(userFragment),
+    renderTabBar: PropTypes.func.isRequired,
+  }
 
   render() {
     const {
       style,
       styleSheet: styles,
-      data: { user },
-      navigation,
-      descriptors,
+      navigation: { goBack, navigate },
+      user,
+      renderTabBar,
     } = this.props;
 
-    return user ? (
+    return (
       <View style={style} highlight>
-        <UserHeading
-          style={styles.head}
-          user={user}
-          onBackPress={() => navigation.goBack()}
-          onChatPress={() => navigation.navigate(routes.CHANNEL, { userId: user.id })}
-        />
+        {
+          user ? (
+            <UserHeading
+              style={styles.head}
+              user={user}
+              onBackPress={() => goBack()}
+              onChatPress={() => navigate(routes.CHANNEL, { userId: user.id })}
+            />
+          ) : (
+            <Spinner/>
+          )
+        }
 
-        <TabBar
-          navigation={navigation}
-          descriptors={descriptors}
-        />
+        {renderTabBar()}
       </View>
-    ) : (
-      <Spinner />
     );
   }
 }

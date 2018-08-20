@@ -22,7 +22,7 @@ const userQuery = gql`
   ${FriendList.fragments.edge}
 `;
 
-export default class FriendListContainer extends Component {
+class FriendListContainer extends Component {
   static displayName = 'Container(FriendList)';
   static propTypes = {
     userId: PropTypes.string.isRequired,
@@ -33,10 +33,14 @@ export default class FriendListContainer extends Component {
 
     return (
       <Query query={userQuery} variables={{ id }}>
-        {({ loading, data: { user } }) => !loading && (
-          <FriendList {...props} edges={user.friends.edges} />
+        {({ loading, data: { user } }) => (
+          <FriendList {...props} edges={loading ? [] : user.friends.edges} />
         )}
       </Query>
     );
   }
-};
+}
+
+export default React.forwardRef((props, ref) => (
+  <FriendListContainer {...props} forwardedRef={ref} />
+));

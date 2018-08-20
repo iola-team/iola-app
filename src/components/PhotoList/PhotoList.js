@@ -20,10 +20,14 @@ const edgeFragment = gql`
 
   },
 
+  row: {
+
+  },
+
   item: {
     flex: 1,
     aspectRatio: 1,
-    margin: 3,
+    margin: 4,
     borderRadius: 8,
   },
 })
@@ -51,12 +55,19 @@ export default class PhotoList extends Component {
   }
 
   render() {
-    const { edges, styleSheet, ...listProps } = this.props;
+    const {
+      edges,
+      styleSheet,
+      contentContainerStyle,
+      columnWrapperStyle,
+      ...listProps
+    } = this.props;
 
     return (
       <FlatList
         {...listProps}
-        contentContainerStyle={styleSheet.list}
+        contentContainerStyle={[contentContainerStyle, styleSheet.list]}
+        columnWrapperStyle={[columnWrapperStyle, styleSheet.row]}
         numColumns={3}
         data={edges}
         keyExtractor={::this.extractItemKey}

@@ -56,7 +56,7 @@ export default class UserList extends Component {
   }
 
   render() {
-    const { edges, ...listProps } = this.props;
+    const { edges, forwardedRef, ...listProps } = this.props;
 
     return (
       <FlatList

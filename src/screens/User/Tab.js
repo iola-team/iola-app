@@ -3,35 +3,34 @@ import { ScrollView } from 'react-native';
 import { Text, View } from 'native-base';
 import { withNavigationFocus } from 'react-navigation';
 
-@withNavigationFocus
+// @withNavigationFocus
 export default class UserFriendsTab extends Component {
-  scrollView = null;
+  scrollViewRef = React.createRef();
 
-  componentDidUpdate(prev) {
-    const { isFocused, screenProps: { contentOffset } } = this.props;
-
-    if (!isFocused && prev.screenProps.contentOffset !== contentOffset) {
-      this.syncOffset();
-    }
-  }
-
-  syncOffset() {
-    const { screenProps: { contentOffset } } = this.props;
-
-    if (!this.scrollView) {
-      return;
-    }
-
-    this.scrollView.scrollTo({
-      ...contentOffset,
-      animated: false,
-    });
-  }
-
-  onScrollMount = (node) => {
-    this.scrollView = node;
-    setTimeout(() => this.syncOffset());
-  };
+  // componentDidUpdate(prev) {
+  //   const { isFocused, screenProps: { contentOffset } } = this.props;
+  //
+  //   if (!isFocused && prev.screenProps.contentOffset !== contentOffset) {
+  //     this.syncOffset();
+  //   }
+  // }
+  //
+  // syncOffset() {
+  //   const { screenProps: { contentOffset } } = this.props;
+  //
+  //   if (!this.scrollViewRef.current) {
+  //     return;
+  //   }
+  //
+  //   this.scrollViewRef.current.scrollTo({
+  //     ...contentOffset,
+  //     animated: false,
+  //   });
+  // }
+  //
+  // componentDidMount() {
+  //   this.syncOffset();
+  // }
 
   render() {
     const {
@@ -39,19 +38,28 @@ export default class UserFriendsTab extends Component {
       screenProps: {
         onScroll,
         contentOffset,
-        header,
+        renderHeader,
       },
-      scrollComponent: Scroll = ScrollView
+      scrollComponent: Scroll = ScrollView,
+      contentContainerStyle,
+      headerStyles,
+      ...restProps
     } = this.props;
+
+    const styledHeader = renderHeader({
+      style: headerStyles,
+    });
 
     return (
       <Scroll
-        contentOffset={contentOffset}
-        onScroll={onScroll}
-        ref={this.onScrollMount}
-        contentContainerStyle={{ minHeight: 1000 }}
+        {...restProps}
+        // ref={this.scrollViewRef}
+        // contentOffset={contentOffset}
+        // onScroll={onScroll}
+        // contentContainerStyle={[contentContainerStyle, { minHeight: 1000 }]}
+        ListHeaderComponent={styledHeader}
       >
-        {header}
+        {styledHeader}
         {children}
       </Scroll>
     );
