@@ -68,23 +68,21 @@ stories.add('Static', () => {
   );
 });
 
-stories.add('Multi select wrapper', () => {
-  return (
-    <Select
-      label="Multi select"
-      invitation="Choose multiple"
-      options={options}
-      onCancel={action('onCancel')}
-      onDone={action('onDone')}
-      onShow={action('onShow')}
-      onDismiss={action('onDismiss')}
-      onRequestClose={action('onRequestClose')}
-      multiple
-    >
-      {renderChildren}
-    </Select>
-  );
-});
+stories.add('Multi select wrapper', () => (
+  <Select
+    label="Multi select"
+    invitation="Choose multiple"
+    options={options}
+    onCancel={action('onCancel')}
+    onDone={action('onDone')}
+    onShow={action('onShow')}
+    onDismiss={action('onDismiss')}
+    onRequestClose={action('onRequestClose')}
+    multiple
+  >
+    {renderChildren}
+  </Select>
+));
 
 stories.add('Single select wrapper', () => (
   <Select

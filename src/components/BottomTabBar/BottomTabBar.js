@@ -30,7 +30,7 @@ export default class BottomTabBar extends Component {
 
     return (
       <BottomTabBarRN
-        showIcon={true}
+        showIcon
         showLabel={false}
 
         activeTintColor={styles.activeTintColor}

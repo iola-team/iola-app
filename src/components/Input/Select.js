@@ -56,7 +56,7 @@ export default class Select extends Component {
     } = this.props;
 
     const value = rawValue || [];
-    const selectedLabels = value.map(value => find(options, { value }).label)
+    const selectedLabels = value.map(value => find(options, { value }).label);
 
     return (
       <Fragment>
@@ -67,7 +67,7 @@ export default class Select extends Component {
         >
           <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>
             <Text note={!value.length}>
-              {!!value.length ? selectedLabels.join(', ') : placeholder}
+              {value.length ? selectedLabels.join(', ') : placeholder}
             </Text>
           </TouchableOpacity>
         </Input>

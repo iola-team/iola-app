@@ -111,7 +111,7 @@ export default class ProfileEditScreen extends Component {
                 />
               </View>
             ) : (
-              <Spinner/>
+              <Spinner />
             )
           }
         </Content>

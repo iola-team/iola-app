@@ -8,7 +8,7 @@ import {
 
 import InputItem from './Input';
 import TextPicker from '../TextPicker';
-import { withStyleSheet as styleSheet } from '../../theme'
+import { withStyleSheet as styleSheet } from '../../theme';
 
 @styleSheet('Sparkle.TextInput', {
   button: {
@@ -51,7 +51,7 @@ export default class TextInput extends Component {
       <Fragment>
         <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>
           <Text note={!preview}>
-            {preview ? preview : placeholder}
+            {preview || placeholder}
           </Text>
         </TouchableOpacity>
 
@@ -67,7 +67,7 @@ export default class TextInput extends Component {
           onHide={onFinishEditing}
         />
       </Fragment>
-    )
+    );
   }
 
   render() {
@@ -92,7 +92,7 @@ export default class TextInput extends Component {
               onChangeText={onChange}
               value={value}
               placeholder={placeholder}
-              placeholderTextColor={'#a7a7a7'}
+              placeholderTextColor="#a7a7a7"
               secureTextEntry={secure}
               onBlur={onFinishEditing}
             />

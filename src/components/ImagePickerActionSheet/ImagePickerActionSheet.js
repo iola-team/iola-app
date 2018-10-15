@@ -26,7 +26,7 @@ export default class ImagePickerActionSheet extends Component {
       children,
       options: customOptions = [],
       destructiveButtonIndex: destructive,
-      ...props,
+      ...props
     } = this.props;
 
     const options = [
@@ -68,9 +68,7 @@ export default class ImagePickerActionSheet extends Component {
     const props = this.getProps();
 
     return (
-      <ActionSheet
-        {...props}
-      />
+      <ActionSheet {...props} />
     );
   }
 }

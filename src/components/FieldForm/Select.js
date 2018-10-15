@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
+import * as Yup from 'yup';
 
 import InputItem from '../Input';
-import * as Yup from 'yup';
 
 const fieldFragment = gql`
   fragment FieldSelect_field on ProfileField {

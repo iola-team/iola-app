@@ -1,15 +1,9 @@
 import React, { PureComponent } from 'react';
 import { get } from 'lodash';
-import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { Image } from 'react-native';
-import {
-  Text,
-  View,
-  Button,
-} from 'native-base';
+import { View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import AvatarInput from '../AvatarInput';
@@ -84,7 +78,7 @@ export default class AvatarEdit extends PureComponent {
     });
   }
 
-  onDelete = (image) => {
+  onDelete = () => {
     const { deleteAvatar, user } = this.props;
 
     deleteAvatar({

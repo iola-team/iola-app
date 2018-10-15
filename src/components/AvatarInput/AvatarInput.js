@@ -65,7 +65,7 @@ export default class AvatarInput extends PureComponent {
   static getDerivedStateFromProps({ defaultValue }, { image }) {
     return {
       image: image === undefined ? defaultValue : image,
-    }
+    };
   }
 
   onImageChange([selectedImage]) {

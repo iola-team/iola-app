@@ -1,9 +1,8 @@
 import React from 'react';
-import { find, filter, range, orderBy } from 'lodash';
+import { find, filter, orderBy } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { number, selectV2 as select, withKnobs } from '@storybook/addon-knobs/react';
-import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 

@@ -68,22 +68,18 @@ export default class PhotoGrid extends Component {
     return (
       <Root style={style}>
         <Grid>
-            {
-              [0, 1, 2, 3, 4].map((index) => (
-                <Place key={this.getItemKey(index)} style={styleSheet[`place${index}`]}>
-                  {this.renderItem(index)}
-                </Place>
-              ))
-            }
+          {[0, 1, 2, 3, 4].map((index) => (
+            <Place key={this.getItemKey(index)} style={styleSheet[`place${index}`]}>
+              {this.renderItem(index)}
+            </Place>
+          ))}
         </Grid>
         <List>
-          {
-            [5, 6, 7, 8].map((index) => (
-              <Place key={this.getItemKey(index)} style={styleSheet[`place${index}`]}>
-                {this.renderItem(index)}
-              </Place>
-            ))
-          }
+          {[5, 6, 7, 8].map((index) => (
+            <Place key={this.getItemKey(index)} style={styleSheet[`place${index}`]}>
+              {this.renderItem(index)}
+            </Place>
+          ))}
         </List>
       </Root>
     );

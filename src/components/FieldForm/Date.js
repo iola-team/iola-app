@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
+import * as Yup from 'yup';
 
 import InputItem from '../Input';
-import * as Yup from 'yup';
 
 const fieldFragment = gql`
   fragment FieldDate_field on ProfileField {
@@ -65,7 +65,7 @@ export default class FieldDate extends PureComponent {
       <InputItem
         {...props}
         type="date"
-        placeholder={'Not specified'}
+        placeholder="Not specified"
         label={field.label}
         minDate={new Date(field.configs.minDate)} // TODO: handle custom scalars on graph layer
         maxDate={new Date(field.configs.maxDate)} // TODO: handle custom scalars on graph layer

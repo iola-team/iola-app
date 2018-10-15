@@ -1,13 +1,13 @@
 import React from 'react';
-import { find, filter, uniqueId, range, orderBy } from 'lodash';
+import { find, filter, range, orderBy } from 'lodash';
 import gql from 'graphql-tag';
-import { button, number, withKnobs } from '@storybook/addon-knobs/react';
+import { button, withKnobs } from '@storybook/addon-knobs/react';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import { cursorToOffset, offsetToCursor } from 'graphql-relay';
 import delay from 'promise-delay';
 import uuid from 'uuid/v4';
-import moment from 'moment'
+import moment from 'moment';
 import { PubSub } from 'graphql-subscriptions';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
@@ -92,18 +92,16 @@ const unOrderedFakeMessages = range(100).map((index) => ({
   chat: find(chats, { id: 'Chat:1' }),
 }));
 
-const orderedNumMessages = range(300).map((index) => {
-  return {
-    id: `Message:${unOrderedFakeMessages.length + index}`,
-    content: {
-      text: (index + 1).toString(),
-    },
-    status: 'READ',
-    createdAt: moment().subtract(1, 'months').add(index, 'h').toDate(),
-    user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
-    chat: find(chats, { id: 'Chat:2' }),
-  };
-});
+const orderedNumMessages = range(300).map((index) => ({
+  id: `Message:${unOrderedFakeMessages.length + index}`,
+  content: {
+    text: (index + 1).toString(),
+  },
+  status: 'READ',
+  createdAt: moment().subtract(1, 'months').add(index, 'h').toDate(),
+  user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
+  chat: find(chats, { id: 'Chat:2' }),
+}));
 
 const messages = [
   ...unOrderedFakeMessages,
@@ -262,7 +260,7 @@ const resolvers = {
           createdAt: new Date(),
           user,
           chat,
-        }
+        };
 
         const cursor = 'first';
         const chatCursor = 'first';
@@ -446,9 +444,8 @@ const resolvers = {
         return null;
       }
 
-      const userChats = filter(chats, ['user.id', user.id]).filter(({ participants }) => {
-        return find(participants, ['id', args.recipientId]);
-      });
+      const userChats = filter(chats, ['user.id', user.id])
+        .filter(({ participants }) => find(participants, ['id', args.recipientId]));
 
       return userChats[0] || null;
     },
@@ -466,23 +463,17 @@ const resolvers = {
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
 // Stories
-stories.add('Fake messages', () => {
-  return (
-    <Chat chatId={'Chat:1'} />
-  );
-});
+stories.add('Fake messages', () => (
+  <Chat chatId="Chat:1" />
+  ));
 
-stories.add('Num messages', () => {
-  return (
-    <Chat chatId={'Chat:2'} />
-  );
-});
+stories.add('Num messages', () => (
+  <Chat chatId="Chat:2" />
+  ));
 
-stories.add('Empty', () => {
-  return (
-    <Chat chatId={'Chat:3'} />
-  );
-});
+stories.add('Empty', () => (
+  <Chat chatId="Chat:3" />
+  ));
 
 stories.add('New message subscriptions', () => {
 
@@ -509,18 +500,12 @@ stories.add('New message subscriptions', () => {
   }));
 
   return (
-    <Chat chatId={'Chat:3'} />
+    <Chat chatId="Chat:3" />
   );
 });
 
-stories.add('Chat with user', () => {
-  return (
-    <Chat recipientId={'User:2'} />
-  );
-});
+stories.add('Chat with user', () => <Chat recipientId="User:2" />);
 
-stories.add('New chat with user', () => {
-  return (
-    <Chat recipientId={'User:3'} />
-  );
-});
+stories.add('New chat with user', () => (
+  <Chat recipientId="User:3" />
+  ));

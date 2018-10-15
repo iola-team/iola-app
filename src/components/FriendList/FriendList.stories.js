@@ -101,4 +101,4 @@ stories.addDecorator(getApolloDecorator({
 }));
 
 // Stories
-stories.add('Default', () => <FriendList userId={'User:1'} />);
+stories.add('Default', () => <FriendList userId="User:1" />);

@@ -67,7 +67,7 @@ export default class ImagePicker extends Component {
       return {
         ...image,
         blob,
-      }
+      };
     }));
 
     this.setState({ images });

@@ -71,18 +71,16 @@ const unOrderedFakeMessages = range(100).map((index) => ({
   chat: find(chats, { id: 'Chat:1' }),
 }));
 
-const orderedNumMessages = range(100).map((index) => {
-  return {
-    id: `Message:${unOrderedFakeMessages.length + index}`,
-    content: {
-      text: (index + 1).toString(),
-    },
-    status: faker.random.arrayElement(['READ', 'DELIVERED']),
-    createdAt: moment().add(index, 'h').toDate(),
-    user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
-    chat: find(chats, { id: 'Chat:2' }),
-  };
-});
+const orderedNumMessages = range(100).map((index) => ({
+  id: `Message:${unOrderedFakeMessages.length + index}`,
+  content: {
+    text: (index + 1).toString(),
+  },
+  status: faker.random.arrayElement(['READ', 'DELIVERED']),
+  createdAt: moment().add(index, 'h').toDate(),
+  user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
+  chat: find(chats, { id: 'Chat:2' }),
+}));
 
 const messages = [
   ...orderBy(unOrderedFakeMessages, 'createdAt'),
@@ -157,9 +155,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    node: (root, { id }, { dataStore: { chats } }) => {
-      return find(chats, { id });
-    },
+    node: (root, { id }, { dataStore: { chats } }) => find(chats, { id }),
   },
 
   Chat: {
@@ -240,9 +236,9 @@ stories.add('Num messages', () => {
     last: number('Count', 50),
   };
 
-  const refreshing = boolean('Refreshing', false)
-  const inverted = boolean('Inverted', true)
-  const isLoadingMore = boolean('Loading more', true)
+  const refreshing = boolean('Refreshing', false);
+  const inverted = boolean('Inverted', true);
+  const isLoadingMore = boolean('Loading more', true);
 
   return (
     <Query query={chatQuery} variables={variables}>

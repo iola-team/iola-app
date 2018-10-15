@@ -10,10 +10,10 @@ import {
   Button,
 } from 'native-base';
 
+import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import Formik from './Formik';
 import Section from './Section';
 import Field from './Field';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
 
 const getDataByField = (fields, values) => {
   const valuesByField = groupBy(values || [], 'field.id');
@@ -21,7 +21,7 @@ const getDataByField = (fields, values) => {
   return fields.reduce((result, { id }) => ({
     ...result,
     [id]: values && get(valuesByField, [id, 0, 'data'], null),
-  }), {})
+  }), {});
 };
 
 const mapFieldOptions = (fields, dataList, mapper) => fields.reduce((result, field) => {
@@ -104,9 +104,7 @@ export default class FieldForm extends Component {
     });
   };
 
-  submit = () => {
-    return this.form.submitForm();
-  }
+  submit = () => this.form.submitForm();
 
   render() {
     const { style, fields: profileFields, values, onSubmit, onSubmitError } = this.props;

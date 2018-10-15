@@ -1,11 +1,11 @@
 {
-  "name": "ApolloMessenger",
-  "version": "0.0.1",
+  "name": "iola-messenger",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "info": "npm-scripts-info",
     "prestart": "yarn run schema:generate",
-    "start": "concurrently -p name -n \"schemas,server\" \"yarn run schema:watch\" \"yarn run server:start\"",
+    "start": "yarn lint:statistics; concurrently -p name -n \"schemas,server\" \"yarn run schema:watch\" \"yarn run server:start\"",
     "server:start": "REACT_DEBUGGER=\"yarn run debugger\" react-native start --reset-cache --config $PWD/rn-cli.config.js",
     "run:android": "react-native run-android --variant=mainDebug",
     "run:android-storybook": "yarn storybook:generate && react-native run-android --variant=storybookDebug --appIdSuffix=storybook",
@@ -22,18 +22,24 @@
     "storybook:server": "storybook start -p 7007 -c ./src/storybook --skip-packager",
     "storybook:generate": "rnstl",
     "storybook:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchStories.js",
+    "lint": "./node_modules/.bin/eslint \"src/**/*.js\" --quiet; exit 0",
+    "lint:statistics": "echo \"================\nESLint Statstics\n================\n\"; ./node_modules/.bin/eslint -c .eslintrc ./src/**/*.js --format ./node_modules/eslint-stats/byErrorAndWarning.js; exit 0",
+    "lint:fix": "./node_modules/.bin/eslint --fix \"src/**/*.js\"; exit 0",
     "tools:generate-component": "generact ./src/components/ComponentTemplate/index.js --root ./src/components/",
     "postinstall": "sh ./scripts/postinstall.sh"
   },
   "scripts-info": {
     "info": "Displays information about the scripts",
     "start": "Run the dev server",
-    "log:android": "Read the Android app logs",
     "run:android": "Build the Android app",
-    "log:ios": "Read the iOS app logs",
+    "log:android": "Read the Android app logs",
     "run:ios": "Build the iOS app",
+    "log:ios": "Read the iOS app logs",
     "storybook": "Run the Storybook server",
-    "run:android-storybook": "Build the Storybook app for Android"
+    "run:android-storybook": "Build the Storybook app for Android",
+    "lint": "Display ESLint errors (without warnings)",
+    "lint:statistics": "Display general ESLint Statistics",
+    "lint:fix": "Automatically fix ESLint errors"
   },
   "config": {
     "react-native-storybook-loader": {
@@ -58,7 +64,6 @@
     "apollo-utilities": "^1.0.17",
     "babel-eslint": "^8.2.3",
     "buffer": "^5.2.0",
-    "eslint-plugin-react-native": "^3.2.1",
     "formik": "1.0.2",
     "graphql": "^0.13.2",
     "graphql-anywhere": "^4.1.15",
@@ -125,9 +130,13 @@
     "concurrently": "^3.6.1",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-react": "^7.9.1",
+    "eslint-plugin-react-native": "^3.2.1",
+    "eslint-stats": "^1.0.0",
     "faker": "^4.1.0",
     "generact": "^0.3.2",
     "glob-watcher": "^5.0.1",
@@ -138,6 +147,7 @@
     "merge-graphql-schemas": "^1.5.3",
     "mock-async-storage": "^2.0.3",
     "node-fetch": "^2.2.0",
+    "prettier": "^1.14.3",
     "react-dom": "^16.3.1",
     "react-native-debugger-open": "^0.3.17",
     "react-native-storybook-loader": "^1.8.0"

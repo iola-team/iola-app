@@ -117,7 +117,7 @@ const resolvers = {
       return {
         deletedId: photo.id,
         user: photoOwner,
-      }
+      };
     },
 
     addUserPhoto: async (root, { input }, { dataStore }) => {
@@ -150,7 +150,7 @@ const resolvers = {
             ...photo,
           },
         })),
-      }
+      };
     },
   },
 };
