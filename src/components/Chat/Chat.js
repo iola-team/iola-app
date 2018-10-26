@@ -7,10 +7,10 @@ import update from 'immutability-helper';
 import uuid from 'uuid';
 import { View } from 'native-base';
 
+import { withStyleSheet as styleSheet } from 'theme';
 import MessageList from '../MessageList';
 import ChatFooter from '../ChatFooter';
 import Shadow from '../Shadow';
-import { withStyleSheet as styleSheet } from 'theme';
 import UserAvatar from '../UserAvatar/UserAvatar';
 
 const chatQuery = gql`

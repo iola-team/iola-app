@@ -5,12 +5,15 @@ import { Badge, Spinner } from 'native-base';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import BackButton from '../BackButton';
 import UserOnlineStatus from '../UserOnlineStatus';
 import TouchableOpacity from '../TouchableOpacity';
+import ImageComments from '../ImageComments';
 
 const SpinnerContainer = connectToStyleSheet('spinnerContainer', View);
 const ModalContent = connectToStyleSheet('modalContent', View);
@@ -23,12 +26,25 @@ const Caption = connectToStyleSheet('caption', Text);
 const DateTime = connectToStyleSheet('dateTime', Text);
 const ActionsBlock = connectToStyleSheet('actionsBlock', View);
 const LikeIcon = connectToStyleSheet('actionIcon', IoniconsIcon).withProps({ name: 'ios-heart-outline' });
-const CommentIcon = connectToStyleSheet('actionIcon', EvilIcons).withProps({ name: 'comment' });
+// const CommentIcon = connectToStyleSheet('actionIcon', EvilIcons).withProps({ name: 'comment' });
 const ShareIcon = connectToStyleSheet('actionIcon', IoniconsIcon).withProps({ name: 'ios-share-alt' });
 const ActionButton = connectToStyleSheet('actionButton', TouchableOpacity);
 const ActionText = connectToStyleSheet('actionText', Text);
 const ActionBadge = connectToStyleSheet('actionBadge', Badge);
 const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
+
+const photoCommentsTotalCountQuery = gql`
+  query photoCommentsTotalCountQuery($id: ID!) {
+    photo: node(id: $id) {
+      ...on Photo {
+        id
+        comments {
+          totalCount
+        }
+      }
+    }
+  }
+`;
 
 @styleSheet('Sparkle.ImageView', {
   spinnerContainer: {
@@ -152,7 +168,6 @@ export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     images: PropTypes.array.isRequired, // @TODO
-    onShowComments: PropTypes.func.isRequired,
   };
 
   state = {
@@ -185,17 +200,17 @@ export default class ImageView extends Component {
   }
 
   renderFooter() {
-    const { images, onShowComments } = this.props;
+    const { images, styleSheet: styles } = this.props;
     const { index } = this.state;
     const {
+      id,
+      caption,
+      createdAt,
       user: {
         name,
         isOnline,
       },
-      caption,
-      createdAt,
       totalCountLikes,
-      totalCountComments,
     } = images[index];
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
@@ -221,15 +236,23 @@ export default class ImageView extends Component {
               </ActionBadge>
             ) : null}
           </ActionButton>
-          <ActionButton onPress={onShowComments}>
-            <CommentIcon />
-            <ActionText>Comment</ActionText>
-            {totalCountComments ? (
-              <ActionBadge>
-                <ActionBadgeText>{totalCountComments}</ActionBadgeText>
-              </ActionBadge>
-            ) : null}
-          </ActionButton>
+          <ImageComments photoId={id}>
+            {onShowImageComments => (
+              <TouchableOpacity onPress={onShowImageComments} style={styles.actionButton}>
+                <EvilIcons name="comment" style={styles.actionIcon} />
+                <Text style={styles.actionText}>Comment</Text>
+                <Query query={photoCommentsTotalCountQuery} variables={{ id }}>
+                  {({ loading, data: { photo } }) => (loading ? null : ( // @TODO: add spinner
+                    photo.comments.totalCount ? (
+                      <Badge style={styles.actionBadge}>
+                        <Text style={styles.actionBadgeText}>{photo.comments.totalCount}</Text>
+                      </Badge>
+                    ) : null
+                  ))}
+                </Query>
+              </TouchableOpacity>
+            )}
+          </ImageComments>
           <ActionButton onPress={() => alert('Share')}>
             <ShareIcon />
             <ActionText>Share</ActionText>

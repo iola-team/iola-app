@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { PropTypes } from 'prop-types';
 
 import ImageView from '../ImageView';
 import UserPhotosCard from '../UserPhotosCard';

@@ -19,6 +19,9 @@
       - Android
         - Build Storybook app: `yarn run:android-storybook`
         - Web UI: http://localhost:7007/
+  - React Developer Tools
+    - install: `npm install -g react-devtools`
+    - run: `react-devtools`
 3) `yarn postinstall` // @TODO: remove when Apollo fix this: https://github.com/apollographql/apollo-client/issues/3236
 
 ## Code style

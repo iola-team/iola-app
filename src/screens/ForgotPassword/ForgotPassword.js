@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { ImageBackground, TouchableOpacity } from 'react-native';
-import {Button, Container, Text, View} from 'native-base';
+import { Button, Container, Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { get } from 'lodash';
 

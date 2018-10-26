@@ -1,19 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ModalRN from 'react-native-modal';
-import { noop } from 'lodash';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import { noop, isString } from 'lodash';
+import { TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { View, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme/index';
-import { getInAnimation, getOutAnimation } from './animations'
+import { getInAnimation, getOutAnimation } from './animations';
 
-const maxHeight = Dimensions.get("window").height * 0.6;
+const maxHeight = Dimensions.get('window').height * 0.6;
 
 @styleSheet('Sparkle.Modal', {
   root: {
@@ -25,7 +20,7 @@ const maxHeight = Dimensions.get("window").height * 0.6;
   modal: {
     margin: 0,
     padding: 0,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
 
   backdrop: {
@@ -55,7 +50,10 @@ const maxHeight = Dimensions.get("window").height * 0.6;
 export default class Modal extends PureComponent {
   static propTypes = {
     isVisible: PropTypes.bool.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+    ]).isRequired,
     children: PropTypes.element.isRequired,
     height: PropTypes.number,
 
@@ -65,7 +63,7 @@ export default class Modal extends PureComponent {
     onDone: PropTypes.func,
     onCancel: PropTypes.func,
     onRequestClose: PropTypes.func,
-  }
+  };
 
   static defaultProps = {
     height: maxHeight,
@@ -75,7 +73,7 @@ export default class Modal extends PureComponent {
     onDone: noop,
     onCancel: noop,
     onRequestClose: noop,
-  }
+  };
 
   animations = {
     show: null,
@@ -119,14 +117,11 @@ export default class Modal extends PureComponent {
         onBackButtonPress={onRequestClose}
       >
         <View style={styles.root}>
-          <View
-            style={styles.header}
-            horizontalPadder
-          >
+          <View style={styles.header} horizontalPadder>
             <TouchableOpacity onPress={onCancel}>
               <Text style={styles.headerCancelText}>Cancel</Text>
             </TouchableOpacity>
-            <Text>{title}</Text>
+            {isString(title) ? <Text>{title}</Text> : title}
             <TouchableOpacity onPress={onDone}>
               <Text style={styles.headerDoneText}>Done</Text>
             </TouchableOpacity>
