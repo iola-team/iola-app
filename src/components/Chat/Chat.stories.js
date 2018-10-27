@@ -465,18 +465,17 @@ stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 // Stories
 stories.add('Fake messages', () => (
   <Chat chatId="Chat:1" />
-  ));
+));
 
 stories.add('Num messages', () => (
   <Chat chatId="Chat:2" />
-  ));
+));
 
 stories.add('Empty', () => (
   <Chat chatId="Chat:3" />
-  ));
+));
 
 stories.add('New message subscriptions', () => {
-
   /**
    * TODO:
    * I had to disable this button, since subscription events about messages from current user are disabled in `Chat` component.
@@ -508,4 +507,4 @@ stories.add('Chat with user', () => <Chat recipientId="User:2" />);
 
 stories.add('New chat with user', () => (
   <Chat recipientId="User:3" />
-  ));
+));
