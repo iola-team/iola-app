@@ -43,11 +43,11 @@ export default class ChatFooter extends Component {
     this.setState({ text });
   };
 
-  onSend = async () => {
+  onSend = () => {
     const { text } = this.state;
     const { onSend } = this.props;
 
-    await onSend(text);
+    onSend(text);
     this.setState({ text: '' });
   };
 

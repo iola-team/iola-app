@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { SectionList } from 'react-native';
-import { groupBy, orderBy, map } from 'lodash';
+import { groupBy, orderBy, map, filter, get } from 'lodash';
 
 import { withStyle } from 'theme';
 import MessageItem from '../MessageItem';
@@ -30,11 +30,13 @@ export default class MessageList extends Component {
   static propTypes = {
     edges: PropTypes.arrayOf(fragmentProp(edgeFragment).isRequired).isRequired,
     getItemSide: PropTypes.func.isRequired,
+    onRead: PropTypes.func,
     loadingMore: PropTypes.bool,
   };
 
   static defaultProps = {
     loadingMore: false,
+    onRead: () => {},
   };
 
   splitToSections(edges) {
@@ -49,12 +51,26 @@ export default class MessageList extends Component {
     });
 
     return map(grouped, (edges, time) => ({
+      isSection: true,
+      key: time.toString(),
       time: new Date(time).toISOString(),
       data: edges,
     }));
   };
 
-  getKeyForItem = item => item.node.id;
+  getKeyForItem = item => item.isSection ? item.key : item.node.id;
+  onViewableItemsChanged = ({ changed }) => {
+    const { onRead } = this.props;
+
+    const filterRead = ({ isViewable, item }) => (
+      isViewable && !item.isSection && item.node.status !== 'READ'
+    );
+    const nodes = changed.filter(filterRead).map(({ item }) => item.node);
+
+    if (nodes.length) {
+      onRead(nodes);
+    }
+  };
 
   renderItem = ({ item, index, section: { data: edges } }) => {
     const { getItemSide, inverted } = this.props;
@@ -111,6 +127,7 @@ export default class MessageList extends Component {
         keyExtractor={this.getKeyForItem}
         renderItem={this.renderItem}
         ListFooterComponent={this.renderLoadIndicator}
+        onViewableItemsChanged={this.onViewableItemsChanged}
       />
     );
   }

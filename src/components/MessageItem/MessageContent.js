@@ -88,7 +88,9 @@ export default class MessageContent extends PureComponent {
     const contentProps = {
       content: message.content,
       inverse: right,
-      statusComponent: <Status time={message.createdAt} hasStatus={right} />,
+      statusComponent: (
+        <Status status={message.status} time={message.createdAt} hasStatus={right} />
+      ),
     };
 
     const Content = this.getContentComponent();

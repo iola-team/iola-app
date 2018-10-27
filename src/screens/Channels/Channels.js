@@ -1,6 +1,22 @@
 import React, { Component } from 'react';
 import { Container, Content, Text, Icon } from 'native-base';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 
+import * as routes from '../roteNames'
+import { ChatList, SearchBar } from 'components';
+
+@graphql(gql`
+  query {
+    me {
+      id
+      
+      ...ChatList_user
+    }
+  }
+  
+  ${ChatList.fragments.user}
+`)
 export default class Channels extends Component {
   static navigationOptions = {
     title: 'Chats',
@@ -9,12 +25,31 @@ export default class Channels extends Component {
     ),
   };
 
+  onItemPress = ({ node }) => {
+    const { navigation: { navigate } } = this.props;
+
+    navigate(routes.CHANNEL, {
+      chatId: node.id,
+    });
+  };
+
+  onSearch = (searchPhrase) => {
+    console.log('Search', searchPhrase);
+  }
+
   render() {
+    const { data: { me, loading } } = this.props;
+
     return (
       <Container>
-        <Content padder>
-          <Text>Channels</Text>
-        </Content>
+        <SearchBar onSearch={this.onSearch} />
+
+        {!loading && (
+          <ChatList
+            user={me}
+            onItemPress={this.onItemPress}
+          />
+        )}
       </Container>
     );
   }

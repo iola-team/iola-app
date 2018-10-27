@@ -168,6 +168,35 @@ export default (variables => ({
           },
         },
       },
+
+      'NativeBase.Body': {
+        'NativeBase.Text': {
+          '.headline': {
+            lineHeight: 20,
+            marginBottom: 5,
+          },
+        },
+      },
+
+      'NativeBase.Right': {
+        'NativeBase.Text': {
+          '.headline': {
+            lineHeight: 20,
+            marginBottom: 5,
+          },
+        },
+
+        'NativeBase.Badge': {
+          height: null,
+          minWidth: 20,
+          paddingHorizontal: 3,
+
+          'NativeBase.Text': {
+            fontSize: 12,
+            lineHeight: 20,
+          },
+        },
+      },
     },
 
     'NativeBase.Card': {

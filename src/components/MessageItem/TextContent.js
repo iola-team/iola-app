@@ -34,13 +34,7 @@ const contentFragment = gql`
     },
 
     'Sparkle.MessageStatus': {
-      'NativeBase.Icon': {
-        color: '#A3C5FF',
-      },
-
-      'NativeBase.Text': {
-        color: '#A3C5FF',
-      },
+      color: '#A3C5FF',
     },
   },
 })

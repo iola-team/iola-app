@@ -17,7 +17,7 @@ const messageFragment = gql`
       id
       ...UserAvatar_user
     }
-
+    status
     ...MessageContent_message
   }
   

@@ -65,6 +65,7 @@ const unOrderedFakeMessages = range(100).map((index) => ({
   content: {
     text: faker.hacker.phrase(),
   },
+  status: faker.random.arrayElement(['READ', 'DELIVERED']),
   createdAt: faker.date.recent(),
   user: faker.random.arrayElement(find(chats, { id: 'Chat:1' }).participants),
   chat: find(chats, { id: 'Chat:1' }),
@@ -76,6 +77,7 @@ const orderedNumMessages = range(100).map((index) => {
     content: {
       text: (index + 1).toString(),
     },
+    status: faker.random.arrayElement(['READ', 'DELIVERED']),
     createdAt: moment().add(index, 'h').toDate(),
     user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
     chat: find(chats, { id: 'Chat:2' }),
@@ -127,13 +129,18 @@ const typeDefs = gql`
   type MessageContent {
     text: String
   }
-  
+
+  enum MessageStatus {
+    DELIVERED
+    READ
+  }
+
   type Message {
     id: ID!
-    user: User!
-    chat: Chat!
+    status: MessageStatus
     content: MessageContent
     createdAt: Date!
+    user: User!
   }
 
   type MessageEdge {
@@ -167,8 +174,8 @@ const resolvers = {
       return {
         ...connection,
         totalCount: chatMessages.length,
-      }
-    }
+      };
+    },
   },
 };
 

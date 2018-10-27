@@ -3,6 +3,7 @@ package com.apollomessenger;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.wheelpicker.WheelPickerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
@@ -10,7 +11,6 @@ import com.BV.LinearGradient.LinearGradientPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import ca.jaysoo.extradimensions.ExtraDimensionsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -31,12 +31,12 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNDeviceInfo(),
             new WheelPickerPackage(),
             new RNFetchBlobPackage(),
             new PickerPackage(),
             new LinearGradientPackage(),
-            new SplashScreenReactPackage(),
-            new ExtraDimensionsPackage()
+            new SplashScreenReactPackage()
       );
     }
 

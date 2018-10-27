@@ -15,6 +15,7 @@ export PhotoEdit from './PhotoEdit';
 export ImageView from './ImageView';
 export ProfileFieldsEdit from './ProfileFieldsEdit';
 export Chat from './Chat';
+export ChatList from './ChatList';
 
 // Navigation
 export ScreenHeader from './ScreenHeader';
