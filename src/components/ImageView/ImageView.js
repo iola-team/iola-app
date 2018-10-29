@@ -285,7 +285,7 @@ export default class ImageView extends Component {
               renderHeader={::this.renderHeader}
               renderIndicator={this.renderIndicator}
               renderFooter={::this.renderFooter}
-              failImageSource={{ uri: 'https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif' }}
+              failImageSource={{ uri: 'https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif' /* @TODO */ }}
               loadingRender={() => <SpinnerContainer><Spinner /></SpinnerContainer>}
               footerContainerStyle={{ width: '100%' }}
               backgroundColor="rgba(46, 48, 55, 0.95)"

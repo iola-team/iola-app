@@ -47,87 +47,83 @@ const photoCommentsQuery = gql`
 `;
 
 @styleSheet('Sparkle.ImageComments', {
-  modal: {
-    titleRow: {
-      flexDirection: 'row',
-    },
-
-    title: {
-      marginRight: 5,
-      fontFamily: 'SF Pro Text',
-      fontSize: 16,
-      fontWeight: '600',
-      color: '#45474F',
-    },
-
-    count: {
-      fontSize: 16,
-      color: '#BDC0CB',
-    },
-
-    container: {
-      minHeight: getModalHeight(),
-      paddingVertical: 24,
-      paddingHorizontal: 15,
-      backgroundColor: '#F8F9FB',
-    },
+  titleRow: {
+    flexDirection: 'row',
   },
 
-  comment: {
-    container: {
-      flexDirection: 'row',
-      marginBottom: 8,
-    },
+  title: {
+    marginRight: 5,
+    fontFamily: 'SF Pro Text',
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#45474F',
+  },
 
-    avatar: {
-      marginRight: 8,
-    },
+  count: {
+    fontSize: 16,
+    color: '#BDC0CB',
+  },
 
-    content: {
-      flex: 1,
-      paddingVertical: 13,
-      paddingHorizontal: 15,
-      borderRadius: 8,
-      backgroundColor: '#FFFFFF',
-        // @TODO: box-shadow
-        shadowColor: '#E1E6ED',
-        shadowRadius: 4,
-        shadowOpacity: 0.5,
-        shadowOffset: {
-          width: 0,
-          height: 0,
-        },
-        elevation: 1,
-    },
+  modalContainer: {
+    minHeight: getModalHeight(),
+    paddingVertical: 24,
+    paddingHorizontal: 15,
+    backgroundColor: '#F8F9FB',
+  },
 
-    nameRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
+  commentContainer: {
+    flexDirection: 'row',
+    marginBottom: 8,
+  },
 
-    name: {
-      marginRight: 8,
-      fontFamily: 'SF Pro Text',
-      fontWeight: '600',
-      fontSize: 14,
-      lineHeight: 16,
-      color: '#45474F',
-    },
+  avatar: {
+    marginRight: 8,
+  },
 
-    text: {
-      paddingVertical: 6,
-      fontFamily: 'SF Pro Text',
-      fontSize: 14,
-      lineHeight: 17,
-      color: '#45474F',
-    },
+  content: {
+    flex: 1,
+    paddingVertical: 13,
+    paddingHorizontal: 15,
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+      // @TODO: box-shadow
+      shadowColor: '#E1E6ED',
+      shadowRadius: 4,
+      shadowOpacity: 0.5,
+      shadowOffset: {
+        width: 0,
+        height: 0,
+      },
+      elevation: 1,
+  },
 
-    createdAt: {
-      fontFamily: 'SF Pro Text',
-      fontSize: 14,
-      lineHeight: 16,
-      color: '#BDC0CB',
-    },
+  nameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  name: {
+    marginRight: 8,
+    fontFamily: 'SF Pro Text',
+    fontWeight: '600',
+    fontSize: 14,
+    lineHeight: 16,
+    color: '#45474F',
+  },
+
+  text: {
+    paddingVertical: 6,
+    fontFamily: 'SF Pro Text',
+    fontSize: 14,
+    lineHeight: 17,
+    color: '#45474F',
+  },
+
+  createdAt: {
+    fontFamily: 'SF Pro Text',
+    fontSize: 14,
+    lineHeight: 16,
+    color: '#BDC0CB',
   },
 })
 export default class ImageComments extends Component {
@@ -187,9 +183,9 @@ export default class ImageComments extends Component {
     const { styleSheet: styles } = this.props;
 
     return (
-      <View style={styles.modal.titleRow}>
-        <Text style={styles.modal.title}>Comments</Text>
-        {count ? <Text style={styles.modal.count}>{count}</Text> : null}
+      <View style={styles.titleRow}>
+        <Text style={styles.title}>Comments</Text>
+        {count ? <Text style={styles.count}>{count}</Text> : null}
       </View>
     );
   };
@@ -210,15 +206,15 @@ export default class ImageComments extends Component {
           const isOnline = true;
 
           return (
-            <View key={id} style={styles.comment.container}>
-              <UserAvatar user={user} style={styles.comment.avatar} />
-              <View style={styles.comment.content}>
-                <View style={styles.comment.nameRow}>
-                  <Text style={styles.comment.name}>{user.name}</Text>
+            <View key={id} style={styles.commentContainer}>
+              <UserAvatar user={user} style={styles.avatar} />
+              <View style={styles.content}>
+                <View style={styles.nameRow}>
+                  <Text style={styles.name}>{user.name}</Text>
                   <UserOnlineStatus isOnline={isOnline} />
                 </View>
-                <Text style={styles.comment.text}>{text}</Text>
-                <Text style={styles.comment.createdAt}>{dateFormatted}</Text>
+                <Text style={styles.text}>{text}</Text>
+                <Text style={styles.createdAt}>{dateFormatted}</Text>
               </View>
             </View>
           );
@@ -245,7 +241,7 @@ export default class ImageComments extends Component {
             onCancel={this.action('onCancel', this.hide)}
             onRequestClose={this.action('onRequestClose', this.hide)}
           >
-            <View style={styles.modal.container}>
+            <View style={styles.modalContainer}>
               {this.renderComments(photo.comments.edges)}
             </View>
           </Modal>

@@ -33,7 +33,7 @@ export default class NoComments extends PureComponent {
 
   render() {
     return (
-      <View style={this.style.container} onStartShouldSetResponder={() => true} padderHorizontal>
+      <View style={this.style.container} padderHorizontal>
         <Text style={this.style.noResultsText}>No comments yet</Text>
         <Text style={this.style.noResultsText}>Be the first to comment</Text>
         <Icon style={this.style.icon} name="message" />

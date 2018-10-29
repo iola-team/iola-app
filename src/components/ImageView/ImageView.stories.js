@@ -8,7 +8,7 @@ import faker from 'faker';
 import { find, orderBy, sample, sampleSize, shuffle } from 'lodash';
 
 import { getApolloDecorator, getContentDecorator } from 'storybook';
-import TouchableOpacity from 'components/TouchableOpacity';
+import TouchableOpacity from '../TouchableOpacity';
 import ImageView from './ImageView';
 
 const stories = storiesOf('Components/ImageView', module);
