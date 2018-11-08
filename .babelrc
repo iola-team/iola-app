@@ -4,10 +4,7 @@
     "@babel/preset-flow"
   ],
   "plugins": [
-    [
-      "@babel/plugin-proposal-export-default-from",
-      "@babel/plugin-proposal-export-namespace-from"
-    ],
+    "@babel/plugin-proposal-export-namespace-from",
     "@babel/plugin-proposal-function-bind",
     [
       "@babel/plugin-proposal-decorators",

@@ -107,6 +107,10 @@
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/node": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.1.2",
+    "@babel/plugin-proposal-export-namespace-from": "^7.0.0",
+    "@babel/plugin-proposal-function-bind": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
     "@storybook/addon-actions": "^3.4.10",
     "@storybook/addon-console": "^1.0.4",
     "@storybook/addon-knobs": "^3.4.10",
@@ -118,8 +122,6 @@
     "babel-jest": "^23.6.0",
     "babel-plugin-import-graphql": "^2.6.2",
     "babel-plugin-module-resolver": "^3.1.1",
-    "babel-plugin-transform-export-extensions": "^6.22.0",
-    "babel-plugin-transform-function-bind": "^6.22.0",
     "babel-preset-node6": "^11.0.0",
     "babel-runtime": "^7.0.0-beta.3",
     "child-process-promise": "^2.2.1",
@@ -142,8 +144,7 @@
     "node-fetch": "^2.2.1",
     "react-dom": "16.6.0-alpha.8af6728",
     "react-native-debugger-open": "^0.3.17",
-    "react-native-storybook-loader": "^1.8.0",
-    "@babel/preset-flow": "^7.0.0"
+    "react-native-storybook-loader": "^1.8.0"
   },
   "jest": {
     "preset": "react-native"
