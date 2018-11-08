@@ -1,29 +1,40 @@
 {
   "presets": [
-    "module:metro-react-native-babel-preset"
+    "module:metro-react-native-babel-preset",
+    "@babel/preset-flow"
   ],
   "plugins": [
-    "transform-export-extensions",
-    "transform-function-bind",
-    "transform-decorators-legacy",
+    [
+      "@babel/plugin-proposal-export-default-from",
+      "@babel/plugin-proposal-export-namespace-from"
+    ],
+    "@babel/plugin-proposal-function-bind",
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ],
     "import-graphql",
-
-    ["module-resolver", {
-      "alias": {
-        "application": "./src/application",
-        "components": "./src/components",
-        "graph": "./src/graph",
-        "screens": "./src/screens",
-        "storybook": "./src/storybook",
-        "theme": "./src/theme",
-        "utils": "./src/utils"
-      },
-      "extensions": [
-        ".ios.js",
-        ".android.js",
-        ".js",
-        ".json"
-      ]
-    }]
+    [
+      "module-resolver",
+      {
+        "alias": {
+          "application": "./src/application",
+          "components": "./src/components",
+          "graph": "./src/graph",
+          "screens": "./src/screens",
+          "storybook": "./src/storybook",
+          "theme": "./src/theme",
+          "utils": "./src/utils"
+        },
+        "extensions": [
+          ".ios.js",
+          ".android.js",
+          ".js",
+          ".json"
+        ]
+      }
+    ]
   ]
 }
