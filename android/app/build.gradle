@@ -97,9 +97,14 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
+    flavorDimensions "app"
+
     productFlavors {
-        main {}
+        main {
+            dimension "app"
+        }
         storybook {
+            dimension "app"
             applicationIdSuffix ".storybook"
             versionNameSuffix "-storybook"
         }
