@@ -2,6 +2,7 @@
   "projects": {
     "Sparkle": {
       "schemaPath": ".tmp/schemas/server.graphql",
+      "includes": [".tmp/**/*.graphql"],
       "extensions": {
         "endpoints": {
           "default": "http://192.168.0.102/oxwall/everywhere/api/graphql?XDEBUG_SESSION_START=PHPSTORM"
