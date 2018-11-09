@@ -96,8 +96,8 @@ export default async () => {
   const debug = false;
   const debugQuery = debug ? '?XDEBUG_SESSION_START=PHPSTORM' : '';
 
-  const queryUri = `http://172.27.0.74/ow/oxwall/everywhere/api/graphql${debugQuery}`;
-  const subscriptionUri = `http://172.27.0.74/ow/oxwall/everywhere/api/subscriptions${debugQuery}`;
+  const queryUri = `http://192.168.0.102/oxwall/everywhere/api/graphql${debugQuery}`;
+  const subscriptionUri = `http://192.168.0.102/oxwall/everywhere/api/subscriptions${debugQuery}`;
 
   const uploadLink = createUploadLink({
     uri: queryUri,
