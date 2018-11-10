@@ -1,1 +1,1 @@
-export default from './MessageUpdateSubscription';
+export { default } from './MessageUpdateSubscription';

@@ -1,1 +1,1 @@
-export default from './TextPicker';
+export { default } from './TextPicker';

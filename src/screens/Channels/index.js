@@ -1,1 +1,1 @@
-export default from './Channels';
+export { default } from './Channels';

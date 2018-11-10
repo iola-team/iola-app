@@ -1,3 +1,3 @@
 export * from './roteNames';
 
-export default from './navigation';
+export { default } from './navigation';

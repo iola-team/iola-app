@@ -1,1 +1,1 @@
-export default from './UserBriefCard';
+export { default } from './UserBriefCard';

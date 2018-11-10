@@ -1,1 +1,1 @@
-export default from './MessageStateIndicator';
+export { default } from './MessageStateIndicator';

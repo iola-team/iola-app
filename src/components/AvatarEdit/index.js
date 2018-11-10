@@ -1,1 +1,1 @@
-export default from './AvatarEdit';
+export { default } from './AvatarEdit';

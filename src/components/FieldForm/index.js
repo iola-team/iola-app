@@ -1,1 +1,1 @@
-export default from './FieldForm';
+export { default } from './FieldForm';

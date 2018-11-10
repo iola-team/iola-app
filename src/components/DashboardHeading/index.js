@@ -1,1 +1,1 @@
-export default from './DashboardHeading';
+export { default } from './DashboardHeading';

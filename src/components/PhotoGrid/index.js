@@ -1,3 +1,3 @@
 export Item from './PhotoGridItem';
 
-export default from './PhotoGrid';
+export { default } from './PhotoGrid';

@@ -1,6 +1,6 @@
-export getRootDecorator from './Root';
-export getContentDecorator from './Content';
-export getContainerDecorator from './Container';
-export getBorderedDecorator from './Bordered';
-export getStyledDecorator from './Styled';
-export getApolloDecorator from './Apollo';
+export { default as getRootDecorator } from './Root';
+export { default as getContentDecorator } from './Content';
+export { default as getContainerDecorator } from './Container';
+export { default as getBorderedDecorator } from './Bordered';
+export { default as getStyledDecorator } from './Styled';
+export { default as getApolloDecorator }  from './Apollo';

@@ -1,1 +1,1 @@
-export default from './ImageProgress';
+export { default } from './ImageProgress';

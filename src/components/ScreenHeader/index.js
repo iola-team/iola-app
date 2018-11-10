@@ -1,1 +1,1 @@
-export default from './ScreenHeader';
+export { default } from './ScreenHeader';

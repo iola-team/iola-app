@@ -1,1 +1,1 @@
-export default from './UserHeading';
+export { default } from './UserHeading';

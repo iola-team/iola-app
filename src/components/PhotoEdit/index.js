@@ -1,1 +1,1 @@
-export default from './PhotoEdit';
+export { default } from './PhotoEdit';

@@ -1,1 +1,1 @@
-export default from './MessageItem';
+export { default } from './MessageItem';

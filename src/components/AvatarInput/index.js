@@ -1,1 +1,1 @@
-export default from './AvatarInput';
+export { default } from './AvatarInput';

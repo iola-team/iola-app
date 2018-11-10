@@ -1,1 +1,1 @@
-export default from './ListPicker';
+export { default } from './ListPicker';

@@ -1,1 +1,1 @@
-export default from './UserPhotosCard';
+export { default } from './UserPhotosCard';
