@@ -78,10 +78,7 @@ export default class FieldText extends PureComponent {
   };
 
   render() {
-    const {
-      field,
-      ...props,
-    } = this.props;
+    const { field, ...props } = this.props;
 
     return (
       <InputItem

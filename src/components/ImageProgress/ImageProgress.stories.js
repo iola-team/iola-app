@@ -1,4 +1,5 @@
-import { number, boolean, withKnobs } from '@storybook/addon-knobs/react';
+import React from 'react';
+import { number, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { Image } from 'react-native';
