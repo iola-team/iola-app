@@ -39,7 +39,7 @@ export default class SearchBar extends PureComponent {
           <Icon name="ios-search" />
           <Input
             placeholder="Search for contacts"
-            placeholderTextColor={"#BDC0CB"}
+            placeholderTextColor="#BDC0CB"
             value={phrase}
             onChangeText={::this.onPhraseChange}
           />

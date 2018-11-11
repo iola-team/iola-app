@@ -16,13 +16,11 @@ const getProgress = () => number('Progress', 0.3, {
   min: 0,
   max: 1,
   step: 0.01,
-})
-
-stories.add('No content', () => {
-  return (
-    <CircularProgress progress={getProgress()} />
-  );
 });
+
+stories.add('No content', () => (
+  <CircularProgress progress={getProgress()} />
+));
 
 stories.add('With content', () => {
   const progress = getProgress();

@@ -2,12 +2,10 @@ import React from 'react';
 import { find, filter, range, orderBy, cloneDeep } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { button, number, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
+import { button, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
-import moment from 'moment'
-import uuid from 'uuid/v4'
+import uuid from 'uuid/v4';
 import { PubSub } from 'graphql-subscriptions';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
@@ -19,6 +17,8 @@ const stories = storiesOf('Components/ChatList', module);
 // Decorators
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator());
+
+const getRandomChats = (userId) => range(50).map(() => createRandomChat(userId));
 
 let subscriptions;
 const dataStore = {};
@@ -149,12 +149,12 @@ const createRandomMessage = (user, participant, chat) => {
     user: faker.random.arrayElement([user, participant]),
     chat: () => chat,
     __fake: true,
-  }
+  };
 
   dataStore.messages.push(message);
 
   return message;
-}
+};
 
 const createRandomUser = (id = faker.random.uuid()) => {
   const user = {
@@ -170,7 +170,7 @@ const createRandomUser = (id = faker.random.uuid()) => {
   dataStore.users.push(user);
 
   return user;
-}
+};
 
 const createRandomChat = (userId, participantId, chatId, addRandomMessages = true) => {
   const user = find(dataStore.users, { id: userId });
@@ -192,9 +192,7 @@ const createRandomChat = (userId, participantId, chatId, addRandomMessages = tru
   dataStore.chats.push(chat);
 
   return chat;
-}
-
-const getRandomChats = (userId) => range(50).map(() => createRandomChat(userId));
+};
 
 const typeDefs = gql`
   scalar Date
@@ -327,7 +325,7 @@ const resolvers = {
           createdAt: new Date(),
           user: messageUser,
           chat,
-        }
+        };
 
         dataStore.messages.unshift(node);
 
@@ -356,20 +354,20 @@ const resolvers = {
     async chats(user, args, { dataStore: { chats, messages } }) {
       let userChats = filter(chats, ['user.id', user.id]);
       if (!userChats.length && user.chats) {
-        userChats = user.chats()
+        userChats = user.chats();
       }
 
       const orderedChats = orderBy(userChats, [(chat) => {
         let chatMessages = filter(messages, ['chat.id', chat.id]);
 
         if (!chatMessages.length && chat.messages) {
-          chatMessages = chat.messages()
+          chatMessages = chat.messages();
         }
 
         const orderedMessages = orderBy(chatMessages, ['createdAt', 'desc']);
 
         return orderedMessages[0].createdAt;
-      }, 'desc'])
+      }, 'desc']);
 
       return createConnection(orderedChats, args);
     }
@@ -435,21 +433,19 @@ const userQuery = gql`
 `;
 
 // Stories
-stories.add('Static list', () => {
-  return (
-    <Query query={userQuery} variables={{ userId: 'User:1' }}>
-      {({ data, loading }) => {
-        if (loading) {
-          return null;
-        }
+stories.add('Static list', () => (
+  <Query query={userQuery} variables={{ userId: 'User:1' }}>
+    {({ data, loading }) => {
+      if (loading) {
+        return null;
+      }
 
-        return (
-          <ChatList user={data.user} />
-        );
-      }}
-    </Query>
-  );
-});
+      return (
+        <ChatList user={data.user} />
+      );
+    }}
+  </Query>
+));
 
 
 stories.add('Subscriptions', () => {

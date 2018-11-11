@@ -47,9 +47,9 @@ stories.add('Select', () => {
         defaultValue={['1']}
         isLoading={isLoading}
         error={error}
-        label={"Select"}
+        label="Select"
         type="select"
-        placeholder={'Select a value'}
+        placeholder="Select a value"
         options={[
           { label: 'Female', value: '1' },
           { label: 'Male', value: '2' },
@@ -69,9 +69,9 @@ stories.add('Select + Error', () => {
         defaultValue={['1']}
         isLoading={isLoading}
         error={error}
-        label={"Select"}
+        label="Select"
         type="select"
-        placeholder={'Select a value'}
+        placeholder="Select a value"
         options={[
           { label: 'Female', value: '1' },
           { label: 'Male', value: '2' },
@@ -91,10 +91,10 @@ stories.add('Multi-select', () => {
         defaultValue={['1', '2']}
         isLoading={isLoading}
         error={error}
-        label={"Multi-select"}
+        label="Multi-select"
         type="select"
         multiple
-        placeholder={'Select values'}
+        placeholder="Select values"
         options={[
           { label: 'Female', value: '1' },
           { label: 'Male', value: '2' },
@@ -111,12 +111,12 @@ stories.add('Text', () => {
   return (
     <Section>
       <StatefulInput
-        defaultValue={"Default value"}
+        defaultValue="Default value"
         isLoading={isLoading}
         error={error}
         type="text"
-        label={"Real name"}
-        placeholder={'Enter real name'}
+        label="Real name"
+        placeholder="Enter real name"
       />
     </Section>
   );
@@ -129,13 +129,13 @@ stories.add('Password', () => {
   return (
     <Section>
       <StatefulInput
-        defaultValue={"123"}
+        defaultValue="123"
         isLoading={isLoading}
         error={error}
         type="text"
         secure
-        label={'Password'}
-        placeholder={'Enter password'}
+        label="Password"
+        placeholder="Enter password"
       />
     </Section>
   );
@@ -152,8 +152,8 @@ stories.add('Textarea', () => {
         isLoading={isLoading}
         error={error}
         multiline
-        label={'Textarea'}
-        placeholder={'Enter text'}
+        label="Textarea"
+        placeholder="Enter text"
       />
     </Section>
   );
@@ -170,7 +170,7 @@ stories.add('Switch', () => {
         isLoading={isLoading}
         error={error}
         type="switch"
-        label={'Switch'}
+        label="Switch"
       />
     </Section>
   );
@@ -187,72 +187,70 @@ stories.add('Date', () => {
         isLoading={isLoading}
         error={error}
         type="date"
-        label={'Date'}
+        label="Date"
         minDate={new Date('1980')}
         maxDate={new Date('2018')}
-        placeholder={'Select date'}
+        placeholder="Select date"
       />
     </Section>
   );
 });
 
-stories.add('All', () => {
-  return (
-    <Section>
-      <StatefulInput
-        label={"Select"}
-        type="select"
-        placeholder={'Select a value'}
-        options={[
+stories.add('All', () => (
+  <Section>
+    <StatefulInput
+      label="Select"
+      type="select"
+      placeholder="Select a value"
+      options={[
           { label: 'Female', value: '1' },
           { label: 'Male', value: '2' },
         ]}
-      />
+    />
 
-      <StatefulInput
-        label={"Multi-select"}
-        type="select"
-        multiple
-        placeholder={'Select values'}
-        options={[
+    <StatefulInput
+      label="Multi-select"
+      type="select"
+      multiple
+      placeholder="Select values"
+      options={[
           { label: 'Female', value: '1' },
           { label: 'Male', value: '2' },
         ]}
-      />
+    />
 
-      <StatefulInput
-        type="text"
-        label={"Real name"}
-        placeholder={'Enter real name'}
-      />
+    <StatefulInput
+      type="text"
+      label="Real name"
+      placeholder="Enter real name"
+    />
 
-      <StatefulInput
-        type="text"
-        secure
-        label={'Password'}
-        placeholder={'Enter password'}
-      />
+    <StatefulInput
+      type="text"
+      secure
+      label="Password"
+      placeholder="Enter password"
+    />
 
-      <StatefulInput
-        type="text"
-        multiline
-        label={'Textarea'}
-        placeholder={'Enter text'}
-      />
+    <StatefulInput
+      type="text"
+      multiline
+      label="Textarea"
+      placeholder="Enter text"
+    />
 
-      <StatefulInput
-        type="date"
-        label={'Date'}
-        minDate={new Date('1980')}
-        maxDate={new Date('2018')}
-        placeholder={'Select date'}
-      />
+    <StatefulInput
+      type="date"
+      label="Date"
+      minDate={new Date('1980')}
+      maxDate={new Date('2018')}
+      placeholder="Select date"
+    />
 
-      <StatefulInput
-        last
-        type="switch"
-        label={'Switch'}
-      />
-    </Section>
-  );
-});
+    <StatefulInput
+      last
+      type="switch"
+      label="Switch"
+    />
+  </Section>
+  ));

@@ -95,4 +95,4 @@ stories.addDecorator(getApolloDecorator({
 }));
 
 // Stories
-stories.add('Default', () => <PhotoList userId={'User:1'} />);
+stories.add('Default', () => <PhotoList userId="User:1" />);

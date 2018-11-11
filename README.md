@@ -1,8 +1,8 @@
 # Messenger App
 
 ## Install
-- `yarn`
-- `rnpm link`
+  - `yarn`
+  - `rnpm link`
 
 ## Development
 1) Run dev server: `yarn start`
@@ -19,8 +19,19 @@
       - Android
         - Build Storybook app: `yarn run:android-storybook`
         - Web UI: http://localhost:7007/
+  - React Developer Tools
+    - install: `npm install -g react-devtools`
+    - run: `react-devtools`
 3) `yarn postinstall` // @TODO: remove when Apollo fix this: https://github.com/apollographql/apollo-client/issues/3236
 
-## Code style
-- [Airbnb Code Style](https://github.com/airbnb/javascript)
-- destructuring: in one line if length < 100 but in multiple lines if has default values
+### Code style
+  - [Airbnb Code Style](https://github.com/airbnb/javascript)
+  - Destructuring: in one line if length < 100 but in multiple lines if has default values
+
+### Troubleshooting
+  - "Metro Bundler can't listen on port 8081" error
+    - `sudo lsof -i :8081`
+    - `kill -9 PID_FROM_RESULTS_OF_THE_PREVIOUS_COMMAND`
+
+### Global TODOs
+  - After going live add the `lint:fix` action to pre-commit hook (via Husky)

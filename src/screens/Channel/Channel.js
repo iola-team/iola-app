@@ -9,10 +9,9 @@ import {
   View,
 } from 'native-base';
 
+import { Chat, ScreenHeader, UserAvatar } from 'components';
 import { withStyleSheet as styleSheet } from 'theme';
-import { ScreenHeader, UserAvatar } from 'components';
 import ChannelHeader from './ChannelHeader';
-import { Chat } from 'components';
 
 const propsToVariables = props => ({
   userId: props.navigation.state.params.userId,

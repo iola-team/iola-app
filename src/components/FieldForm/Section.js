@@ -24,6 +24,6 @@ export default class Section extends PureComponent {
           {children}
         </CardItem>
       </Card>
-    )
+    );
   }
 }

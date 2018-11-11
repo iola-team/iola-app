@@ -118,7 +118,7 @@ export default class Input extends PureComponent {
       onClose: () => {
         this.setState({ isToastVisible: false });
       },
-    })
+    });
   };
 
   renderRight() {

@@ -6,11 +6,14 @@ import {
 
 export default ({ padder = false, backgroundColor, style = {} } = {}) => (story) => (
   <Container>
-    <View padder={padder} style={{
-      flex: 1,
-      backgroundColor,
-      ...style,
-    }}>
+    <View
+      padder={padder}
+      style={{
+        flex: 1,
+        backgroundColor,
+        ...style,
+      }}
+    >
       {story()}
     </View>
   </Container>

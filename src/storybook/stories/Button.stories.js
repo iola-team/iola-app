@@ -23,7 +23,7 @@ const buttons = [
     path: 'Buttons/Light',
     props: { light: true }
   },
-]
+];
 
 buttons.forEach(({ path, props: globalProps }) => {
   const stories = storiesOf(path, module).addDecorator(getContentDecorator({ padder: true }));
