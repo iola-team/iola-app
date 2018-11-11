@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Item, Input, Icon } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from 'theme';
 import Button from '../TouchableOpacity';
 
 @styleSheet('Sparkle.ChatFooter', {

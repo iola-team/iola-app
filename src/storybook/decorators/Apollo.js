@@ -113,7 +113,7 @@ function createProgressLink({ progressOptions = {} }) {
         await delay(getDelay(tick));
 
         if (!canceled) {
-          fetchOptions.uploadProgress(tick, total)
+          fetchOptions.uploadProgress(tick, total);
         }
       }), uploadPromise);
     }

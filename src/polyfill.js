@@ -29,4 +29,4 @@ export {
   FileReader,
   XMLHttpRequest,
   fetch,
-}
+};

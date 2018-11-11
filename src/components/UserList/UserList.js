@@ -4,7 +4,7 @@ import { FlatList } from "react-native";
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 
-import UserListItem from '../UserListItem'
+import UserListItem from '../UserListItem';
 
 const edgeFragment = gql`
   fragment UserList_edge on UserEdge {
@@ -47,12 +47,11 @@ export default class UserList extends Component {
   }
 
   getItemLayout(data, index) {
-
     return {
       length: UserListItem.ITEM_HEIGHT,
       offset: UserListItem.ITEM_HEIGHT * index,
       index,
-    }
+    };
   }
 
   render() {

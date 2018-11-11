@@ -64,9 +64,7 @@ export default class ImagePickerActionSheet extends Component {
     const props = this.getProps();
 
     return (
-      <ActionSheet
-        {...props}
-      />
+      <ActionSheet {...props} />
     );
   }
 }

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { NetworkStatus } from 'apollo-client';
 import update from 'immutability-helper';
 import uuid from 'uuid';
 import { View } from 'native-base';
-import { filter, get } from 'lodash';
+import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import ChatFooter from '../ChatFooter';
@@ -435,7 +434,7 @@ export default class Chat extends Component {
             loadingMore={hasMore}
             getItemSide={this.getItemSide}
             onRead={this.onMessagesRead}
-            inverted={true}
+            inverted
           />
         </Shadow>
 

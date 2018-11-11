@@ -50,21 +50,19 @@ stories.add('Static', () => {
   );
 });
 
-stories.add('Dynamic value', () => {
-  return (
-    <StatefulText
-      label="Description"
-      placeholder="Enter text here"
-      onChange={action('onChange')}
-      onCancel={action('onCancel')}
-      onDone={action('onDone')}
-      onShow={action('onShow')}
-      onHide={action('onHide')}
-    >
-      {renderChildren}
-    </StatefulText>
-  );
-});
+stories.add('Dynamic value', () => (
+  <StatefulText
+    label="Description"
+    placeholder="Enter text here"
+    onChange={action('onChange')}
+    onCancel={action('onCancel')}
+    onDone={action('onDone')}
+    onShow={action('onShow')}
+    onHide={action('onHide')}
+  >
+    {renderChildren}
+  </StatefulText>
+));
 
 stories.add('Controlled by isVisible prop', () => {
   const isVisible = boolean('isVisible', false);

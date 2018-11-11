@@ -2,16 +2,11 @@ import React from 'react';
 import { withHandlers } from 'recompose';
 import { storiesOf } from '@storybook/react-native';
 import { action } from '@storybook/addon-actions';
-import {
-  Text
-} from 'native-base';
 
 import { getContentDecorator } from 'storybook';
 import AvatarInput from './AvatarInput';
 
-const stories = storiesOf('Components/AvatarInput', module)
-  .addDecorator(getContentDecorator({ padder: true }));
-
+const stories = storiesOf('Components/AvatarInput', module).addDecorator(getContentDecorator({ padder: true }));
 const avatarUrl = 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg';
 
 const Input = withHandlers({

@@ -1,4 +1,4 @@
-import { composeResovers } from '../utils'
+import { composeResovers } from '../utils';
 
 // Resolvers
 import auth from './auth';

@@ -41,6 +41,6 @@ export default class Divider extends PureComponent {
         </Label>
         <Line />
       </Root>
-    )
+    );
   }
 }

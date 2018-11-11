@@ -443,7 +443,7 @@ const resolvers = {
 
         const value = find(dataStore.values, ['field.id', fieldId]) || {
           id: `Value:${++nextId}`,
-          field: field,
+          field,
           data: {
             presentation: field.presentation,
             value: null,
@@ -572,7 +572,7 @@ const WithData = ({ userId: id }) => {
                       variables: {
                         input: {
                           userId: id,
-                          values: values,
+                          values,
                         },
                       },
                     });
@@ -590,7 +590,7 @@ const WithData = ({ userId: id }) => {
 // Stories
 stories.add('With filled data', () => <WithData userId="User:1" />);
 stories.add('No data', () => <WithData userId="User:2" />);
-stories.add('With async data', () => <WithData userId={'User:3'} />);
+stories.add('With async data', () => <WithData userId="User:3" />);
 stories.add('Loading data', () => {
   const id = 'User:1';
 

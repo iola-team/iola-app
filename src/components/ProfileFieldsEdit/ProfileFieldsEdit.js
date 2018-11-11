@@ -12,7 +12,7 @@ import {
 
 import { withStyleSheet as styleSheet } from 'theme/index';
 import FieldForm from '../FieldForm';
-import Field from '../FieldForm/Field'
+import Field from '../FieldForm/Field';
 
 const userFragment = gql`
   fragment ProfileFieldsEdit_user on User {
@@ -58,7 +58,7 @@ const saveMutation = gql`
   }
   
   ${FieldForm.fragments.value}
-`
+`;
 @graphql(saveMutation, {
   name: 'saveValuesMutation',
 })
