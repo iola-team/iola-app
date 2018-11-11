@@ -16,7 +16,7 @@ import DeviceInfo from 'react-native-device-info';
 import { AuthLink, ErrorLink, SSELink } from './links';
 import resolvers from './resolvers';
 import cacheRedirects from './cacheRedirects';
-import introspectionQueryResultData from './meta/fragmentTypes';
+import introspectionQueryResultData from './meta/fragmentTypes.json';
 
 disableFragmentWarnings();
 
@@ -53,7 +53,7 @@ export async function createClient({
     /**
      * TODO: Uncomment when it will support gql AST or typeDefs will be required by Apollo Client
      */
-    //typeDefs: resolvers.typeDefs,
+    // typeDefs: resolvers.typeDefs,
     cache,
   });
 
