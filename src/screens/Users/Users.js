@@ -5,7 +5,6 @@ import { Container, Icon } from 'native-base';
 import { SearchBar } from 'components';
 import { USER } from '../roteNames';
 import UsersConnection from './UsersConnection';
-import * as routes from '../roteNames'
 
 export default class Users extends PureComponent {
   static navigationOptions = {

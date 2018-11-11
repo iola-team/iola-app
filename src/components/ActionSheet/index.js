@@ -1,1 +1,3 @@
-export { default } from './ActionSheet';
+import ActionSheet from './ActionSheet';
+
+export default ActionSheet;

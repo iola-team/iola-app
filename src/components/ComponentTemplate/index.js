@@ -1,1 +1,3 @@
-export { default } from './ComponentTemplate';
+import ComponentTemplate from './ComponentTemplate';
+
+export default ComponentTemplate;

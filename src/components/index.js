@@ -1,22 +1,45 @@
-export { default as Root } from './Root';
-export { default as BackButton } from './BackButton';
-export { default as UserAvatar } from './UserAvatar';
-export { default as UserList } from './UserList';
-export { default as UserListItem } from './UserListItem';
-export { default as SearchBar } from './SearchBar';
-export { default as UserBriefCard } from './UserBriefCard';
-export { default as UserPhotos } from './UserPhotos';
-export { default as UserPhotosCard } from './UserPhotosCard';
-export { default as UserFriendsCard } from './UserFriendsCard';
-export { default as UserHeading } from './UserHeading';
-export { default as DashboardHeading } from './DashboardHeading';
-export { default as AvatarEdit } from './AvatarEdit';
-export { default as PhotoEdit } from './PhotoEdit';
-export { default as ImageView } from './ImageView';
-export { default as ProfileFieldsEdit } from './ProfileFieldsEdit';
-export { default as Chat } from './Chat';
-export { default as ChatList } from './ChatList';
+import Root from './Root';
+import BackButton from './BackButton';
+import UserAvatar from './UserAvatar';
+import UserList from './UserList';
+import UserListItem from './UserListItem';
+import SearchBar from './SearchBar';
+import UserBriefCard from './UserBriefCard';
+import UserPhotos from './UserPhotos';
+import UserPhotosCard from './UserPhotosCard';
+import UserFriendsCard from './UserFriendsCard';
+import UserHeading from './UserHeading';
+import DashboardHeading from './DashboardHeading';
+import AvatarEdit from './AvatarEdit';
+import PhotoEdit from './PhotoEdit';
+import ImageView from './ImageView';
+import ProfileFieldsEdit from './ProfileFieldsEdit';
+import Chat from './Chat';
+import ChatList from './ChatList';
+import ScreenHeader from './ScreenHeader';
+import BottomTabBar from './BottomTabBar';
 
-// Navigation
-export { default as ScreenHeader } from './ScreenHeader';
-export { default as BottomTabBar } from './BottomTabBar';
+export {
+  Root,
+  BackButton,
+  UserAvatar,
+  UserList,
+  UserListItem,
+  SearchBar,
+  UserBriefCard,
+  UserPhotos,
+  UserPhotosCard,
+  UserFriendsCard,
+  UserHeading,
+  DashboardHeading,
+  AvatarEdit,
+  PhotoEdit,
+  ImageView,
+  ProfileFieldsEdit,
+  Chat,
+  ChatList,
+
+  // Navigation
+  ScreenHeader,
+  BottomTabBar,
+};

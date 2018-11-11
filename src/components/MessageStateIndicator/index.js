@@ -1,1 +1,3 @@
-export { default } from './MessageStateIndicator';
+import MessageStateIndicator from './MessageStateIndicator';
+
+export default MessageStateIndicator;

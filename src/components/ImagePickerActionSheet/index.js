@@ -1,1 +1,3 @@
-export { default } from './ImagePickerActionSheet';
+import ImagePickerActionSheet from './ImagePickerActionSheet';
+
+export default ImagePickerActionSheet;

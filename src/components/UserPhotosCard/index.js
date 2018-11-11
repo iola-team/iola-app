@@ -1,1 +1,3 @@
-export { default } from './UserPhotosCard';
+import UserPhotosCard from './UserPhotosCard';
+
+export default UserPhotosCard;

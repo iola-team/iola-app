@@ -1,1 +1,3 @@
-export { default } from './UserHeading';
+import UserHeading from './UserHeading';
+
+export default UserHeading;

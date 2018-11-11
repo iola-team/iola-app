@@ -1,1 +1,3 @@
-export { default } from './FieldForm';
+import FieldForm from './FieldForm';
+
+export default FieldForm;

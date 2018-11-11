@@ -1,1 +1,3 @@
-export { default } from './AvatarEdit';
+import AvatarEdit from './AvatarEdit';
+
+export default AvatarEdit;

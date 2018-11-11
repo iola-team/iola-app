@@ -1,1 +1,3 @@
-export { default } from './AvatarInput';
+import AvatarInput from './AvatarInput';
+
+export default AvatarInput;

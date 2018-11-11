@@ -1,1 +1,3 @@
-export { default } from './MessageUpdateSubscription';
+import MessageUpdateSubscription from './MessageUpdateSubscription';
+
+export default MessageUpdateSubscription;
