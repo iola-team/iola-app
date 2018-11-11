@@ -1,3 +1,4 @@
-export * from './decorators';
+import Storybook from './Storybook';
 
-export { default } from './Storybook';
+export * from './decorators';
+export default Storybook;
