@@ -2,7 +2,7 @@ import React from 'react';
 import { find, filter, uniqueId, range, orderBy } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { number, boolean, withKnobs } from '@storybook/addon-knobs/react';
+import { number, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';

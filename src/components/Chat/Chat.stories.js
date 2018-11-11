@@ -1,7 +1,7 @@
 import React from 'react';
 import { find, filter, range, orderBy } from 'lodash';
 import gql from 'graphql-tag';
-import { button, withKnobs } from '@storybook/addon-knobs/react';
+import { button, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import { cursorToOffset, offsetToCursor } from 'graphql-relay';

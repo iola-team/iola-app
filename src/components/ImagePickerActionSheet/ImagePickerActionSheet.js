@@ -52,11 +52,7 @@ export default class ImagePickerActionSheet extends Component {
       ...props,
       cancelButtonIndex: 0,
       destructiveButtonIndex: destructive && destructive + 3,
-      options: [
-        ...options,
-        ...customOptions,
-      ],
-
+      options: [ ...options, ...customOptions ],
       onPress: onAction(props),
       children: show => children(handlers => show({
         onPress: onAction(handlers),

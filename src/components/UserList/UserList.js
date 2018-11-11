@@ -47,7 +47,6 @@ export default class UserList extends Component {
   }
 
   getItemLayout(data, index) {
-
     return {
       length: UserListItem.ITEM_HEIGHT,
       offset: UserListItem.ITEM_HEIGHT * index,

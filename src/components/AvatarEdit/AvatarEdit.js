@@ -76,7 +76,7 @@ export default class AvatarEdit extends PureComponent {
         file: image.blob,
       },
     });
-  }
+  };
 
   onDelete = () => {
     const { deleteAvatar, user } = this.props;
@@ -86,7 +86,7 @@ export default class AvatarEdit extends PureComponent {
         id: user.avatar.id,
       },
     });
-  }
+  };
 
   render() {
     const { style, styleSheet, user } = this.props;

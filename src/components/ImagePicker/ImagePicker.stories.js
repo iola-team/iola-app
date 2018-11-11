@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { Image } from 'react-native';
 import { Button, Text, View } from 'native-base';
-import { number, boolean, withKnobs } from '@storybook/addon-knobs/react';
+import { number, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 
 import { getContentDecorator } from 'storybook';

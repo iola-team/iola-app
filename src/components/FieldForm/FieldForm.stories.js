@@ -2,7 +2,7 @@ import React from 'react';
 import { find, union, uniqueId } from 'lodash';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { button, withKnobs } from '@storybook/addon-knobs/react';
+import { button, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import delay from 'promise-delay';

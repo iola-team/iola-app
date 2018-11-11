@@ -1,5 +1,5 @@
 import React from 'react';
-import { withKnobs } from '@storybook/addon-knobs/react';
+import { withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { Image } from 'react-native';
@@ -24,7 +24,7 @@ stories.add('Empty grid with numbers', () => (
       <Item placeholder style={{ alignItems: 'center', justifyContent: 'center' }}>
         <Text>{index}</Text>
       </Item>
-      )}
+    )}
   />
 ));
 

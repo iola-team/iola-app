@@ -25,5 +25,5 @@
 - [Airbnb Code Style](https://github.com/airbnb/javascript)
 - Destructuring: in one line if length < 100 but in multiple lines if has default values
 
-## GLOBAL TODO
-- After go live add the lint:fix action to pre-commit hook (via Husky)
+## GLOBAL TODOs
+- After going live add the lint:fix action to pre-commit hook (via Husky)

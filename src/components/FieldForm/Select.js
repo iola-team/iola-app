@@ -50,10 +50,7 @@ export default class FieldSelect extends PureComponent {
   };
 
   render() {
-    const {
-      field,
-      ...props
-    } = this.props;
+    const { field, ...props } = this.props;
 
     return (
       <InputItem

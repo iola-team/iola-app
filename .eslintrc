@@ -3,12 +3,8 @@
   "plugins": [
     "prettier",
     "react",
-    "react-native",
+    "react-native"
   ],
-  "env": {
-    "browser": true
-  },
-  "parser": "babel-eslint",
   "rules" : {
     "prettier/prettier": 0,
     "react/jsx-filename-extension": 0,
@@ -42,6 +38,15 @@
       "node": {
         "paths": ["src"]
       }
+    }
+  },
+  "env": {
+    "browser": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "legacyDecorators": true
     }
   }
 }
