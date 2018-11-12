@@ -1,1 +1,3 @@
-export default from './FieldSection';
+import FieldSection from './FieldSection';
+
+export default FieldSection;

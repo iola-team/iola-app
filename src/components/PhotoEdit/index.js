@@ -1,1 +1,3 @@
-export default from './PhotoEdit';
+import PhotoEdit from './PhotoEdit';
+
+export default PhotoEdit;

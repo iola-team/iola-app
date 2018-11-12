@@ -1,1 +1,3 @@
-export default from './FieldList';
+import FieldList from './FieldList';
+
+export default FieldList;

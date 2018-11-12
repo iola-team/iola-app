@@ -1,1 +1,3 @@
-export default from './ProfileFieldsEdit';
+import ProfileFieldsEdit from './ProfileFieldsEdit';
+
+export default ProfileFieldsEdit;

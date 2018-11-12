@@ -1,1 +1,5 @@
-export composeResovers from './composeResolvers';
+import composeResovers from './composeResolvers';
+
+export {
+  composeResovers,
+};
