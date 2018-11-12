@@ -1,1 +1,3 @@
-export default from './ProfileFieldsView';
+import ProfileFieldsView from './ProfileFieldsView';
+
+export default ProfileFieldsView;
