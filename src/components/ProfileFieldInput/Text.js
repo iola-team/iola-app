@@ -4,10 +4,10 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import * as Yup from 'yup';
 
-import InputItem from '../Input';
+import FieldInput from '../FieldInput';
 
 const fieldFragment = gql`
-  fragment FieldText_field on ProfileField {
+  fragment ProfileFieldInputText_field on ProfileField {
     id
     label
     isRequired
@@ -25,12 +25,12 @@ const fieldFragment = gql`
 `;
 
 const dataFragment = gql`
-  fragment FieldText_data on ProfileFieldTextValue {
+  fragment ProfileFieldInputText_data on ProfileFieldTextValue {
     stringValue: value
   }
 `;
 
-export default class FieldText extends PureComponent {
+export default class ProfileFieldInputText extends PureComponent {
   static formOptions({ field, data }) {
     const { minLength, maxLength, regexp, format } = field.configs;
     let validationSchema = Yup.string();
@@ -70,6 +70,7 @@ export default class FieldText extends PureComponent {
   };
 
   static propTypes = {
+    input: PropTypes.any,
     onChange: PropTypes.func.isRequired,
     onError: PropTypes.func.isRequired,
     error: PropTypes.string,
@@ -78,15 +79,17 @@ export default class FieldText extends PureComponent {
   };
 
   render() {
-    const { field, ...props } = this.props;
+    const { field, data, input, ...props } = this.props;
 
     return (
-      <InputItem
+      <FieldInput
         {...props}
+        {...field.configs}
+
         type="text"
         placeholder="Enter here..."
         label={field.label}
-        {...field.configs}
+        value={input || data && data.stringValue}
       />
     );
   }

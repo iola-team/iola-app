@@ -1,16 +1,15 @@
 import React from 'react';
-import { find, union, uniqueId } from 'lodash';
-import { Query, Mutation } from 'react-apollo';
+import { find } from 'lodash';
+import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { button, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import delay from 'promise-delay';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
-import FieldForm from './FieldForm';
+import ProfileFieldsView from './ProfileFieldsView';
 
-const stories = storiesOf('Components/FieldForm', module);
+const stories = storiesOf('Components/ProfileFieldsView', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
@@ -305,40 +304,17 @@ const dataStore = {
 
 const typeDefs = gql`
   scalar Date
-  
-  type Mutation {
-    saveProfileFieldValues(input: ProfileFieldSaveInput!): ProfileFieldSavePayload!
-  }
-  
+
   type Query {
     node(id: ID!): User!
-  }
-
-  input ProfileFieldValueInput {
-    fieldId: ID!
-
-    booleanValue: Boolean
-    stringValue: String
-    arrayValue: [String!]
-    dateValue: Date
-  }
-
-  input ProfileFieldSaveInput {
-    userId: ID!
-    values: [ProfileFieldValueInput!]!
-  }
-
-  type ProfileFieldSavePayload {
-    user: User!
-    nodes: [ProfileFieldValue!]!
   }
   
   type User {
     id: ID!
-    
+
     profile: Profile!
   }
-  
+
   type Profile {
     accountType: AccountType!
     values: [ProfileFieldValue!]!
@@ -366,7 +342,7 @@ const typeDefs = gql`
     EMAIL
     URL
   }
-  
+
   type ProfileFieldTextConfigs {
     format: StringFormat
     multiline: Boolean
@@ -433,39 +409,6 @@ const typeDefs = gql`
 `;
 
 const resolvers = {
-  Mutation: {
-    saveProfileFieldValues: (root, { input }, { dataStore }) => {
-      const { userId, values } = input;
-
-      let nextId = dataStore.values.length;
-      const nodes = values.map(({ fieldId, ...data }) => {
-        const field = find(dataStore.fields, { id: fieldId});
-
-        const value = find(dataStore.values, ['field.id', fieldId]) || {
-          id: `Value:${++nextId}`,
-          field,
-          data: {
-            presentation: field.presentation,
-            value: null,
-          },
-        };
-
-        value.data.value = Object.values(data)[0];
-
-        return value;
-      });
-
-      dataStore.values = union(dataStore.values, nodes);
-
-      return {
-        nodes: [
-          ...nodes,
-        ],
-        user: find(dataStore.users, { id: userId}),
-      };
-    },
-  },
-
   Query: {
     node: (root, { id }, { dataStore }) => find(dataStore.users, { id }),
   },
@@ -491,118 +434,26 @@ const resolvers = {
 
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
-const fieldsQuery = gql`
+const userQuery = gql`
   query($id: ID!) {
     user: node(id: $id) {
       id
-      ...on User {
-        profile {
-          accountType {
-            id
-            fields {
-              id
-              ...FieldForm_field
-            }
-          }
-        }
-      }
-    }
-  }
-  
-  ${FieldForm.fragments.field}
-`;
-
-const valuesQuery = gql`
-  query($id: ID!) {
-    user: node(id: $id) {
-      id
-      ...on User {
-        profile {
-          values {
-            id
-            ...FieldForm_value
-          }
-        }
-      }
+      ...ProfileFieldsView_user
     }
   }
 
-  ${FieldForm.fragments.value}
+  ${ProfileFieldsView.fragments.user}
 `;
 
-const mutationQuery = gql`
-  mutation($input: ProfileFieldSaveInput!) {
-    saveProfileFieldValues(input: $input) {
-      user {
-        id
-      }
-
-      nodes {
-        id
-        ...FieldForm_value
-      }
-    }
-  }
-
-  ${FieldForm.fragments.value}
-`;
-
-const WithData = ({ userId: id }) => {
-  let form;
-
-  button('Submit', () => {
-    form._root.submit();
-  });
-
-  return (
-    <Query query={fieldsQuery} variables={{ id }}>
-      {({ data: fieldsData, loading }) => !loading && (
-        <Query query={valuesQuery} variables={{ id }}>
-          {({ data: valuesData, loading }) => (
-            <Mutation mutation={mutationQuery} onCompleted={action('onMutationComplete')}>
-              {(mutate) => (
-                <FieldForm
-                  ref={r => form = r}
-                  fields={fieldsData.user.profile.accountType.fields}
-                  values={loading ? undefined : valuesData.user.profile.values}
-                  onSubmit={(values) => {
-                    action('onSubmit')(values);
-
-                    return mutate({
-                      variables: {
-                        input: {
-                          userId: id,
-                          values,
-                        },
-                      },
-                    });
-                  }}
-                />
-              )}
-            </Mutation>
-          )}
-        </Query>
-      )}
-    </Query>
-  );
-};
+const WithData = ({ userId: id }) => (
+  <Query query={userQuery} variables={{ id }}>
+    {({ data, loading }) => !loading && (
+      <ProfileFieldsView user={data.user} />
+    )}
+  </Query>
+);
 
 // Stories
 stories.add('With filled data', () => <WithData userId="User:1" />);
 stories.add('No data', () => <WithData userId="User:2" />);
 stories.add('With async data', () => <WithData userId="User:3" />);
-stories.add('Loading data', () => {
-  const id = 'User:1';
-
-  return (
-    <Query query={fieldsQuery} variables={{ id }} pollInterval={1000}>
-      {({ data: fieldsData, loading }) => !loading && (
-        <FieldForm
-          fields={fieldsData.user.profile.accountType.fields}
-          values={undefined}
-          onSubmit={action('onSubmit')}
-        />
-      )}
-    </Query>
-  );
-});
