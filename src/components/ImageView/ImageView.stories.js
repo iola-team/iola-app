@@ -8,8 +8,9 @@ import faker from 'faker';
 import { find, orderBy, sample, sampleSize, shuffle } from 'lodash';
 
 import { getApolloDecorator, getContentDecorator } from 'storybook';
-import TouchableOpacity from '../TouchableOpacity';
+import { createConnection } from 'storybook/decorators/Apollo';
 import ImageView from './ImageView';
+import TouchableOpacity from '../TouchableOpacity';
 
 const stories = storiesOf('Components/ImageView', module);
 
@@ -48,8 +49,21 @@ const typeDefs = gql`
   }
 
   type PhotoCommentsConnection {
+    pageInfo: PageInfo!
+    metaInfo: ConnectionMetaInfo!
     edges: [CommentEdge!]!
     totalCount: Int
+  }
+
+  type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: Cursor
+    endCursor: Cursor
+  }
+
+  type ConnectionMetaInfo {
+    firstCursor: Cursor!
   }
 
   type CommentEdge {
@@ -88,7 +102,7 @@ const dataStore = (() => {
       user: sample(users),
       createdAt: generateDate(),
       comments: index ? orderBy(
-        Array.from({ length: faker.random.number({ min: 1, max: 30 }) }).map(() => ({
+        Array.from({ length: faker.random.number({ min: 30, max: 100 }) }).map(() => ({
           id: `Comment:${faker.random.number()}`,
           text: faker.lorem.text(),
           createdAt: generateDate(),
@@ -107,6 +121,13 @@ const resolvers = {
   },
 
   Photo: {
+//     async comments(photo, args) {
+// console.log('args',args);
+//       const comments = orderBy(photo.comments, 'createdAt');
+//
+//       return createConnection(comments, args);
+//     },
+
     comments: (photo, { first }) => {
       const comments = orderBy(photo.comments, 'createdAt').slice(0, first);
 
@@ -116,6 +137,10 @@ const resolvers = {
           cursor: `cursor:${index}`,
           node: { ...comment },
         })),
+        pageInfo: {
+          hasNextPage: true,
+          endCursor: 'cursor:20', // @TODO: hmmm
+        },
       };
     },
   },

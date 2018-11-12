@@ -1,50 +1,17 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Dimensions, View, Text } from 'react-native';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-import moment from 'moment';
+import { View, Text, Dimensions } from 'react-native';
 import { isFunction, isUndefined, noop } from 'lodash';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import NoComments from './NoComments';
 import Modal from '../Modal';
-import UserOnlineStatus from '../UserOnlineStatus';
-import UserAvatar from '../UserAvatar';
+import ImageCommentsConnection from '../ImageComments/ImageCommentsConnection';
 
 const getModalHeight = () => {
   const { height } = Dimensions.get('window');
 
   return height * 0.75;
 };
-
-const photoCommentsQuery = gql`
-  query photoCommentsQuery($id: ID!) {
-    photo: node(id: $id) {
-      ...on Photo {
-        id
-        comments {
-          totalCount
-          edges {
-            node {
-              id
-              text
-              createdAt
-              user {
-                id
-                name
-                avatar {
-                  id
-                  url
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 @styleSheet('Sparkle.ImageComments', {
   titleRow: {
@@ -64,71 +31,17 @@ const photoCommentsQuery = gql`
     color: '#BDC0CB',
   },
 
-  modalContainer: {
+  container: {
     minHeight: getModalHeight(),
     paddingVertical: 24,
     paddingHorizontal: 15,
     backgroundColor: '#F8F9FB',
   },
-
-  commentContainer: {
-    flexDirection: 'row',
-    marginBottom: 8,
-  },
-
-  avatar: {
-    marginRight: 8,
-  },
-
-  content: {
-    flex: 1,
-    paddingVertical: 13,
-    paddingHorizontal: 15,
-    borderRadius: 8,
-    backgroundColor: '#FFFFFF',
-      // @TODO: box-shadow
-      shadowColor: '#E1E6ED',
-      shadowRadius: 4,
-      shadowOpacity: 0.5,
-      shadowOffset: {
-        width: 0,
-        height: 0,
-      },
-      elevation: 1,
-  },
-
-  nameRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-
-  name: {
-    marginRight: 8,
-    fontFamily: 'SF Pro Text',
-    fontWeight: '600',
-    fontSize: 14,
-    lineHeight: 16,
-    color: '#45474F',
-  },
-
-  text: {
-    paddingVertical: 6,
-    fontFamily: 'SF Pro Text',
-    fontSize: 14,
-    lineHeight: 17,
-    color: '#45474F',
-  },
-
-  createdAt: {
-    fontFamily: 'SF Pro Text',
-    fontSize: 14,
-    lineHeight: 16,
-    color: '#BDC0CB',
-  },
 })
 export default class ImageComments extends Component {
   static propTypes = {
     photoId: PropTypes.string.isRequired,
+    totalCount: PropTypes.number.isRequired,
     children: PropTypes.oneOfType([
       PropTypes.func,
       PropTypes.element,
@@ -160,10 +73,9 @@ export default class ImageComments extends Component {
     isVisible: false,
   };
 
-  onShowImageComments = () => {
-    const { isVisible } = this.props;
-
-    this.setState({ isVisible: isUndefined(isVisible) ? true : isVisible });
+  action = (handler, preHandler = noop) => () => {
+    preHandler();
+    this.props[handler](this.state.value);
   };
 
   hide = () => {
@@ -174,52 +86,20 @@ export default class ImageComments extends Component {
     });
   };
 
-  action = (handler, preHandler = noop) => () => {
-    preHandler();
-    this.props[handler](this.state.value);
+  onShowImageComments = () => {
+    const { isVisible } = this.props;
+
+    this.setState({ isVisible: isUndefined(isVisible) ? true : isVisible });
   };
 
-  renderTitle = (count) => {
-    const { styleSheet: styles } = this.props;
+  renderTitle() {
+    const { totalCount, styleSheet: styles } = this.props;
 
     return (
       <View style={styles.titleRow}>
         <Text style={styles.title}>Comments</Text>
-        {count ? <Text style={styles.count}>{count}</Text> : null}
+        {totalCount ? <Text style={styles.count}>{totalCount}</Text> : null}
       </View>
-    );
-  };
-
-  renderComments(comments) {
-    if (!comments.length) {
-      return <NoComments height={getModalHeight()} />;
-    }
-
-    const { styleSheet: styles } = this.props;
-
-    return (
-      <Fragment>
-        {comments.map((comment) => {
-          const { node: { id, text, createdAt, user } } = comment;
-          const date = moment.duration(moment(createdAt).diff(moment())).humanize();
-          const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
-          const isOnline = true;
-
-          return (
-            <View key={id} style={styles.commentContainer}>
-              <UserAvatar user={user} style={styles.avatar} />
-              <View style={styles.content}>
-                <View style={styles.nameRow}>
-                  <Text style={styles.name}>{user.name}</Text>
-                  <UserOnlineStatus isOnline={isOnline} />
-                </View>
-                <Text style={styles.text}>{text}</Text>
-                <Text style={styles.createdAt}>{dateFormatted}</Text>
-              </View>
-            </View>
-          );
-        })}
-      </Fragment>
     );
   }
 
@@ -228,25 +108,21 @@ export default class ImageComments extends Component {
     const { isVisible } = this.state;
 
     return (
-      <Query query={photoCommentsQuery} variables={{ id: photoId }}>
-        {({ loading, data: { photo } }) => (loading ? null : ( // @TODO: add spinner
-          <Modal
-            title={this.renderTitle(photo.comments.totalCount)}
-            height={getModalHeight()}
-            isVisible={isVisible}
-            onDone={this.action('onDone', this.hide)}
-            onDismiss={this.action('onDismiss')}
-            onShow={this.action('onShow')}
-            onSwipe={this.action('onSwipe', this.hide)}
-            onCancel={this.action('onCancel', this.hide)}
-            onRequestClose={this.action('onRequestClose', this.hide)}
-          >
-            <View style={styles.modalContainer}>
-              {this.renderComments(photo.comments.edges)}
-            </View>
-          </Modal>
-        ))}
-      </Query>
+      <Modal
+        title={this.renderTitle()}
+        height={getModalHeight()}
+        isVisible={isVisible}
+        onDone={this.action('onDone', this.hide)}
+        onDismiss={this.action('onDismiss')}
+        onShow={this.action('onShow')}
+        onSwipe={this.action('onSwipe', this.hide)}
+        onCancel={this.action('onCancel', this.hide)}
+        onRequestClose={this.action('onRequestClose', this.hide)}
+      >
+        <View style={styles.container}>
+          <ImageCommentsConnection photoId={photoId} height={getModalHeight()} />
+        </View>
+      </Modal>
     );
   }
 

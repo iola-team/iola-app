@@ -1,4 +1,4 @@
-# Messenger App
+# iola messenger
 
 ## Install
 - `yarn`
@@ -24,6 +24,12 @@
     - run: `react-devtools`
 3) `yarn postinstall` // @TODO: remove when Apollo fix this: https://github.com/apollographql/apollo-client/issues/3236
 
-## Code style
+### Possible errors
+  - "Metro Bundler can't listen on port 8081"
+Error: listen EADDRINUSE :::7007
+    - `sudo lsof -i :8081`
+    - `kill -9 PID_FROM_RESULTS_OF_THE_PREVIOUS_COMMAND`
+
+### Code style
 - [Airbnb Code Style](https://github.com/airbnb/javascript)
 - destructuring: in one line if length < 100 but in multiple lines if has default values

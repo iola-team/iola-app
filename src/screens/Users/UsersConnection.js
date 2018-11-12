@@ -1,7 +1,6 @@
 import { debounce } from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FlatList } from "react-native";
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';

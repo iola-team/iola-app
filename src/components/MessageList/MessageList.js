@@ -7,8 +7,8 @@ import { groupBy, orderBy, map, filter, get } from 'lodash';
 
 import { withStyle } from 'theme';
 import MessageItem from '../MessageItem';
+import LoadMoreIndicator from '../LoadMoreIndicator';
 import SectionHeader from './SectionHeader';
-import LoadIndicator from './LoadIndicator';
 
 const edgeFragment = gql`
   fragment MessageList_edge on MessageEdge {
@@ -103,7 +103,7 @@ export default class MessageList extends Component {
     const { loadingMore } = this.props;
 
     return loadingMore && (
-      <LoadIndicator />
+      <LoadMoreIndicator />
     );
   };
 

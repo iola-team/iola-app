@@ -236,23 +236,23 @@ export default class ImageView extends Component {
               </ActionBadge>
             ) : null}
           </ActionButton>
-          <ImageComments photoId={id}>
-            {onShowImageComments => (
-              <TouchableOpacity onPress={onShowImageComments} style={styles.actionButton}>
-                <EvilIcons name="comment" style={styles.actionIcon} />
-                <Text style={styles.actionText}>Comment</Text>
-                <Query query={photoCommentsTotalCountQuery} variables={{ id }}>
-                  {({ loading, data: { photo } }) => (loading ? null : ( // @TODO: add spinner
-                    photo.comments.totalCount ? (
+          <Query query={photoCommentsTotalCountQuery} variables={{ id }}>
+            {({ loading, data: { photo } }) => (loading ? null : ( // @TODO: add spinner
+              <ImageComments photoId={id} totalCount={photo.comments.totalCount}>
+                {onShowImageComments => (
+                  <TouchableOpacity onPress={onShowImageComments} style={styles.actionButton}>
+                    <EvilIcons name="comment" style={styles.actionIcon} />
+                    <Text style={styles.actionText}>Comment</Text>
+                    {!photo.comments.totalCount ? null : (
                       <Badge style={styles.actionBadge}>
                         <Text style={styles.actionBadgeText}>{photo.comments.totalCount}</Text>
                       </Badge>
-                    ) : null
-                  ))}
-                </Query>
-              </TouchableOpacity>
-            )}
-          </ImageComments>
+                    )}
+                  </TouchableOpacity>
+                )}
+              </ImageComments>
+            ))}
+          </Query>
           <ActionButton onPress={() => alert('Share')}>
             <ShareIcon />
             <ActionText>Share</ActionText>

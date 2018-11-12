@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { FlatList, Image } from "react-native";
+import { FlatList, Image } from 'react-native';
 
 import { withStyleSheet } from 'theme';
 

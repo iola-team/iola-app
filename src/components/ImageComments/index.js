@@ -1,1 +1,3 @@
-export default from './ImageComments';
+import ImageComments from './ImageComments';
+
+export default ImageComments;
