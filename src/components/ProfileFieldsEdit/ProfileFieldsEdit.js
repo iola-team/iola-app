@@ -4,36 +4,30 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { noop } from 'lodash';
-import {
-  View,
-  Text,
-  Toast,
-} from 'native-base';
+import { View, Text, Toast } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme/index';
-import FieldForm from '../FieldForm';
-import Field from '../FieldForm/Field';
+import { withStyleSheet as styleSheet } from 'theme';
+import ProfileFieldForm from '../ProfileFieldForm';
 
 const userFragment = gql`
   fragment ProfileFieldsEdit_user on User {
     id
-    
     profile {
       accountType {
         fields(on: EDIT) {
           id
-          ...FieldForm_field
+          ...ProfileFieldForm_field
         }
       }
       values {
         id
-        ...FieldForm_value
+        ...ProfileFieldForm_value
       }
     }
   }
   
-  ${FieldForm.fragments.field}
-  ${FieldForm.fragments.value}
+  ${ProfileFieldForm.fragments.field}
+  ${ProfileFieldForm.fragments.value}
 `;
 
 const saveMutation = gql`
@@ -48,17 +42,20 @@ const saveMutation = gql`
           headline
           location
         }
-      }
 
-      nodes {
-        id
-        ...FieldForm_value
+        profile {
+          values {
+            id
+            ...ProfileFieldForm_value
+          }
+        }
       }
     }
   }
   
-  ${FieldForm.fragments.value}
+  ${ProfileFieldForm.fragments.value}
 `;
+
 @graphql(saveMutation, {
   name: 'saveValuesMutation',
 })
@@ -125,7 +122,7 @@ export default class ProfileFieldsEdit extends Component {
 
     return (
       <View style={[styleSheet.root, style]}>
-        <FieldForm
+        <ProfileFieldForm
           fields={profile.accountType.fields}
           values={profile.values}
           onSubmit={this.onSubmit}
