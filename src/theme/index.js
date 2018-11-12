@@ -19,12 +19,12 @@ export default class ThemeProvider extends Component {
     const variables = {
       ...themeVariables,
       ...this.props.variables,
-    }
+    };
 
     return (
       <StyleProvider style={getTheme(variables)}>
         {this.props.children}
       </StyleProvider>
-    )
+    );
   }
 }

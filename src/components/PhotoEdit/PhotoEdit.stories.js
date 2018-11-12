@@ -1,7 +1,7 @@
 import React from 'react';
 import { uniqueId, find, without, orderBy } from 'lodash';
 import delay from 'promise-delay';
-import { withKnobs } from '@storybook/addon-knobs/react';
+import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
@@ -117,7 +117,7 @@ const resolvers = {
       return {
         deletedId: photo.id,
         user: photoOwner,
-      }
+      };
     },
 
     addUserPhoto: async (root, { input }, { dataStore }) => {
@@ -150,7 +150,7 @@ const resolvers = {
             ...photo,
           },
         })),
-      }
+      };
     },
   },
 };

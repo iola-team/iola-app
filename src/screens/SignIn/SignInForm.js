@@ -123,11 +123,10 @@ const validationSchema = yup.object().shape({
 
 export default withFormik({
   enableReinitialize: true,
-  mapPropsToValues: ({ defaultEmail }) => {
-    return defaultEmail
-      ? ({ login: defaultEmail, password: '' })
-      : ({ login: 'demo5@oxpro.org', password: 'demo1986' }); // @TODO: remove it
-  },
+  mapPropsToValues: ({ defaultEmail }) => defaultEmail
+    ? ({ login: defaultEmail, password: '' })
+    : ({ login: 'demo5@oxpro.org', password: 'demo1986' }) // @TODO: remove it
+  ,
   handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
   validationSchema,
 })(SignInForm);

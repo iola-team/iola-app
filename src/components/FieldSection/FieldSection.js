@@ -24,6 +24,6 @@ export default class FieldSection extends PureComponent {
           {children}
         </CardItem>
       </Card>
-    )
+    );
   }
 }

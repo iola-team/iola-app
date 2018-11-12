@@ -43,7 +43,7 @@ export default class Field extends Component {
     return {
       initialValue: undefined,
       transformResult: identity,
-      ...formOptionsGetter(props),
+      ...formOptionsGetter(props)
     };
   }
 

@@ -11,7 +11,7 @@ import {
 import { View, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme/index';
-import { getInAnimation, getOutAnimation } from './animations'
+import { getInAnimation, getOutAnimation } from './animations';
 
 const maxHeight = Dimensions.get("window").height * 0.6;
 

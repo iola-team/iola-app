@@ -8,7 +8,7 @@ import {
 
 import InputItem from './Input';
 import DatePicker from '../DatePicker';
-import { withStyleSheet as styleSheet } from '../../theme'
+import { withStyleSheet as styleSheet } from '../../theme';
 
 @styleSheet('Sparkle.DateInput', {
   button: {

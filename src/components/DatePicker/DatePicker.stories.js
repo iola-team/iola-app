@@ -1,5 +1,5 @@
 import React from 'react';
-import { boolean, date, withKnobs } from '@storybook/addon-knobs/react';
+import { boolean, date, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
@@ -15,8 +15,9 @@ stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator({ padder: true }));
 
 function dateKnob(name, defaultValue) {
-  const stringTimestamp = date(name, defaultValue)
-  return new Date(stringTimestamp)
+  const stringTimestamp = date(name, defaultValue);
+
+  return new Date(stringTimestamp);
 }
 
 const renderChildren = (show, date) => (
@@ -38,12 +39,12 @@ const DatePickerWithState = compose(
 // Stories
 
 stories.add('No value prop', () => {
-  const minDate = dateKnob('Min date', new Date('1980'))
-  const maxDate = dateKnob('Max date', new Date())
+  const minDate = dateKnob('Min date', new Date('1980'));
+  const maxDate = dateKnob('Max date', new Date());
 
   return (
     <DatePicker
-      label={'Birthdate'}
+      label="Birthdate"
       onChange={action('onChange')}
       onCancel={action('onCancel')}
       onDone={action('onDone')}
@@ -59,8 +60,8 @@ stories.add('No value prop', () => {
 });
 
 stories.add('Fixed value prop', () => {
-  const minDate = dateKnob('Min date', new Date('1980'))
-  const maxDate = dateKnob('Max date', new Date())
+  const minDate = dateKnob('Min date', new Date('1980'));
+  const maxDate = dateKnob('Max date', new Date());
 
   return (
     <DatePicker

@@ -9,7 +9,7 @@ import {
   Text,
 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme'
+import { withStyleSheet as styleSheet } from 'theme';
 
 const userFragment = gql`
   fragment UserBriefCard_user on User {
@@ -36,7 +36,7 @@ export default class UserBriefCard extends PureComponent {
     return (
       <Card transparent>
         <CardItem header>
-          <Icon name={"ios-pricetag-outline"} />
+          <Icon name="ios-pricetag-outline" />
           <Text>{info.location}</Text>
         </CardItem>
         <CardItem>

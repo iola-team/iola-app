@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Subscription } from 'react-apollo';
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
-import MessageList from '../MessageList'
+import MessageList from '../MessageList';
 
 const messageUpdateSubscription = gql`
   subscription MessageUpdateSubscription($userId: ID!) {

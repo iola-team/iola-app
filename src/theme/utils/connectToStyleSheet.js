@@ -1,7 +1,7 @@
-import { get, identity, isFunction, isObject, isString, merge } from "lodash"
-import { compose, getContext, mapProps, withProps } from 'recompose'
+import { get, identity, isFunction, isObject, isString, merge } from "lodash";
+import { compose, getContext, mapProps, withProps } from 'recompose';
 
-import { contextShape } from './withStyleSheet'
+import { contextShape } from './withStyleSheet';
 import normalizeStyle from './normalizeStyle';
 import composeStyles from './composeStyles';
 

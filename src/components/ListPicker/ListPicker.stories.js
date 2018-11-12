@@ -1,5 +1,5 @@
 import React from 'react';
-import { withKnobs, boolean, array } from '@storybook/addon-knobs/react';
+import { withKnobs, boolean, array } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
@@ -68,23 +68,21 @@ stories.add('Static', () => {
   );
 });
 
-stories.add('Multi select wrapper', () => {
-  return (
-    <Select
-      label="Multi select"
-      invitation="Choose multiple"
-      options={options}
-      onCancel={action('onCancel')}
-      onDone={action('onDone')}
-      onShow={action('onShow')}
-      onDismiss={action('onDismiss')}
-      onRequestClose={action('onRequestClose')}
-      multiple
-    >
-      {renderChildren}
-    </Select>
-  );
-});
+stories.add('Multi select wrapper', () => (
+  <Select
+    label="Multi select"
+    invitation="Choose multiple"
+    options={options}
+    onCancel={action('onCancel')}
+    onDone={action('onDone')}
+    onShow={action('onShow')}
+    onDismiss={action('onDismiss')}
+    onRequestClose={action('onRequestClose')}
+    multiple
+  >
+    {renderChildren}
+  </Select>
+));
 
 stories.add('Single select wrapper', () => (
   <Select

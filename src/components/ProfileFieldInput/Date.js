@@ -57,19 +57,14 @@ export default class FieldDate extends PureComponent {
   };
 
   render() {
-    const {
-      field,
-      data,
-      input,
-      ...props
-    } = this.props;
+    const { field, data, input, ...props } = this.props;
 
     return (
       <FieldInput
         {...props}
 
         type="date"
-        placeholder={'Not specified'}
+        placeholder="Not specified"
         label={field.label}
         value={input || data && data.dateValue}
         minDate={new Date(field.configs.minDate)} // TODO: handle custom scalars on graph layer

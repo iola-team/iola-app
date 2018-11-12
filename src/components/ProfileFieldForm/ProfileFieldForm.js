@@ -16,7 +16,7 @@ const getValuesByField = (fields, values) => {
   return fields.reduce((result, { id }) => ({
     ...result,
     [id]: values && get(groups, [id, 0], null),
-  }), {})
+  }), {});
 };
 
 const mapFieldOptions = (fields, valuesList, mapper) => fields.reduce((result, field) => {
@@ -86,10 +86,12 @@ export default class ProfileFieldForm extends Component {
   };
 
   form = null;
+
   onFormReady = (formRef) => {
+    const { onFormReady } = this.props;
     this.form = formRef;
 
-    this.props.onFormReady({
+    onFormReady({
       get isDirty() {
         return formRef.getFormikBag().dirty;
       },
@@ -97,9 +99,7 @@ export default class ProfileFieldForm extends Component {
     });
   };
 
-  submit = () => {
-    return this.form.submitForm();
-  }
+  submit = () => this.form.submitForm();
 
   renderItem = form => ({ field, ...props }) => (
     <Field {...props} key={field.id} field={field} form={form} />
