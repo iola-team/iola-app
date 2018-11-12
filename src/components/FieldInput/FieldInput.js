@@ -64,7 +64,7 @@ export default class FieldInput extends PureComponent {
       onClose: () => {
         this.setState({ isToastVisible: false });
       },
-    })
+    });
   };
 
   renderRight() {

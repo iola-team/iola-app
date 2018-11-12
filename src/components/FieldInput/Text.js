@@ -28,9 +28,10 @@ export default class TextInput extends Component {
   };
 
   onDone = value => {
-    this.hidePicker();
+    const { onChange } = this.props;
 
-    this.props.onChange(value);
+    this.hidePicker();
+    onChange(value);
   }
 
   renderMultilineInput() {
@@ -42,18 +43,19 @@ export default class TextInput extends Component {
       onFinishEditing,
     } = this.props;
 
+    const { isPickerVisible } = this.state;
     const preview = value && value.trim();
 
     return (
       <Fragment>
         <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>
           <Text note={!preview}>
-            {preview ? preview : placeholder}
+            {preview || placeholder}
           </Text>
         </TouchableOpacity>
 
         <TextPicker
-          isVisible={this.state.isPickerVisible}
+          isVisible={isPickerVisible}
           value={value}
           label={label}
           placeholder={placeholder}
@@ -64,7 +66,7 @@ export default class TextInput extends Component {
           onHide={onFinishEditing}
         />
       </Fragment>
-    )
+    );
   }
 
   render() {
@@ -89,7 +91,7 @@ export default class TextInput extends Component {
               onChangeText={onChange}
               value={value}
               placeholder={placeholder}
-              placeholderTextColor={'#a7a7a7'}
+              placeholderTextColor="#a7a7a7"
               secureTextEntry={secure}
               onBlur={onFinishEditing}
             />

@@ -6,11 +6,11 @@ import {
   Text,
 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme'
+import { withStyleSheet } from 'theme';
 import FieldInput from './FieldInput';
 import DatePicker from '../DatePicker';
 
-@styleSheet('Sparkle.DateInput', {
+@withStyleSheet('Sparkle.DateInput', {
   button: {
     flex: 1,
     minHeight: 50,
@@ -27,9 +27,10 @@ export default class DateInput extends PureComponent {
   };
 
   onDone = value => {
-    this.hidePicker();
+    const { onChange } = this.props;
 
-    this.props.onChange(value);
+    this.hidePicker();
+    onChange(value);
   }
 
   hidePicker = () => {

@@ -49,6 +49,7 @@ export default class ProfileEditScreen extends Component {
   };
 
   form = null;
+
   updateDone(busy = false) {
     const { navigation } = this.props;
 
@@ -62,7 +63,9 @@ export default class ProfileEditScreen extends Component {
     const { navigation } = this.props;
 
     if (!this.form || !this.form.isDirty) {
-      return navigation.goBack();
+      navigation.goBack();
+
+      return;
     }
 
     this.form.submit();
@@ -80,8 +83,9 @@ export default class ProfileEditScreen extends Component {
     const { navigation } = this.props;
 
     this.updateDone(false);
+
     if (!error) {
-      return navigation.goBack();
+      navigation.goBack();
     }
   };
 

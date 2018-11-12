@@ -1,11 +1,8 @@
 import React from 'react';
-import { number, text, boolean, withKnobs, date } from '@storybook/addon-knobs/react';
-import { action } from '@storybook/addon-actions';
+import { text, boolean, withKnobs, date } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
-import { compose, withStateHandlers } from 'recompose';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
-import { Card, CardItem, Text, View, Form } from 'native-base';
+import { getContentDecorator } from 'storybook';
 
 import FieldSection from '../FieldSection';
 import FieldView from '.';
@@ -17,47 +14,44 @@ stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator());
 
 function dateKnob(name, defaultValue) {
-  const stringTimestamp = date(name, defaultValue)
-  return new Date(stringTimestamp)
+  const stringTimestamp = date(name, defaultValue);
+
+  return new Date(stringTimestamp);
 }
 
 const Section = ({ children }) => (
-  <FieldSection label={"Field section"}>{children}</FieldSection>
+  <FieldSection label="Field section">{children}</FieldSection>
 );
 
 // Stories
-stories.add('Select', () => {
-  return (
-    <Section>
-      <FieldView
-        value={['1']}
-        label="Select"
-        type="select"
-        options={[
-          { label: 'Female', value: '1' },
-          { label: 'Male', value: '2' },
-        ]}
-      />
-    </Section>
-  );
-});
+stories.add('Select', () => (
+  <Section>
+    <FieldView
+      value={['1']}
+      label="Select"
+      type="select"
+      options={[
+        { label: 'Female', value: '1' },
+        { label: 'Male', value: '2' },
+      ]}
+    />
+  </Section>
+));
 
-stories.add('Multi-select', () => {
-  return (
-    <Section>
-      <FieldView
-        value={['1', '2']}
-        label="Multi-select"
-        type="select"
-        multiple
-        options={[
-          { label: 'Female', value: '1' },
-          { label: 'Male', value: '2' },
-        ]}
-      />
-    </Section>
-  );
-});
+stories.add('Multi-select', () => (
+  <Section>
+    <FieldView
+      value={['1', '2']}
+      label="Multi-select"
+      type="select"
+      multiple
+      options={[
+        { label: 'Female', value: '1' },
+        { label: 'Male', value: '2' },
+      ]}
+    />
+  </Section>
+));
 
 stories.add('Text', () => {
   const value = text('Value', 'Text value');
@@ -97,7 +91,7 @@ stories.add('Textarea', () => {
         value={value}
         type="text"
         multiline
-        label={'Textarea'}
+        label="Textarea"
       />
     </Section>
   );
@@ -111,14 +105,14 @@ stories.add('Switch', () => {
       <FieldView
         value={value}
         type="switch"
-        label={'Switch'}
+        label="Switch"
       />
     </Section>
   );
 });
 
 stories.add('Date', () => {
-  const value = dateKnob('Value', new Date())
+  const value = dateKnob('Value', new Date());
 
   return (
     <Section>
@@ -131,62 +125,60 @@ stories.add('Date', () => {
   );
 });
 
-stories.add('All', () => {
-  return (
-    <Section>
-      <FieldView
-        value={['1']}
-        label="Select"
-        type="select"
-        options={[
-          { label: 'Female', value: '1' },
-          { label: 'Male', value: '2' },
-        ]}
-      />
+stories.add('All', () => (
+  <Section>
+    <FieldView
+      value={['1']}
+      label="Select"
+      type="select"
+      options={[
+        { label: 'Female', value: '1' },
+        { label: 'Male', value: '2' },
+      ]}
+    />
 
-      <FieldView
-        value={['1', '2']}
-        label="Multi-select"
-        type="select"
-        multiple
-        options={[
-          { label: 'Female', value: '1' },
-          { label: 'Male', value: '2' },
-        ]}
-      />
+    <FieldView
+      value={['1', '2']}
+      label="Multi-select"
+      type="select"
+      multiple
+      options={[
+        { label: 'Female', value: '1' },
+        { label: 'Male', value: '2' },
+      ]}
+    />
 
-      <FieldView
-        value="Grey Rabbit"
-        type="text"
-        label="Real name"
-      />
+    <FieldView
+      value="Grey Rabbit"
+      type="text"
+      label="Real name"
+    />
 
-      <FieldView
-        value="1234"
-        type="text"
-        secure
-        label="Password"
-      />
+    <FieldView
+      value="1234"
+      type="text"
+      secure
+      label="Password"
+    />
 
-      <FieldView
-        value="Multi-line text goes here..."
-        type="text"
-        multiline
-        label="Multi-line text"
-      />
+    <FieldView
+      value="Multi-line text goes here..."
+      type="text"
+      multiline
+      label="Multi-line text"
+    />
 
-      <FieldView
-        value={new Date()}
-        type="date"
-        label="Date"
-      />
+    <FieldView
+      value={new Date()}
+      type="date"
+      label="Date"
+    />
 
-      <FieldView
-        value={true}
-        last
-        type="switch"
-        label="Switch"
-      />
-    </Section>
-  );
-});
+    <FieldView
+      value
+      last
+      type="switch"
+      label="Switch"
+    />
+  </Section>
+));

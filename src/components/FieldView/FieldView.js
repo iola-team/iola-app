@@ -1,4 +1,4 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Body } from 'native-base';
 
@@ -17,11 +17,7 @@ export default class FieldView extends PureComponent {
   };
 
   render() {
-    const {
-      label,
-      children,
-      ...props,
-    } = this.props;
+    const { label, children, ...props } = this.props;
 
     return(
       <FieldItem {...props}>

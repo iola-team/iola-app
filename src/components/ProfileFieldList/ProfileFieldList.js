@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { View as ViewRN } from 'react-native';
-import { groupBy, map, get } from 'lodash'
+import { groupBy, map, get } from 'lodash';
 
 import FieldList from '../FieldList';
-import Field from '../ProfileFieldForm/Field'
 
 const fieldFragment = gql`
   fragment ProfileFieldList_field on ProfileField {
@@ -49,13 +48,13 @@ export default class ProfileFieldList extends PureComponent {
   buildSections(fields, values) {
     return map(
       groupBy(fields, 'section.id'),
-      (fields) => {
-        const section = fields[0].section;
+      (sectionFields) => {
+        const [{ section }] = sectionFields;
 
         return {
           key: section.id,
           label: section.label,
-          items: this.buildItems(fields, values),
+          items: this.buildItems(sectionFields, values),
         };
       },
     );

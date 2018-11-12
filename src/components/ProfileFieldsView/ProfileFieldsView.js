@@ -1,8 +1,6 @@
-import React, { createRef, Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
 
 import ProfileFieldList from '../ProfileFieldList';
 import ProfileFieldView from '../ProfileFieldView';

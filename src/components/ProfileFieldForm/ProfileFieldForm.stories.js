@@ -1,5 +1,5 @@
 import React from 'react';
-import { find, union, uniqueId } from 'lodash';
+import { find, union } from 'lodash';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { button, withKnobs } from '@storybook/addon-knobs';
@@ -450,7 +450,7 @@ const resolvers = {
           },
         };
 
-        value.data.value = Object.values(data)[0];
+        [value.data.value] = Object.values(data);
 
         return value;
       });

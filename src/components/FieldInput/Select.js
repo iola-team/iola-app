@@ -1,20 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import { find, isUndefined } from 'lodash';
-import { View, TouchableOpacity } from 'react-native';
-import {
-  Text,
-  Button,
-  ListItem,
-  Right,
-  Body,
-  Left,
-} from 'native-base';
+import { TouchableOpacity } from 'react-native';
+import { Text } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet } from 'theme';
 import FieldInput from './FieldInput';
 import ListPicker from '../ListPicker';
 
-@styleSheet('Sparkle.SelectInput', {
+@withStyleSheet('Sparkle.SelectInput', {
   button: {
     flex: 1,
     minHeight: 50,
@@ -35,9 +28,10 @@ export default class Select extends Component {
   };
 
   onDone = value => {
-    this.hidePicker();
+    const { onChange } = this.props;
 
-    this.props.onChange(value);
+    this.hidePicker();
+    onChange(value);
   }
 
   render() {
@@ -52,8 +46,10 @@ export default class Select extends Component {
       ...props
     } = this.props;
 
+    const { isPickerVisible } = this.state;
+
     const value = rawValue || [];
-    const selectedLabels = value.map(value => find(options, { value }).label)
+    const selectedLabels = value.map(v => find(options, { value: v }).label);
 
     return (
       <Fragment>
@@ -64,13 +60,13 @@ export default class Select extends Component {
         >
           <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>
             <Text note={!value.length}>
-              {!!value.length ? selectedLabels.join(', ') : placeholder}
+              {value.length ? selectedLabels.join(', ') : placeholder}
             </Text>
           </TouchableOpacity>
         </FieldInput>
 
         <ListPicker
-          isVisible={this.state.isPickerVisible}
+          isVisible={isPickerVisible}
           value={value}
           label={label}
           options={options}
