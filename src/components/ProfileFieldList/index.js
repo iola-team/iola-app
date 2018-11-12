@@ -1,1 +1,3 @@
-export default from './ProfileFieldList';
+import ProfileFieldList from './ProfileFieldList';
+
+export default ProfileFieldList;

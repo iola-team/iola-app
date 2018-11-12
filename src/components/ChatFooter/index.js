@@ -1,1 +1,3 @@
-export default from './ChatFooter';
+import ChatFooter from './ChatFooter';
+
+export default ChatFooter;

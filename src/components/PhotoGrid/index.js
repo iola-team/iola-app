@@ -1,3 +1,7 @@
-export Item from './PhotoGridItem';
+import PhotoGrid from './PhotoGrid';
+import Item from './PhotoGridItem';
 
-export default from './PhotoGrid';
+export {
+  PhotoGrid as default,
+  Item,
+};

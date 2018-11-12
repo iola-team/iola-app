@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { find } from 'lodash'
+import { find } from 'lodash';
 import { Text } from 'native-base';
 
 import { withStyle } from 'theme';
@@ -16,7 +16,7 @@ export default class SelectView extends Component {
     } = this.props;
 
     const value = rawValue || [];
-    const selectedLabels = value.map(value => find(options, { value }).label)
+    const selectedLabels = value.map(v => find(options, { value: v }).label);
 
     return (
       <FieldView

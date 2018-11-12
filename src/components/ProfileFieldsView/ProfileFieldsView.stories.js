@@ -1,15 +1,13 @@
 import React from 'react';
-import { find, union, uniqueId } from 'lodash';
-import { Query, Mutation } from 'react-apollo';
+import { find } from 'lodash';
+import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { button, withKnobs } from '@storybook/addon-knobs/react';
-import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import delay from 'promise-delay';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
 import ProfileFieldsView from './ProfileFieldsView';
-import ProfileFieldView from '../ProfileFieldView/ProfileFieldView'
 
 const stories = storiesOf('Components/ProfileFieldsView', module);
 
@@ -458,4 +456,4 @@ const WithData = ({ userId: id }) => (
 // Stories
 stories.add('With filled data', () => <WithData userId="User:1" />);
 stories.add('No data', () => <WithData userId="User:2" />);
-stories.add('With async data', () => <WithData userId={'User:3'} />);
+stories.add('With async data', () => <WithData userId="User:3" />);

@@ -3,13 +3,11 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { createMaterialTopTabNavigator, createNavigator } from 'react-navigation';
 import { debounce } from 'lodash';
-import { Animated, Dimensions, ScrollView } from 'react-native';
-import { Text, View, Container, Content } from 'native-base';
+import { Container } from 'native-base';
 
-export UserInfoTab from './UserInfoTab';
-export UserFriendsTab from './UserFriendsTab';
-export UserPhotosTab from './UserPhotosTab';
-
+import UserInfoTab from './UserInfoTab';
+import UserFriendsTab from './UserFriendsTab';
+import UserPhotosTab from './UserPhotosTab';
 import UserScreenHead from './UserScreenHead';
 import UserTabBar from './TabBar';
 
@@ -24,6 +22,12 @@ const userQuery = gql`
   ${UserScreenHead.fragments.user}
 `;
 
+export {
+  UserInfoTab,
+  UserFriendsTab,
+  UserPhotosTab,
+};
+
 export default (routes, config = {}) => {
   const routerConfigs = {
     ...config,
@@ -31,13 +35,14 @@ export default (routes, config = {}) => {
     animationEnabled: false,
     swipeEnabled: false,
     lazy: true,
-  }
+  };
 
   const Tabs = createMaterialTopTabNavigator(routes, routerConfigs);
   const TabBar = createNavigator(UserTabBar, Tabs.router, routerConfigs);
 
   return class UserNavigator extends Component {
     static router = Tabs.router;
+
     static navigationOptions = {
       headerTransparent: true,
     };

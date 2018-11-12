@@ -1,1 +1,3 @@
-export default from './ProfileFieldInput';
+import ProfileFieldInput from './ProfileFieldInput';
+
+export default ProfileFieldInput;

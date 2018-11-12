@@ -201,7 +201,7 @@ stories.add('Short text', () => {
   const hasAvatar = boolean('Has Avatar', true);
 
   return (
-    <Query query={messageQuery}  variables={{ id: messageId }}>
+    <Query query={messageQuery} variables={{ id: messageId }}>
       {({ data, loading }) => !loading && (
 
         <MessageItem

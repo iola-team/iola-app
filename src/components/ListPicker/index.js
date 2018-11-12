@@ -1,1 +1,3 @@
-export default from './ListPicker';
+import ListPicker from './ListPicker';
+
+export default ListPicker;

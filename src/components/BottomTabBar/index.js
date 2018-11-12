@@ -1,1 +1,3 @@
-export default from './BottomTabBar';
+import BottomTabBar from './BottomTabBar';
+
+export default BottomTabBar;

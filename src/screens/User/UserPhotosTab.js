@@ -1,8 +1,4 @@
-import React, { Component, Fragment } from 'react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import { ScrollView, Animated } from 'react-native';
-import { Text, View, Content } from 'native-base';
+import React, { Component } from 'react';
 
 import { PhotoList } from 'components';
 import Tab from './Tab';

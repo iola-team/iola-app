@@ -1,1 +1,3 @@
-export default from './DashboardHeading';
+import DashboardHeading from './DashboardHeading';
+
+export default DashboardHeading;

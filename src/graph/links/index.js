@@ -1,3 +1,9 @@
-export AuthLink from './auth';
-export ErrorLink from './error';
-export SSELink from './sse';
+import AuthLink from './auth';
+import ErrorLink from './error';
+import SSELink from './sse';
+
+export {
+  AuthLink,
+  ErrorLink,
+  SSELink,
+};

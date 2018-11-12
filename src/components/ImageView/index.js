@@ -1,1 +1,3 @@
-export default from './ImageView';
+import ImageView from './ImageView';
+
+export default ImageView;

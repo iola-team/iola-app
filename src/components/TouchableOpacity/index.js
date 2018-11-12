@@ -1,1 +1,3 @@
-export default from './TouchableOpacity';
+import TouchableOpacity from './TouchableOpacity';
+
+export default TouchableOpacity;

@@ -1,1 +1,3 @@
-export default from './MessageList';
+import MessageList from './MessageList';
+
+export default MessageList;

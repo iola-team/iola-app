@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { propType as fragmentProp } from 'graphql-anywhere';
-import gql from 'graphql-tag';
 import { View as ViewRN } from 'react-native';
-import { groupBy, map } from 'lodash'
 
 import Section from '../FieldSection';
 
-const renderSection = ({ key, label, items }, renderItem) => (
+const defaultSectionRenderer = ({ key, label, items }, renderItem) => (
   <Section key={key} label={label}>
     {items.map(renderItem)}
   </Section>
@@ -26,14 +23,14 @@ export default class FieldList extends Component {
   };
 
   static defaultProps = {
-    renderSection,
+    renderSection: defaultSectionRenderer,
   };
 
-  renderItem = (field, index) => this.props.renderItem(field, index);
-  renderSection = ({ key, ...rest }, index) => this.props.renderSection({
-    key: index,
-    ...rest,
-  }, this.renderItem);
+  renderSection = ({ key, ...rest }, index) => {
+    const { renderSection, renderItem } = this.props;
+
+    return renderSection({ key: index, ...rest }, renderItem);
+  }
 
   render() {
     const { style, sections } = this.props;

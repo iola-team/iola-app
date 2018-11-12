@@ -2,8 +2,7 @@ import React, { PureComponent } from 'react';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import PropTypes from 'prop-types';
-import { ScrollView } from 'react-native';
-import { View, Spinner, Text } from 'native-base';
+import { View, Spinner } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import { UserHeading } from 'components';
@@ -54,7 +53,7 @@ export default class UserScreenHead extends PureComponent {
               onChatPress={() => navigate(routes.CHANNEL, { userId: user.id })}
             />
           ) : (
-            <Spinner/>
+            <Spinner />
           )
         }
 

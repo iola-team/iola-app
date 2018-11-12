@@ -1,1 +1,3 @@
-export default from './FieldItem';
+import FieldItem from './FieldItem';
+
+export default FieldItem;
