@@ -1,4 +1,4 @@
-import { isArray, isPlainObject } from "lodash"
+import { isArray, isPlainObject } from "lodash";
 
 const emptyStyle = {};
 export default (rawStyle) => {

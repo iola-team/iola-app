@@ -31,7 +31,7 @@ const chatsQuery = gql`
   }
   
   ${ChatList.fragments.node}
-`
+`;
 
 const subscriptionQuery = gql`
   subscription ChatListMessageAddSubscription($userId: ID!) {

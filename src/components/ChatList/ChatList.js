@@ -2,12 +2,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { View, Text, Button } from 'native-base';
-import { FlatList } from "react-native";
-import { orderBy } from 'lodash';
+import { FlatList } from 'react-native';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import ChatListItem from '../ChatListItem'
+import ChatListItem from '../ChatListItem';
 import MessageUpdateSubscription from '../MessageUpdateSubscription';
 
 const userFragment = gql`

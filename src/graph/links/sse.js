@@ -10,10 +10,10 @@ const addPathPart = (url, parts) => {
     '',
     ...path.filter(trim),
     ...parts,
-  ].join('/')
+  ].join('/');
 
   return urlObject.toString();
-}
+};
 
 const printQuery = memoize(print);
 
@@ -46,7 +46,7 @@ export class SubscriptionClient {
 
   onMessage = (event) => {
     const { data, type, subscriptionId } = JSON.parse(event.data);
-    this.lastEventId = event.lastEventId
+    this.lastEventId = event.lastEventId;
 
     if (type === 'SUBSCRIPTION_DATA' && this.subscriptions[subscriptionId]) {
       this.subscriptions[subscriptionId].handlers.forEach(handler => handler(data));

@@ -2,7 +2,7 @@ import React from 'react';
 import { find, union, uniqueId } from 'lodash';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
-import { button, withKnobs } from '@storybook/addon-knobs/react';
+import { button, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import delay from 'promise-delay';
@@ -443,7 +443,7 @@ const resolvers = {
 
         const value = find(dataStore.values, ['field.id', fieldId]) || {
           id: `Value:${++nextId}`,
-          field: field,
+          field,
           data: {
             presentation: field.presentation,
             value: null,
@@ -573,7 +573,7 @@ const WithData = ({ userId: id }) => {
                       variables: {
                         input: {
                           userId: id,
-                          values: values,
+                          values,
                         },
                       },
                     });
@@ -591,7 +591,7 @@ const WithData = ({ userId: id }) => {
 // Stories
 stories.add('With filled data', () => <WithData userId="User:1" />);
 stories.add('No data', () => <WithData userId="User:2" />);
-stories.add('With async data', () => <WithData userId={'User:3'} />);
+stories.add('With async data', () => <WithData userId="User:3" />);
 stories.add('Loading data', () => {
   const id = 'User:1';
 

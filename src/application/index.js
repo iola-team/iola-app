@@ -17,11 +17,9 @@ Moment.globalElement = Text;
     }
   }
 `, {
-  props: ({ data: { auth } }) => {
-    return {
-      isAuthenticated: !!auth.token,
-    };
-  },
+  props: ({ data: { auth } }) => ({
+    isAuthenticated: !!auth.token,
+  }),
 })
 @graphql(ROOT_QUERY, {
   options: ({ isAuthenticated }) => ({
@@ -35,7 +33,7 @@ export default class Application extends Component {
     onReady: PropTypes.func,
   };
 
-  static defaultProps: {
+  static defaultProps = {
     onReady: () => {},
   };
 
@@ -44,7 +42,6 @@ export default class Application extends Component {
   }
 
   render() {
-
     return (
       <Navigator />
     );

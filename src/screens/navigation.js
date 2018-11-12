@@ -77,7 +77,7 @@ export default createSwitchNavigator({
     [routes.APPLICATION]: {
       screen: TabsNavigator,
       navigationOptions({ navigation: { state } }) {
-        const TabComponent = TabsNavigator.router.getComponentForRouteName(state.routes[state.index].routeName)
+        const TabComponent = TabsNavigator.router.getComponentForRouteName(state.routes[state.index].routeName);
 
         return {
           /**

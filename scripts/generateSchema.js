@@ -4,7 +4,7 @@ import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
 import {exec} from 'child-process-promise'
 
 const tmpDir = join(__dirname, '..', '.tmp');
-const outputFile = join(tmpDir, 'schema.graphqls');
+const outputFile = join(tmpDir, 'schema.graphql');
 
 const defaultTypeDefs = [`
   directive @client on FIELD | FIELD_DEFINITION

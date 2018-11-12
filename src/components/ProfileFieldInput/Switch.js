@@ -42,12 +42,7 @@ export default class ProfileFieldInputSwitch extends PureComponent {
   };
 
   render() {
-    const {
-      field,
-      data,
-      input,
-      ...props,
-    } = this.props;
+    const { field, data, input, ...props } = this.props;
 
     return (
       <FieldInput

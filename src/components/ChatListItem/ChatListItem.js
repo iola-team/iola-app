@@ -4,7 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { filter } from 'lodash';
 import Moment from 'react-moment';
-import { View, Text, Button, ListItem, Left, Body, Right, Badge } from 'native-base';
+import { Text, ListItem, Left, Body, Right, Badge } from 'native-base';
 
 import { withStyle } from 'theme';
 import UserAvatar from '../UserAvatar';

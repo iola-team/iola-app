@@ -4,7 +4,7 @@ import { isArray, identity } from 'lodash';
 import { compose, getDisplayName } from 'recompose';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 import { connectStyle } from 'native-base';
-import mapPropsToStyleNames from 'native-base/src/Utils/mapPropsToStyleNames';
+import mapPropsToStyleNames from 'native-base/src/utils/mapPropsToStyleNames';
 
 import normalizeStyle from './normalizeStyle';
 
