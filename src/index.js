@@ -8,7 +8,7 @@ import SplashScreen from 'react-native-splash-screen';
 import createApiClient from 'graph';
 import Theme from 'theme';
 import Application from 'application';
-import Storybook from 'storybook';
+import Storybook from 'storybook/UI';
 import { Root } from 'components';
 /* eslint-enable */
 

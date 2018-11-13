@@ -18,6 +18,11 @@ import Chat from './Chat';
 import ChatList from './ChatList';
 import ScreenHeader from './ScreenHeader';
 import BottomTabBar from './BottomTabBar';
+import TouchableOpacity from './TouchableOpacity';
+import Shadow from './Shadow';
+import ProfileFieldsView from './ProfileFieldsView';
+import FriendList from './FriendList';
+import PhotoList from './PhotoList';
 
 export {
   Root,
@@ -38,6 +43,11 @@ export {
   ProfileFieldsEdit,
   Chat,
   ChatList,
+  TouchableOpacity,
+  Shadow,
+  ProfileFieldsView,
+  FriendList,
+  PhotoList,
 
   // Navigation
   ScreenHeader,

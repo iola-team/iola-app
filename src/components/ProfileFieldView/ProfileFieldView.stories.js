@@ -2,7 +2,7 @@ import React from 'react';
 import { find } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { selectV2 as select, withKnobs } from '@storybook/addon-knobs/react';
+import { select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import delay from 'promise-delay';
 
