@@ -17,7 +17,7 @@ import Launch from './Launch';
 import Channels from './Channels';
 import Users from './Users';
 import Dashboard from './Dashboard';
-import User from './User';
+import createUserNavigator, { UserPhotosTab, UserInfoTab, UserFriendsTab } from './User';
 import Channel from './Channel';
 import ProfileEdit from './PropfileEdit';
 import Settings from './Settings';
@@ -88,7 +88,11 @@ export default createSwitchNavigator({
       },
     },
     [routes.USER]: {
-      screen: User,
+      screen: createUserNavigator({
+        [routes.USER_PHOTOS]: UserPhotosTab,
+        [routes.USER_INFO]: UserInfoTab,
+        [routes.USER_FRIENDS]: UserFriendsTab,
+      }),
     },
 
     [routes.CHANNEL]: {

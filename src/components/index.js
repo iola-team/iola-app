@@ -21,6 +21,11 @@ import Chat from './Chat';
 import ChatList from './ChatList';
 import ScreenHeader from './ScreenHeader';
 import BottomTabBar from './BottomTabBar';
+import TouchableOpacity from './TouchableOpacity';
+import Shadow from './Shadow';
+import ProfileFieldsView from './ProfileFieldsView';
+import FriendList from './FriendList';
+import PhotoList from './PhotoList';
 
 export {
   Root,
@@ -39,11 +44,16 @@ export {
   PhotoEdit,
   ImageView,
   ImageComments,
+  ImageCommentsConnection,
+  ImageCommentsList,
   ProfileFieldsEdit,
   Chat,
   ChatList,
-  ImageCommentsConnection,
-  ImageCommentsList,
+  TouchableOpacity,
+  Shadow,
+  ProfileFieldsView,
+  FriendList,
+  PhotoList,
 
   // Navigation
   ScreenHeader,

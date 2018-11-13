@@ -10,6 +10,12 @@ export default (variables => ({
       },
 
       'NativeBase.Icon': {},
+
+      '.primary': {
+        'NativeBase.Text': {
+          color: variables.brandPrimary,
+        }
+      }
     },
 
     'NativeBase.Container': {
@@ -47,6 +53,8 @@ export default (variables => ({
 
       '.large': {
         borderRadius: 8,
+        height: 168,
+        width: 168,
       },
 
       width: 40,
@@ -263,8 +271,7 @@ export default (variables => ({
       'NativeBase.Icon': {
         fontSize: 35,
         color: '#BDC0CB',
-        margin: 16,
-        marginRight: 22,
+        margin: 7,
       }
     },
   }),

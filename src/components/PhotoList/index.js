@@ -10,7 +10,7 @@ const userQuery = gql`
     user: node(id: $id) {
       ...on User {
         id
-        photos {
+        photos(first: 9) {
           edges {
             ...PhotoList_edge
           }
@@ -33,10 +33,14 @@ export default class PhotoListContainer extends Component {
 
     return (
       <Query query={userQuery} variables={{ id }}>
-        {({ loading, data: { user } }) => !loading && (
-          <PhotoList {...props} edges={user.photos.edges} />
+        {({ loading, data: { user } }) => (
+          <PhotoList {...props} edges={loading ? [] : user.photos.edges} />
         )}
       </Query>
     );
   }
-};
+}
+
+// export default React.forwardRef((props, ref) => (
+//   <PhotoListContainer {...props} forwardedRef={ref} />
+// ));
