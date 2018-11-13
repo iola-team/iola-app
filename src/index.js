@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 import './polyfill';
 
 import React, { Component } from 'react';
@@ -9,6 +10,7 @@ import Theme from 'theme';
 import Application from 'application';
 import Storybook from 'storybook';
 import { Root } from 'components';
+/* eslint-enable */
 
 class ApplicationRoot extends Component {
   state = {

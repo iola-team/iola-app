@@ -1,4 +1,4 @@
-import RNFetchBlob from 'react-native-fetch-blob';
+import RNFetchBlob from 'rn-fetch-blob';
 
 const { Blob, File, FileReader, XMLHttpRequest, Fetch } = RNFetchBlob.polyfill;
 
@@ -13,7 +13,7 @@ const fetch = new Fetch({
 
 
 /**
- * Polyfill all networking related types from `react-native-fetch-blob`,
+ * Polyfill all networking related types from `rn-fetch-blob`,
  * except `XMLHttpRequest` - it does not support streams, which are required for SSE.
  *
  * @type {Blob}
@@ -29,4 +29,4 @@ export {
   FileReader,
   XMLHttpRequest,
   fetch,
-}
+};

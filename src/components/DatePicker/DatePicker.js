@@ -17,7 +17,7 @@ import {
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import Modal from '../Modal'
+import Modal from '../Modal';
 
 const getDays = date => range(1, moment(date).daysInMonth() + 1);
 
@@ -91,7 +91,7 @@ export default class DatePicker extends Component {
         month: moment.months(),
         day: getDays(value),
       },
-    }
+    };
   }
 
   show = () => {
@@ -167,7 +167,7 @@ export default class DatePicker extends Component {
       renderIndicator: true,
       indicatorColor: '#F5F5F5',
       itemTextSize: PixelRatio.getPixelSizeForLayoutSize(16),
-    }
+    };
 
     return (
       <Modal

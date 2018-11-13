@@ -1,5 +1,5 @@
 import React from 'react';
-import { withKnobs, boolean, text } from '@storybook/addon-knobs/react';
+import { withKnobs, boolean, text } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
@@ -50,21 +50,19 @@ stories.add('Static', () => {
   );
 });
 
-stories.add('Dynamic value', () => {
-  return (
-    <StatefulText
-      label="Description"
-      placeholder="Enter text here"
-      onChange={action('onChange')}
-      onCancel={action('onCancel')}
-      onDone={action('onDone')}
-      onShow={action('onShow')}
-      onHide={action('onHide')}
-    >
-      {renderChildren}
-    </StatefulText>
-  );
-});
+stories.add('Dynamic value', () => (
+  <StatefulText
+    label="Description"
+    placeholder="Enter text here"
+    onChange={action('onChange')}
+    onCancel={action('onCancel')}
+    onDone={action('onDone')}
+    onShow={action('onShow')}
+    onHide={action('onHide')}
+  >
+    {renderChildren}
+  </StatefulText>
+));
 
 stories.add('Controlled by isVisible prop', () => {
   const isVisible = boolean('isVisible', false);

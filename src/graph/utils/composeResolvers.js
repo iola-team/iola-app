@@ -1,4 +1,4 @@
-import { isArray, merge } from "lodash"
+import { isArray, merge } from "lodash";
 
 const marshalResolver = ({ resolvers = {}, defaults = {}, typeDefs = [] }) => ({
   resolvers,

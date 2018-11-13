@@ -1,3 +1,52 @@
 {
-  "parser": "babel-eslint"
+  "extends" : ["airbnb", "prettier"],
+  "plugins": [
+    "prettier",
+    "react",
+    "react-native"
+  ],
+  "rules" : {
+    "prettier/prettier": 0,
+    "react/jsx-filename-extension": 0,
+    "import/no-extraneous-dependencies": 0,
+    "implicit-arrow-linebreak": [2, "beside"],
+    "object-property-newline": [2, { "allowAllPropertiesOnSameLine": true }],
+    "semi": [2, "always"],
+    "react/forbid-prop-types": 0,
+    "react/require-default-props": 1,
+    "react/sort-comp": 0,
+    "max-len": [1, { "code": 120, "ignoreUrls": true, "ignoreComments": true }],
+    "react/prop-types": 1,
+    "no-shadow": 1,
+    "react/no-unused-prop-types": 1,
+    "react/jsx-no-bind": 0,
+    "react/prefer-stateless-function":  0,
+    "react/default-props-match-prop-types": 0,
+    "class-methods-use-this": 0,
+    "no-unused-vars": 1,
+    "no-param-reassign": 1,
+    "global-require": 0,
+    "no-underscore-dangle": 1,
+    "no-plusplus": 0,
+    "no-return-assign": 0,
+    "react/react-in-jsx-scope": 0,
+    "react/no-children-prop": 0,
+    "no-nested-ternary": 1
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"]
+      }
+    }
+  },
+  "env": {
+    "browser": true
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "legacyDecorators": true
+    }
+  }
 }

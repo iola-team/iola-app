@@ -5,7 +5,7 @@ import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import { UserList } from 'components'
+import { UserList } from 'components';
 
 @graphql(gql`
   query allUsers($search: String = "", $cursor: Cursor = null) {

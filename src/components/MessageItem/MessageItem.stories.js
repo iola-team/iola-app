@@ -2,14 +2,14 @@ import React from 'react';
 import { find } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { selectV2 as select, boolean, withKnobs } from '@storybook/addon-knobs/react';
+import { select, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
+import faker from 'faker';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook/index';
+import { getContentDecorator, getApolloDecorator } from 'storybook';
 import MessageItem from './MessageItem';
-import faker from 'faker'
-import Chat from '../Chat/Chat'
+import Chat from '../Chat/Chat';
 
 const stories = storiesOf('Components/MessageItem', module);
 
@@ -201,7 +201,7 @@ stories.add('Short text', () => {
   const hasAvatar = boolean('Has Avatar', true);
 
   return (
-    <Query query={messageQuery}  variables={{ id: messageId }}>
+    <Query query={messageQuery} variables={{ id: messageId }}>
       {({ data, loading }) => !loading && (
 
         <MessageItem

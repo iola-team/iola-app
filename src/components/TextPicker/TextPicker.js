@@ -102,7 +102,7 @@ export default class TextPicker extends PureComponent {
     return {
       value: props.value,
       isVisible: isUndefined(props.isVisible) ? state.isVisible : props.isVisible,
-    }
+    };
   }
 
   state = {
@@ -169,8 +169,8 @@ export default class TextPicker extends PureComponent {
         backdropColor={styles.backdrop.backgroundColor}
         backdropOpacity={styles.backdrop.opacity}
         swipeDirection="down"
-        animationIn={'fadeIn'}
-        animationOut={'fadeOut'}
+        animationIn="fadeIn"
+        animationOut="fadeOut"
 
         onModalHide={this.action('onHide')}
         onModalShow={this.action('onShow')}

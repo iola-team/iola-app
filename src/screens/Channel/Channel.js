@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Container } from 'native-base';
 
+import { Chat, ScreenHeader, UserAvatar } from 'components';
 import { withStyleSheet as styleSheet } from 'theme';
 import ChannelHeader from './ChannelHeader';
-import { Chat } from 'components';
 
 const propsToVariables = props => ({
   userId: props.navigation.state.params.userId,

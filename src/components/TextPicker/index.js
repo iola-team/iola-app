@@ -1,1 +1,3 @@
-export default from './TextPicker';
+import TextPicker from './TextPicker';
+
+export default TextPicker;

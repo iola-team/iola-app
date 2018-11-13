@@ -105,7 +105,7 @@ export default class ListPicker extends PureComponent {
     return {
       value: props.value,
       isVisible: isUndefined(props.isVisible) ? state.isVisible : props.isVisible,
-    }
+    };
   }
 
   state = {

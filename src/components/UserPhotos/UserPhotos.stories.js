@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
-import { selectV2 as select, withKnobs } from '@storybook/addon-knobs/react';
+import { select, withKnobs } from '@storybook/addon-knobs';
 import moment from 'moment';
 import faker from 'faker';
 import { find, orderBy, sampleSize } from 'lodash';

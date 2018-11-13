@@ -2,7 +2,7 @@ import React from 'react';
 import { find, filter, uniqueId, range, orderBy } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { number, boolean, withKnobs } from '@storybook/addon-knobs/react';
+import { number, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
@@ -71,18 +71,16 @@ const unOrderedFakeMessages = range(100).map((index) => ({
   chat: find(chats, { id: 'Chat:1' }),
 }));
 
-const orderedNumMessages = range(100).map((index) => {
-  return {
-    id: `Message:${unOrderedFakeMessages.length + index}`,
-    content: {
-      text: (index + 1).toString(),
-    },
-    status: faker.random.arrayElement(['READ', 'DELIVERED']),
-    createdAt: moment().add(index, 'h').toDate(),
-    user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
-    chat: find(chats, { id: 'Chat:2' }),
-  };
-});
+const orderedNumMessages = range(100).map((index) => ({
+  id: `Message:${unOrderedFakeMessages.length + index}`,
+  content: {
+    text: (index + 1).toString(),
+  },
+  status: faker.random.arrayElement(['READ', 'DELIVERED']),
+  createdAt: moment().add(index, 'h').toDate(),
+  user: faker.random.arrayElement(find(chats, { id: 'Chat:2' }).participants),
+  chat: find(chats, { id: 'Chat:2' }),
+}));
 
 const messages = [
   ...orderBy(unOrderedFakeMessages, 'createdAt'),
@@ -157,9 +155,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    node: (root, { id }, { dataStore: { chats } }) => {
-      return find(chats, { id });
-    },
+    node: (root, { id }, { dataStore: { chats } }) => find(chats, { id }),
   },
 
   Chat: {
@@ -240,9 +236,9 @@ stories.add('Num messages', () => {
     last: number('Count', 50),
   };
 
-  const refreshing = boolean('Refreshing', false)
-  const inverted = boolean('Inverted', true)
-  const isLoadingMore = boolean('Loading more', true)
+  const refreshing = boolean('Refreshing', false);
+  const inverted = boolean('Inverted', true);
+  const isLoadingMore = boolean('Loading more', true);
 
   return (
     <Query query={chatQuery} variables={variables}>

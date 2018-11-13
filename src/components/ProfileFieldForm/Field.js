@@ -4,72 +4,46 @@ import { isFunction, constant, identity } from 'lodash';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
-import SelectInput from './Select';
-import TextInput from './Text';
-import DateInput from './Date';
-import SwitchInput from './Switch';
-
-const types = {
-  'TEXT': TextInput,
-  'DATE': DateInput,
-  'SELECT': SelectInput,
-  'SWITCH': SwitchInput,
-};
+import ProfileFieldInput from '../ProfileFieldInput';
 
 const fieldFragment = gql`
-  fragment Field_field on ProfileField {
+  fragment ProfileFieldFormField_field on ProfileField {
     id
-    presentation
-    
-    ...FieldText_field
-    ...FieldSelect_field
-    ...FieldDate_field
-    ...FieldSwitch_field
+    ...ProfileFieldInput_field
   }
   
-  ${TextInput.fragments.field}
-  ${SelectInput.fragments.field}
-  ${DateInput.fragments.field}
-  ${SwitchInput.fragments.field}
+  ${ProfileFieldInput.fragments.field}
 `;
 
-const dataFragment = gql`
-  fragment Field_data on ProfileFieldValueData {
-    ...FieldText_data
-    ...FieldSelect_data
-    ...FieldDate_data
-    ...FieldSwitch_data
+const valueFragment = gql`
+  fragment ProfileFieldFormField_value on ProfileFieldValue {
+    id
+    ...ProfileFieldInput_value
   }
 
-  ${TextInput.fragments.data}
-  ${SelectInput.fragments.data}
-  ${DateInput.fragments.data}
-  ${SwitchInput.fragments.data}
+  ${ProfileFieldInput.fragments.value}
 `;
-
-const getFieldComponent = ({ field }) => types[field.presentation];
 
 export default class Field extends Component {
   static fragments = {
     field: fieldFragment,
-    data: dataFragment,
+    value: valueFragment,
   };
 
   static propTypes = {
     field: fragmentProp(fieldFragment).isRequired,
-    data: fragmentProp(dataFragment),
+    value: fragmentProp(valueFragment),
   };
 
   static getFormOptions(props) {
-    const Component = getFieldComponent(props);
-    const formOptionsGetter = isFunction(Component.formOptions)
-      ? Component.formOptions
-      : constant(Component.formOptions || {});
+    const formOptionsGetter = isFunction(ProfileFieldInput.formOptions)
+      ? ProfileFieldInput.formOptions
+      : constant(ProfileFieldInput.formOptions || {});
 
     return {
       initialValue: undefined,
       transformResult: identity,
-      ...formOptionsGetter(props),
+      ...formOptionsGetter(props)
     };
   }
 
@@ -93,16 +67,14 @@ export default class Field extends Component {
 
   render() {
     const { field, form, ...props } = this.props;
-    const Component = getFieldComponent(this.props);
-
     const isTouched = form.touched[field.id];
     const error = isTouched && form.errors[field.id];
 
     return (
-      <Component
+      <ProfileFieldInput
         {...props}
         field={field}
-        value={form.values[field.id]}
+        input={form.values[field.id]}
         error={error}
         onChange={this.onChange}
         onError={this.onError}

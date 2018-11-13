@@ -1,1 +1,3 @@
-export default from './UserBriefCard';
+import UserBriefCard from './UserBriefCard';
+
+export default UserBriefCard;

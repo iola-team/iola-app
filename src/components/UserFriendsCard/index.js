@@ -1,1 +1,3 @@
-export default from './UserFriendsCard';
+import UserFriendsCard from './UserFriendsCard';
+
+export default UserFriendsCard;

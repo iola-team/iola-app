@@ -1,25 +1,51 @@
-export Root from './Root';
-export BackButton from './BackButton';
-export UserAvatar from './UserAvatar';
-export UserList from './UserList';
-export UserListItem from './UserListItem';
-export SearchBar from './SearchBar';
-export UserBriefCard from './UserBriefCard';
-export UserPhotos from './UserPhotos';
-export UserPhotosCard from './UserPhotosCard';
-export UserFriendsCard from './UserFriendsCard';
-export UserHeading from './UserHeading';
-export DashboardHeading from './DashboardHeading';
-export AvatarEdit from './AvatarEdit';
-export PhotoEdit from './PhotoEdit';
-export ImageView from './ImageView';
-export ImageComments from './ImageComments';
-export ImageCommentsConnection from './ImageComments/ImageCommentsConnection';
-export ImageCommentsList from './ImageCommentsList';
-export ProfileFieldsEdit from './ProfileFieldsEdit';
-export Chat from './Chat';
-export ChatList from './ChatList';
+import Root from './Root';
+import BackButton from './BackButton';
+import UserAvatar from './UserAvatar';
+import UserList from './UserList';
+import UserListItem from './UserListItem';
+import SearchBar from './SearchBar';
+import UserBriefCard from './UserBriefCard';
+import UserPhotos from './UserPhotos';
+import UserPhotosCard from './UserPhotosCard';
+import UserFriendsCard from './UserFriendsCard';
+import UserHeading from './UserHeading';
+import DashboardHeading from './DashboardHeading';
+import AvatarEdit from './AvatarEdit';
+import PhotoEdit from './PhotoEdit';
+import ImageView from './ImageView';
+import ImageComments from './ImageComments';
+import ImageCommentsConnection from './ImageComments/ImageCommentsConnection';
+import ImageCommentsList from './ImageCommentsList';
+import ProfileFieldsEdit from './ProfileFieldsEdit';
+import Chat from './Chat';
+import ChatList from './ChatList';
+import ScreenHeader from './ScreenHeader';
+import BottomTabBar from './BottomTabBar';
 
-// Navigation
-export ScreenHeader from './ScreenHeader';
-export BottomTabBar from './BottomTabBar';
+export {
+  Root,
+  BackButton,
+  UserAvatar,
+  UserList,
+  UserListItem,
+  SearchBar,
+  UserBriefCard,
+  UserPhotos,
+  UserPhotosCard,
+  UserFriendsCard,
+  UserHeading,
+  DashboardHeading,
+  AvatarEdit,
+  PhotoEdit,
+  ImageView,
+  ImageComments,
+  ProfileFieldsEdit,
+  Chat,
+  ChatList,
+  ImageCommentsConnection,
+  ImageCommentsList,
+
+  // Navigation
+  ScreenHeader,
+  BottomTabBar,
+};

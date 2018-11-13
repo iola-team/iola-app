@@ -1,1 +1,3 @@
-export default from './ScreenHeader';
+import ScreenHeader from './ScreenHeader';
+
+export default ScreenHeader;

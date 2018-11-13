@@ -2,7 +2,7 @@ import React from 'react';
 import { filter, find, range } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs/react';
+import { number, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
@@ -95,4 +95,4 @@ stories.addDecorator(getApolloDecorator({
 }));
 
 // Stories
-stories.add('Default', () => <PhotoList userId={'User:1'} />);
+stories.add('Default', () => <PhotoList userId="User:1" />);

@@ -2,12 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-
-import InputItem from '../Input';
 import * as Yup from 'yup';
 
+import FieldInput from '../FieldInput';
+
 const fieldFragment = gql`
-  fragment FieldSelect_field on ProfileField {
+  fragment ProfileFieldInputSelect_field on ProfileField {
     id
     label
     configs {
@@ -23,12 +23,12 @@ const fieldFragment = gql`
 `;
 
 const dataFragment = gql`
-  fragment FieldSelect_data on ProfileFieldSelectValue {
+  fragment ProfileFieldInputSelect_data on ProfileFieldSelectValue {
     arrayValue: value
   }
 `;
 
-export default class FieldSelect extends PureComponent {
+export default class ProfileFieldInputSelect extends PureComponent {
   static formOptions({ field, data }) {
     return {
       validationSchema: Yup.array(),
@@ -43,6 +43,7 @@ export default class FieldSelect extends PureComponent {
   };
 
   static propTypes = {
+    input: PropTypes.any,
     onChange: PropTypes.func.isRequired,
     onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
@@ -50,18 +51,17 @@ export default class FieldSelect extends PureComponent {
   };
 
   render() {
-    const {
-      field,
-      ...props
-    } = this.props;
+    const { field, data, input, ...props } = this.props;
 
     return (
-      <InputItem
+      <FieldInput
         {...props}
+        {...field.configs}
+
         type="select"
         placeholder="Not specified"
         label={field.label}
-        {...field.configs}
+        value={input || data && data.arrayValue}
       />
     );
   }

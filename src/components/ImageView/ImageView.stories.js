@@ -2,7 +2,7 @@ import React from 'react';
 import { Image, View } from 'react-native';
 import gql from 'graphql-tag';
 import { storiesOf } from '@storybook/react-native';
-import { withKnobs } from '@storybook/addon-knobs/react';
+import { withKnobs } from '@storybook/addon-knobs';
 import moment from 'moment';
 import faker from 'faker';
 import { find, orderBy, sample, sampleSize, shuffle } from 'lodash';

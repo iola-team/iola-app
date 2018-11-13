@@ -1,1 +1,3 @@
-export default from './UserPhotos';
+import UserPhotos from './UserPhotos';
+
+export default UserPhotos;

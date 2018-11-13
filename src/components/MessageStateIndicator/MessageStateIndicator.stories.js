@@ -1,5 +1,5 @@
 import React from 'react';
-import { boolean, withKnobs } from '@storybook/addon-knobs/react';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import { View } from 'native-base';
 

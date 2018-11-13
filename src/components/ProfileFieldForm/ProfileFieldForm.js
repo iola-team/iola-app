@@ -1,73 +1,66 @@
 import React, { Component } from 'react';
-import { groupBy, map, first, isUndefined, get, noop, filter } from 'lodash';
+import { groupBy, get, noop, filter } from 'lodash';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import * as Yup from 'yup';
-import {
-  View,
-  Text,
-  Button,
-} from 'native-base';
 
+import { withStyle } from 'theme';
+import ProfileFieldList from '../ProfileFieldList';
 import Formik from './Formik';
-import Section from './Section';
 import Field from './Field';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme/index';
 
-const getDataByField = (fields, values) => {
-  const valuesByField = groupBy(values || [], 'field.id');
+const getValuesByField = (fields, values) => {
+  const groups = groupBy(values || [], 'field.id');
 
   return fields.reduce((result, { id }) => ({
     ...result,
-    [id]: values && get(valuesByField, [id, 0, 'data'], null),
-  }), {})
+    [id]: values && get(groups, [id, 0], null),
+  }), {});
 };
 
-const mapFieldOptions = (fields, dataList, mapper) => fields.reduce((result, field) => {
-  const data = dataList[field.id];
-  const options = Field.getFormOptions({ field, data });
+const mapFieldOptions = (fields, valuesList, mapper) => fields.reduce((result, field) => {
+  const value = valuesList[field.id];
+  const options = Field.getFormOptions({ field, value });
 
   return {
     ...result,
-    [field.id]: mapper(options, field, data),
+    [field.id]: mapper(options, field, value),
   };
 }, {});
 
 const fieldFragment = gql`
-  fragment FieldForm_field on ProfileField {
+  fragment ProfileFieldForm_field on ProfileField {
     id
     name
     label
     isRequired
-    section {
-      id
-      label
-    }
 
-    ...Field_field
+    ...ProfileFieldList_field
+    ...ProfileFieldFormField_field
   }
   
   ${Field.fragments.field}
+  ${ProfileFieldList.fragments.field}
 `;
 
 const valueFragment = gql`
-  fragment FieldForm_value on ProfileFieldValue {
+  fragment ProfileFieldForm_value on ProfileFieldValue {
     id
     field {
       id
     }
 
-    data {
-      ...Field_data
-    }
+    ...ProfileFieldList_value
+    ...ProfileFieldFormField_value
   }
 
-  ${Field.fragments.data}
+  ${Field.fragments.value}
+  ${ProfileFieldList.fragments.value}
 `;
 
-@styleSheet('Sparkle.FieldForm')
-export default class FieldForm extends Component {
+@withStyle('Sparkle.ProfileFieldForm')
+export default class ProfileFieldForm extends Component {
   static fragments = {
     field: fieldFragment,
     value: valueFragment,
@@ -93,10 +86,12 @@ export default class FieldForm extends Component {
   };
 
   form = null;
+
   onFormReady = (formRef) => {
+    const { onFormReady } = this.props;
     this.form = formRef;
 
-    this.props.onFormReady({
+    onFormReady({
       get isDirty() {
         return formRef.getFormikBag().dirty;
       },
@@ -104,17 +99,19 @@ export default class FieldForm extends Component {
     });
   };
 
-  submit = () => {
-    return this.form.submitForm();
-  }
+  submit = () => this.form.submitForm();
+
+  renderItem = form => ({ field, ...props }) => (
+    <Field {...props} key={field.id} field={field} form={form} />
+  );
 
   render() {
     const { style, fields: profileFields, values, onSubmit, onSubmitError } = this.props;
-    const dataByField = getDataByField(profileFields, values);
+    const valuesByField = getValuesByField(profileFields, values);
     const fieldSchemas = {};
     const initialValues = {};
 
-    mapFieldOptions(profileFields, dataByField, (options, field) => {
+    mapFieldOptions(profileFields, valuesByField, (options, field) => {
       const { id, isRequired, label } = field;
 
       fieldSchemas[id] = (options.validationSchema || Yup.mixed()).nullable().label(label);
@@ -124,13 +121,6 @@ export default class FieldForm extends Component {
     });
 
     const validationSchema = Yup.object().shape(fieldSchemas);
-    const sections = map(
-      groupBy(profileFields, 'section.id'),
-      fields => ({
-        ...fields[0].section,
-        fields,
-      }),
-    );
 
     return (
       <Formik
@@ -143,7 +133,7 @@ export default class FieldForm extends Component {
         onSubmitError={onSubmitError}
         onSubmit={async (values, bag) => {
           const changedFields = filter(profileFields, ({ id }) => values[id] !== initialValues[id]);
-          const resultValues = mapFieldOptions(changedFields, dataByField, ((options, { id }) => ({
+          const resultValues = mapFieldOptions(changedFields, valuesByField, ((options, { id }) => ({
             ...options.transformResult(values[id]),
             fieldId: id,
           })));
@@ -155,25 +145,11 @@ export default class FieldForm extends Component {
         }}
       >
         {form => (
-          <View style={style}>
-            {
-              sections.map(({ id, label, fields }) => (
-                <Section key={id} label={label}>
-                  {
-                    fields.map((field, index) => (
-                      <Field
-                        key={field.id}
-                        field={field}
-                        data={dataByField[field.id]}
-                        form={form}
-                        last={fields.length === (index + 1)}
-                      />
-                    ))
-                  }
-                </Section>
-              ))
-            }
-          </View>
+          <ProfileFieldList
+            fields={profileFields}
+            values={values}
+            renderItem={this.renderItem(form)}
+          />
         )}
       </Formik>
     );

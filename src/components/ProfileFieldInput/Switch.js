@@ -2,24 +2,25 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-
-import InputItem from '../Input';
 import * as Yup from 'yup';
+import { isUndefined } from 'lodash';
+
+import FieldInput from '../FieldInput';
 
 const fieldFragment = gql`
-  fragment FieldSwitch_field on ProfileField {
+  fragment ProfileFieldInputSwitch_field on ProfileField {
     id
     label
   }
 `;
 
 const dataFragment = gql`
-  fragment FieldSwitch_data on ProfileFieldSwitchValue {
+  fragment ProfileFieldInputSwitch_data on ProfileFieldSwitchValue {
     booleanValue: value,
   }
 `;
 
-export default class FieldDate extends PureComponent {
+export default class ProfileFieldInputSwitch extends PureComponent {
   static formOptions({ field, data }) {
     return {
       validationSchema: Yup.boolean(),
@@ -34,23 +35,22 @@ export default class FieldDate extends PureComponent {
   };
 
   static propTypes = {
+    input: PropTypes.any,
     onChange: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
     data: fragmentProp(dataFragment),
   };
 
   render() {
-    const {
-      field,
-      ...props,
-    } = this.props;
+    const { field, data, input, ...props } = this.props;
 
     return (
-      <InputItem
+      <FieldInput
         {...props}
+
         type="switch"
         label={field.label}
-        {...field.configs}
+        value={isUndefined(input) ? data && data.booleanValue : input}
       />
     );
   }

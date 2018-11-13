@@ -1,11 +1,10 @@
-import { debounce } from 'lodash';
 import React, { PureComponent } from 'react';
 import { Container, Icon } from 'native-base';
+import { debounce } from 'lodash';
 
 import { SearchBar } from 'components';
 import { USER } from '../roteNames';
 import UsersConnection from './UsersConnection';
-import * as routes from '../roteNames'
 
 export default class Users extends PureComponent {
   static navigationOptions = {
