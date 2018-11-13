@@ -7,7 +7,7 @@ import { Root as RootNB } from 'native-base';
  * TODO: remove when fixed
  * https://github.com/cloudflare/react-gateway/issues/40
  */
-const GatewayComponent = props => <View { ...props } />;
+const GatewayComponent = props => <View {...props} />;
 
 export default class Root extends Component {
   render() {
