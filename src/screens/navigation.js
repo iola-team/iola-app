@@ -46,35 +46,15 @@ const TabsNavigator = createBottomTabNavigator({
 
 const RootNavigator = createSwitchNavigator({
   [routes.AUTHENTICATION]: createStackNavigator({
-    [routes.SIGN_IN]: {
-      screen: SignIn,
-      defaultNavigationOptions: {
-        header: null,
-      },
-    },
-
-    [routes.SIGN_UP]: {
-      screen: SignUp,
-      defaultNavigationOptions: {
-        header: null,
-      },
-    },
-
-    [routes.FORGOT_PASSWORD]: {
-      screen: ForgotPassword,
-      defaultNavigationOptions: {
-        header: null,
-      },
-    },
-
-    [routes.EMAIL_VERIFICATION]: {
-      screen: EmailVerification,
-      defaultNavigationOptions: {
-        header: null,
-      },
-    },
+    [routes.SIGN_IN]: SignIn,
+    [routes.SIGN_UP]: SignUp,
+    [routes.FORGOT_PASSWORD]: ForgotPassword,
+    [routes.EMAIL_VERIFICATION]: EmailVerification,
   }, {
     initialRouteName: routes.SIGN_IN,
+    defaultNavigationOptions: {
+      header: null,
+    },
   }),
 
   [routes.APPLICATION]: createStackNavigator({
