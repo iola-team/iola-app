@@ -151,6 +151,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-gesture-handler')
     compile project(':react-native-device-info')
     compile project(':react-native-wheel-picker-android')
     compile project(':rn-fetch-blob')

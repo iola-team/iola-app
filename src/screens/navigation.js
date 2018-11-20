@@ -1,6 +1,10 @@
-import React, { Component } from 'react';
-import { Text, View, Footer, FooterTab, Button, Badge, Icon } from 'native-base';
-import { createBottomTabNavigator, createSwitchNavigator, createStackNavigator, createTabNavigator } from 'react-navigation';
+import React from 'react';
+import { 
+  createBottomTabNavigator, 
+  createSwitchNavigator, 
+  createStackNavigator, 
+  createAppContainer,
+} from 'react-navigation';
 
 // Components
 import { ScreenHeader, BottomTabBar } from 'components';
@@ -40,32 +44,32 @@ const TabsNavigator = createBottomTabNavigator({
   tabBarComponent: BottomTabBar,
 });
 
-export default createSwitchNavigator({
+const RootNavigator = createSwitchNavigator({
   [routes.AUTHENTICATION]: createStackNavigator({
     [routes.SIGN_IN]: {
       screen: SignIn,
-      navigationOptions: {
+      defaultNavigationOptions: {
         header: null,
       },
     },
 
     [routes.SIGN_UP]: {
       screen: SignUp,
-      navigationOptions: {
+      defaultNavigationOptions: {
         header: null,
       },
     },
 
     [routes.FORGOT_PASSWORD]: {
       screen: ForgotPassword,
-      navigationOptions: {
+      defaultNavigationOptions: {
         header: null,
       },
     },
 
     [routes.EMAIL_VERIFICATION]: {
       screen: EmailVerification,
-      navigationOptions: {
+      defaultNavigationOptions: {
         header: null,
       },
     },
@@ -107,17 +111,19 @@ export default createSwitchNavigator({
       screen: ProfileEdit,
     },
   }, {
-    navigationOptions: {
+    defaultNavigationOptions: {
       header: props => <ScreenHeader {...props} />,
     },
   }),
 
   [routes.LAUNCH]: {
     screen: Launch,
-    navigationOptions: {
+    defaultNavigationOptions: {
       header: null,
     },
   },
 }, {
   initialRouteName: routes.LAUNCH,
 });
+
+export default createAppContainer(RootNavigator);
