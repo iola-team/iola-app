@@ -24,52 +24,15 @@ const edgeFragment = gql`
           ...on User {
             id
             name
-            avatar {
-              ...on Avatar {
-                id
-                url
-              }
-            }
+            ...UserAvatar_user
           }
         }
       }
     }
   }
-`;
 
-// @TODO: remove
-// const photoCommentsQuery = gql`
-//   query photoCommentsQuery($id: ID!, $cursor: Cursor) {
-//     photo: node(id: $id) {
-//       ...on Photo {
-//         id
-//         comments(first: 10 after: $cursor) {
-// #          totalCount
-//           edges {
-//             cursor
-//             node {
-//               id
-//               text
-//               createdAt
-//               user {
-//                 id
-//                 name
-//                 avatar {
-//                   id
-//                   url
-//                 }
-//               }
-//             }
-//           }
-//           pageInfo {
-//             hasNextPage
-//             endCursor
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
+  ${UserAvatar.fragments.user}
+`;
 
 @styleSheet('Sparkle.ImageCommentsList', {
   container: {
@@ -150,7 +113,7 @@ export default class ImageCommentsList extends Component {
 
   renderItem({ item: { node } }) {
     const { styleSheet: styles } = this.props;
-    const { id, text, createdAt, user } = node;
+    const { text, createdAt, user } = node;
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
     const isOnline = true; // @TODO

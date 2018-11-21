@@ -34,6 +34,7 @@ const typeDefs = gql`
   type Avatar {
     id: ID!
     url(size: AvatarSize = SMALL): String!
+    small(size: AvatarSize = SMALL): String!
   }
 
   enum AvatarSize {
@@ -47,6 +48,17 @@ const typeDefs = gql`
     metaInfo: ConnectionMetaInfo!
     edges: [PhotoEdge!]!
     totalCount: Int
+  }
+
+  type PageInfo {
+    hasNextPage: Boolean!
+    hasPreviousPage: Boolean!
+    startCursor: Cursor
+    endCursor: Cursor
+  }
+
+  type ConnectionMetaInfo {
+    firstCursor: Cursor!
   }
 
   type PhotoEdge {
@@ -80,17 +92,6 @@ const typeDefs = gql`
     text: String!
     createdAt: Date!
     user: User!
-  }
-
-  type PageInfo {
-      hasNextPage: Boolean!
-      hasPreviousPage: Boolean!
-      startCursor: Cursor
-      endCursor: Cursor
-  }
-
-  type ConnectionMetaInfo {
-      firstCursor: Cursor!
   }
 `;
 
@@ -172,22 +173,8 @@ const resolvers = {
   },
 
   Photo: {
-    comments: (photo, args) => {
-      const comments = orderBy(photo.comments, 'createdAt');
-
-      return createConnection(comments, args);
-      // @TODO: hmmm
-      // return {
-      //   totalCount: comments.length,
-      //   edges: comments.map((comment, index) => ({
-      //     cursor: `cursor:${index}`,
-      //     node: { ...comment },
-      //   })),
-      //   pageInfo: {
-      //     hasNextPage: true,
-      //     endCursor: 'cursor:20',
-      //   },
-      // };
+    comments(photo, args) {
+      return createConnection(photo.comments, args);
     },
   },
 };
@@ -204,6 +191,7 @@ stories.add('Default', () => {
       flexDirection: 'row',
       flexWrap: 'wrap',
     },
+
     image: {
       width: 100,
       height: 100,

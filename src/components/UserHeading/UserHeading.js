@@ -74,7 +74,7 @@ export default class UserHeading extends PureComponent {
 
     return (
       <View style={[styleSheet.root, style]}>
-        <UserAvatar style={styleSheet.avatar} user={user} size={'large'} />
+        <UserAvatar style={styleSheet.avatar} user={user} size="large" />
         <H2 style={[styleSheet.infoLine, styleSheet.infoLine1]}>
           {user.name}
         </H2>

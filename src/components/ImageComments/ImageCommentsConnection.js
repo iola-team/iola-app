@@ -1,4 +1,3 @@
-import { debounce } from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NetworkStatus } from 'apollo-client';
@@ -17,7 +16,6 @@ const propsToVariables = props => ({
       ...on Photo {
         id
         comments(first: 10 after: $cursor) {
-#          totalCount
           edges {
             ...ImageCommentsList_edge
           }
@@ -47,14 +45,6 @@ export default class ImageCommentsConnection extends Component {
     onItemPress: () => {},
   };
 
-  // @TODO: ???
-  // shouldComponentUpdate({ data }) {
-  //   const { users, networkStatus } = data;
-  //   const prev = this.props.data;
-  //
-  //   return prev.users !== users || prev.networkStatus !== networkStatus;
-  // }
-
   refresh(vars = {}) {
     this.props.data.refetch(vars);
   }
@@ -73,14 +63,14 @@ export default class ImageCommentsConnection extends Component {
 
       updateQuery: (prev, { fetchMoreResult: { photo } }) => {
         const { comments } = photo;
-// return prev;
+
         if (!comments || !comments.edges.length) {
           return prev;
         }
 
         return {
           photo: {
-            id: photo.id,
+            ...prev.photo,
             comments: {
               ...prev.photo.comments,
               edges: [

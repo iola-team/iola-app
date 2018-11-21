@@ -5,7 +5,7 @@ import { isFunction, isUndefined, noop } from 'lodash';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import Modal from '../Modal';
-import ImageCommentsConnection from '../ImageComments/ImageCommentsConnection';
+import ImageCommentsConnection from './ImageCommentsConnection';
 
 const getModalHeight = () => {
   const { height } = Dimensions.get('window');

@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
-import { get, noop } from 'lodash';
+import { noop } from 'lodash';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { TouchableOpacity } from 'react-native';
-import {
-  Thumbnail,
-} from 'native-base';
-
-import { withStyle } from 'theme';
+import { Thumbnail } from 'native-base';
 
 const userFragment = gql`    
   fragment UserAvatar_user on User {
     id
     avatar {
       id
+      url
       small: url
       medium: url(size: MEDIUM)
       large: url(size: MEDIUM)
@@ -43,7 +40,7 @@ export default class UserAvatar extends Component {
     const thumbnailProps = {
       ...props,
       small: size === 'small',
-      large: size === 'large'
+      large: size === 'large',
     };
 
     if (user) {
