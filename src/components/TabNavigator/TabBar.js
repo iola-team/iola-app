@@ -29,31 +29,21 @@ import { TouchableOpacity } from 'components';
   }
 })
 export default class TabBar extends Component {
-  renderTab = (route, index) => {
-    const {
-      onTabPress,
-      getLabelText, 
-      navigation: { state },
-    } = this.props;
-
-    return (
-      <TouchableOpacity 
-        key={route.key} 
-        primary={state.index === index}
-        onPress={() => onTabPress({ route })}
-      >
-        <Text>{getLabelText({ route })}</Text>
-      </TouchableOpacity>
-    );
-  }
-
   render() {
-    const { style, navigation: { state } } = this.props;
+    const { style, onTabPress, getLabelText, navigation: { state } } = this.props;
 
     return (
       <ViewRN style={style}>
         {
-          state.routes.map(this.renderTab)
+          state.routes.map((route, index) => (
+            <TouchableOpacity 
+              key={route.key} 
+              primary={state.index === index}
+              onPress={() => onTabPress({ route })}
+            >
+              <Text>{getLabelText({ route })}</Text>
+            </TouchableOpacity>
+          ))
         }
       </ViewRN>
     );

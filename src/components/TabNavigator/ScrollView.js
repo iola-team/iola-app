@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { ScrollView as ScrollViewRN } from 'react-native';
 
-import { Consumer } from './Context';
+import { TabBar, Header } from './SceneView';
 
 export default class ScrollView extends PureComponent {
   render() {
@@ -9,13 +9,8 @@ export default class ScrollView extends PureComponent {
 
     return (
       <ScrollViewRN {...props} stickyHeaderIndices={[1]}>
-        <Consumer>
-          {({ renderHeader }) => renderHeader()}
-        </Consumer>
-
-        <Consumer>
-          {({ renderTabs }) => renderTabs()}
-        </Consumer>
+        <Header />
+        <TabBar />
 
         {children}
       </ScrollViewRN>
