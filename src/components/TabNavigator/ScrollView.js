@@ -1,5 +1,5 @@
-import React, { PureComponent, Fragment } from 'react';
-import { ScrollView as ScrollViewRN, View } from 'react-native';
+import React, { PureComponent } from 'react';
+import { ScrollView as ScrollViewRN } from 'react-native';
 
 import { Consumer } from './Context';
 

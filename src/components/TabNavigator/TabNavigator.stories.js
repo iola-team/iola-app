@@ -57,7 +57,7 @@ const createTab = (backgroundColor, count = 100) => class Tab extends PureCompon
 stories.add('Default', () => {
   const TabNavigator = createTabNavigator({
     Tab1: createTab('#FEFEFE', 100),
-    Tab2: createTab('#EEFFFF', 100),
+    Tab2: createTab('#EEEEFF', 100),
     Tab3: createTab('#EEFFFF', 100),
     Tab4: createTab('#FFEEFF', 100),
     Tab5: createTab('#EEFFEE', 100),

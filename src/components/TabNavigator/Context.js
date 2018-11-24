@@ -3,21 +3,6 @@ import React, { createContext, Component } from 'react';
 const Context = createContext();
 
 export class Provider extends Component {
-  static getDerivedStateFromProps(props, state) {
-    if (props.navigation !== state.navigation) {
-      return {
-        ...state,
-        navigation: props.navigation,
-      };
-    }
-
-    return null;
-  }
-
-  state = {
-    navigation: null,
-  };
-
   listeners = [];
 
   constructor(props) {
@@ -30,27 +15,20 @@ export class Provider extends Component {
     this.listeners.push(listener);
   }
 
-  getNavigation = () => {
-    const { navigation } = this.state;
-
-    return navigation;
-  }
-
   createContextValue() {
     const { renderHeader, renderTabs } = this.props;
 
     return {
       addListener: this.addListener,
-      getNavigation: this.getNavigation,
       renderHeader: (...args) => renderHeader(...args),
       renderTabs: (...args) => renderTabs(...args),
     };
   };
 
   componentDidUpdate(prevProps) {
-    const { navigation } = this.props;
+    const { isFocused } = this.props;
 
-    if (navigation !== prevProps.navigation) {
+    if (isFocused !== prevProps.isFocused && isFocused) {
       this.listeners.map(listener => listener());
     }
   }
