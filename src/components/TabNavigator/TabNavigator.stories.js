@@ -58,6 +58,9 @@ stories.add('Default', () => {
   const TabNavigator = createTabNavigator({
     Tab1: createTab('#FEFEFE', 100),
     Tab2: createTab('#EEFFFF', 100),
+    Tab3: createTab('#EEFFFF', 100),
+    Tab4: createTab('#FFEEFF', 100),
+    Tab5: createTab('#EEFFEE', 100),
   }, {
     renderHeader: props => <Header {...props} />
   });
