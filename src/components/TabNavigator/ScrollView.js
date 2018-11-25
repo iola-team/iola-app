@@ -24,14 +24,13 @@ export default class ScrollView extends PureComponent {
   };
 
   onMomentumScrollEnd = ({ nativeEvent: { contentOffset } }) => {
-    if (contentOffset.y >= this.headerHeight) {
-      return;
-    }
-
     const y = contentOffset.y > (this.headerHeight / 2) ? this.headerHeight : 0;
 
     this.context.onScrollEnd(y);
-    this.scrollTo(y, true);
+
+    if (contentOffset.y < this.headerHeight) {
+      this.scrollTo(y, true);
+    }
   }
 
   componentDidMount() {
@@ -44,7 +43,6 @@ export default class ScrollView extends PureComponent {
   
   render() {
     const { children, ...props } = this.props;
-    
 
     return (
       <ScrollViewRN 

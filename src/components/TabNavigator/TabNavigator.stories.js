@@ -9,6 +9,7 @@ import { range } from 'lodash';
 import { getContainerDecorator } from 'storybook';
 import createTabNavigator from '.';
 import ScrollView from './ScrollView';
+import FlatList from './FlatList';
 
 const stories = storiesOf('Components/TabNavigator', module);
 
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    height: 200,
+    height: 300,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -38,7 +39,7 @@ const Header = () => (
   </View>
 );
 
-const createTab = (backgroundColor, count = 100) => class Tab extends PureComponent {
+const createScrollViewTab = (backgroundColor, count = 100) => class Tab extends PureComponent {
   
   render() {
     return (
@@ -53,12 +54,27 @@ const createTab = (backgroundColor, count = 100) => class Tab extends PureCompon
   }
 };
 
+const createFlatListTab = (backgroundColor, count = 100) => class Tab extends PureComponent {
+  renderItem = ({ item }) => (
+    <View key={item.key} style={[styles.item, { backgroundColor }]}>
+      <Text>{item.key}</Text>
+    </View>
+  );
+
+  render() {
+    const data = range(count).map(i => ({ key: i.toString() }));
+
+    return (
+      <FlatList data={data} renderItem={this.renderItem} />
+    );
+  }
+};
+
 // Stories
 stories.add('Default', () => {
   const TabNavigator = createTabNavigator({
-    Tab1: createTab('#FEFEFE', 100),
-    Tab2: createTab('#EEEEFF', 100),
-    Tab3: createTab('#EEFFFF', 100),
+    ScrollView: createScrollViewTab('#FEFEFE', 100),
+    FlatList: createFlatListTab('#EEEEFF', 100),
   }, {
     renderHeader: props => <Header {...props} />
   });
