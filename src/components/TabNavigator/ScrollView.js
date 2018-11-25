@@ -1,17 +1,13 @@
-import React, { PureComponent, createRef } from 'react';
-import { ScrollView as ScrollViewRN } from 'react-native';
+import React, { PureComponent } from 'react';
+import { ScrollView as ScrollViewRN, View } from 'react-native';
 
 import { TabBar, Header, Context } from './SceneView';
-
-/**
- * TODO: Detect
- */
-const headerHeight = 200;
 
 export default class ScrollView extends PureComponent {
   static contextType = Context;
   unsubscribe = null;
   scrollRef = null;
+  headerHeight = null;
 
   scrollTo = (y, animated = false) => {
     if (this.scrollRef) {
@@ -23,17 +19,18 @@ export default class ScrollView extends PureComponent {
     this.scrollRef = ref;
   }
 
-  onMomentumScrollEnd = ({ nativeEvent: { contentOffset } }) => {
-    const { onScrollEnd } = this.context;
-    const halfHeader = headerHeight / 2;
+  onLayout = ({ nativeEvent: { layout } }) => {
+    this.headerHeight = layout.height;
+  };
 
-    if (contentOffset.y >= headerHeight) {
+  onMomentumScrollEnd = ({ nativeEvent: { contentOffset } }) => {
+    if (contentOffset.y >= this.headerHeight) {
       return;
     }
 
-    const y = contentOffset.y > halfHeader ? headerHeight : 0;
+    const y = contentOffset.y > (this.headerHeight / 2) ? this.headerHeight : 0;
 
-    onScrollEnd(y);
+    this.context.onScrollEnd(y);
     this.scrollTo(y, true);
   }
 
@@ -56,7 +53,9 @@ export default class ScrollView extends PureComponent {
         stickyHeaderIndices={[1]}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
       >
-        <Header />
+        <View onLayout={this.onLayout}>
+          <Header />
+        </View>
         <TabBar />
 
         {children}
