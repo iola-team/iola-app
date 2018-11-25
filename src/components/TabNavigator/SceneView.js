@@ -3,8 +3,6 @@ import { StyleSheet, View } from 'react-native';
 import { without } from 'lodash';
 
 const FAR_FAR_AWAY = 3000; // this should be big enough to move the whole view out of its container
-const Context = createContext();
-
 const styles = StyleSheet.create({
   container: {
     overflow: 'hidden',
@@ -19,20 +17,9 @@ const styles = StyleSheet.create({
   },
 });
 
-class Subscriber extends Component {
-  static contextType = Context;
-  unsubscribe = null;
+export const Context = createContext();
 
-  componentDidMount() {
-    this.unsubscribe = this.context.subscribe(() => this.forceUpdate());
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
-}
-
-export class Header extends Subscriber {
+export class Header extends Component {
   static contextType = Context;
 
   render() {
@@ -40,8 +27,17 @@ export class Header extends Subscriber {
   }
 }
 
-export class TabBar extends Subscriber {
+export class TabBar extends Component {
   static contextType = Context;
+  unsubscribe = null;
+
+  componentDidMount() {
+    this.unsubscribe = this.context.addListener('focus', () => this.forceUpdate());
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
   render() {
     return this.context.renderTabs();
@@ -49,37 +45,42 @@ export class TabBar extends Subscriber {
 }
 
 export default class SceneView extends PureComponent {
-  subscribers = [];
+  subscribers = {
+    focus: [],
+    scroll: [],
+  };
   contextValue = null;
 
-  subscribe = (subscriber) => {
-    this.subscribers.push(subscriber);
+  addListener = (type, subscriber) => {
+    this.subscribers[type].push(subscriber);
 
     return () => without(this.subscribers, subscriber);
   }
 
   componentDidUpdate(prevProps) {
-    const { isFocused } = this.props;
+    const { isFocused, scrollOffset } = this.props;
 
     if (isFocused !== prevProps.isFocused && isFocused) {
-      this.subscribers.map(sub => sub());
+      this.subscribers.focus.map(sub => sub(isFocused));
+      this.subscribers.scroll.map(sub => sub(scrollOffset));
     }
   }
 
   getContext() {
-    const { renderHeader, renderTabs } = this.props;
+    const { renderHeader, renderTabs, onScrollEnd } = this.props;
 
     this.contextValue = this.contextValue || {
-      subscribe: this.subscribe,
-      renderHeader: (...args) => renderHeader(...args),
-      renderTabs: (...args) => renderTabs(...args),
+      addListener: this.addListener,
+      onScrollEnd,
+      renderHeader,
+      renderTabs,
     };
 
     return this.contextValue;
   };
 
   render() {
-    const { isFocused, route, renderHeader, renderTabs, renderScene } = this.props;
+    const { isFocused, route, renderScene } = this.props;
 
     return (
       <Context.Provider value={this.getContext()}>
