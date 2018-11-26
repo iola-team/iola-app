@@ -208,9 +208,9 @@ export default class ImageView extends Component {
       createdAt,
       user: {
         name,
-        isOnline,
+        isOnline, // @TODO
       },
-      totalCountLikes,
+      totalCountLikes, // @TODO
     } = images[index];
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;

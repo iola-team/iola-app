@@ -5,12 +5,18 @@ import gql from 'graphql-tag';
 import { FlatList, Image } from 'react-native';
 
 import { withStyleSheet } from 'theme';
+import ImageView from '../ImageView';
+import TouchableOpacity from '../TouchableOpacity';
 
 const edgeFragment = gql`
   fragment PhotoList_edge on PhotoEdge {
     node {
       id
       url
+      user {
+        id
+        name
+      }
     }
   }
 `;
@@ -46,11 +52,13 @@ export default class PhotoList extends Component {
     return node.id;
   }
 
-  renderItem({ item: { node } }) {
+  renderItem({ item: { node }, index }, onShowImage) {
     const { styleSheet } = this.props;
 
     return (
-      <Image style={styleSheet.item} source={{ uri: node.url }} />
+      <TouchableOpacity style={styleSheet.item} onPress={() => onShowImage(index)}>
+        <Image style={styleSheet.item} source={{ uri: node.url }} />
+      </TouchableOpacity>
     );
   }
 
@@ -63,16 +71,22 @@ export default class PhotoList extends Component {
       ...listProps
     } = this.props;
 
+    const photos = edges.map(edge => ({ ...edge.node }));
+
     return (
-      <FlatList
-        {...listProps}
-        contentContainerStyle={[contentContainerStyle, styleSheet.list]}
-        columnWrapperStyle={[columnWrapperStyle, styleSheet.row]}
-        numColumns={3}
-        data={edges}
-        keyExtractor={::this.extractItemKey}
-        renderItem={::this.renderItem}
-      />
+      <ImageView images={photos}>
+        {onShowImage => (
+          <FlatList
+            {...listProps}
+            contentContainerStyle={[contentContainerStyle, styleSheet.list]}
+            columnWrapperStyle={[columnWrapperStyle, styleSheet.row]}
+            numColumns={3}
+            data={edges}
+            keyExtractor={::this.extractItemKey}
+            renderItem={edge => this.renderItem(edge, onShowImage)}
+          />
+        )}
+      </ImageView>
     );
   }
 }
