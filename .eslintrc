@@ -34,7 +34,8 @@
     "react/no-children-prop": 0,
     "no-nested-ternary": 1,
     "lines-between-class-members": 0,
-    "react/destructuring-assignment": 0
+    "react/destructuring-assignment": 0,
+    "prefer-destructuring": 0
   },
   "settings": {
     "import/resolver": {

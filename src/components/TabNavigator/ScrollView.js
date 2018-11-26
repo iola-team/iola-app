@@ -7,7 +7,11 @@ export default class ScrollView extends PureComponent {
   static contextType = Context;
   unsubscribe = null;
   scrollRef = null;
-  headerHeight = null;
+
+  state = {
+    rootHeight: 0,
+    headerHeight: 0,
+  };
 
   scrollTo = (y, animated = false) => {
     if (this.scrollRef) {
@@ -19,29 +23,44 @@ export default class ScrollView extends PureComponent {
     this.scrollRef = ref;
   }
 
-  onLayout = ({ nativeEvent: { layout } }) => {
-    this.headerHeight = layout.height;
+  onHeaderLayout = ({ nativeEvent: { layout } }) => {
+    this.setState({
+      headerHeight: layout.height,
+    });
+  };
+
+  onRootLayout = ({ nativeEvent: { layout } }) => {
+    this.setState({
+      rootHeight: layout.height,
+    });
   };
 
   onMomentumScrollEnd = ({ nativeEvent: { contentOffset } }) => {
-    const y = contentOffset.y > (this.headerHeight / 2) ? this.headerHeight : 0;
-
-    this.context.onScrollEnd(y);
-
-    if (contentOffset.y < this.headerHeight) {
-      this.scrollTo(y, true);
-    }
+    const { headerHeight } = this.state;
+    const { onScrollEnd } = this.context;
+    const y = contentOffset.y > headerHeight ? headerHeight : contentOffset.y;
+    
+    onScrollEnd(y);
   }
 
   componentDidMount() {
-    this.unsubscribe = this.context.addListener('scroll', this.scrollTo);
+    if (this.context) {
+      this.unsubscribe = this.context.addListener('scroll', this.scrollTo);
+    }
   }
 
   componentWillUnmount() {
-    this.unsubscribe();
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
   }
   
   render() {
+    if (!this.context) {
+      return <ScrollViewRN {...this.props} />;
+    }
+
+    const { rootHeight, headerHeight } = this.state;
     const { children, ...props } = this.props;
 
     return (
@@ -50,8 +69,12 @@ export default class ScrollView extends PureComponent {
         ref={this.onRef}
         stickyHeaderIndices={[1]}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
+        contentContainerStyle={{
+          minHeight: rootHeight + headerHeight,
+        }}
+        onLayout={this.onRootLayout}
       >
-        <View onLayout={this.onLayout}>
+        <View onLayout={this.onHeaderLayout}>
           <Header />
         </View>
         <TabBar />

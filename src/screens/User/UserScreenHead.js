@@ -30,7 +30,6 @@ export default class UserScreenHead extends PureComponent {
 
   static propTypes = {
     user: fragmentProp(userFragment),
-    renderTabBar: PropTypes.func.isRequired,
   }
 
   render() {
@@ -39,7 +38,6 @@ export default class UserScreenHead extends PureComponent {
       styleSheet: styles,
       navigation: { goBack, navigate },
       user,
-      renderTabBar,
     } = this.props;
 
     return (
@@ -56,8 +54,6 @@ export default class UserScreenHead extends PureComponent {
             <Spinner />
           )
         }
-
-        {renderTabBar()}
       </View>
     );
   }

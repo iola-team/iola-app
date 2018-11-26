@@ -1,15 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { createMaterialTopTabNavigator, createNavigator } from 'react-navigation';
-import { debounce } from 'lodash';
-import { Container } from 'native-base';
 
+import { createHeadingTabsNavigator } from 'components';
 import UserInfoTab from './UserInfoTab';
 import UserFriendsTab from './UserFriendsTab';
 import UserPhotosTab from './UserPhotosTab';
 import UserScreenHead from './UserScreenHead';
-import UserTabBar from './TabBar';
 
 const userQuery = gql`
   query UserDetailsQuery($userId: ID!) {
@@ -22,72 +19,25 @@ const userQuery = gql`
   ${UserScreenHead.fragments.user}
 `;
 
+const renderHeader = ({ navigation }) => {
+  const userId = navigation.state.params.id;
+
+  return (
+    <Query query={userQuery} variables={{ userId }}>
+      {({ data }) => (
+        <UserScreenHead navigation={navigation} user={data.user} />
+      )}
+    </Query>
+  );
+};
+
 export {
   UserInfoTab,
   UserFriendsTab,
   UserPhotosTab,
 };
 
-export default (routes, config = {}) => {
-  const routerConfigs = {
-    ...config,
-    tabBarComponent: props => null,
-    animationEnabled: false,
-    swipeEnabled: false,
-    lazy: true,
-  };
-
-  const Tabs = createMaterialTopTabNavigator(routes, routerConfigs);
-  const TabBar = createNavigator(UserTabBar, Tabs.router, routerConfigs);
-
-  return class UserNavigator extends Component {
-    static router = Tabs.router;
-
-    static navigationOptions = {
-      headerTransparent: true,
-    };
-
-    state = {
-      contentOffset: {
-        x: 0,
-        y: 0,
-      },
-    };
-
-    updateOffset = debounce(contentOffset => this.setState({ contentOffset }), 100);
-    renderTabBar = () => <TabBar navigation={this.props.navigation} />;
-
-    render() {
-      const { navigation } = this.props;
-
-      const screenProps = ({ data }) => {
-        return {
-          renderHeader: (props) => (
-            <UserScreenHead
-              {...props}
-              user={data.user}
-              navigation={navigation}
-              renderTabBar={this.renderTabBar}
-            />
-          ),
-          // contentOffset: this.state.contentOffset,
-          // onScroll: (event) => {
-          //   this.updateOffset(event.nativeEvent.contentOffset);
-          // },
-        };
-      };
-
-      const userId = navigation.state.params.id;
-
-      return (
-        <Container>
-          <Query query={userQuery} variables={{ userId }}>
-            {(queryResult) => (
-              <Tabs navigation={navigation} screenProps={screenProps(queryResult)} />
-            )}
-          </Query>
-        </Container>
-      );
-    }
-  };
-}
+export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
+  ...config,
+  renderHeader,
+});

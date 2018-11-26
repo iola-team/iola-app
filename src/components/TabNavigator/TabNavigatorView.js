@@ -13,16 +13,20 @@ export default class TabNavigatorView extends Component {
     scrollOffset: 0,
   };
 
-  renderTabs = () => <TabBar {...this.props} />;
+  renderHeader = props => {
+    const { renderHeader, navigation } = this.props;
+
+    return renderHeader({
+      ...props,
+      navigation,
+    });
+  };
+
+  renderTabs = props => <TabBar {...props} {...this.props} />;
   onScrollEnd = (scrollOffset) => this.setState({ scrollOffset });
 
   render() {
-    const { 
-      navigation: { state }, 
-      renderScene, 
-      renderHeader,
-    } = this.props;
-
+    const { navigation: { state }, renderScene } = this.props;
     const { scrollOffset } = this.state;
     const commonProps = {
       /**
@@ -35,8 +39,8 @@ export default class TabNavigatorView extends Component {
        */
       onScrollEnd: this.onScrollEnd,
       renderTabs: this.renderTabs,
+      renderHeader: this.renderHeader,
       renderScene,
-      renderHeader,
     };
 
     return (
