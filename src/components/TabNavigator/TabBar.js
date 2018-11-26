@@ -8,7 +8,6 @@ import { TouchableOpacity } from 'components';
 @withStyle('Sparkle.TabBar', {
   flexDirection: 'row',
   paddingHorizontal: 20,
-  backgroundColor: '#FFFFFF',
 
   'Sparkle.TouchableOpacity': {
     flex: 1,

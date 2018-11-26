@@ -1,8 +1,10 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { View } from 'native-base';
 
-import { createHeadingTabsNavigator } from 'components';
+// TODO: do not import the component directly
+import createHeadingTabsNavigator, { TabBar } from 'components/TabNavigator';
 import UserInfoTab from './UserInfoTab';
 import UserFriendsTab from './UserFriendsTab';
 import UserPhotosTab from './UserPhotosTab';
@@ -31,6 +33,12 @@ const renderHeader = ({ navigation }) => {
   );
 };
 
+const renderTabs = props => (
+  <View highlight>
+    <TabBar {...props} />
+  </View>
+);
+
 export {
   UserInfoTab,
   UserFriendsTab,
@@ -40,4 +48,5 @@ export {
 export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
   ...config,
   renderHeader,
+  renderTabs,
 });
