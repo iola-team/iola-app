@@ -58,7 +58,7 @@ export default class ImageCommentsConnection extends Component {
 
     this.fetchMorePromise = this.fetchMorePromise || fetchMore({
       variables: {
-        cursor: (console.log('pageInfo.endCursor', pageInfo.endCursor), pageInfo.endCursor),
+        cursor: pageInfo.endCursor,
       },
 
       updateQuery: (prev, { fetchMoreResult: { photo } }) => {

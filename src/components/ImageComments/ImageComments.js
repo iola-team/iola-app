@@ -1,17 +1,34 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Dimensions } from 'react-native';
+import { Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import Modal from '../Modal';
+import ChatFooter from '../ChatFooter';
 import ImageCommentsConnection from './ImageCommentsConnection';
 
 const getModalHeight = () => {
   const { height } = Dimensions.get('window');
+  const headerHeight = 62;
+  const footerHeight = 40;
 
-  return height * 0.75;
+  return height * 0.75 - headerHeight - footerHeight;
 };
+
+const addPhotoCommentMutation = gql`
+  mutation addPhotoCommentMutation($input: PhotoCommentInput!) {
+    addPhotoComment(input: $input) {
+      node {
+        id
+        text
+        createdAt
+      }
+    }
+  }
+`;
 
 @styleSheet('Sparkle.ImageComments', {
   titleRow: {
@@ -92,6 +109,18 @@ export default class ImageComments extends Component {
     this.setState({ isVisible: isUndefined(isVisible) ? true : isVisible });
   };
 
+  onCommentSend = async (text, mutate) => {
+    return mutate({
+      variables: {
+        input: {
+          userId: 'User:17',
+          photoId: 'Photo:1016',
+          text,
+        },
+      },
+    });
+  };
+
   renderTitle() {
     const { totalCount, styleSheet: styles } = this.props;
 
@@ -103,6 +132,14 @@ export default class ImageComments extends Component {
     );
   }
 
+  renderFooter() {
+    return (
+      <Mutation mutation={addPhotoCommentMutation}>
+        {mutate => <ChatFooter onSend={text => this.onCommentSend(text, mutate)} />}
+      </Mutation>
+    );
+  }
+
   renderModal() {
     const { photoId, styleSheet: styles } = this.props;
     const { isVisible } = this.state;
@@ -111,6 +148,7 @@ export default class ImageComments extends Component {
       <Modal
         title={this.renderTitle()}
         height={getModalHeight()}
+        footer={this.renderFooter()}
         isVisible={isVisible}
         onDone={this.action('onDone', this.hide)}
         onDismiss={this.action('onDismiss')}

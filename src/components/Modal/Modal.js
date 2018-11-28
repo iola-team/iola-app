@@ -29,23 +29,37 @@ const maxHeight = Dimensions.get('window').height * 0.6;
   },
 
   header: {
-    height: 62,
+    height: 60,
+  },
+
+  topRectangle: {
+    width: 64,
+    height: 4,
+    marginTop: 12,
+    alignSelf: 'center',
+    backgroundColor: '#E1E3E8',
+  },
+
+  headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flex: 1,
   },
 
-  headerDoneText: {
-    color: '#5F96F2',
-  },
-
-  headerCancelText: {
+  cancel: {
+    fontSize: 14,
     color: '#BDC0CB',
   },
 
-  content: {
+  title: {
+    fontSize: 16,
+  },
 
-  }
+  done: {
+    fontSize: 14,
+    color: '#5F96F2',
+  },
 })
 export default class Modal extends PureComponent {
   static propTypes = {
@@ -56,6 +70,7 @@ export default class Modal extends PureComponent {
     ]).isRequired,
     children: PropTypes.element.isRequired,
     height: PropTypes.number,
+    footer: PropTypes.object,
 
     onDismiss: PropTypes.func,
     onShow: PropTypes.func,
@@ -67,6 +82,7 @@ export default class Modal extends PureComponent {
 
   static defaultProps = {
     height: maxHeight,
+    footer: null,
     onDismiss: noop,
     onShow: noop,
     onSwipe: noop,
@@ -87,6 +103,7 @@ export default class Modal extends PureComponent {
       isVisible,
       children,
       height,
+      footer,
 
       onDismiss,
       onShow,
@@ -118,17 +135,21 @@ export default class Modal extends PureComponent {
       >
         <View style={styles.root}>
           <View style={styles.header} horizontalPadder>
-            <TouchableOpacity onPress={onCancel}>
-              <Text style={styles.headerCancelText}>Cancel</Text>
-            </TouchableOpacity>
-            {isString(title) ? <Text>{title}</Text> : title}
-            <TouchableOpacity onPress={onDone}>
-              <Text style={styles.headerDoneText}>Done</Text>
-            </TouchableOpacity>
+            <View style={styles.topRectangle} />
+            <View style={styles.headerContent}>
+              <TouchableOpacity onPress={onCancel}>
+                <Text style={styles.cancel}>Cancel</Text>
+              </TouchableOpacity>
+              {isString(title) ? <Text style={styles.title}>{title}</Text> : title}
+              <TouchableOpacity onPress={onDone}>
+                <Text style={styles.done}>Done</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <ScrollView style={[styles.content, { height }]}>
+          <ScrollView style={{ height }}>
             {children}
           </ScrollView>
+          {footer}
         </View>
       </ModalRN>
     );
