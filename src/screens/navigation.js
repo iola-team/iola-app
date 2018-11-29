@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { 
   createBottomTabNavigator, 
   createSwitchNavigator, 
@@ -21,6 +22,7 @@ import Launch from './Launch';
 import Channels from './Channels';
 import Users from './Users';
 import Dashboard from './Dashboard';
+
 import createUserNavigator, { UserPhotosTab, UserInfoTab, UserFriendsTab } from './User';
 import Channel from './Channel';
 import ProfileEdit from './PropfileEdit';

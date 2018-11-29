@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { FlatList, Image } from "react-native";
+import { Image } from "react-native";
 
 import { withStyleSheet } from 'theme';
+import { FlatList } from '../TabNavigator';
 
 const edgeFragment = gql`
   fragment PhotoList_edge on PhotoEdge {
@@ -42,11 +43,9 @@ export default class PhotoList extends Component {
     ),
   };
 
-  extractItemKey({ node }) {
-    return node.id;
-  }
+  extractItemKey = ({ node }) => node.id;
 
-  renderItem({ item: { node } }) {
+  renderItem = ({ item: { node } }) => {
     const { styleSheet } = this.props;
 
     return (
@@ -70,8 +69,8 @@ export default class PhotoList extends Component {
         columnWrapperStyle={[columnWrapperStyle, styleSheet.row]}
         numColumns={3}
         data={edges}
-        keyExtractor={::this.extractItemKey}
-        renderItem={::this.renderItem}
+        keyExtractor={this.extractItemKey}
+        renderItem={this.renderItem}
       />
     );
   }

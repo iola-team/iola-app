@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FlatList } from "react-native";
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 
+import { FlatList } from '../TabNavigator';
 import UserListItem from '../UserListItem';
 
 const edgeFragment = gql`
