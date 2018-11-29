@@ -49,4 +49,7 @@ export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
   ...config,
   renderHeader,
   renderTabs,
+  navigationOptions: {
+    headerTransparent: true,
+  },
 });

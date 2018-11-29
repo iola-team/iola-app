@@ -29,7 +29,7 @@ export default class ScreenHeader extends PureComponent {
   };
   
   getSceneOptions(scene) {
-    const { index, descriptor: { options } } = scene;
+    const { descriptor: { options } } = scene;
     const {
       styleSheet,
       title = options.title,
