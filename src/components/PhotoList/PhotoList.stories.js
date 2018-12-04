@@ -1,16 +1,16 @@
 import React from 'react';
-import { filter, find, range } from 'lodash';
-import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
+import { Query } from 'react-apollo';
+import { find, range } from 'lodash';
+import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
-import moment from 'moment';
+import delay from 'promise-delay';
 import { connectionFromArray } from 'graphql-relay';
+import { NetworkStatus } from 'apollo-client';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
-import PhotoList from '.';
+import PhotoList from './PhotoList';
 
 const stories = storiesOf('Components/PhotoList', module);
 
@@ -76,9 +76,11 @@ const resolvers = {
   },
 
   User: {
-    photos({ id }, args) {
+    async photos({ id }, args) {
       const photos = range(30).map(() => createPhoto());
       const connection = connectionFromArray(photos, args);
+
+      await delay(2000);
 
       return {
         ...connection,
@@ -95,4 +97,45 @@ stories.addDecorator(getApolloDecorator({
 }));
 
 // Stories
-stories.add('Default', () => <PhotoList userId="User:1" />);
+
+const userQuery = gql`
+  query UserPhotosQuery($id: ID!) {
+    user: node(id: $id) {
+      ...on User {
+        id
+        photos {
+          edges {
+            ...PhotoList_edge
+          }
+        }
+      }
+    }
+  }
+  
+  ${PhotoList.fragments.edge}
+`;
+
+stories.add('Full flow', () => (
+  <Query query={userQuery} variables={{ id: 'User:1' }}>
+    {({ loading, networkStatus, data: { user } }) => (
+      <PhotoList 
+        edges={loading ? [] : user.photos.edges} 
+        networkStatus={networkStatus}
+      />
+    )}
+  </Query>
+));
+
+stories.add('Initial Load', () => (
+  <PhotoList 
+    edges={[]} 
+    networkStatus={NetworkStatus.loading}
+  />
+));
+
+stories.add('No items', () => (
+  <PhotoList 
+    edges={[]}
+    networkStatus={NetworkStatus.ready}
+  />
+));

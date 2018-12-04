@@ -1,6 +1,5 @@
 import { isArray, isPlainObject } from "lodash";
 
-const emptyStyle = {};
 export default (rawStyle) => {
   if (isPlainObject(rawStyle)) {
     return rawStyle;

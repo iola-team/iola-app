@@ -62,12 +62,16 @@ export default class ProfileFieldView extends Component {
     value: fragmentProp(valueFragment),
   };
 
+  static defaultProps = {
+    value: null,
+  };
+
   render() {
     const { value, field, ...props } = this.props;
-    const Component = getFieldComponent(this.props);
+    const FieldComponent = getFieldComponent(this.props);
 
     return (
-      <Component
+      <FieldComponent
         {...props}
         field={field}
         data={value && value.data}

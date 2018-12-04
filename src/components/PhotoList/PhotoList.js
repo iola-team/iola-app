@@ -2,18 +2,22 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { Image } from "react-native";
+import { NetworkStatus } from 'apollo-client';
+import { range } from 'lodash';
 
 import { withStyleSheet } from 'theme';
 import { FlatList } from '../TabNavigator';
+import Item from '../PhotoListItem';
 
 const edgeFragment = gql`
   fragment PhotoList_edge on PhotoEdge {
     node {
       id
-      url
+      ...PhotoListItem_photo
     }
   }
+
+  ${Item.fragments.photo}
 `;
 
 @withStyleSheet('Sparkle.PhotoList', {
@@ -27,9 +31,7 @@ const edgeFragment = gql`
 
   item: {
     flex: 1,
-    aspectRatio: 1,
     margin: 4,
-    borderRadius: 8,
   },
 })
 export default class PhotoList extends Component {
@@ -40,27 +42,40 @@ export default class PhotoList extends Component {
   static propTypes = {
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment).isRequired
-    ),
+    ).isRequired,
+    networkStatus: PropTypes.number,
   };
 
-  extractItemKey = ({ node }) => node.id;
+  static defaultProps = {
+    networkStatus: NetworkStatus.ready,
+  };
 
-  renderItem = ({ item: { node } }) => {
+  extractItemKey = ({ node, key }) => key || node.id;
+  renderItem = ({ item: { node, opacity } }) => {
     const { styleSheet } = this.props;
+    const opacityStyle = opacity && { opacity };
 
-    return (
-      <Image style={styleSheet.item} source={{ uri: node.url }} />
-    );
+    return <Item style={[opacityStyle, styleSheet.item]} photo={node} />;
+  }
+
+  getPlaceholders() {
+    return range(9).map(index => ({ 
+      key: index.toString(),
+      opacity: 1 - Math.floor(index / 3) * 0.3,
+    }));
   }
 
   render() {
     const {
       edges,
       styleSheet,
+      networkStatus,
       contentContainerStyle,
       columnWrapperStyle,
       ...listProps
     } = this.props;
+
+    const data = networkStatus === NetworkStatus.loading ? this.getPlaceholders() : edges;
 
     return (
       <FlatList
@@ -68,9 +83,9 @@ export default class PhotoList extends Component {
         contentContainerStyle={[contentContainerStyle, styleSheet.list]}
         columnWrapperStyle={[columnWrapperStyle, styleSheet.row]}
         numColumns={3}
-        data={edges}
-        keyExtractor={this.extractItemKey}
+        data={data}
         renderItem={this.renderItem}
+        keyExtractor={this.extractItemKey}
       />
     );
   }
