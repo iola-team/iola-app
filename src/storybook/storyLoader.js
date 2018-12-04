@@ -41,6 +41,8 @@ function loadStories() {
   require('../components/TabNavigator/TabNavigator.stories');
   require('../components/TextPicker/TextPicker.stories');
   require('../components/UserHeading/UserHeading.stories');
+  require('../components/UserList/UserList.stories');
+  require('../components/UserListItem/UserListItem.stories');
   require('../components/UserPhotos/UserPhotos.stories');
   require('../screens/EmailVerification/EmailVerification.stories');
   require('../screens/ForgotPassword/ForgotPassword.stories');
@@ -85,6 +87,8 @@ const stories = [
   '../components/TabNavigator/TabNavigator.stories',
   '../components/TextPicker/TextPicker.stories',
   '../components/UserHeading/UserHeading.stories',
+  '../components/UserList/UserList.stories',
+  '../components/UserListItem/UserListItem.stories',
   '../components/UserPhotos/UserPhotos.stories',
   '../screens/EmailVerification/EmailVerification.stories',
   '../screens/ForgotPassword/ForgotPassword.stories',

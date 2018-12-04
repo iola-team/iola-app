@@ -255,17 +255,7 @@ export default (variables => ({
 
     'Sparkle.Shadow': {},
 
-    'Sparkle.UserListItem': {
-      'NativeBase.ListItem': {
-        'NativeBase.Body': {
-          height: 68,
-          justifyContent: 'center',
-        },
-        'NativeBase.Right': {
-          justifyContent: 'center',
-        },
-      },
-    },
+    'Sparkle.UserListItem': {},
 
     'Sparkle.ScreenHeader': {
       'NativeBase.Icon': {

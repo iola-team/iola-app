@@ -3,12 +3,10 @@ import { get, noop } from 'lodash';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { TouchableOpacity } from 'react-native';
-import {
-  Thumbnail,
-} from 'native-base';
+import { Thumbnail } from 'native-base';
 
 import { withStyle } from 'theme';
+import TouchableOpacity from '../TouchableOpacity';
 
 const userFragment = gql`    
   fragment UserAvatar_user on User {
@@ -22,6 +20,7 @@ const userFragment = gql`
   }
 `;
 
+@withStyle('Sparkle.UserAvatar')
 export default class UserAvatar extends Component {
   static propTypes = {
     size: PropTypes.oneOf(['small', 'medium', 'large']),

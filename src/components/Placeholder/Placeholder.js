@@ -4,8 +4,11 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { createAnimatableComponent } from 'react-native-animatable';
 
+import { withStyle } from 'theme';
+
 const Gradient = createAnimatableComponent(LinearGradient);
 
+@withStyle('Sparkle.Placeholder')
 export default class Placeholder extends Component {
   static propTypes = {
     isActive: PropTypes.bool,
