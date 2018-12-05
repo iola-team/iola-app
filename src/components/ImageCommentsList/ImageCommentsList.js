@@ -36,8 +36,10 @@ export default class ImageCommentsList extends Component {
     edge: edgeFragment,
   };
 
+  // flatList = null;
+
   extractItemKey({ node }) {
-    return node.id;
+    return node.id.toString();
   }
 
   renderItem({ item: { node } }) {
@@ -47,6 +49,13 @@ export default class ImageCommentsList extends Component {
   renderLoadIndicator() {
     return this.props.hasMore ? <LoadMoreIndicator /> : null;
   };
+
+  onViewableItemsChanged() {
+    // @TODO: In progress
+    // const { flatList } = this;
+    //
+    // if (flatList) flatList.scrollToEnd({ animated: true });
+  }
 
   render() {
     const { height, edges, ...listProps } = this.props;
@@ -58,6 +67,8 @@ export default class ImageCommentsList extends Component {
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         ListFooterComponent={::this.renderLoadIndicator}
+        onViewableItemsChanged={this.onViewableItemsChanged}
+        inverted
       />
     ) : (
       <NoComments height={height} />

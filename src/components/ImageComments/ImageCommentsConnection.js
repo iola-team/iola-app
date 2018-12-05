@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Query } from 'react-apollo';
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { propType as graphqlPropType } from 'graphql-anywhere';
 
 import ImageCommentsList from '../ImageCommentsList';
 
-const propsToVariables = props => ({
-  id: props.photoId,
-});
-
-@graphql(gql`
-  query imageCommentsQuery($id: ID!, $cursor: Cursor = null) {
+const photoCommentsQuery = gql`
+  query photoCommentsQuery($id: ID!, $cursor: Cursor = null) {
     photo: node(id: $id) {
       ...on Photo {
         id
@@ -29,29 +26,29 @@ const propsToVariables = props => ({
   }
 
   ${ImageCommentsList.fragments.edge}
-`, {
-  options: props => ({
-    variables: propsToVariables(props),
-  }),
-})
+`;
+
 export default class ImageCommentsConnection extends Component {
   static propTypes = {
     photoId: PropTypes.string.isRequired,
     height: PropTypes.number.isRequired,
     onItemPress: PropTypes.func,
+    photoCommentsQuery: graphqlPropType(photoCommentsQuery),
   };
 
   static defaultProps = {
     onItemPress: () => {},
   };
 
+  static queries = {
+    photoCommentsQuery,
+  };
+
   refresh(vars = {}) {
     this.props.data.refetch(vars);
   }
 
-  handleLoadMore({ distanceFromEnd }) {
-    const { fetchMore, photo: { comments: { pageInfo } } } = this.props.data;
-
+  handleLoadMore({ fetchMore, photo: { comments: { pageInfo } } }) {
     if (!pageInfo.hasNextPage) {
       return;
     }
@@ -61,24 +58,24 @@ export default class ImageCommentsConnection extends Component {
         cursor: pageInfo.endCursor,
       },
 
-      updateQuery: (prev, { fetchMoreResult: { photo } }) => {
+      updateQuery: (previousResult, { fetchMoreResult: { photo } }) => {
         const { comments } = photo;
 
         if (!comments || !comments.edges.length) {
-          return prev;
+          return previousResult;
         }
 
         return {
           photo: {
-            ...prev.photo,
+            ...previousResult.photo,
             comments: {
-              ...prev.photo.comments,
+              ...previousResult.photo.comments,
               edges: [
-                ...prev.photo.comments.edges,
+                ...previousResult.photo.comments.edges,
                 ...comments.edges
               ],
               pageInfo: {
-                ...prev.photo.comments.pageInfo,
+                ...previousResult.photo.comments.pageInfo,
                 ...comments.pageInfo
               },
             },
@@ -91,29 +88,29 @@ export default class ImageCommentsConnection extends Component {
   }
 
   render() {
-    if (this.props.data.loading) return null; // @TODO: add spinner
+    const { photoId, height, onItemPress } = this.props;
 
-    const {
-      data: {
-        photo: { comments },
-        networkStatus,
-      },
-      photoId,
-      height,
-      onItemPress,
-    } = this.props;
-    const reFetching = networkStatus === NetworkStatus.refetch;
+    return (
+      <Query query={photoCommentsQuery} variables={{ id: photoId }}>
+        {({ data, loading }) => {
+          if (loading) return null;
 
-    return !comments ? null : (
-      <ImageCommentsList
-        photoId={photoId}
-        height={height}
-        onItemPress={onItemPress}
-        edges={comments.edges}
-        onRefresh={::this.refresh}
-        refreshing={reFetching}
-        onEndReached={::this.handleLoadMore}
-      />
+          const { photo: { comments }, networkStatus } = data;
+          const reFetching = networkStatus === NetworkStatus.refetch;
+
+          return comments ? (
+            <ImageCommentsList
+              photoId={photoId}
+              height={height}
+              onItemPress={onItemPress}
+              edges={comments.edges}
+              onRefresh={::this.refresh}
+              refreshing={reFetching}
+              onEndReached={({ distanceFromEnd }) => this.handleLoadMore(data)}
+            />
+          ) : null;
+        }}
+      </Query>
     );
   }
 }

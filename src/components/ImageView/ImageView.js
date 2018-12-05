@@ -7,6 +7,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { propType as graphqlPropType } from 'graphql-anywhere';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
@@ -39,7 +40,9 @@ const photoCommentsTotalCountQuery = gql`
       ...on Photo {
         id
         comments {
-          totalCount
+          ...on PhotoCommentsConnection {
+            totalCount
+          }
         }
       }
     }
@@ -168,6 +171,11 @@ export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     images: PropTypes.array.isRequired, // @TODO
+    photoCommentsTotalCountQuery: graphqlPropType(photoCommentsTotalCountQuery),
+  };
+
+  static queries = {
+    photoCommentsTotalCountQuery,
   };
 
   state = {

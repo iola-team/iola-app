@@ -108,10 +108,8 @@ const userPhotosQuery = gql`
                 caption
                 createdAt
                 user {
-                  ...on User {
-                    id
-                    name
-                  }
+                  id
+                  name
                 }
               }
             }
@@ -162,8 +160,8 @@ const dataStore = (() => {
 
 const resolvers = {
   Query: {
-    me: (root, args, { dataStore }) => dataStore.users[0],
-    node: (root, { id }, { dataStore }) => find(dataStore.photos, { id }),
+    me: (root, args, { dataStore: { users } }) => find(users, { id: 'User:1' }),
+    node: (root, { id }, { dataStore: { photos } }) => find(photos, { id }),
   },
 
   User: {
