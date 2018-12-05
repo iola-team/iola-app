@@ -19,9 +19,14 @@ const photoFragment = gql`
     flex: 1,
   },
 
-  aspectRatio: 1,
+  'Sparkle.Placeholder': {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#F8F9FB',
+  },
+
+  overflow: 'hidden',
   borderRadius: 8,
-  backgroundColor: '#F8F9FB',
+  aspectRatio: 1,
 })
 export default class PhotoListItem extends Component {
   static fragments = {
@@ -48,10 +53,8 @@ export default class PhotoListItem extends Component {
 
     return (
       <View {...props}>
-        <Placeholder style={StyleSheet.absoluteFill} isActive={!loaded} />
-        {photo && (
-          <Image source={{ uri: photo.url }} onLoadEnd={this.onLoad} />
-        )}
+        {!loaded && <Placeholder />}
+        {photo && <Image source={{ uri: photo.url }} onLoadEnd={this.onLoad} />}
       </View>
     );
   }
