@@ -26,6 +26,7 @@ import Shadow from './Shadow';
 import ProfileFieldsView from './ProfileFieldsView';
 import FriendList from './FriendList';
 import PhotoList from './PhotoList';
+import createHeadingTabsNavigator from './TabNavigator';
 
 export {
   Root,
@@ -58,4 +59,5 @@ export {
   // Navigation
   ScreenHeader,
   BottomTabBar,
+  createHeadingTabsNavigator,
 };

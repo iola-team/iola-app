@@ -80,13 +80,11 @@ export default class ProfileFieldList extends PureComponent {
   }
 
   render() {
-    const { style, fields, values, ...listProps } = this.props;
+    const { fields, values, ...listProps } = this.props;
     const sections = this.buildSections(fields, values);
 
     return (
-      <ViewRN style={style}>
-        <FieldList {...listProps} sections={sections} />
-      </ViewRN>
+      <FieldList {...listProps} sections={sections} />
     );
   }
 }

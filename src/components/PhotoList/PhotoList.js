@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { FlatList, Image } from 'react-native';
+import { Image } from 'react-native';
 
 import { withStyleSheet } from 'theme';
+import { FlatList } from '../TabNavigator';
 import ImageView from '../ImageView';
 import TouchableOpacity from '../TouchableOpacity';
 
@@ -48,11 +49,9 @@ export default class PhotoList extends Component {
     ),
   };
 
-  extractItemKey({ node }) {
-    return node.id;
-  }
+  extractItemKey = ({ node }) => node.id;
 
-  renderItem({ item: { node }, index }, onShowImage) {
+  renderItem = ({ item: { node }, index }, onShowImage) => {
     const { styleSheet } = this.props;
 
     return (
@@ -60,7 +59,7 @@ export default class PhotoList extends Component {
         <Image style={styleSheet.item} source={{ uri: node.url }} />
       </TouchableOpacity>
     );
-  }
+  };
 
   render() {
     const {
@@ -82,7 +81,7 @@ export default class PhotoList extends Component {
             columnWrapperStyle={[columnWrapperStyle, styleSheet.row]}
             numColumns={3}
             data={edges}
-            keyExtractor={::this.extractItemKey}
+            keyExtractor={this.extractItemKey}
             renderItem={edge => this.renderItem(edge, onShowImage)}
           />
         )}

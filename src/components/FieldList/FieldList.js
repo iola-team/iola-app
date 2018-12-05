@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View as ViewRN } from 'react-native';
 
 import Section from '../FieldSection';
+import { ScrollView } from '../TabNavigator';
 
 const defaultSectionRenderer = ({ key, label, items }, renderItem) => (
   <Section key={key} label={label}>
@@ -36,11 +36,11 @@ export default class FieldList extends Component {
     const { style, sections } = this.props;
 
     return (
-      <ViewRN style={style}>
+      <ScrollView style={style}>
         {
-          sections.map(::this.renderSection)
+          sections.map(this.renderSection)
         }
-      </ViewRN>
+      </ScrollView>
     );
   }
 }
