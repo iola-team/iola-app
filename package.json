@@ -22,9 +22,9 @@
     "storybook:server": "storybook start -p 7007 -c ./src/storybook",
     "storybook:generate": "rnstl",
     "storybook:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchStories.js",
-    "lint": "./node_modules/.bin/eslint \"src/**/*.js\" --quiet; exit 0",
-    "lint:statistics": "echo \"================\nESLint Statstics\n================\n\"; ./node_modules/.bin/eslint -c .eslintrc ./src/**/*.js --format ./node_modules/eslint-stats/byErrorAndWarning.js; exit 0",
-    "lint:fix": "./node_modules/.bin/eslint --fix \"src/**/*.js\"; exit 0",
+    "lint": "eslint \"./src/**/*.js\" --quiet; exit 0",
+    "lint:statistics": "echo \"================\nESLint Statstics\n================\n\"; eslint -c .eslintrc ./src/**/*.js --format ./node_modules/eslint-stats/byErrorAndWarning.js; exit 0",
+    "lint:fix": "eslint --fix \"./src/**/*.js\"; exit 0",
     "tools:generate-component": "generact ./src/components/ComponentTemplate/index.js --root ./src/components/",
     "postinstall": "sh ./scripts/postinstall.sh"
   },
