@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
 import UserList from '../UserList';
@@ -18,17 +16,7 @@ export default class FriendList extends Component {
     edge: edgeFragment,
   };
 
-  static propTypes = {
-    edges: PropTypes.arrayOf(
-      fragmentProp(edgeFragment).isRequired
-    ),
-  };
-
   render() {
-    const { edges, ...restProps } = this.props;
-
-    return (
-      <UserList {...restProps} edges={edges} />
-    );
+    return <UserList {...this.props} />;
   }
 }

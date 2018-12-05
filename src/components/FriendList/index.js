@@ -33,14 +33,14 @@ export default class FriendListContainer extends Component {
 
     return (
       <Query query={userQuery} variables={{ id }}>
-        {({ loading, data: { user } }) => (
-          <FriendList {...props} edges={loading ? [] : user.friends.edges} />
+        {({ loading, networkStatus, data: { user } }) => (
+          <FriendList 
+            {...props} 
+            networkStatus={networkStatus} 
+            edges={loading ? [] : user.friends.edges} 
+          />
         )}
       </Query>
     );
   }
 }
-
-// export default React.forwardRef((props, ref) => (
-//   <FriendListContainer {...props} forwardedRef={ref} />
-// ));
