@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
-import { number, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
+import { withKnobs } from '@storybook/addon-knobs';
+import { View } from 'react-native';
 import { storiesOf } from '@storybook/react-native';
 import { range } from 'lodash';
 
@@ -20,13 +20,24 @@ stories.add('Default', () => (
   />
 ));
 
-stories.add('Multiple', () => (
-  <Fragment>
+stories.add('Multiple Vertical', () => (
+  <View style={{ flex: 1 }}>
     {range(10).map((index) => (
       <Placeholder 
         key={index} 
         style={{ alignSelf: 'stretch', height: 30, marginBottom: 15, backgroundColor: "#EEEEEE" }}
       />
     ))}
-  </Fragment>
+  </View>
+));
+
+stories.add('Multiple Horizontal', () => (
+  <View style={{ flex: 1, flexDirection: 'row' }}>
+    {range(3).map((index) => (
+      <Placeholder 
+        key={index} 
+        style={{ flex: 1, height: 30, marginRight: 10, backgroundColor: "#EEEEEE" }}
+      />
+    ))}
+  </View>
 ));

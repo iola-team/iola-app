@@ -18,13 +18,13 @@ export default class Users extends PureComponent {
     searchPhrase: '',
   };
 
-  onSearch(searchPhrase) {
+  onSearch = (searchPhrase) => {
     this.setState({
       searchPhrase,
     });
   }
 
-  onItemPress({ node }) {
+  onItemPress = ({ node }) => {
     const { navigation: { navigate } } = this.props;
 
     navigate({ routeName: USER, params: { id: node.id }, key: node.id });
@@ -35,8 +35,8 @@ export default class Users extends PureComponent {
 
     return (
       <Container>
-        <SearchBar onSearch={::this.onSearch} />
-        <UsersConnection search={searchPhrase} onItemPress={::this.onItemPress} />
+        <SearchBar onSearch={this.onSearch} />
+        <UsersConnection search={searchPhrase} onItemPress={this.onItemPress} />
       </Container>
     );
   }

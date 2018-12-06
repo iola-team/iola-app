@@ -28,12 +28,16 @@ export default class UserPhotos extends Component {
   };
 
   render() {
-    const { userId } = this.props;
+    const { userId, ...props } = this.props;
 
     return (
       <Query query={userPhotosQuery} variables={{ id: userId }}>
         {({ loading, networkStatus, data: { user } }) => (
-          <PhotoList edges={loading ? [] : user.photos.edges} networkStatus={networkStatus} />
+          <PhotoList 
+            {...props}
+            edges={loading ? [] : user.photos.edges} 
+            networkStatus={networkStatus} 
+          />
         )}
       </Query>
     );

@@ -79,7 +79,7 @@ export default class UserHeading extends PureComponent {
           {user.name}
         </H2>
         <Text note style={[styleSheet.infoLine, styleSheet.infoLine2]}>
-          {user.info.headline}
+          {user.info && user.info.headline}
         </Text>
 
         <View style={styleSheet.buttons}>

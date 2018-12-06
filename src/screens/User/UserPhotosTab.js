@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { PhotoList } from 'components';
+import { UserPhotos } from 'components';
 
 export default class UserPhotosTab extends Component {
   static navigationOptions = {
@@ -12,7 +12,7 @@ export default class UserPhotosTab extends Component {
     const id = navigation.state.params.id;
 
     return (
-      <PhotoList userId={id} />
+      <UserPhotos userId={id} />
     );
   }
 }
