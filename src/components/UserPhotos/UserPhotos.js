@@ -11,7 +11,6 @@ const userPhotosQuery = gql`
       ...on User {
         id
         photos {
-          totalCount
           edges {
             ...PhotoList_edge
           }
