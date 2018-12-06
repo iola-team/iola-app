@@ -4,6 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { NetworkStatus } from 'apollo-client';
 import { range } from 'lodash';
+import { View } from 'react-native';
 
 import { withStyleSheet } from 'theme';
 import { FlatList } from '../TabNavigator';
@@ -30,8 +31,8 @@ const edgeFragment = gql`
   },
 
   item: {
-    flex: 1,
-    margin: 4,
+    width: '33.33333333%',
+    padding: 4,
   },
 })
 export default class PhotoList extends Component {
@@ -55,7 +56,11 @@ export default class PhotoList extends Component {
     const { styleSheet } = this.props;
     const opacityStyle = opacity && { opacity };
 
-    return <Item style={[opacityStyle, styleSheet.item]} photo={node} />;
+    return (
+      <View style={[opacityStyle, styleSheet.item]}>
+        <Item photo={node} />
+      </View>
+    );
   }
 
   getPlaceholders() {
