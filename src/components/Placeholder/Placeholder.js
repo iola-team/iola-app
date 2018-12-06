@@ -1,12 +1,40 @@
 import React, { Component } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
-import { createAnimatableComponent } from 'react-native-animatable';
+import { View, StyleSheet, Animated } from 'react-native';
 
 import { withStyle } from 'theme';
 
-const Gradient = createAnimatableComponent(LinearGradient);
+const Gradient = Animated.createAnimatedComponent(LinearGradient);
+const animatedValue = new Animated.Value(0);
+let animation = null;
+let componentsCount = 0;
+
+const retainAnimation = () => {
+  animation = animation || Animated.loop(
+    Animated.timing(animatedValue, {
+      toValue: 1,
+      duration: 2000,
+      isInteraction: false,
+      useNativeDriver: true,
+    }),
+  );
+
+  if (componentsCount === 0) {
+    animation.start();
+  }
+
+  componentsCount++;
+};
+
+const releaseAnimation = () => {
+  componentsCount--;
+
+  if (componentsCount <= 0) {
+    animation.stop();
+    componentsCount = 0;
+  }
+};
 
 @withStyle('Sparkle.Placeholder')
 export default class Placeholder extends Component {
@@ -19,29 +47,35 @@ export default class Placeholder extends Component {
   };
 
   state = {
-    animation: null,
+    layout: null,
   };
 
   onLayout = ({ nativeEvent: { layout } }) => {
-    this.setState({
-      animation: {
-        from: {
-          transform: [
-            { translateX: -layout.width },
-          ],
-        },
-        to: {
-          transform: [
-            { translateX: layout.width },
-          ],
-        },
-      },
-    });
+    this.setState({ layout });
   };
+
+  componentDidMount() {
+    retainAnimation();
+  }
+
+  componentWillUnmount() {
+    releaseAnimation();
+  }
 
   render() {
     const { style, children, isActive, ...props } = this.props;
-    const { animation } = this.state;
+    const { layout } = this.state;
+
+    const animationStyle = layout && {
+      transform: [
+        { 
+          translateX: animatedValue.interpolate({
+            inputRange: [0.5, 1],
+            outputRange: [-layout.width, layout.width],
+          }),
+        },
+      ],
+    };
 
     return (
       <View 
@@ -51,14 +85,9 @@ export default class Placeholder extends Component {
       >
         {children}
 
-        {animation && isActive && (
+        {layout && isActive && (
           <Gradient
-            useNativeDriver
-            iterationDelay={400}
-            duration={700}
-            animation={animation}
-            iterationCount="infinite"
-            style={StyleSheet.absoluteFill} 
+            style={[StyleSheet.absoluteFill, animationStyle]}
             start={{x: 0, y: 0}} 
             end={{x: 1, y: 0}}
             colors={[
