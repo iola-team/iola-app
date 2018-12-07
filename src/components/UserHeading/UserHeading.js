@@ -2,16 +2,11 @@ import React, { PureComponent } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import {
-  View,
-  Icon,
-  Button,
-  Text,
-  H2,
-} from 'native-base';
+import { View, Button, Text, H2 } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet } from 'theme';
 import UserAvatar from '../UserAvatar';
+import Placeholder from '../Placeholder';
 
 const userFragment = gql`
   fragment UserHeading_user on User {
@@ -27,7 +22,7 @@ const userFragment = gql`
   ${UserAvatar.fragments.user}
 `;
 
-@styleSheet('Sparkle.UserHeading', {
+@withStyleSheet('Sparkle.UserHeading', {
   root: {
     alignItems: 'center',
   },
@@ -40,23 +35,44 @@ const userFragment = gql`
     flexDirection: 'row',
   },
 
-  infoLine: {
-    textAlign: 'center',
+  info: {
+    marginBottom: 20,
   },
 
-  infoLine1: {
+  infoLine: {
+    alignItems: 'center',
     marginBottom: 5,
   },
 
-  infoLine2: {
-    marginBottom: 25,
+  headline: {
     color: '#BDC0CB',
+  },
+
+  placeholder: {
+    borderRadius: 4,
+    backgroundColor: '#ececee',
+  },
+
+  namePlaceholder: {
+    width: 200,
+  },
+
+  headlinePlaceholder: {
+    width: 150,
   },
 
   button: {
     width: '30%',
     alignSelf: 'center',
     marginHorizontal: 5,
+  },
+
+  'NativeBase.ViewNB': {
+    'Sparkle.UserAvatar': {
+      'Sparkle.Placeholder': {
+        backgroundColor: '#ececee',
+      },
+    },
   },
 })
 export default class UserHeading extends PureComponent {
@@ -65,29 +81,51 @@ export default class UserHeading extends PureComponent {
   };
 
   static propTypes = {
-    user: fragmentProp(userFragment).isRequired,
-    onChatPress: PropTypes.func.isRequired,
+    user: fragmentProp(userFragment),
+    loading: PropTypes.bool,
+    onChatPress: PropTypes.func,
   }
 
+  static defaultProps = {
+    user: null,
+    loading: false,
+    onChatPress: () => {},
+  };
+
   render() {
-    const { style, styleSheet, user, onChatPress } = this.props;
+    const { style, styleSheet: styles, user, loading, onChatPress } = this.props;
 
     return (
-      <View style={[styleSheet.root, style]}>
-        <UserAvatar style={styleSheet.avatar} user={user} size={'large'} />
-        <H2 style={[styleSheet.infoLine, styleSheet.infoLine1]}>
-          {user.name}
-        </H2>
-        <Text note style={[styleSheet.infoLine, styleSheet.infoLine2]}>
-          {user.info && user.info.headline}
-        </Text>
+      <View style={[styles.root, style]}>
+        <UserAvatar style={styles.avatar} loading={loading} user={user} size="large" />
 
-        <View style={styleSheet.buttons}>
-          <Button block style={styleSheet.button} onPress={onChatPress}>
+        <View style={styles.info}>
+          <View style={styles.infoLine}>
+            <Placeholder isActive={loading}>
+              <H2 style={loading ? [styles.placeholder, styles.namePlaceholder] : null}>
+                {loading ? ' ' : user.name}
+              </H2>
+            </Placeholder>
+          </View>
+
+          <View style={styles.infoLine}>
+            <Placeholder isActive={loading}>
+              <Text 
+                note 
+                style={loading ? [styles.placeholder, styles.headlinePlaceholder] : styles.headline}
+              >
+                {loading ? ' ' : user.info.headline}
+              </Text>
+            </Placeholder>
+          </View>
+        </View>
+
+        <View style={styles.buttons}>
+          <Button block style={styles.button} onPress={onChatPress}>
             <Text>Chat</Text>
           </Button>
 
-          <Button light bordered secondary block style={styleSheet.button} onPress={() => {}}>
+          <Button light bordered secondary block style={styles.button} onPress={() => {}}>
             <Text>Friends</Text>
           </Button>
         </View>

@@ -1,17 +1,18 @@
 import React, { PureComponent } from 'react';
 import gql from 'graphql-tag';
-import { propType as fragmentProp } from 'graphql-anywhere';
-import PropTypes from 'prop-types';
-import { View, Spinner } from 'native-base';
+import { Query } from 'react-apollo';
+import { View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import { UserHeading } from 'components';
 import * as routes from '../roteNames';
 
-const userFragment = gql`
-  fragment UserScreenHead_user on User {
-    id
-    ...UserHeading_user
+const userQuery = gql`
+  query UserDetailsQuery($userId: ID!) {
+    user: node(id: $userId) {
+      id
+      ...UserHeading_user
+    }
   }
 
   ${UserHeading.fragments.user}
@@ -24,36 +25,26 @@ const userFragment = gql`
   },
 })
 export default class UserScreenHead extends PureComponent {
-  static fragments = {
-    user: userFragment,
-  };
-
-  static propTypes = {
-    user: fragmentProp(userFragment),
-  }
-
   render() {
     const {
       style,
       styleSheet: styles,
-      navigation: { goBack, navigate },
-      user,
+      navigation: { goBack, navigate, state },
     } = this.props;
 
     return (
       <View style={style} highlight>
-        {
-          user ? (
+        <Query query={userQuery} variables={{ userId: state.params.id }}>
+          {({ data: { user }, loading }) => (
             <UserHeading
               style={styles.head}
+              loading={loading}
               user={user}
               onBackPress={() => goBack()}
-              onChatPress={() => navigate(routes.CHANNEL, { userId: user.id })}
+              onChatPress={() => navigate(routes.CHANNEL, { userId: state.params.id })}
             />
-          ) : (
-            <Spinner />
-          )
-        }
+          )}
+        </Query>
       </View>
     );
   }

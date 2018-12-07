@@ -7,6 +7,7 @@ import { Thumbnail } from 'native-base';
 
 import { withStyle } from 'theme';
 import TouchableOpacity from '../TouchableOpacity';
+import Placeholder from '../Placeholder';
 
 const userFragment = gql`    
   fragment UserAvatar_user on User {
@@ -20,17 +21,33 @@ const userFragment = gql`
   }
 `;
 
-@withStyle('Sparkle.UserAvatar')
+@withStyle('Sparkle.UserAvatar', {
+  'Sparkle.Placeholder': {
+    backgroundColor: '#F8F9FB',
+    borderRadius: 8,
+
+    '.small': {
+      borderRadius: 4,
+    },
+
+    'NativeBase.Thumbnail': {
+      opacity: 0,
+    },
+  },
+})
 export default class UserAvatar extends Component {
   static propTypes = {
     size: PropTypes.oneOf(['small', 'medium', 'large']),
-    user: fragmentProp(userFragment).isRequired,
+    user: fragmentProp(userFragment),
     onPress: PropTypes.func,
+    loading: PropTypes.bool,
   };
 
   static defaultProps = {
+    user: null,
     size: 'small',
     onPress: noop,
+    loading: false,
   };
 
   static fragments = {
@@ -38,23 +55,26 @@ export default class UserAvatar extends Component {
   };
 
   render() {
-    const { user, size, onPress, ...props } = this.props;
-    const thumbnailProps = {
-      ...props,
+    const { style, user, loading, size, onPress, ...props } = this.props;
+    const sizeProps = {
       small: size === 'small',
       large: size === 'large'
     };
 
-    if (user) {
-      const uri = user.avatar
-        ? user.avatar[size]
-        : 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg'; // TODO use correct default image
+    const thumbnailProps = { ...props, ...sizeProps };
+    const defaultUri = 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg';
 
-      thumbnailProps.source = { uri };
+    if (loading) {
+      return (
+        <Placeholder style={style} {...sizeProps}>
+          <Thumbnail {...thumbnailProps} source={{ uri: defaultUri }} />
+        </Placeholder>
+      );
     }
 
+    const uri = get(user, ['avatar', size], defaultUri);
     const thumbnail = (
-      <Thumbnail {...thumbnailProps} />
+      <Thumbnail {...thumbnailProps} style={style} source={{ uri }} />
     );
 
     return onPress ? (

@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { ProfileFieldsView } from 'components';
 
 const userFieldsQuery = gql`
-  query UserPhotosQuery($id: ID!) {
+  query UserInfoQuery($id: ID!) {
     user: node(id: $id) {
       id
       ...ProfileFieldsView_user
