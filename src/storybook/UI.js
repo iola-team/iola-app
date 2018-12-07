@@ -13,6 +13,7 @@ export default class Storybook extends Component {
     require('./config');
 
     this.ui = getStorybookUI({
+      host: '192.168.0.100',
       port: 7007,
       onDeviceUI: false,
     });
