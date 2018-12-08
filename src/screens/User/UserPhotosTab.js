@@ -1,18 +1,46 @@
 import React, { Component } from 'react';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import { withNavigationFocus } from 'react-navigation';
 
-import { UserPhotos } from 'components';
+import { PhotoList } from 'components';
 
-export default class UserPhotosTab extends Component {
+const userPhotosQuery = gql`
+  query UserPhotosQuery($id: ID!) {
+    user: node(id: $id) {
+      ...on User {
+        id
+        photos {
+          edges {
+            ...PhotoList_edge
+          }
+        }
+      }
+    }
+  }
+
+  ${PhotoList.fragments.edge}
+`;
+
+@withNavigationFocus
+export default class UserFriendsTab extends Component {
   static navigationOptions = {
     title: 'Photos',
   };
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, isFocused } = this.props;
     const id = navigation.state.params.id;
 
     return (
-      <UserPhotos userId={id} />
+      <Query skip={!isFocused} query={userPhotosQuery} variables={{ id }}>
+        {({ loading, networkStatus, data }) => (
+          <PhotoList
+            edges={loading || !isFocused ? [] : data.user.photos.edges}
+            networkStatus={!isFocused ? 1 : networkStatus} 
+          />
+        )}
+      </Query>
     );
   }
 }

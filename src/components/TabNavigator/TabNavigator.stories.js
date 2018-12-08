@@ -1,9 +1,8 @@
-import React, { Component, PureComponent } from 'react';
-import { number, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
+import React, { PureComponent } from 'react';
+import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import { View, Text, StyleSheet } from 'react-native';
-import { createSwitchNavigator, createAppContainer, withNavigationFocus } from 'react-navigation';
+import { createAppContainer } from 'react-navigation';
 import { range } from 'lodash';
 
 import { getContainerDecorator } from 'storybook';

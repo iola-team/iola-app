@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { View } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet } from 'theme';
 import { UserHeading } from 'components';
 import * as routes from '../roteNames';
 
@@ -18,7 +18,7 @@ const userQuery = gql`
   ${UserHeading.fragments.user}
 `;
 
-@styleSheet('Sparkle.UserScreenHead', {
+@withStyleSheet('Sparkle.UserScreenHead', {
   head: {
     marginTop: 55,
     marginBottom: 40,

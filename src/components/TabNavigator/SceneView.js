@@ -49,6 +49,7 @@ export default class SceneView extends PureComponent {
     focus: [],
     scroll: [],
   };
+
   contextValue = null;
 
   addListener = (type, subscriber) => {
