@@ -1,31 +1,31 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
-import { PhotoList } from 'components';
+import { UserList } from 'components';
 
-const userPhotosQuery = gql`
-  query UserPhotosQuery($id: ID!) {
+const userFriendsQuery = gql`
+  query UserFriendsQuery($id: ID!) {
     user: node(id: $id) {
       ...on User {
         id
-        photos {
+        friends {
           edges {
-            ...PhotoList_edge
+            ...UserList_edge
           }
         }
       }
     }
   }
-
-  ${PhotoList.fragments.edge}
+  
+  ${UserList.fragments.edge}
 `;
 
 @withNavigationFocus
-export default class UserFriendsTab extends Component {
+export default class UserFriends extends PureComponent {
   static navigationOptions = {
-    title: 'Photos',
+    title: 'Friends',
   };
 
   render() {
@@ -33,10 +33,10 @@ export default class UserFriendsTab extends Component {
     const id = navigation.state.params.id;
 
     return (
-      <Query skip={!isFocused} query={userPhotosQuery} variables={{ id }}>
+      <Query skip={!isFocused} query={userFriendsQuery} variables={{ id }}>
         {({ loading, networkStatus, data }) => (
-          <PhotoList
-            edges={loading || !isFocused ? [] : data.user.photos.edges}
+          <UserList
+            edges={loading || !isFocused ? [] : data.user.friends.edges}
             networkStatus={!isFocused ? 1 : networkStatus} 
           />
         )}

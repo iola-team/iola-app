@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
@@ -17,7 +17,7 @@ const userFieldsQuery = gql`
 `;
 
 @withNavigationFocus
-export default class UserInfoTab extends Component {
+export default class UserInfo extends PureComponent {
   static navigationOptions = {
     title: 'Info',
   };
