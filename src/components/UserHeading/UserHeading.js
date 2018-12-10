@@ -50,7 +50,7 @@ const userFragment = gql`
 
   placeholder: {
     borderRadius: 4,
-    backgroundColor: '#ececee',
+    backgroundColor: '#F0F2F7',
   },
 
   namePlaceholder: {
@@ -70,7 +70,7 @@ const userFragment = gql`
   'NativeBase.ViewNB': {
     'Sparkle.UserAvatar': {
       'Sparkle.Placeholder': {
-        backgroundColor: '#ececee',
+        backgroundColor: '#F0F2F7',
       },
     },
   },

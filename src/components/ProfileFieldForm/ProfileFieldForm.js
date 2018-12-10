@@ -69,18 +69,21 @@ export default class ProfileFieldForm extends Component {
   static propTypes = {
     fields: PropTypes.arrayOf(
       fragmentProp(fieldFragment).isRequired
-    ).isRequired,
+    ),
 
     values: PropTypes.arrayOf(
       fragmentProp(valueFragment)
     ),
 
-    onSubmit: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
     onSubmitError: PropTypes.func,
     onFormReady: PropTypes.func,
   };
 
   static defaultProps = {
+    fields: [],
+    values: [],
+    onSubmit: noop,
     onFormReady: noop,
     onSubmitError: noop,
   };
@@ -106,7 +109,8 @@ export default class ProfileFieldForm extends Component {
   );
 
   render() {
-    const { style, fields: profileFields, values, onSubmit, onSubmitError } = this.props;
+    const { fields: profileFields, values, onSubmit, onSubmitError, ...props } = this.props;
+
     const valuesByField = getValuesByField(profileFields, values);
     const fieldSchemas = {};
     const initialValues = {};
@@ -146,6 +150,7 @@ export default class ProfileFieldForm extends Component {
       >
         {form => (
           <ProfileFieldList
+            {...props}
             fields={profileFields}
             values={values}
             renderItem={this.renderItem(form)}
