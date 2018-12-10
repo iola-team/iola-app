@@ -2,12 +2,10 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { find, range } from 'lodash';
-import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import delay from 'promise-delay';
 import { connectionFromArray } from 'graphql-relay';
-import { NetworkStatus } from 'apollo-client';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
 import PhotoList from './PhotoList';
@@ -15,7 +13,6 @@ import PhotoList from './PhotoList';
 const stories = storiesOf('Components/PhotoList', module);
 
 // Decorators
-stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator());
 
 const createPhoto = ({ id = faker.random.uuid() } = {}) => ({
@@ -65,6 +62,9 @@ const dataStore = {
     {
       id: 'User:1',
     },
+    {
+      id: 'User:2',
+    },
   ],
 };
 
@@ -80,7 +80,9 @@ const resolvers = {
       const photos = range(30).map(() => createPhoto());
       const connection = connectionFromArray(photos, args);
 
-      await delay(2000);
+      if (id === 'User:1') {
+        await delay(1000);
+      }
 
       return {
         ...connection,
@@ -115,27 +117,27 @@ const userQuery = gql`
   ${PhotoList.fragments.edge}
 `;
 
-stories.add('Full flow', () => (
-  <Query query={userQuery} variables={{ id: 'User:1' }}>
-    {({ loading, networkStatus, data: { user } }) => (
+stories.add('Default', () => (
+  <Query query={userQuery} variables={{ id: 'User:2' }}>
+    {({ loading, data: { user } }) => (
       <PhotoList 
         edges={loading ? [] : user.photos.edges} 
-        networkStatus={networkStatus}
+        loading={loading}
       />
     )}
   </Query>
 ));
 
-stories.add('Initial Load', () => (
-  <PhotoList 
-    edges={[]} 
-    networkStatus={NetworkStatus.loading}
-  />
+stories.add('Full flow', () => (
+  <Query query={userQuery} variables={{ id: 'User:1' }}>
+    {({ loading, data: { user } }) => (
+      <PhotoList 
+        edges={loading ? [] : user.photos.edges} 
+        loading={loading}
+      />
+    )}
+  </Query>
 ));
 
-stories.add('No items', () => (
-  <PhotoList 
-    edges={[]}
-    networkStatus={NetworkStatus.ready}
-  />
-));
+stories.add('Initial Load', () => <PhotoList loading edges={[]} />);
+stories.add('No items', () => <PhotoList edges={[]} />);

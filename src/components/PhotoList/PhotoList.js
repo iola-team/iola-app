@@ -44,11 +44,11 @@ export default class PhotoList extends Component {
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment).isRequired
     ).isRequired,
-    networkStatus: PropTypes.number,
+    loading: PropTypes.bool,
   };
 
   static defaultProps = {
-    networkStatus: NetworkStatus.ready,
+    loading: false,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -73,20 +73,23 @@ export default class PhotoList extends Component {
   render() {
     const {
       edges,
-      styleSheet,
-      networkStatus,
+      padder,
+      styleSheet: styles,
+      loading,
       contentContainerStyle,
       columnWrapperStyle,
       ...listProps
     } = this.props;
 
-    const data = networkStatus === NetworkStatus.loading ? this.getPlaceholders() : edges;
+    const data = loading ? this.getPlaceholders() : edges;
+    const containerStyles = [contentContainerStyle, styles.list];
+    const columnStyles = [columnWrapperStyle, styles.row];
 
     return (
       <FlatList
         {...listProps}
-        contentContainerStyle={[contentContainerStyle, styleSheet.list]}
-        columnWrapperStyle={[columnWrapperStyle, styleSheet.row]}
+        contentContainerStyle={containerStyles}
+        columnWrapperStyle={columnStyles}
         numColumns={3}
         data={data}
         renderItem={this.renderItem}

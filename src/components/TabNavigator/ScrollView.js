@@ -61,7 +61,7 @@ export default class ScrollView extends PureComponent {
     }
 
     const { rootHeight, headerHeight } = this.state;
-    const { children, ...props } = this.props;
+    const { children, contentContainerStyle, ...props } = this.props;
 
     return (
       <ScrollViewRN 
@@ -79,7 +79,9 @@ export default class ScrollView extends PureComponent {
         </View>
         <TabBar />
 
-        {children}
+        <View style={contentContainerStyle}>
+          {children}
+        </View>
       </ScrollViewRN>
     );
   }

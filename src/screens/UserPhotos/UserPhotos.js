@@ -3,6 +3,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
+import { withStyleSheet } from 'theme';
 import { PhotoList } from 'components';
 
 const userPhotosQuery = gql`
@@ -22,6 +23,12 @@ const userPhotosQuery = gql`
   ${PhotoList.fragments.edge}
 `;
 
+@withStyleSheet('Sparkle.UserPhotosScreen', {
+  list: {
+    paddingTop: 20,
+    paddingHorizontal: 16,
+  }
+})
 @withNavigationFocus
 export default class UserPhotos extends PureComponent {
   static navigationOptions = {
@@ -29,15 +36,16 @@ export default class UserPhotos extends PureComponent {
   };
 
   render() {
-    const { navigation, isFocused } = this.props;
+    const { navigation, isFocused, styleSheet: styles } = this.props;
     const id = navigation.state.params.id;
 
     return (
       <Query skip={!isFocused} query={userPhotosQuery} variables={{ id }}>
-        {({ loading, networkStatus, data }) => (
+        {({ loading, data }) => (
           <PhotoList
+            contentContainerStyle={styles.list}
             edges={loading || !isFocused ? [] : data.user.photos.edges}
-            networkStatus={!isFocused ? 1 : networkStatus} 
+            loading={loading || !isFocused}
           />
         )}
       </Query>
