@@ -27,7 +27,7 @@ export default class Users extends PureComponent {
   onItemPress = ({ node }) => {
     const { navigation: { navigate } } = this.props;
 
-    navigate({ routeName: USER, params: { id: node.id }, key: node.id });
+    navigate(USER, { id: node.id });
   }
 
   render() {
