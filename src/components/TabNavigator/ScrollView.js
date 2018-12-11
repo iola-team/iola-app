@@ -60,24 +60,28 @@ export default class ScrollView extends PureComponent {
       return <ScrollViewRN {...this.props} />;
     }
 
+    const { headerShrinkHeight } = this.context; 
     const { rootHeight, headerHeight } = this.state;
     const { children, contentContainerStyle, ...props } = this.props;
+    const marginTop = headerHeight && headerHeight - headerShrinkHeight;
 
     return (
       <ScrollViewRN 
         {...props}
         ref={this.onRef}
-        stickyHeaderIndices={[1]}
+        stickyHeaderIndices={[0]}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
         contentContainerStyle={{
           minHeight: rootHeight + headerHeight,
         }}
         onLayout={this.onRootLayout}
       >
-        <View onLayout={this.onHeaderLayout}>
-          <Header />
+        <View style={{ marginTop }}>
+          <View onLayout={this.onHeaderLayout} style={{ marginTop: -marginTop }}>
+            <Header />
+          </View>
+          <TabBar />
         </View>
-        <TabBar />
 
         <View style={contentContainerStyle}>
           {children}

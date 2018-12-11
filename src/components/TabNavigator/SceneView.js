@@ -68,9 +68,11 @@ export default class SceneView extends PureComponent {
   }
 
   getContext() {
-    const { renderHeader, renderTabs, onScrollEnd } = this.props;
+    const { renderHeader, renderTabs, onScrollEnd, headerShrinkHeight } = this.props;
 
     this.contextValue = this.contextValue || {
+      headerShrinkHeight,
+
       addListener: this.addListener,
       onScrollEnd,
       renderHeader,
