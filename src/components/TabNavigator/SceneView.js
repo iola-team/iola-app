@@ -1,5 +1,5 @@
 import React, { PureComponent, Component, createContext } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Animated } from 'react-native';
 import { without } from 'lodash';
 
 const FAR_FAR_AWAY = 3000; // this should be big enough to move the whole view out of its container
@@ -23,7 +23,7 @@ export class Header extends Component {
   static contextType = Context;
 
   render() {
-    return this.context.renderHeader();
+    return this.context.renderHeader(this.props);
   }
 }
 
@@ -40,7 +40,7 @@ export class TabBar extends Component {
   }
 
   render() {
-    return this.context.renderTabs();
+    return this.context.renderTabs(this.props);
   }
 }
 
@@ -67,10 +67,10 @@ export default class SceneView extends PureComponent {
     }
   }
 
-  getContext() {
+  createContext() {
     const { renderHeader, renderTabs, onScrollEnd, headerShrinkHeight } = this.props;
 
-    this.contextValue = this.contextValue || {
+    return {
       headerShrinkHeight,
 
       addListener: this.addListener,
@@ -78,6 +78,10 @@ export default class SceneView extends PureComponent {
       renderHeader,
       renderTabs,
     };
+  }
+
+  getContext() {
+    this.contextValue = this.contextValue || this.createContext();
 
     return this.contextValue;
   };

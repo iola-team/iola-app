@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { ScrollView as ScrollViewRN, View } from 'react-native';
+import { ScrollView as ScrollViewRN, Animated, View } from 'react-native';
 
 import { TabBar, Header, Context } from './SceneView';
 
@@ -7,6 +7,21 @@ export default class ScrollView extends PureComponent {
   static contextType = Context;
   unsubscribe = null;
   scrollRef = null;
+  scrollAnimatedValue = new Animated.Value(0);
+  onScrollAnimatedEvent = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: {
+            y: this.scrollAnimatedValue,
+          },
+        },
+      },
+    ],
+    { 
+      useNativeDriver: true,
+    },
+  );
 
   state = {
     rootHeight: 0,
@@ -15,7 +30,7 @@ export default class ScrollView extends PureComponent {
 
   scrollTo = (y, animated = false) => {
     if (this.scrollRef) {
-      this.scrollRef.scrollTo({ y, animated });
+      this.scrollRef.getNode().scrollTo({ y, animated });
     }
   }
 
@@ -62,23 +77,33 @@ export default class ScrollView extends PureComponent {
 
     const { headerShrinkHeight } = this.context; 
     const { rootHeight, headerHeight } = this.state;
-    const { children, contentContainerStyle, ...props } = this.props;
+    const { children, contentContainerStyle, onScroll, ...props } = this.props;
     const marginTop = headerHeight && headerHeight - headerShrinkHeight;
 
+    const headerAnimatedValue = this.scrollAnimatedValue.interpolate({
+      inputRange: [0, marginTop],
+      outputRange: [1, 0],
+    });
+
+    if (onScroll) {
+      Animated.forkEvent(this.onScrollAnimatedEvent, onScroll);
+    }
+
     return (
-      <ScrollViewRN 
+      <Animated.ScrollView 
         {...props}
         ref={this.onRef}
+        onScroll={this.onScrollAnimatedEvent}
         stickyHeaderIndices={[0]}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
         contentContainerStyle={{
-          minHeight: rootHeight + headerHeight,
+          minHeight: rootHeight + marginTop,
         }}
         onLayout={this.onRootLayout}
       >
         <View style={{ marginTop }}>
           <View onLayout={this.onHeaderLayout} style={{ marginTop: -marginTop }}>
-            <Header />
+            <Header animatedValue={headerAnimatedValue} />
           </View>
           <TabBar />
         </View>
@@ -86,7 +111,7 @@ export default class ScrollView extends PureComponent {
         <View style={contentContainerStyle}>
           {children}
         </View>
-      </ScrollViewRN>
+      </Animated.ScrollView>
     );
   }
 }
