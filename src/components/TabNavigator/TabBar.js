@@ -10,6 +10,10 @@ import { TouchableOpacity } from 'components';
   flexDirection: 'row',
   paddingHorizontal: 20,
 
+  '.highlight': {
+    backgroundColor: '#F8F9FB',
+  },
+
   'Sparkle.TouchableOpacity': {
     flex: 1,
     alignItems: 'center',

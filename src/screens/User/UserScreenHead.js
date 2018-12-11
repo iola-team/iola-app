@@ -1,16 +1,21 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { View } from 'native-base';
+import { View, Text } from 'native-base';
+import { Animated, StyleSheet } from 'react-native';
 
 import { withStyleSheet } from 'theme';
-import { UserHeading } from 'components';
+import { UserHeading, ScreenHeader } from 'components';
 import * as routes from '../roteNames';
 
+const AnimatedView = Animated.createAnimatedComponent(View);
 const userQuery = gql`
   query UserDetailsQuery($userId: ID!) {
     user: node(id: $userId) {
       id
+      ...on User {
+        name
+      }
       ...UserHeading_user
     }
   }
@@ -20,8 +25,22 @@ const userQuery = gql`
 
 @withStyleSheet('Sparkle.UserScreenHead', {
   head: {
-    marginTop: 55,
+    marginTop: ScreenHeader.HEIGHT,
     marginBottom: 40,
+  },
+
+  navBar: {
+    ...StyleSheet.absoluteFillObject,
+    top: null,
+    height: ScreenHeader.HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  navBarText: {
+    fontWeight: '600',
+    fontSize: 16,
+    color: '#585A61',
   },
 })
 export default class UserScreenHead extends PureComponent {
@@ -30,19 +49,43 @@ export default class UserScreenHead extends PureComponent {
       style,
       styleSheet: styles,
       navigation: { goBack, navigate, state },
+      animatedValue,
+      ...props
     } = this.props;
+
+    const headStyle = {
+      opacity: animatedValue.interpolate({
+        inputRange: [0.05, 0.6],
+        outputRange: [0, 1],
+      }),
+    };
+
+    const navBarStyle = {
+      opacity: animatedValue.interpolate({
+        inputRange: [0, 0.1],
+        outputRange: [1, 0],
+      }),
+    };
 
     return (
       <View style={style} highlight>
         <Query query={userQuery} variables={{ userId: state.params.id }}>
           {({ data: { user }, loading }) => (
-            <UserHeading
-              style={styles.head}
-              loading={loading}
-              user={user}
-              onBackPress={() => goBack()}
-              onChatPress={() => navigate(routes.CHANNEL, { userId: state.params.id })}
-            />
+            <Fragment>
+              <AnimatedView highlight style={[styles.navBar, navBarStyle]}>
+                <Text style={styles.navBarText}>{user && user.name}</Text>
+              </AnimatedView>
+
+              <AnimatedView style={[styles.head, headStyle]}>
+                <UserHeading
+                  {...props}
+                  loading={loading}
+                  user={user}
+                  onBackPress={() => goBack()}
+                  onChatPress={() => navigate(routes.CHANNEL, { userId: state.params.id })}
+                />
+              </AnimatedView>
+            </Fragment>
           )}
         </Query>
       </View>
