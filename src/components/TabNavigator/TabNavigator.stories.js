@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { withKnobs } from '@storybook/addon-knobs';
+import { number, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import { View, Text, StyleSheet } from 'react-native';
 import { createAppContainer } from 'react-navigation';
@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   },
 
   header: {
+    backgroundColor: '#FFEEFF',
     height: 300,
     alignItems: 'center',
     justifyContent: 'center',
@@ -76,6 +77,7 @@ stories.add('Default', () => {
     FlatList: createFlatListTab('#EEEEFF', 100),
     ShortScroll: createScrollViewTab('#FFEEFF', 2),
   }, {
+    headerShrinkHeight: number('Header shrink height'),
     renderHeader: props => <Header {...props} />
   });
 

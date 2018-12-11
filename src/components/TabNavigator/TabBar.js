@@ -6,6 +6,7 @@ import { withStyle } from 'theme';
 import { TouchableOpacity } from 'components';
 
 @withStyle('Sparkle.TabBar', {
+  backgroundColor: '#FFFFFF',
   flexDirection: 'row',
   paddingHorizontal: 20,
 
