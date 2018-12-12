@@ -26,7 +26,7 @@ const userQuery = gql`
 @withStyleSheet('Sparkle.UserScreenHead', {
   head: {
     marginTop: ScreenHeader.HEIGHT,
-    marginBottom: 40,
+    marginBottom: 30,
   },
 
   navBar: {
@@ -72,7 +72,7 @@ export default class UserScreenHead extends PureComponent {
         <Query query={userQuery} variables={{ userId: state.params.id }}>
           {({ data: { user }, loading }) => (
             <Fragment>
-              <AnimatedView highlight style={[styles.navBar, navBarStyle]}>
+              <AnimatedView style={[styles.navBar, navBarStyle]}>
                 <Text style={styles.navBarText}>{user && user.name}</Text>
               </AnimatedView>
 

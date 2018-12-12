@@ -1,5 +1,5 @@
 import React, { PureComponent, Component, createContext } from 'react';
-import { StyleSheet, View, Animated } from 'react-native';
+import { StyleSheet, View, Platform } from 'react-native';
 import { without } from 'lodash';
 
 const FAR_FAR_AWAY = 3000; // this should be big enough to move the whole view out of its container
@@ -94,7 +94,11 @@ export default class SceneView extends PureComponent {
         <View
           style={styles.container}
           collapsable={false}
-          removeClippedSubviews
+          removeClippedSubviews={
+            // On iOS, set removeClippedSubviews to true only when not focused
+            // This is an workaround for a bug where the clipped view never re-appears
+            Platform.OS === 'ios' ? !isFocused : true
+          }
           pointerEvents={isFocused ? 'auto' : 'none'}
         >
           <View style={isFocused ? styles.attached : styles.detached}>

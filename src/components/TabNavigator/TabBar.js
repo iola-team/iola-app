@@ -1,33 +1,34 @@
 import React, { Component } from 'react';
 import { View as ViewRN } from 'react-native';
-import { Text } from 'native-base';
+import { Text, View } from 'native-base';
 
 import { withStyle } from 'theme';
 import { TouchableOpacity } from 'components';
 
 @withStyle('Sparkle.TabBar', {
-  backgroundColor: '#FFFFFF',
+  backgroundColor: '#F8F9FB',
   flexDirection: 'row',
-  paddingHorizontal: 20,
-
-  '.highlight': {
-    backgroundColor: '#F8F9FB',
-  },
+  height: 60,
+  alignItems: 'flex-end',
+  justifyContent: 'center',
 
   'Sparkle.TouchableOpacity': {
-    flex: 1,
     alignItems: 'center',
+    paddingHorizontal: 15,
 
     'NativeBase.Text': {
       lineHeight: 45,
       borderBottomColor: 'transparent',
       borderBottomWidth: 2,
-      paddingHorizontal: 10,
+      paddingHorizontal: 5,
     },
 
     '.primary': {
-      'NativeBase.Text': {
-        borderBottomColor: '#5F96F2',
+      'NativeBase.ViewNB': {
+        alignSelf: 'stretch',
+        marginBottom: -1,
+        backgroundColor: '#5259FF',
+        height: 1,
       },
     }
   }
@@ -46,6 +47,7 @@ export default class TabBar extends Component {
               onPress={() => onTabPress({ route })}
             >
               <Text>{getLabelText({ route })}</Text>
+              <View />
             </TouchableOpacity>
           ))
         }

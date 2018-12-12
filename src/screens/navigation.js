@@ -95,6 +95,12 @@ const RootNavigator = createSwitchNavigator({
       screen: ProfileEdit,
     },
   }, {
+    headerLayoutPreset: 'center',
+    headerMode: 'screen',
+    headerBackTitleVisible: false,
+    cardShadowEnabled: false,
+    cardOverlayEnabled: true,
+
     defaultNavigationOptions: {
       header: props => <ScreenHeader {...props} />,
     },

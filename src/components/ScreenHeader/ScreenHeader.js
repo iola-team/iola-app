@@ -9,6 +9,7 @@ import { withStyleSheet as styleSheet } from 'theme';
 @styleSheet('Sparkle.ScreenHeader', {
   header: {
     elevation: 0,
+    borderBottomWidth: 0,
   },
 
   title: {
@@ -27,7 +28,7 @@ export default class ScreenHeader extends PureComponent {
   };
   
   getSceneOptions(scene) {
-    const { index, descriptor: { options } } = scene;
+    const { descriptor: { options } } = scene;
     const {
       styleSheet,
       title = options.title,
@@ -53,7 +54,6 @@ export default class ScreenHeader extends PureComponent {
     const headerProps = {
       ...this.props,
 
-      layoutPreset: 'center',
       scene: {
         ...scene,
         descriptor: {
@@ -66,8 +66,6 @@ export default class ScreenHeader extends PureComponent {
       },
     };
 
-    return (
-      <Header {...headerProps} />
-    );
+    return <Header {...headerProps} />;
   }
 }

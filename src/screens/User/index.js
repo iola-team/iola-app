@@ -6,7 +6,7 @@ import { ScreenHeader } from 'components';
 import UserScreenHead from './UserScreenHead';
 
 const renderHeader = props => <UserScreenHead {...props} />;
-const renderTabs = props => <TabBar {...props} highlight />;
+const renderTabs = props => <TabBar {...props} />;
 
 export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
   ...config,
