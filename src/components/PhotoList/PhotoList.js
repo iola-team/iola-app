@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { NetworkStatus } from 'apollo-client';
 import { range } from 'lodash';
 import { View } from 'react-native';
 
@@ -22,14 +21,6 @@ const edgeFragment = gql`
 `;
 
 @withStyleSheet('Sparkle.PhotoList', {
-  list: {
-
-  },
-
-  row: {
-
-  },
-
   item: {
     width: '33.33333333%',
     padding: 4,
@@ -76,20 +67,14 @@ export default class PhotoList extends Component {
       padder,
       styleSheet: styles,
       loading,
-      contentContainerStyle,
-      columnWrapperStyle,
       ...listProps
     } = this.props;
 
     const data = loading ? this.getPlaceholders() : edges;
-    const containerStyles = [contentContainerStyle, styles.list];
-    const columnStyles = [columnWrapperStyle, styles.row];
 
     return (
       <FlatList
         {...listProps}
-        contentContainerStyle={containerStyles}
-        columnWrapperStyle={columnStyles}
         numColumns={3}
         data={data}
         renderItem={this.renderItem}

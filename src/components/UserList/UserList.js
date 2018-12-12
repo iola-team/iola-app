@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { NetworkStatus } from 'apollo-client';
 import { range } from 'lodash';
 
+import { withStyleSheet } from 'theme';
 import { FlatList } from '../TabNavigator';
 import UserListItem from '../UserListItem';
 
@@ -20,6 +20,7 @@ const edgeFragment = gql`
   ${UserListItem.fragments.user}
 `;
 
+@withStyleSheet('Sparkle.UserList')
 export default class UserList extends Component {
   static fragments = {
     edge: edgeFragment,
@@ -30,12 +31,12 @@ export default class UserList extends Component {
       fragmentProp(edgeFragment).isRequired
     ).isRequired,
     onItemPress: PropTypes.func,
-    networkStatus: PropTypes.number,
+    loading: PropTypes.bool,
   };
 
   static defaultProps = {
     onItemPress: () => {},
-    networkStatus: NetworkStatus.ready,
+    loading: false,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -67,8 +68,8 @@ export default class UserList extends Component {
   }
 
   render() {
-    const { edges, networkStatus, ...listProps } = this.props;
-    const data = networkStatus === NetworkStatus.loading ? this.getPlaceholders() : edges;
+    const { edges, loading, styleSheet: styles, ...listProps } = this.props;
+    const data = loading ? this.getPlaceholders() : edges;
 
     return (
       <FlatList

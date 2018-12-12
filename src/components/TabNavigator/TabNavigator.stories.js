@@ -9,6 +9,7 @@ import { getContainerDecorator } from 'storybook';
 import createTabNavigator from '.';
 import ScrollView from './ScrollView';
 import FlatList from './FlatList';
+import NoContent from '../NoContnet';
 
 const stories = storiesOf('Components/TabNavigator', module);
 
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
 
   header: {
     backgroundColor: '#FFEEFF',
-    height: 300,
+    height: 400,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -71,7 +72,11 @@ const createFlatListTab = (backgroundColor, count = 100) => class Tab extends Pu
     const data = range(count).map(i => ({ key: i.toString() }));
 
     return (
-      <FlatList data={data} renderItem={this.renderItem} />
+      <FlatList 
+        data={data} 
+        renderItem={this.renderItem}  
+        ListEmptyComponent={<NoContent icon="people" text="No users" />}
+      />
     );
   }
 };
@@ -82,6 +87,20 @@ stories.add('Default', () => {
     ScrollView: createScrollViewTab('#FEFEFE', 100),
     FlatList: createFlatListTab('#EEEEFF', 100),
     ShortScroll: createScrollViewTab('#FFEEFF', 2),
+  }, {
+    headerShrinkHeight: HeaderRN.HEIGHT,
+    renderHeader: props => <Header {...props} />
+  });
+
+  const Story = createAppContainer(TabNavigator);
+
+  return <Story />;
+});
+
+stories.add('No items', () => {
+  const TabNavigator = createTabNavigator({
+    ScrollView: createScrollViewTab('#FEFEFE', 0),
+    FlatList: createFlatListTab('#EEEEFF', 0),
   }, {
     headerShrinkHeight: HeaderRN.HEIGHT,
     renderHeader: props => <Header {...props} />

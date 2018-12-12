@@ -71,13 +71,16 @@ export default class ScrollView extends PureComponent {
   }
   
   render() {
+    const { contentContainerStyle, ...restProps } = this.props;
+    const contentStyle = [contentContainerStyle, { flexGrow: 1 }];
+
     if (!this.context) {
-      return <ScrollViewRN {...this.props} />;
+      return <ScrollViewRN contentContainerStyle={contentStyle} {...restProps} />;
     }
 
+    const { onScroll, children, ...listProps } = restProps;
     const { headerShrinkHeight } = this.context; 
     const { rootHeight, headerHeight } = this.state;
-    const { children, contentContainerStyle, onScroll, ...props } = this.props;
     const marginTop = headerHeight && headerHeight - headerShrinkHeight;
 
     const headerAnimatedValue = this.scrollAnimatedValue.interpolate({
@@ -91,7 +94,7 @@ export default class ScrollView extends PureComponent {
 
     return (
       <Animated.ScrollView 
-        {...props}
+        {...listProps}
         ref={this.onRef}
         onScroll={this.onScrollAnimatedEvent}
         stickyHeaderIndices={[0]}
@@ -108,7 +111,7 @@ export default class ScrollView extends PureComponent {
           <TabBar />
         </View>
 
-        <View style={contentContainerStyle}>
+        <View style={contentStyle}>
           {children}
         </View>
       </Animated.ScrollView>

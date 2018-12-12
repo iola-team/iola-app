@@ -72,7 +72,6 @@ export default class SceneView extends PureComponent {
 
     return {
       headerShrinkHeight,
-
       addListener: this.addListener,
       onScrollEnd,
       renderHeader,

@@ -6,11 +6,11 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import delay from 'promise-delay';
-import { NetworkStatus } from 'apollo-client';
 import { connectionFromArray } from 'graphql-relay';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
 import UserList from './UserList';
+import NoContent from '../NoContnet';
 
 const stories = storiesOf('Components/UserList', module);
 
@@ -97,25 +97,16 @@ const usersQuery = gql`
 
 stories.add('Full flow', () => (
   <Query query={usersQuery}>
-    {({ loading, networkStatus, data }) => (
-      <UserList 
-        edges={loading ? [] : data.users.edges} 
-        networkStatus={networkStatus}
-      />
+    {({ loading, data }) => (
+      <UserList edges={loading ? [] : data.users.edges} loading={loading} />
     )}
   </Query>
 ));
 
-stories.add('Initial Load', () => (
-  <UserList 
-    edges={[]} 
-    networkStatus={NetworkStatus.loading}
-  />
-));
-
+stories.add('Initial Load', () => <UserList edges={[]} loading />);
 stories.add('No items', () => (
   <UserList 
-    edges={[]}
-    networkStatus={NetworkStatus.ready}
+    edges={[]} 
+    ListEmptyComponent={<NoContent icon="people" text="No users" />}
   />
 ));

@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
-import { PhotoList } from 'components';
+import { PhotoList, NoContnet } from 'components';
 
 const userPhotosQuery = gql`
   query UserPhotosQuery($id: ID!) {
@@ -46,6 +46,7 @@ export default class UserPhotos extends PureComponent {
             contentContainerStyle={styles.list}
             edges={loading || !isFocused ? [] : data.user.photos.edges}
             loading={loading || !isFocused}
+            ListEmptyComponent={<NoContnet icon="images" text="No photos" />}
           />
         )}
       </Query>

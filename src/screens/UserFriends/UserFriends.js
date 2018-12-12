@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
-import { UserList } from 'components';
+import { UserList, NoContnet } from 'components';
 
 const userFriendsQuery = gql`
   query UserFriendsQuery($id: ID!) {
@@ -40,11 +40,12 @@ export default class UserFriends extends PureComponent {
 
     return (
       <Query skip={!isFocused} query={userFriendsQuery} variables={{ id }}>
-        {({ loading, networkStatus, data }) => (
+        {({ loading, data }) => (
           <UserList
             contentContainerStyle={styles.list}
             edges={loading || !isFocused ? [] : data.user.friends.edges}
-            networkStatus={!isFocused ? 1 : networkStatus} 
+            loading={loading || !isFocused}
+            ListEmptyComponent={<NoContnet icon="people" text="No friends" />}
           />
         )}
       </Query>
