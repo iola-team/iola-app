@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { propType as graphqlPropType } from 'graphql-anywhere';
+import { get } from 'lodash';
 
 import ImageCommentsList from '../ImageCommentsList';
 
@@ -44,14 +45,14 @@ export default class ImageCommentsConnection extends Component {
     photoCommentsQuery,
   };
 
-  refresh(vars = {}) {
-    this.props.data.refetch(vars);
-  }
+  state = {
+    loading: false,
+  };
 
-  handleLoadMore({ fetchMore, photo: { comments: { pageInfo } } }) {
-    if (!pageInfo.hasNextPage) {
-      return;
-    }
+  handleLoadMore({ photo: { comments: { pageInfo } } }, fetchMore) {
+    this.setState({ loading: pageInfo.hasNextPage });
+
+    if (!pageInfo.hasNextPage) return;
 
     this.fetchMorePromise = this.fetchMorePromise || fetchMore({
       variables: {
@@ -84,6 +85,7 @@ export default class ImageCommentsConnection extends Component {
       }
     }).then(() => {
       this.fetchMorePromise = null;
+      this.setState({ loading: false });
     });
   }
 
@@ -92,23 +94,27 @@ export default class ImageCommentsConnection extends Component {
 
     return (
       <Query query={photoCommentsQuery} variables={{ id: photoId }}>
-        {({ data, loading }) => {
-          if (loading) return null;
+        {({ loading, data, fetchMore, networkStatus }) => {
+          const refreshing = (
+            loading ||
+            this.state.loading ||
+            networkStatus === NetworkStatus.refetch
+          );
+          const edges = get(data, 'photo.comments.edges', []);
 
-          const { photo: { comments }, networkStatus } = data;
-          const reFetching = networkStatus === NetworkStatus.refetch;
-
-          return comments ? (
+          return (
             <ImageCommentsList
               photoId={photoId}
               height={height}
               onItemPress={onItemPress}
-              edges={comments.edges}
-              onRefresh={::this.refresh}
-              refreshing={reFetching}
-              onEndReached={({ distanceFromEnd }) => this.handleLoadMore(data)}
+              refreshing={refreshing}
+              edges={edges}
+              onRefresh={data.refetch}
+              onEndReached={() => this.handleLoadMore(data, fetchMore)}
+              onEndReachedThreshold={2}
+              inverted={!!edges.length || (refreshing && !edges.length)}
             />
-          ) : null;
+          );
         }}
       </Query>
     );

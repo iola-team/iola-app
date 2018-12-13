@@ -4,6 +4,7 @@ import { View, Text, Dimensions } from 'react-native';
 import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
+import uuid from 'uuid/v4';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import Avatar from '../UserAvatar';
@@ -63,7 +64,6 @@ const addPhotoCommentMutation = gql`
 
   container: {
     minHeight: getModalHeight(),
-    paddingVertical: 24,
     paddingHorizontal: 15,
     backgroundColor: '#F8F9FB',
   },
@@ -141,7 +141,7 @@ export default class ImageComments extends Component {
           __typename: 'CommentEdge',
           node: {
             __typename: 'Comment',
-            id: -1,
+            id: uuid(),
             text,
             createdAt: new Date().toISOString(),
             user: {
@@ -235,6 +235,7 @@ export default class ImageComments extends Component {
             onSwipe={this.action('onSwipe', this.hide)}
             onCancel={this.action('onCancel', this.hide)}
             onRequestClose={this.action('onRequestClose', this.hide)}
+            noScrollViewForContent
           >
             <View style={styles.container}>
               <ImageCommentsConnection photoId={photoId} height={getModalHeight()} />

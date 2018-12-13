@@ -4,8 +4,8 @@ import { FlatList } from 'react-native';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 
-import LoadMoreIndicator from '../LoadMoreIndicator';
 import ImageCommentsItem from '../ImageCommentsItem';
+import RefreshControl from '../RefreshControl';
 import NoComments from './NoComments';
 
 const edgeFragment = gql`
@@ -26,6 +26,7 @@ export default class ImageCommentsList extends Component {
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment),
     ),
+    refreshing: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -36,42 +37,74 @@ export default class ImageCommentsList extends Component {
     edge: edgeFragment,
   };
 
-  // flatList = null;
+  constructor(props) {
+    super(props);
+
+    this.flatList = null;
+    this.scrollOffset = 0;
+    this.itemsCount = 0;
+    this.onViewableItemsChanged = this.onViewableItemsChanged.bind(this); // Invariant Violation: Changing onViewableItemsChanged on the fly is not supported (also :: operator)
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const { edges, refreshing } = this.props;
+
+    return (
+      edges.length !== nextProps.edges.length ||
+      refreshing !== nextProps.refreshing
+    );
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.refreshing !== prevProps.refreshing) {
+      console.log('refreshing', this.props.edges.length);
+
+      console.log('this.itemsCount, this.props.edges.length', this.itemsCount, this.props.edges.length);
+
+      this.itemsCount = this.props.edges.length;
+    }
+  }
+
+  onViewableItemsChanged() {
+    const { edges } = this.props;
+
+    if (this.itemsCount === edges.length) return;
+
+    this.itemsCount = edges.length;
+
+    if (this.flatList) {
+      this.flatList.scrollToIndex({ animated: true, index: 0 });
+    }
+  }
+
+  onScroll({ nativeEvent: { contentOffset } }) {
+    this.scrollOffset = contentOffset.y;
+  }
 
   extractItemKey({ node }) {
-    return node.id.toString();
+    return node.id;
   }
 
   renderItem({ item: { node } }) {
     return <ImageCommentsItem comment={node} />;
   }
 
-  renderLoadIndicator() {
-    return this.props.hasMore ? <LoadMoreIndicator /> : null;
-  };
-
-  onViewableItemsChanged() {
-    // @TODO: In progress
-    // const { flatList } = this;
-    //
-    // if (flatList) flatList.scrollToEnd({ animated: true });
-  }
-
   render() {
-    const { height, edges, ...listProps } = this.props;
+    const { height, edges, refreshing, ...listProps } = this.props;
 
-    return edges.length ? (
+    return (
       <FlatList
         {...listProps}
+        ref={ref => this.flatList = ref}
         data={edges}
+        onViewableItemsChanged={this.onViewableItemsChanged}
+        onScroll={this.onScroll}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
-        ListFooterComponent={::this.renderLoadIndicator}
-        onViewableItemsChanged={this.onViewableItemsChanged}
-        inverted
+        ListEmptyComponent={!refreshing && <NoComments height={height} />}
+        refreshControl={<RefreshControl refreshing={refreshing} />}
+        refreshing={refreshing}
       />
-    ) : (
-      <NoComments height={height} />
     );
   }
 }

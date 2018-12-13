@@ -71,6 +71,7 @@ export default class Modal extends PureComponent {
     children: PropTypes.element.isRequired,
     height: PropTypes.number,
     footer: PropTypes.object,
+    noScrollViewForContent: PropTypes.bool,
 
     onDismiss: PropTypes.func,
     onShow: PropTypes.func,
@@ -89,6 +90,7 @@ export default class Modal extends PureComponent {
     onDone: noop,
     onCancel: noop,
     onRequestClose: noop,
+    noScrollViewForContent: false,
   };
 
   animations = {
@@ -104,6 +106,7 @@ export default class Modal extends PureComponent {
       children,
       height,
       footer,
+      noScrollViewForContent,
 
       onDismiss,
       onShow,
@@ -114,6 +117,7 @@ export default class Modal extends PureComponent {
     } = this.props;
 
     const modalHeight = height + styles.header.height;
+    const ContentWrapper = noScrollViewForContent ? View : ScrollView;
 
     return (
       <ModalRN
@@ -146,9 +150,9 @@ export default class Modal extends PureComponent {
               </TouchableOpacity>
             </View>
           </View>
-          <ScrollView style={{ height }}>
+          <ContentWrapper style={{ height }}>
             {children}
-          </ScrollView>
+          </ContentWrapper>
           {footer}
         </View>
       </ModalRN>
