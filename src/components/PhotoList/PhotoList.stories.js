@@ -8,7 +8,7 @@ import delay from 'promise-delay';
 import { connectionFromArray } from 'graphql-relay';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
-import NoContent from '../NoContnet';
+import NoContent from '../NoContent';
 import PhotoList from './PhotoList';
 
 const stories = storiesOf('Components/PhotoList', module);
@@ -144,6 +144,6 @@ stories.add('Initial Load', () => <PhotoList loading edges={[]} />);
 stories.add('No items', () => (
   <PhotoList 
     edges={[]} 
-    ListEmptyComponent={<NoContent icon="images" text="No photos" />}
+    noContentText="No photos"
   />
 ));

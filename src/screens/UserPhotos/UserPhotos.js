@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
-import { PhotoList, NoContnet } from 'components';
+import { PhotoList } from 'components';
 
 const userPhotosQuery = gql`
   query UserPhotosQuery($id: ID!) {
@@ -27,6 +27,10 @@ const userPhotosQuery = gql`
   list: {
     paddingTop: 20,
     paddingHorizontal: 16,
+  },
+
+  noContent: {
+    marginTop: -12, // TODO: Aligning `No photos` to `No friends` - need to find a better way
   }
 })
 @withNavigationFocus
@@ -46,7 +50,8 @@ export default class UserPhotos extends PureComponent {
             contentContainerStyle={styles.list}
             edges={loading || !isFocused ? [] : data.user.photos.edges}
             loading={loading || !isFocused}
-            ListEmptyComponent={<NoContnet icon="images" text="No photos" />}
+            noContentText="No photos"
+            noContentStyle={styles.noContent}
           />
         )}
       </Query>

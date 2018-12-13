@@ -24,7 +24,7 @@ import ProfileFieldsView from './ProfileFieldsView';
 import FriendList from './FriendList';
 import PhotoList from './PhotoList';
 import createHeadingTabsNavigator from './TabNavigator';
-import NoContnet from './NoContnet';
+import NoContent from './NoContent';
 
 export {
   Root,
@@ -50,7 +50,7 @@ export {
   ProfileFieldsView,
   FriendList,
   PhotoList,
-  NoContnet,
+  NoContent,
 
   // Navigation
   ScreenHeader,

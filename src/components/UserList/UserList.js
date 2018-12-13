@@ -5,7 +5,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import { range } from 'lodash';
 
 import { withStyleSheet } from 'theme';
-import { FlatList } from '../TabNavigator';
+import { FlatList, NoContent } from '../TabNavigator';
 import UserListItem from '../UserListItem';
 
 const edgeFragment = gql`
@@ -32,11 +32,15 @@ export default class UserList extends Component {
     ).isRequired,
     onItemPress: PropTypes.func,
     loading: PropTypes.bool,
+    noContentText: PropTypes.string,
+    noContentStyle: PropTypes.object,
   };
 
   static defaultProps = {
     onItemPress: () => {},
     loading: false,
+    noContentText: null,
+    noContentStyle: null,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -68,7 +72,14 @@ export default class UserList extends Component {
   }
 
   render() {
-    const { edges, loading, styleSheet: styles, ...listProps } = this.props;
+    const { 
+      edges, 
+      loading, 
+      styleSheet: styles, 
+      noContentText, 
+      noContentStyle, 
+      ...listProps 
+    } = this.props;
     const data = loading ? this.getPlaceholders() : edges;
 
     return (
@@ -78,6 +89,7 @@ export default class UserList extends Component {
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         getItemLayout={this.getItemLayout}
+        ListEmptyComponent={<NoContent style={noContentStyle} icon="people" text={noContentText} />}
 
         // Performance tweaks
         updateCellsBatchingPeriod={25}

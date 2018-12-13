@@ -3,6 +3,8 @@ import { StyleSheet, View, Platform, Animated, Dimensions } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { without } from 'lodash';
 
+import BaseNoContent from '../NoContent';
+
 const FAR_FAR_AWAY = 3000; // this should be big enough to move the whole view out of its container
 const styles = StyleSheet.create({
   container: {
@@ -42,6 +44,36 @@ export class TabBar extends Component {
 
   render() {
     return this.context.renderTabs(this.props);
+  }
+}
+
+export class NoContent extends Component {
+  static contextType = Context;
+
+  render() {
+    if (!this.context) {
+      return <BaseNoContent {...this.props} />;
+    }
+
+    const { shrinkAnimatedValue, shrinkAnimationHeight, contentHeight } = this.context;
+    const { style, ...props } = this.props;
+    const animatedStyle = {
+      transform: [
+        { 
+          translateY: shrinkAnimatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, -shrinkAnimationHeight / 2],
+          }),
+        },
+      ],
+    };
+
+    const iconScale = shrinkAnimatedValue.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, 1 - (shrinkAnimationHeight / contentHeight / 1.5).toFixed(2)],
+    });
+
+    return <BaseNoContent {...props} style={[style, animatedStyle]} iconScale={iconScale} />;
   }
 }
 
@@ -109,14 +141,13 @@ export default class SceneView extends PureComponent {
       outputRange: [1, 0],
     });
 
-    console.log(screenHeight, tabBarHeight, headerShrinkHeight, screenHeight - tabBarHeight - headerShrinkHeight);
-
     return {
       // Values
       headerHeight,
       tabBarHeight,
       headerShrinkHeight,
       shrinkAnimatedValue,
+      shrinkAnimationHeight,
       contentHeight: screenHeight - tabBarHeight - headerShrinkHeight,
       scrollAnimatedValue: this.scrollAnimatedValue,
 

@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
-import { UserList, NoContnet } from 'components';
+import { UserList } from 'components';
 
 const userFriendsQuery = gql`
   query UserFriendsQuery($id: ID!) {
@@ -26,7 +26,7 @@ const userFriendsQuery = gql`
 @withStyleSheet('Sparkle.UserFriendsScreen', {
   list: {
     paddingTop: 8,
-  }
+  },
 })
 @withNavigationFocus
 export default class UserFriends extends PureComponent {
@@ -45,7 +45,7 @@ export default class UserFriends extends PureComponent {
             contentContainerStyle={styles.list}
             edges={loading || !isFocused ? [] : data.user.friends.edges}
             loading={loading || !isFocused}
-            ListEmptyComponent={<NoContnet icon="people" text="No friends" />}
+            noContentText="No friends"
           />
         )}
       </Query>

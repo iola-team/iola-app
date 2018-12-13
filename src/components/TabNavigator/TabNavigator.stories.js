@@ -9,7 +9,7 @@ import { getContainerDecorator } from 'storybook';
 import createTabNavigator from '.';
 import ScrollView from './ScrollView';
 import FlatList from './FlatList';
-import NoContent from '../NoContnet';
+import { NoContent } from './SceneView';
 
 const stories = storiesOf('Components/TabNavigator', module);
 
@@ -72,9 +72,9 @@ const createFlatListTab = (backgroundColor, count = 100) => class Tab extends Pu
     const data = range(count).map(i => ({ key: i.toString() }));
 
     return (
-      <FlatList 
-        data={data} 
-        renderItem={this.renderItem}  
+      <FlatList
+        data={data}
+        renderItem={this.renderItem}
         ListEmptyComponent={<NoContent icon="people" text="No users" />}
       />
     );

@@ -6,7 +6,7 @@ import { range } from 'lodash';
 import { View } from 'react-native';
 
 import { withStyleSheet } from 'theme';
-import { FlatList } from '../TabNavigator';
+import { FlatList, NoContent } from '../TabNavigator';
 import Item from '../PhotoListItem';
 
 const edgeFragment = gql`
@@ -36,10 +36,14 @@ export default class PhotoList extends Component {
       fragmentProp(edgeFragment).isRequired
     ).isRequired,
     loading: PropTypes.bool,
+    noContentText: PropTypes.string,
+    noContentStyle: PropTypes.object,
   };
 
   static defaultProps = {
     loading: false,
+    noContentText: null,
+    noContentStyle: null,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -67,6 +71,8 @@ export default class PhotoList extends Component {
       padder,
       styleSheet: styles,
       loading,
+      noContentText,
+      noContentStyle,
       ...listProps
     } = this.props;
 
@@ -79,6 +85,7 @@ export default class PhotoList extends Component {
         data={data}
         renderItem={this.renderItem}
         keyExtractor={this.extractItemKey}
+        ListEmptyComponent={<NoContent style={noContentStyle} icon="images" text={noContentText} />}
       />
     );
   }
