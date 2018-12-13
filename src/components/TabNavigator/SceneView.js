@@ -1,5 +1,6 @@
 import React, { PureComponent, Component, createContext } from 'react';
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View, Platform, Animated, Dimensions } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { without } from 'lodash';
 
 const FAR_FAR_AWAY = 3000; // this should be big enough to move the whole view out of its container
@@ -50,7 +51,31 @@ export default class SceneView extends PureComponent {
     scroll: [],
   };
 
-  contextValue = null;
+  state = {
+    contextValue: {},
+  };
+
+  scrollAnimatedValue = new Animated.Value(0);
+  onScroll = Animated.event(
+    [
+      {
+        nativeEvent: {
+          contentOffset: {
+            y: this.scrollAnimatedValue,
+          },
+        },
+      },
+    ],
+    { 
+      useNativeDriver: true,
+    },
+  );
+
+  constructor(...args) {
+    super(...args);
+
+    this.state.contextValue = this.createContext();
+  }
 
   addListener = (type, subscriber) => {
     this.subscribers[type].push(subscriber);
@@ -67,29 +92,53 @@ export default class SceneView extends PureComponent {
     }
   }
 
-  createContext() {
-    const { renderHeader, renderTabs, onScrollEnd, headerShrinkHeight } = this.props;
+  createContext(current = {}, prev = {}) {
+    const { 
+      renderHeader, 
+      renderTabs, 
+      onScrollEnd, 
+      headerShrinkHeight,
+      tabBarHeight,
+    } = this.props;
+
+    const screenHeight = Dimensions.get('window').height - getStatusBarHeight();
+    const headerHeight = current.headerHeight || prev.headerHeight || 0;
+    const shrinkAnimationHeight = headerHeight && headerHeight - headerShrinkHeight;
+    const shrinkAnimatedValue = this.scrollAnimatedValue.interpolate({
+      inputRange: [0, shrinkAnimationHeight],
+      outputRange: [1, 0],
+    });
+
+    console.log(screenHeight, tabBarHeight, headerShrinkHeight, screenHeight - tabBarHeight - headerShrinkHeight);
 
     return {
+      // Values
+      headerHeight,
+      tabBarHeight,
       headerShrinkHeight,
+      shrinkAnimatedValue,
+      contentHeight: screenHeight - tabBarHeight - headerShrinkHeight,
+      scrollAnimatedValue: this.scrollAnimatedValue,
+
+      // Handlers
+      onHeaderLayout: this.onHeaderLayout,
       addListener: this.addListener,
       onScrollEnd,
+      onScroll: this.onScroll,
       renderHeader,
       renderTabs,
     };
   }
 
-  getContext() {
-    this.contextValue = this.contextValue || this.createContext();
-
-    return this.contextValue;
-  };
+  onHeaderLayout = ({ nativeEvent: { layout } }) => this.setState(state => ({
+    contextValue: this.createContext({ headerHeight: layout.height }, state.contextValue),
+  }));
 
   render() {
     const { isFocused, route, renderScene } = this.props;
 
     return (
-      <Context.Provider value={this.getContext()}>
+      <Context.Provider value={this.state.contextValue}>
         <View
           style={styles.container}
           collapsable={false}

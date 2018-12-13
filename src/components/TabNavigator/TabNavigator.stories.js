@@ -99,8 +99,8 @@ stories.add('Default', () => {
 
 stories.add('No items', () => {
   const TabNavigator = createTabNavigator({
-    ScrollView: createScrollViewTab('#FEFEFE', 0),
     FlatList: createFlatListTab('#EEEEFF', 0),
+    ScrollView: createScrollViewTab('#FEFEFE', 0),
   }, {
     headerShrinkHeight: HeaderRN.HEIGHT,
     renderHeader: props => <Header {...props} />

@@ -9,6 +9,7 @@ export default class TabNavigatorView extends Component {
     headerShrinkHeight: 0,
     renderHeader: () => null,
     renderTabs: props => <TabBar {...props} />,
+    tabBarHeight: TabBar.HEIGHT,
   };
 
   state = {
@@ -36,7 +37,7 @@ export default class TabNavigatorView extends Component {
   onScrollEnd = (scrollOffset) => this.setState({ scrollOffset });
 
   render() {
-    const { navigation: { state }, renderScene, headerShrinkHeight } = this.props;
+    const { navigation: { state }, renderScene, headerShrinkHeight, tabBarHeight } = this.props;
     const { scrollOffset } = this.state;
     const commonProps = {
       /**
@@ -52,6 +53,7 @@ export default class TabNavigatorView extends Component {
       renderHeader: this.renderHeader,
       renderScene,
       headerShrinkHeight,
+      tabBarHeight,
     };
 
     return (

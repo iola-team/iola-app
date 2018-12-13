@@ -34,6 +34,8 @@ import { TouchableOpacity } from 'components';
   }
 })
 export default class TabBar extends Component {
+  static HEIGHT = 60;
+
   render() {
     const { style, onTabPress, getLabelText, navigation: { state } } = this.props;
 
