@@ -69,7 +69,7 @@ export async function createClient({
   }
 
   if (restoreCache) {
-    await cachePersistor.restore();
+    // await cachePersistor.restore();
   }
 
   const authLink = new AuthLink();
@@ -94,12 +94,19 @@ export async function createClient({
 
 export default async () => {
   const debug = false;
+
+  /**
+   * TODO: Review the app logic to decide if query batching is needed to be enabled back 
+   * 
+   * For now I disabled query batching, since we use manual batching technique such as fragments composition.
+   */
+  const enableBatching = false;
   const debugQuery = debug ? '?XDEBUG_SESSION_START=PHPSTORM' : '';
 
-  const queryUri = `http://192.168.0.102/oxwall/everywhere/api/graphql${debugQuery}`;
-  const subscriptionUri = `http://192.168.0.102/oxwall/everywhere/api/subscriptions${debugQuery}`;
+  const queryUri = `http://192.168.0.100/oxwall/everywhere/api/graphql${debugQuery}`;
+  const subscriptionUri = `http://192.168.0.100/oxwall/everywhere/api/subscriptions${debugQuery}`;
 
-  const uploadLink = createUploadLink({
+  let httpLink = createUploadLink({
     uri: queryUri,
     fetch: (uri, allOptions, ...restArgs) => {
       const {
@@ -116,27 +123,30 @@ export default async () => {
     }
   });
 
-  const batchHttpLink = new BatchHttpLink({
-    uri: queryUri,
-  });
+  
+  if (enableBatching) {
+    const batchHttpLink = new BatchHttpLink({
+      uri: queryUri,
+    });
 
-  const hasFiles = node => isArray(node) || isPlainObject(node)
-      ? !!find(node, hasFiles)
-      : node instanceof File || node instanceof Blob;
+    const hasFiles = node => isArray(node) || isPlainObject(node)
+        ? !!find(node, hasFiles)
+        : node instanceof File || node instanceof Blob;
 
-  const httpLink = split(
-    ({ query, variables }) => {
-      const { kind, operation } = getMainDefinition(query);
+    httpLink = split(
+      ({ query, variables }) => {
+        const { kind, operation } = getMainDefinition(query);
 
-      return (
-        kind === 'OperationDefinition'
-        && operation === 'mutation'
-        && hasFiles(variables)
-      );
-    },
-    uploadLink,
-    batchHttpLink,
-  );
+        return (
+          kind === 'OperationDefinition'
+          && operation === 'mutation'
+          && hasFiles(variables)
+        );
+      },
+      httpLink,
+      batchHttpLink,
+    );
+  }
 
   const sseLink = new SSELink({
     uri: subscriptionUri,

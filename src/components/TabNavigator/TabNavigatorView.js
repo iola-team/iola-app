@@ -6,6 +6,7 @@ import SceneView from './SceneView';
 
 export default class TabNavigatorView extends Component {
   static defaultProps = {
+    headerShrinkHeight: 0,
     renderHeader: () => null,
     renderTabs: props => <TabBar {...props} />,
   };
@@ -14,7 +15,7 @@ export default class TabNavigatorView extends Component {
     scrollOffset: 0,
   };
 
-  renderHeader = (props) => {
+  renderHeader = (props = {}) => {
     const { renderHeader, navigation } = this.props;
 
     return renderHeader({
@@ -23,7 +24,7 @@ export default class TabNavigatorView extends Component {
     });
   };
 
-  renderTabs = (props) => {
+  renderTabs = (props = {}) => {
     const { renderTabs, ...restProps } = this.props;
 
     return renderTabs({
@@ -35,7 +36,7 @@ export default class TabNavigatorView extends Component {
   onScrollEnd = (scrollOffset) => this.setState({ scrollOffset });
 
   render() {
-    const { navigation: { state }, renderScene } = this.props;
+    const { navigation: { state }, renderScene, headerShrinkHeight } = this.props;
     const { scrollOffset } = this.state;
     const commonProps = {
       /**
@@ -50,6 +51,7 @@ export default class TabNavigatorView extends Component {
       renderTabs: this.renderTabs,
       renderHeader: this.renderHeader,
       renderScene,
+      headerShrinkHeight,
     };
 
     return (

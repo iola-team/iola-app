@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { 
   createBottomTabNavigator, 
   createSwitchNavigator, 
@@ -22,11 +21,14 @@ import Launch from './Launch';
 import Channels from './Channels';
 import Users from './Users';
 import Dashboard from './Dashboard';
-
-import createUserNavigator, { UserPhotosTab, UserInfoTab, UserFriendsTab } from './User';
 import Channel from './Channel';
 import ProfileEdit from './PropfileEdit';
 import Settings from './Settings';
+import UserPhotos from './UserPhotos';
+import UserFriends from './UserFriends';
+import UserInfo from './UserInfo';
+
+import createUserNavigator from './User';
 
 // Navigator
 const TabsNavigator = createBottomTabNavigator({
@@ -75,9 +77,9 @@ const RootNavigator = createSwitchNavigator({
     },
     [routes.USER]: {
       screen: createUserNavigator({
-        [routes.USER_PHOTOS]: UserPhotosTab,
-        [routes.USER_INFO]: UserInfoTab,
-        [routes.USER_FRIENDS]: UserFriendsTab,
+        [routes.USER_PHOTOS]: UserPhotos,
+        [routes.USER_INFO]: UserInfo,
+        [routes.USER_FRIENDS]: UserFriends,
       }),
     },
 

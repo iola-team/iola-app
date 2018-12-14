@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { range } from 'lodash';
 
 import Section from '../FieldSection';
 import { ScrollView } from '../TabNavigator';
 
-const defaultSectionRenderer = ({ key, label, items }, renderItem) => (
-  <Section key={key} label={label}>
-    {items.map(renderItem)}
-  </Section>
-);
+const defaultSectionRenderer = (section, renderItem) => {
+  const { key, label, items = [], placeholder = false, opacity = 1 } = section;
+  const style = { opacity };
+
+  return (
+    <Section style={style} key={key} label={label} loading={placeholder}>
+      {items.map(renderItem)}
+    </Section>
+  );
+};
 
 const sectionShape = PropTypes.shape({
   label: PropTypes.string.isRequired,
@@ -17,12 +23,15 @@ const sectionShape = PropTypes.shape({
 
 export default class FieldList extends Component {
   static propTypes = {
-    sections: PropTypes.arrayOf(sectionShape).isRequired,
+    loading: PropTypes.bool,
+    sections: PropTypes.arrayOf(sectionShape),
     renderItem: PropTypes.func.isRequired,
     renderSection: PropTypes.func,
   };
 
   static defaultProps = {
+    sections: [],
+    loading: false,
     renderSection: defaultSectionRenderer,
   };
 
@@ -32,13 +41,22 @@ export default class FieldList extends Component {
     return renderSection({ key: index, ...rest }, renderItem);
   }
 
+  getPlaceholders() {
+    return range(3).map(index => ({ 
+      key: index.toString(),
+      placeholder: true,
+      opacity: 1 - index * 0.3,
+    }));
+  }
+
   render() {
-    const { style, sections } = this.props;
+    const { style, loading, sections } = this.props;
+    const items = loading ? this.getPlaceholders() : sections;
 
     return (
       <ScrollView style={style}>
         {
-          sections.map(this.renderSection)
+          items.map(this.renderSection)
         }
       </ScrollView>
     );

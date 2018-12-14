@@ -79,19 +79,21 @@ const userQuery = gql`
   }
   
   ${UserHeading.fragments.user}
-`
+`;
 
 // Stories
-stories.add('Default', () => {
-
-
-
-  return (
-    <Query query={userQuery} variables={{ id: 'User:1' }}>{({ loading, data }) => !loading && (
+stories.add('Default', () => (
+  <Query query={userQuery} variables={{ id: 'User:1' }}>
+    {({ loading, data }) => (
       <UserHeading
+        loading={loading}
         user={data.user}
         onChatPress={action('onChatPress')}
       />
-    )}</Query>
-  );
-});
+    )}
+  </Query>
+));
+
+stories.add('Loading', () => (
+  <UserHeading loading />
+));

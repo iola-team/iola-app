@@ -3,29 +3,23 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { PropTypes } from 'prop-types';
 
-import ImageView from '../ImageView';
-import UserPhotosCard from '../UserPhotosCard';
+import PhotoList from '../PhotoList';
 
 const userPhotosQuery = gql`
   query UserPhotosQuery($id: ID!) {
     user: node(id: $id) {
       ...on User {
         id
-        name
         photos {
-          totalCount
           edges {
-            node {
-              id
-              url
-              caption
-              createdAt
-            }
+            ...PhotoList_edge
           }
         }
       }
     }
   }
+
+  ${PhotoList.fragments.edge}
 `;
 
 export default class UserPhotos extends Component {
@@ -34,15 +28,17 @@ export default class UserPhotos extends Component {
   };
 
   render() {
-    const { userId } = this.props;
+    const { userId, ...props } = this.props;
 
     return (
       <Query query={userPhotosQuery} variables={{ id: userId }}>
-        {({ loading, data: { user } }) => (loading ? null : (
-          <ImageView images={user.photos.edges.map(({ node }) => ({ name: user.name, ...node }))}>
-            {onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
-          </ImageView>
-        ))}
+        {({ loading, data: { user } }) => (
+          <PhotoList 
+            {...props}
+            edges={loading ? [] : user.photos.edges} 
+            loading={loading} 
+          />
+        )}
       </Query>
     );
   }

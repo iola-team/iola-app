@@ -1,12 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Header } from 'react-navigation';
-import { Platform } from 'react-native';
 import { constant } from 'lodash';
-import {
-  View,
-  Icon,
-} from 'native-base';
+import { Icon } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 
@@ -22,6 +18,8 @@ import { withStyleSheet as styleSheet } from 'theme';
   }
 })
 export default class ScreenHeader extends PureComponent {
+  static HEIGHT = Header.HEIGHT;
+
   static propTypes = {
     renderLeft: PropTypes.func,
     renderRight: PropTypes.func,
