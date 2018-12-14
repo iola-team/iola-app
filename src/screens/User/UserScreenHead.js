@@ -57,23 +57,18 @@ export default class UserScreenHead extends PureComponent {
       ...props
     } = this.props;
 
-    const headStyle = {
-      // opacity: shrinkAnimatedValue.interpolate({
-      //   inputRange: [0, 0.01],
-      //   outputRange: [0, 1],
-      // }),
-    };
-
     const navBarStyle = {
       opacity: shrinkAnimatedValue.interpolate({
         inputRange: [0, 0.3],
         outputRange: [1, 0],
+        extrapolate: 'clamp',
       }),
       transform: [
         {
           translateY: shrinkAnimatedValue.interpolate({
             inputRange: [0, 1],
             outputRange: [shrinkAnimationHeight, 0],
+            extrapolate: 'clamp',
           }),
         },
       ],
@@ -84,7 +79,7 @@ export default class UserScreenHead extends PureComponent {
         <Query query={userQuery} variables={{ userId: state.params.id }}>
           {({ data: { user }, loading }) => (
             <Fragment>
-              <AnimatedView style={[styles.head, headStyle]}>
+              <AnimatedView style={styles.head}>
                 <UserHeading
                   {...props}
                   loading={loading}

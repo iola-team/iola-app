@@ -27,10 +27,16 @@ export class Header extends Component {
   static contextType = Context;
 
   render() {
-    const { renderHeader, shrinkAnimatedValue, shrinkAnimationHeight } = this.context;
+    const { 
+      renderHeader, 
+      scrollAnimatedValue, 
+      shrinkAnimatedValue, 
+      shrinkAnimationHeight 
+    } = this.context;
 
     return renderHeader({
       ...this.props,
+      scrollAnimatedValue,
       shrinkAnimatedValue,
       shrinkAnimationHeight,
     });
