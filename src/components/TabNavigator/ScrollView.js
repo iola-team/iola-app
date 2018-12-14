@@ -51,7 +51,6 @@ export default class ScrollView extends PureComponent {
       headerHeight, 
       contentHeight,
       onScroll: onScrollEvent,
-      shrinkAnimatedValue,
     } = this.context;
 
     const { onScroll, children, ...listProps } = restProps;
@@ -71,7 +70,7 @@ export default class ScrollView extends PureComponent {
       >
         <View style={{ marginTop }}>
           <View style={{ marginTop: -marginTop }}>
-            <Header animatedValue={shrinkAnimatedValue} />
+            <Header />
           </View>
           <TabBar />
         </View>

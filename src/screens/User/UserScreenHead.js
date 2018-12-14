@@ -31,7 +31,7 @@ const userQuery = gql`
 
   navBar: {
     ...StyleSheet.absoluteFillObject,
-    top: null,
+    bottom: null,
     height: ScreenHeader.HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
@@ -52,22 +52,31 @@ export default class UserScreenHead extends PureComponent {
       style,
       styleSheet: styles,
       navigation: { goBack, navigate, state },
-      animatedValue,
+      shrinkAnimatedValue,
+      shrinkAnimationHeight,
       ...props
     } = this.props;
 
     const headStyle = {
-      opacity: animatedValue.interpolate({
-        inputRange: [0, 0.01],
-        outputRange: [0, 1],
-      }),
+      // opacity: shrinkAnimatedValue.interpolate({
+      //   inputRange: [0, 0.01],
+      //   outputRange: [0, 1],
+      // }),
     };
 
     const navBarStyle = {
-      opacity: animatedValue.interpolate({
-        inputRange: [0, 0.01],
+      opacity: shrinkAnimatedValue.interpolate({
+        inputRange: [0, 0.3],
         outputRange: [1, 0],
       }),
+      transform: [
+        {
+          translateY: shrinkAnimatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [shrinkAnimationHeight, 0],
+          }),
+        },
+      ],
     };
 
     return (
@@ -75,10 +84,6 @@ export default class UserScreenHead extends PureComponent {
         <Query query={userQuery} variables={{ userId: state.params.id }}>
           {({ data: { user }, loading }) => (
             <Fragment>
-              <AnimatedView style={[styles.navBar, navBarStyle]}>
-                <Text style={styles.navBarText}>{user && user.name}</Text>
-              </AnimatedView>
-
               <AnimatedView style={[styles.head, headStyle]}>
                 <UserHeading
                   {...props}
@@ -87,6 +92,10 @@ export default class UserScreenHead extends PureComponent {
                   onBackPress={() => goBack()}
                   onChatPress={() => navigate(routes.CHANNEL, { userId: state.params.id })}
                 />
+              </AnimatedView>
+
+              <AnimatedView style={[styles.navBar, navBarStyle]}>
+                <Text style={styles.navBarText}>{user && user.name}</Text>
               </AnimatedView>
             </Fragment>
           )}

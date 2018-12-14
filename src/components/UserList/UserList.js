@@ -65,9 +65,9 @@ export default class UserList extends Component {
   });
 
   getPlaceholders() {
-    return range(9).map(index => ({ 
+    return range(3).map(index => ({ 
       key: index.toString(),
-      opacity: 1 - index * 0.1,
+      opacity: 1 - index * 0.3,
     }));
   }
 
