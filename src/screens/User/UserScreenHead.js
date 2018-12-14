@@ -35,6 +35,7 @@ const userQuery = gql`
     height: ScreenHeader.HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
 
   navBarText: {
@@ -55,14 +56,14 @@ export default class UserScreenHead extends PureComponent {
 
     const headStyle = {
       opacity: animatedValue.interpolate({
-        inputRange: [0.05, 0.6],
+        inputRange: [0, 0.01],
         outputRange: [0, 1],
       }),
     };
 
     const navBarStyle = {
       opacity: animatedValue.interpolate({
-        inputRange: [0, 0.1],
+        inputRange: [0, 0.01],
         outputRange: [1, 0],
       }),
     };

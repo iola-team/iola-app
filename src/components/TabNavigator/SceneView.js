@@ -56,6 +56,11 @@ export class NoContent extends Component {
     }
 
     const { shrinkAnimatedValue, shrinkAnimationHeight, contentHeight } = this.context;
+
+    if (!shrinkAnimationHeight) {
+      return null;
+    }
+
     const { style, ...props } = this.props;
     const animatedStyle = {
       transform: [
