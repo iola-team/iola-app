@@ -11,12 +11,20 @@ export default (...styles) => styles.reduce((s, item) => {
     const prev = s.staticStyles || {};
     s.staticStyles = {
       ...prev,
-      ...item
+      ...item,
     };
   }
 
   return s;
 }, {
-  staticStyles: {},
+  staticStyles: {
+    /**
+     * TODO: dirty fix. 
+     * Need to resolve in future.
+     * It fixes an issue with NativeBase theme, when you have to specify atleast on style rule 
+     * when connecting a custom component with `connectStyle`.
+     */
+    'dirty.fix': null,
+  },
   getDynamicStyles: () => (null),
 });

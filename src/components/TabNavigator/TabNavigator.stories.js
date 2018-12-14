@@ -1,9 +1,8 @@
-import React, { Component, PureComponent } from 'react';
-import { number, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
+import React, { PureComponent } from 'react';
+import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
-import { View, Text, StyleSheet } from 'react-native';
-import { createSwitchNavigator, createAppContainer, withNavigationFocus } from 'react-navigation';
+import { View, Text, StyleSheet, Animated } from 'react-native';
+import { createAppContainer, Header as HeaderRN } from 'react-navigation';
 import { range } from 'lodash';
 
 import { getContainerDecorator } from 'storybook';
@@ -27,17 +26,24 @@ const styles = StyleSheet.create({
   },
 
   header: {
+    backgroundColor: '#FFEEFF',
     height: 300,
     alignItems: 'center',
     justifyContent: 'center',
   },
 });
 
-const Header = () => (
-  <View style={styles.header}>
-    <Text>Header</Text>
-  </View>
-);
+const Header = ({ animatedValue }) => {
+  const animatedStyle = {
+    opacity: animatedValue,
+  };
+
+  return (
+    <Animated.View style={[styles.header, animatedStyle]}>
+      <Text>Header</Text>
+    </Animated.View>
+  );
+};
 
 const createScrollViewTab = (backgroundColor, count = 100) => class Tab extends PureComponent {
   
@@ -77,6 +83,7 @@ stories.add('Default', () => {
     FlatList: createFlatListTab('#EEEEFF', 100),
     ShortScroll: createScrollViewTab('#FFEEFF', 2),
   }, {
+    headerShrinkHeight: HeaderRN.HEIGHT,
     renderHeader: props => <Header {...props} />
   });
 

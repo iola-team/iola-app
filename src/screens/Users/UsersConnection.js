@@ -1,4 +1,3 @@
-import { debounce } from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { NetworkStatus } from 'apollo-client';
@@ -40,11 +39,11 @@ export default class UsersConnection extends Component {
     return prev.users !== users || prev.networkStatus !== networkStatus;
   }
 
-  refresh(vars = {}) {
+  refresh = (vars = {}) => {
     this.props.data.refetch(vars);
   }
 
-  loadMore({ distanceFromEnd }) {
+  loadMore = ({ distanceFromEnd }) => {
     const { fetchMore, users: { pageInfo } } = this.props.data;
 
     if (!pageInfo.hasNextPage) {
@@ -81,15 +80,15 @@ export default class UsersConnection extends Component {
 
   render() {
     const { data: { users, networkStatus }, onItemPress } = this.props;
-    const reFetching = networkStatus === NetworkStatus.refetch;
 
-    return !users ? null : (
+    return (
       <UserList
-        edges={users.edges}
+        networkStatus={networkStatus}
+        edges={users ? users.edges : []}
         onItemPress={onItemPress}
-        onRefresh={::this.refresh}
-        refreshing={reFetching}
-        onEndReached={::this.loadMore}
+        onRefresh={this.refresh}
+        // refreshing={networkStatus === NetworkStatus.refetch}
+        // onEndReached={this.loadMore}
       />
     );
   }

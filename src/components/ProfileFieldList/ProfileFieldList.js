@@ -35,14 +35,16 @@ export default class ProfileFieldList extends PureComponent {
   static propTypes = {
     fields: PropTypes.arrayOf(
       fragmentProp(fieldFragment).isRequired
-    ).isRequired,
+    ),
 
     values: PropTypes.arrayOf(
       fragmentProp(valueFragment).isRequired
     ),
+  };
 
-    renderItem: PropTypes.func.isRequired,
-    renderSection: PropTypes.func,
+  static defaultProps = {
+    fields: [],
+    values: [],
   };
 
   buildSections(fields, values) {

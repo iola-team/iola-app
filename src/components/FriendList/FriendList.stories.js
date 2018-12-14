@@ -6,7 +6,7 @@ import { number, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
-import moment from 'moment';
+import delay from 'promise-delay';
 import { connectionFromArray } from 'graphql-relay';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
@@ -82,9 +82,11 @@ const resolvers = {
   },
 
   User: {
-    friends({ id }, args) {
+    async friends({ id }, args) {
       const friends = range(100).map(() => createUser());
       const connection = connectionFromArray(friends, args);
+
+      await delay(1000);
 
       return {
         ...connection,

@@ -1,21 +1,18 @@
 import React from 'react';
-import { filter, find, range } from 'lodash';
-import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
+import { Query } from 'react-apollo';
+import { find, range } from 'lodash';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
-import moment from 'moment';
+import delay from 'promise-delay';
 import { connectionFromArray } from 'graphql-relay';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
-import PhotoList from '.';
+import PhotoList from './PhotoList';
 
 const stories = storiesOf('Components/PhotoList', module);
 
 // Decorators
-stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator());
 
 const createPhoto = ({ id = faker.random.uuid() } = {}) => ({
@@ -65,6 +62,9 @@ const dataStore = {
     {
       id: 'User:1',
     },
+    {
+      id: 'User:2',
+    },
   ],
 };
 
@@ -76,9 +76,13 @@ const resolvers = {
   },
 
   User: {
-    photos({ id }, args) {
+    async photos({ id }, args) {
       const photos = range(30).map(() => createPhoto());
       const connection = connectionFromArray(photos, args);
+
+      if (id === 'User:1') {
+        await delay(1000);
+      }
 
       return {
         ...connection,
@@ -95,4 +99,45 @@ stories.addDecorator(getApolloDecorator({
 }));
 
 // Stories
-stories.add('Default', () => <PhotoList userId="User:1" />);
+
+const userQuery = gql`
+  query UserPhotosQuery($id: ID!) {
+    user: node(id: $id) {
+      ...on User {
+        id
+        photos {
+          edges {
+            ...PhotoList_edge
+          }
+        }
+      }
+    }
+  }
+  
+  ${PhotoList.fragments.edge}
+`;
+
+stories.add('Default', () => (
+  <Query query={userQuery} variables={{ id: 'User:2' }}>
+    {({ loading, data: { user } }) => (
+      <PhotoList 
+        edges={loading ? [] : user.photos.edges} 
+        loading={loading}
+      />
+    )}
+  </Query>
+));
+
+stories.add('Full flow', () => (
+  <Query query={userQuery} variables={{ id: 'User:1' }}>
+    {({ loading, data: { user } }) => (
+      <PhotoList 
+        edges={loading ? [] : user.photos.edges} 
+        loading={loading}
+      />
+    )}
+  </Query>
+));
+
+stories.add('Initial Load', () => <PhotoList loading edges={[]} />);
+stories.add('No items', () => <PhotoList edges={[]} />);
