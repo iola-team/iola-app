@@ -17,6 +17,7 @@ const stories = storiesOf('Components/TabNavigator', module);
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator());
 
+const headerHeight  = 400;
 const styles = StyleSheet.create({
   item: {
     borderColor: '#cccccc',
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
 
   header: {
     backgroundColor: '#FFEEFF',
-    height: 400,
+    height: headerHeight,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -102,6 +103,7 @@ stories.add('No items', () => {
     FlatList: createFlatListTab('#EEEEFF', 0),
     ScrollView: createScrollViewTab('#FEFEFE', 0),
   }, {
+    headerHeight,
     headerShrinkHeight: HeaderRN.HEIGHT,
     renderHeader: props => <Header {...props} />
   });

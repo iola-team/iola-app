@@ -22,9 +22,12 @@ const userFragment = gql`
   ${UserAvatar.fragments.user}
 `;
 
+const headerHeight = 330;
 @withStyleSheet('Sparkle.UserHeading', {
   root: {
     alignItems: 'center',
+    overflow: 'hidden',
+    height: headerHeight,
   },
 
   avatar: {
@@ -76,6 +79,7 @@ const userFragment = gql`
   },
 })
 export default class UserHeading extends PureComponent {
+  static HEIGHT = headerHeight;
   static fragments = {
     user: userFragment,
   };

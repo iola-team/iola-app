@@ -45,6 +45,8 @@ const userQuery = gql`
   },
 })
 export default class UserScreenHead extends PureComponent {
+  static HEIGHT = UserHeading.HEIGHT + ScreenHeader.HEIGHT + 30;
+
   render() {
     const {
       style,

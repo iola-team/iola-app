@@ -13,6 +13,7 @@ export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
   renderHeader,
   renderTabs,
   headerShrinkHeight: ScreenHeader.HEIGHT,
+  headerHeight: UserScreenHead.HEIGHT, // TODO: find a way to auto-detect this value; if it will be needed
 
   navigationOptions: {
     headerTransparent: true,

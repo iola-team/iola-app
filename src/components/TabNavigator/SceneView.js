@@ -1,5 +1,6 @@
 import React, { PureComponent, Component, createContext } from 'react';
 import { StyleSheet, View, Platform, Animated, Dimensions } from 'react-native';
+import PropTypes from 'prop-types';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { without } from 'lodash';
 
@@ -56,11 +57,6 @@ export class NoContent extends Component {
     }
 
     const { shrinkAnimatedValue, shrinkAnimationHeight, contentHeight } = this.context;
-
-    if (!shrinkAnimationHeight) {
-      return null;
-    }
-
     const { style, ...props } = this.props;
     const animatedStyle = {
       transform: [
@@ -83,15 +79,28 @@ export class NoContent extends Component {
 }
 
 export default class SceneView extends PureComponent {
+  static propTypes = {
+    isFocused: PropTypes.bool.isRequired,
+    scrollOffset: PropTypes.number,
+    route: PropTypes.object.isRequired,
+    renderScene: PropTypes.func.isRequired,
+    headerHeight: PropTypes.number.isRequired,
+    tabBarHeight: PropTypes.number.isRequired,
+    headerShrinkHeight: PropTypes.number,
+  };
+
+  static defaultProps = {
+    scrollOffset: 0,
+    headerShrinkHeight: 0,
+  };
+
   subscribers = {
     focus: [],
     scroll: [],
+    layout: [],
   };
 
-  state = {
-    contextValue: {},
-  };
-
+  contextValue = {};
   scrollAnimatedValue = new Animated.Value(0);
   onScroll = Animated.event(
     [
@@ -111,7 +120,7 @@ export default class SceneView extends PureComponent {
   constructor(...args) {
     super(...args);
 
-    this.state.contextValue = this.createContext();
+    this.contextValue = this.createContext();
   }
 
   addListener = (type, subscriber) => {
@@ -129,24 +138,19 @@ export default class SceneView extends PureComponent {
     }
   }
 
-  createContext(current = {}, prev = {}) {
-    const { 
-      renderHeader, 
-      renderTabs, 
-      onScrollEnd, 
-      headerShrinkHeight,
-      tabBarHeight,
-    } = this.props;
+  createContext() {
+    const { headerShrinkHeight, tabBarHeight, headerHeight, ...restProps } = this.props;
 
     const screenHeight = Dimensions.get('window').height - getStatusBarHeight();
-    const headerHeight = current.headerHeight || prev.headerHeight || 0;
-    const shrinkAnimationHeight = headerHeight && headerHeight - headerShrinkHeight;
+    const shrinkAnimationHeight = headerHeight ? headerHeight - headerShrinkHeight : 0;
     const shrinkAnimatedValue = this.scrollAnimatedValue.interpolate({
       inputRange: [0, shrinkAnimationHeight],
       outputRange: [1, 0],
     });
 
     return {
+      ...restProps,
+
       // Values
       headerHeight,
       tabBarHeight,
@@ -157,24 +161,16 @@ export default class SceneView extends PureComponent {
       scrollAnimatedValue: this.scrollAnimatedValue,
 
       // Handlers
-      onHeaderLayout: this.onHeaderLayout,
       addListener: this.addListener,
-      onScrollEnd,
       onScroll: this.onScroll,
-      renderHeader,
-      renderTabs,
     };
   }
-
-  onHeaderLayout = ({ nativeEvent: { layout } }) => this.setState(state => ({
-    contextValue: this.createContext({ headerHeight: layout.height }, state.contextValue),
-  }));
 
   render() {
     const { isFocused, route, renderScene } = this.props;
 
     return (
-      <Context.Provider value={this.state.contextValue}>
+      <Context.Provider value={this.contextValue}>
         <View
           style={styles.container}
           collapsable={false}

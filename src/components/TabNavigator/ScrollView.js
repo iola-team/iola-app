@@ -50,7 +50,6 @@ export default class ScrollView extends PureComponent {
       headerShrinkHeight, 
       headerHeight, 
       contentHeight,
-      onHeaderLayout,
       onScroll: onScrollEvent,
       shrinkAnimatedValue,
     } = this.context;
@@ -71,7 +70,7 @@ export default class ScrollView extends PureComponent {
         onMomentumScrollEnd={this.onMomentumScrollEnd}
       >
         <View style={{ marginTop }}>
-          <View onLayout={onHeaderLayout} style={{ marginTop: -marginTop }}>
+          <View style={{ marginTop: -marginTop }}>
             <Header animatedValue={shrinkAnimatedValue} />
           </View>
           <TabBar />
