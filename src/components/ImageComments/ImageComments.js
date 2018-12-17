@@ -177,7 +177,6 @@ export default class ImageComments extends Component {
           data,
         });
 
-        // @IN PROGRESS: Update totalCount
         cache.writeQuery({
           query: ImageView.queries.photoCommentsTotalCountQuery,
           variables: { id: photoId },

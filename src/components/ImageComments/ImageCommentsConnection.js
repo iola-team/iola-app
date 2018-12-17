@@ -7,6 +7,7 @@ import { propType as graphqlPropType } from 'graphql-anywhere';
 import { get } from 'lodash';
 
 import ImageCommentsList from '../ImageCommentsList';
+import LoadMoreIndicator from '../LoadMoreIndicator';
 
 const photoCommentsQuery = gql`
   query photoCommentsQuery($id: ID!, $cursor: Cursor = null) {
@@ -95,11 +96,9 @@ export default class ImageCommentsConnection extends Component {
     return (
       <Query query={photoCommentsQuery} variables={{ id: photoId }}>
         {({ loading, data, fetchMore, networkStatus }) => {
-          const refreshing = (
-            loading ||
-            this.state.loading ||
-            networkStatus === NetworkStatus.refetch
-          );
+          if (loading) return <LoadMoreIndicator />;
+
+          const refreshing = networkStatus === NetworkStatus.refetch;
           const edges = get(data, 'photo.comments.edges', []);
 
           return (
@@ -107,12 +106,13 @@ export default class ImageCommentsConnection extends Component {
               photoId={photoId}
               height={height}
               onItemPress={onItemPress}
+              loading={this.state.loading}
               refreshing={refreshing}
               edges={edges}
               onRefresh={data.refetch}
               onEndReached={() => this.handleLoadMore(data, fetchMore)}
               onEndReachedThreshold={2}
-              inverted={!!edges.length || (refreshing && !edges.length)}
+              inverted={!!edges.length}
             />
           );
         }}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { NetworkStatus } from 'apollo-client';
 import { range } from 'lodash';
 import { View } from 'react-native';
 
@@ -17,11 +16,6 @@ const edgeFragment = gql`
     node {
       id
       ...PhotoListItem_photo
-// RR
-user {
-  id
-  name
-}
     }
   }
 

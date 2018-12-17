@@ -19,12 +19,12 @@ function loadStories() {
   require('../components/FieldView/FieldView.stories');
   require('../components/FriendList/FriendList.stories');
   require('../components/Image/Image.stories');
+  require('../components/ImageComments/ImageComments.stories');
+  require('../components/ImageCommentsItem/ImageCommentsItem.stories');
   require('../components/ImagePicker/ImagePicker.stories');
   require('../components/ImagePickerActionSheet/ImagePickerActionSheet.stories');
   require('../components/ImageProgress/ImageProgress.stories');
   require('../components/ImageView/ImageView.stories');
-  require('../components/ImageComments/ImageComments.stories');
-  require('../components/ImageCommentsItem/ImageCommentsItem.stories');
   require('../components/Input/Input.stories');
   require('../components/ListPicker/ListPicker.stories');
   require('../components/MessageItem/MessageItem.stories');
@@ -50,7 +50,7 @@ function loadStories() {
   require('../screens/EmailVerification/EmailVerification.stories');
   require('../screens/ForgotPassword/ForgotPassword.stories');
   require('./stories/Button.stories');
-
+  
 }
 
 const stories = [
@@ -68,12 +68,12 @@ const stories = [
   '../components/FieldView/FieldView.stories',
   '../components/FriendList/FriendList.stories',
   '../components/Image/Image.stories',
+  '../components/ImageComments/ImageComments.stories',
+  '../components/ImageCommentsItem/ImageCommentsItem.stories',
   '../components/ImagePicker/ImagePicker.stories',
   '../components/ImagePickerActionSheet/ImagePickerActionSheet.stories',
   '../components/ImageProgress/ImageProgress.stories',
   '../components/ImageView/ImageView.stories',
-  '../components/ImageComments/ImageComments.stories',
-  '../components/ImageCommentsItem/ImageCommentsItem.stories',
   '../components/Input/Input.stories',
   '../components/ListPicker/ListPicker.stories',
   '../components/MessageItem/MessageItem.stories',
@@ -99,7 +99,7 @@ const stories = [
   '../screens/EmailVerification/EmailVerification.stories',
   '../screens/ForgotPassword/ForgotPassword.stories',
   './stories/Button.stories',
-
+  
 ];
 
 module.exports = {

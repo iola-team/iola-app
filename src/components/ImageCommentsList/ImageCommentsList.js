@@ -5,7 +5,6 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 
 import ImageCommentsItem from '../ImageCommentsItem';
-import RefreshControl from '../RefreshControl';
 import NoComments from './NoComments';
 
 const edgeFragment = gql`
@@ -23,10 +22,8 @@ export default class ImageCommentsList extends Component {
   static propTypes = {
     height: PropTypes.number.isRequired,
     onItemPress: PropTypes.func,
-    edges: PropTypes.arrayOf(
-      fragmentProp(edgeFragment),
-    ),
-    refreshing: PropTypes.bool.isRequired,
+    edges: PropTypes.arrayOf(fragmentProp(edgeFragment)),
+    loading: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
@@ -47,20 +44,13 @@ export default class ImageCommentsList extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const { edges, refreshing } = this.props;
+    const { edges, loading } = this.props;
 
-    return (
-      edges.length !== nextProps.edges.length ||
-      refreshing !== nextProps.refreshing
-    );
+    return edges.length !== nextProps.edges.length || loading !== nextProps.loading;
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.refreshing !== prevProps.refreshing) {
-      console.log('refreshing', this.props.edges.length);
-
-      console.log('this.itemsCount, this.props.edges.length', this.itemsCount, this.props.edges.length);
-
+    if (this.props.loading !== prevProps.loading) {
       this.itemsCount = this.props.edges.length;
     }
   }
@@ -77,10 +67,6 @@ export default class ImageCommentsList extends Component {
     }
   }
 
-  onScroll({ nativeEvent: { contentOffset } }) {
-    this.scrollOffset = contentOffset.y;
-  }
-
   extractItemKey({ node }) {
     return node.id;
   }
@@ -90,7 +76,7 @@ export default class ImageCommentsList extends Component {
   }
 
   render() {
-    const { height, edges, refreshing, ...listProps } = this.props;
+    const { height, edges, loading, ...listProps } = this.props;
 
     return (
       <FlatList
@@ -98,12 +84,9 @@ export default class ImageCommentsList extends Component {
         ref={ref => this.flatList = ref}
         data={edges}
         onViewableItemsChanged={this.onViewableItemsChanged}
-        onScroll={this.onScroll}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
-        ListEmptyComponent={!refreshing && <NoComments height={height} />}
-        refreshControl={<RefreshControl refreshing={refreshing} />}
-        refreshing={refreshing}
+        ListEmptyComponent={<NoComments height={height} />}
       />
     );
   }
