@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { PropTypes } from 'prop-types';
 
 import PhotoList from '../PhotoList';
 
@@ -32,13 +32,17 @@ export default class UserPhotos extends Component {
 
     return (
       <Query query={userPhotosQuery} variables={{ id: userId }}>
-        {({ loading, data: { user } }) => (
-          <PhotoList 
-            {...props}
-            edges={loading ? [] : user.photos.edges} 
-            loading={loading} 
-          />
-        )}
+        {({ loading, data: { user } }) => (loading ? null : (
+          <ImageView images={user.photos.edges.map(({ node }) => ({ user, ...node }))}>
+// RR
+{onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
+            <PhotoList
+              {...props}
+              edges={loading ? [] : user.photos.edges}
+              loading={loading}
+            />
+          </ImageView>
+        ))}
       </Query>
     );
   }

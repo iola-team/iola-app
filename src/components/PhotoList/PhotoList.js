@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { NetworkStatus } from 'apollo-client';
 import { range } from 'lodash';
 import { View } from 'react-native';
 
 import { withStyleSheet } from 'theme';
 import { FlatList } from '../TabNavigator';
 import Item from '../PhotoListItem';
+import ImageView from '../ImageView';
+import TouchableOpacity from '../TouchableOpacity';
 
 const edgeFragment = gql`
   fragment PhotoList_edge on PhotoEdge {
@@ -52,19 +53,20 @@ export default class PhotoList extends Component {
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
-  renderItem = ({ item: { node, opacity } }) => {
+
+  renderItem = ({ item: { node, opacity }, index }, onShowImage) => {
     const { styleSheet } = this.props;
     const opacityStyle = opacity && { opacity };
 
     return (
-      <View style={[opacityStyle, styleSheet.item]}>
+      <TouchableOpacity onPress={() => onShowImage(index)} style={[opacityStyle, styleSheet.item]}>
         <Item photo={node} />
-      </View>
+      </TouchableOpacity>
     );
-  }
+  };
 
   getPlaceholders() {
-    return range(9).map(index => ({ 
+    return range(9).map(index => ({
       key: index.toString(),
       opacity: 1 - Math.floor(index / 3) * 0.3,
     }));
@@ -73,7 +75,6 @@ export default class PhotoList extends Component {
   render() {
     const {
       edges,
-      padder,
       styleSheet: styles,
       loading,
       contentContainerStyle,
@@ -84,17 +85,22 @@ export default class PhotoList extends Component {
     const data = loading ? this.getPlaceholders() : edges;
     const containerStyles = [contentContainerStyle, styles.list];
     const columnStyles = [columnWrapperStyle, styles.row];
+    const photos = edges.map(edge => ({ ...edge.node }));
 
     return (
-      <FlatList
-        {...listProps}
-        contentContainerStyle={containerStyles}
-        columnWrapperStyle={columnStyles}
-        numColumns={3}
-        data={data}
-        renderItem={this.renderItem}
-        keyExtractor={this.extractItemKey}
-      />
+      <ImageView images={photos}>
+        {onShowImage => (
+          <FlatList
+            {...listProps}
+            contentContainerStyle={containerStyles}
+            columnWrapperStyle={columnStyles}
+            numColumns={3}
+            data={data}
+            renderItem={edge => this.renderItem(edge, onShowImage)}
+            keyExtractor={this.extractItemKey}
+          />
+        )}
+      </ImageView>
     );
   }
 }

@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-import {
-  Container,
-  Content,
-  Text,
-  Icon,
-  View,
-} from 'native-base';
+import { Container } from 'native-base';
 
 import { Chat, ScreenHeader, UserAvatar } from 'components';
 import { withStyleSheet as styleSheet } from 'theme';
@@ -27,7 +19,7 @@ export default class Channel extends Component {
         {...props}
         {...propsToVariables(navigationProps)}
       />
-    )
+    ),
   });
 
   render() {

@@ -14,6 +14,7 @@ const userFragment = gql`
     id
     avatar {
       id
+      url
       small: url
       medium: url(size: MEDIUM)
       large: url(size: MEDIUM)
@@ -58,7 +59,7 @@ export default class UserAvatar extends Component {
     const { style, user, loading, size, onPress, ...props } = this.props;
     const sizeProps = {
       small: size === 'small',
-      large: size === 'large'
+      large: size === 'large',
     };
 
     const thumbnailProps = { ...props, ...sizeProps };

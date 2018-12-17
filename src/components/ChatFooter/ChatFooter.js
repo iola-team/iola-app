@@ -47,12 +47,14 @@ export default class ChatFooter extends Component {
     const { text } = this.state;
     const { onSend } = this.props;
 
+    if (!text.length) return;
+
     onSend(text);
     this.setState({ text: '' });
   };
 
   render() {
-    const { style, styleSheet: styles, onSend } = this.props;
+    const { style, styleSheet: styles } = this.props;
     const { text } = this.state;
 
     return (
