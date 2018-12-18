@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { NetworkStatus } from 'apollo-client';
 import { range } from 'lodash';
 
-import { FlatList } from '../TabNavigator';
+import { withStyleSheet } from 'theme';
+import { FlatList, NoContent } from '../TabNavigator';
 import UserListItem from '../UserListItem';
 
 const edgeFragment = gql`
@@ -20,6 +20,7 @@ const edgeFragment = gql`
   ${UserListItem.fragments.user}
 `;
 
+@withStyleSheet('Sparkle.UserList')
 export default class UserList extends Component {
   static fragments = {
     edge: edgeFragment,
@@ -30,12 +31,16 @@ export default class UserList extends Component {
       fragmentProp(edgeFragment).isRequired
     ).isRequired,
     onItemPress: PropTypes.func,
-    networkStatus: PropTypes.number,
+    loading: PropTypes.bool,
+    noContentText: PropTypes.string,
+    noContentStyle: PropTypes.object,
   };
 
   static defaultProps = {
     onItemPress: () => {},
-    networkStatus: NetworkStatus.ready,
+    loading: false,
+    noContentText: null,
+    noContentStyle: null,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -60,15 +65,22 @@ export default class UserList extends Component {
   });
 
   getPlaceholders() {
-    return range(9).map(index => ({ 
+    return range(3).map(index => ({ 
       key: index.toString(),
-      opacity: 1 - index * 0.1,
+      opacity: 1 - index * 0.3,
     }));
   }
 
   render() {
-    const { edges, networkStatus, ...listProps } = this.props;
-    const data = networkStatus === NetworkStatus.loading ? this.getPlaceholders() : edges;
+    const { 
+      edges, 
+      loading, 
+      styleSheet: styles, 
+      noContentText, 
+      noContentStyle, 
+      ...listProps 
+    } = this.props;
+    const data = loading ? this.getPlaceholders() : edges;
 
     return (
       <FlatList
@@ -77,6 +89,7 @@ export default class UserList extends Component {
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         getItemLayout={this.getItemLayout}
+        ListEmptyComponent={<NoContent style={noContentStyle} icon="people" text={noContentText} />}
 
         // Performance tweaks
         updateCellsBatchingPeriod={25}

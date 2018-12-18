@@ -5,28 +5,9 @@ import { TabBar, Header, Context } from './SceneView';
 
 export default class ScrollView extends PureComponent {
   static contextType = Context;
+
   unsubscribe = null;
   scrollRef = null;
-  scrollAnimatedValue = new Animated.Value(0);
-  onScrollAnimatedEvent = Animated.event(
-    [
-      {
-        nativeEvent: {
-          contentOffset: {
-            y: this.scrollAnimatedValue,
-          },
-        },
-      },
-    ],
-    { 
-      useNativeDriver: true,
-    },
-  );
-
-  state = {
-    rootHeight: 0,
-    headerHeight: 0,
-  };
 
   scrollTo = (y, animated = false) => {
     if (this.scrollRef) {
@@ -38,21 +19,8 @@ export default class ScrollView extends PureComponent {
     this.scrollRef = ref;
   }
 
-  onHeaderLayout = ({ nativeEvent: { layout } }) => {
-    this.setState({
-      headerHeight: layout.height,
-    });
-  };
-
-  onRootLayout = ({ nativeEvent: { layout } }) => {
-    this.setState({
-      rootHeight: layout.height,
-    });
-  };
-
   onMomentumScrollEnd = ({ nativeEvent: { contentOffset } }) => {
-    const { headerHeight } = this.state;
-    const { onScrollEnd } = this.context;
+    const { onScrollEnd, headerHeight } = this.context;
     const y = contentOffset.y > headerHeight ? headerHeight : contentOffset.y;
     
     onScrollEnd(y);
@@ -71,46 +39,46 @@ export default class ScrollView extends PureComponent {
   }
   
   render() {
+    const { contentContainerStyle, ...restProps } = this.props;
+    const contentStyle = [contentContainerStyle, { flexGrow: 1 }];
+
     if (!this.context) {
-      return <ScrollViewRN {...this.props} />;
+      return <ScrollViewRN contentContainerStyle={contentStyle} {...restProps} />;
     }
 
-    const { headerShrinkHeight } = this.context; 
-    const { rootHeight, headerHeight } = this.state;
-    const { children, contentContainerStyle, onScroll, ...props } = this.props;
+    const { 
+      headerShrinkHeight, 
+      headerHeight, 
+      contentHeight,
+      onScroll: onScrollEvent,
+    } = this.context;
+
+    const { onScroll, children, ...listProps } = restProps;
     const marginTop = headerHeight && headerHeight - headerShrinkHeight;
 
-    const headerAnimatedValue = this.scrollAnimatedValue.interpolate({
-      inputRange: [0, marginTop],
-      outputRange: [1, 0],
-    });
-
     if (onScroll) {
-      Animated.forkEvent(this.onScrollAnimatedEvent, onScroll);
+      Animated.forkEvent(onScrollEvent, onScroll);
     }
 
     return (
-      <Animated.ScrollView 
-        {...props}
+      <Animated.ScrollView
+        {...listProps}
         ref={this.onRef}
-        onScroll={this.onScrollAnimatedEvent}
+        onScroll={onScrollEvent}
         stickyHeaderIndices={[0]}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
-        contentContainerStyle={{
-          minHeight: rootHeight + marginTop,
-        }}
-        onLayout={this.onRootLayout}
       >
         <View style={{ marginTop }}>
-          <View onLayout={this.onHeaderLayout} style={{ marginTop: -marginTop }}>
-            <Header animatedValue={headerAnimatedValue} />
+          <View style={{ marginTop: -marginTop }}>
+            <Header />
           </View>
           <TabBar />
         </View>
 
-        <View style={contentContainerStyle}>
+        <View style={[contentStyle, { minHeight: contentHeight }]}>
           {children}
         </View>
+
       </Animated.ScrollView>
     );
   }

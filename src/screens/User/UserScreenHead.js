@@ -26,15 +26,16 @@ const userQuery = gql`
 @withStyleSheet('Sparkle.UserScreenHead', {
   head: {
     marginTop: ScreenHeader.HEIGHT,
-    marginBottom: 40,
+    marginBottom: 30,
   },
 
   navBar: {
     ...StyleSheet.absoluteFillObject,
-    top: null,
+    bottom: null,
     height: ScreenHeader.HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#FFFFFF',
   },
 
   navBarText: {
@@ -44,27 +45,33 @@ const userQuery = gql`
   },
 })
 export default class UserScreenHead extends PureComponent {
+  static HEIGHT = UserHeading.HEIGHT + ScreenHeader.HEIGHT + 30;
+
   render() {
     const {
       style,
       styleSheet: styles,
       navigation: { goBack, navigate, state },
-      animatedValue,
+      shrinkAnimatedValue,
+      shrinkAnimationHeight,
       ...props
     } = this.props;
 
-    const headStyle = {
-      opacity: animatedValue.interpolate({
-        inputRange: [0.05, 0.6],
-        outputRange: [0, 1],
-      }),
-    };
-
     const navBarStyle = {
-      opacity: animatedValue.interpolate({
-        inputRange: [0, 0.1],
+      opacity: shrinkAnimatedValue.interpolate({
+        inputRange: [0, 0.3],
         outputRange: [1, 0],
+        extrapolate: 'clamp',
       }),
+      transform: [
+        {
+          translateY: shrinkAnimatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [shrinkAnimationHeight, 0],
+            extrapolate: 'clamp',
+          }),
+        },
+      ],
     };
 
     return (
@@ -72,11 +79,7 @@ export default class UserScreenHead extends PureComponent {
         <Query query={userQuery} variables={{ userId: state.params.id }}>
           {({ data: { user }, loading }) => (
             <Fragment>
-              <AnimatedView highlight style={[styles.navBar, navBarStyle]}>
-                <Text style={styles.navBarText}>{user && user.name}</Text>
-              </AnimatedView>
-
-              <AnimatedView style={[styles.head, headStyle]}>
+              <AnimatedView style={styles.head}>
                 <UserHeading
                   {...props}
                   loading={loading}
@@ -84,6 +87,10 @@ export default class UserScreenHead extends PureComponent {
                   onBackPress={() => goBack()}
                   onChatPress={() => navigate(routes.CHANNEL, { userId: state.params.id })}
                 />
+              </AnimatedView>
+
+              <AnimatedView style={[styles.navBar, navBarStyle]}>
+                <Text style={styles.navBarText}>{user && user.name}</Text>
               </AnimatedView>
             </Fragment>
           )}

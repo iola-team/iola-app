@@ -26,7 +26,7 @@ const userFriendsQuery = gql`
 @withStyleSheet('Sparkle.UserFriendsScreen', {
   list: {
     paddingTop: 8,
-  }
+  },
 })
 @withNavigationFocus
 export default class UserFriends extends PureComponent {
@@ -40,11 +40,12 @@ export default class UserFriends extends PureComponent {
 
     return (
       <Query skip={!isFocused} query={userFriendsQuery} variables={{ id }}>
-        {({ loading, networkStatus, data }) => (
+        {({ loading, data }) => (
           <UserList
             contentContainerStyle={styles.list}
             edges={loading || !isFocused ? [] : data.user.friends.edges}
-            networkStatus={!isFocused ? 1 : networkStatus} 
+            loading={loading || !isFocused}
+            noContentText="No friends"
           />
         )}
       </Query>

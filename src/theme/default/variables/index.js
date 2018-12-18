@@ -5,7 +5,7 @@ export default assign(defaultVariables, {
   btnUppercaseAndroidText: false,
   borderRadiusBase: 8,
   fontSizeH1: 30,
-  brandPrimary: '#5F96F2',
+  brandPrimary: '#5259FF',
   fontSizeBase: 16,
   toolbarDefaultBg: 'transparent',
   titleFontColor: '#45474F',

@@ -27,6 +27,10 @@ const userPhotosQuery = gql`
   list: {
     paddingTop: 20,
     paddingHorizontal: 16,
+  },
+
+  noContent: {
+    marginTop: -12, // TODO: Aligning `No photos` to `No friends` - need to find a better way
   }
 })
 @withNavigationFocus
@@ -46,6 +50,8 @@ export default class UserPhotos extends PureComponent {
             contentContainerStyle={styles.list}
             edges={loading || !isFocused ? [] : data.user.photos.edges}
             loading={loading || !isFocused}
+            noContentText="No photos"
+            noContentStyle={styles.noContent}
           />
         )}
       </Query>

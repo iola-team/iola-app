@@ -79,11 +79,11 @@ export default class UsersConnection extends Component {
   }
 
   render() {
-    const { data: { users, networkStatus }, onItemPress } = this.props;
+    const { data: { users, networkStatus, loading }, onItemPress } = this.props;
 
     return (
       <UserList
-        networkStatus={networkStatus}
+        loading={loading}
         edges={users ? users.edges : []}
         onItemPress={onItemPress}
         onRefresh={this.refresh}

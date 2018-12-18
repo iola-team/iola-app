@@ -6,7 +6,7 @@ import { range } from 'lodash';
 import { View } from 'react-native';
 
 import { withStyleSheet } from 'theme';
-import { FlatList } from '../TabNavigator';
+import { FlatList, NoContent } from '../TabNavigator';
 import Item from '../PhotoListItem';
 import ImageView from '../ImageView';
 import TouchableOpacity from '../TouchableOpacity';
@@ -23,14 +23,6 @@ const edgeFragment = gql`
 `;
 
 @withStyleSheet('Sparkle.PhotoList', {
-  list: {
-
-  },
-
-  row: {
-
-  },
-
   item: {
     width: '33.33333333%',
     padding: 4,
@@ -46,10 +38,14 @@ export default class PhotoList extends Component {
       fragmentProp(edgeFragment).isRequired
     ).isRequired,
     loading: PropTypes.bool,
+    noContentText: PropTypes.string,
+    noContentStyle: PropTypes.object,
   };
 
   static defaultProps = {
     loading: false,
+    noContentText: null,
+    noContentStyle: null,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -77,27 +73,24 @@ export default class PhotoList extends Component {
       edges,
       styleSheet: styles,
       loading,
-      contentContainerStyle,
-      columnWrapperStyle,
+      noContentText,
+      noContentStyle,
       ...listProps
     } = this.props;
 
     const data = loading ? this.getPlaceholders() : edges;
-    const containerStyles = [contentContainerStyle, styles.list];
-    const columnStyles = [columnWrapperStyle, styles.row];
-    const photos = edges.map(edge => ({ ...edge.node }));
+    const photos = loading ? [] : edges.map(edge => edge.node);
 
     return (
       <ImageView images={photos}>
         {onShowImage => (
           <FlatList
             {...listProps}
-            contentContainerStyle={containerStyles}
-            columnWrapperStyle={columnStyles}
             numColumns={3}
             data={data}
             renderItem={edge => this.renderItem(edge, onShowImage)}
             keyExtractor={this.extractItemKey}
+            ListEmptyComponent={<NoContent style={noContentStyle} icon="images" text={noContentText} />}
           />
         )}
       </ImageView>
