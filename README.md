@@ -1,4 +1,4 @@
-# Messenger App
+# iola messenger
 
 ## Install
   - `yarn`
@@ -29,7 +29,7 @@
   - Destructuring: in one line if length < 100 but in multiple lines if has default values
 
 ### Troubleshooting
-  - "Metro Bundler can't listen on port 8081" error
+  - "Metro Bundler can't listen on port 8081" error (or "Error: listen EADDRINUSE :::7007")
     - `sudo lsof -i :8081`
     - `kill -9 PID_FROM_RESULTS_OF_THE_PREVIOUS_COMMAND`
 

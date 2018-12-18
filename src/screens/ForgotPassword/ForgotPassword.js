@@ -1,11 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { ImageBackground, TouchableOpacity } from 'react-native';
-import {Button, Container, Text, View} from 'native-base';
+import { Button, Container, Text, View } from 'native-base';
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { isValidEmail } from 'utils';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
@@ -119,7 +118,7 @@ export default class ForgotPasswordScreen extends Component {
   render() {
     const { email, emailWasSent } = this.state;
     const defaultLogin = get(this.props, 'navigation.state.params.defaultLogin');
-    const defaultEmail = isValidEmail(defaultLogin) ? defaultLogin : '';
+    const defaultEmail = /^.+@.+\..+$/.test(defaultLogin) ? defaultLogin : '';
 
     return (
       <Container>

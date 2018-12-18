@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import { range } from 'lodash';
 
-import { FlatList } from '../TabNavigator';
+import { withStyleSheet } from 'theme';
+import { FlatList, NoContent } from '../TabNavigator';
 import UserListItem from '../UserListItem';
 
 const edgeFragment = gql`
@@ -18,52 +20,76 @@ const edgeFragment = gql`
   ${UserListItem.fragments.user}
 `;
 
+@withStyleSheet('Sparkle.UserList')
 export default class UserList extends Component {
-  static propTypes = {
-    onItemPress: PropTypes.func,
-    edges: PropTypes.arrayOf(
-      fragmentProp(edgeFragment),
-    ),
-  };
-
-  static defaultProps = {
-    onItemPress: () => {},
-  };
-
   static fragments = {
     edge: edgeFragment,
   };
 
-  renderItem({ item }) {
+  static propTypes = {
+    edges: PropTypes.arrayOf(
+      fragmentProp(edgeFragment).isRequired
+    ).isRequired,
+    onItemPress: PropTypes.func,
+    loading: PropTypes.bool,
+    noContentText: PropTypes.string,
+    noContentStyle: PropTypes.object,
+  };
+
+  static defaultProps = {
+    onItemPress: () => {},
+    loading: false,
+    noContentText: null,
+    noContentStyle: null,
+  };
+
+  extractItemKey = ({ node, key }) => key || node.id;
+  renderItem = ({ item }) => {
     const { onItemPress } = this.props;
+    const { node, opacity } = item;
+    const opacityStyle = opacity && { opacity };
 
     return (
-      <UserListItem user={item.node} onPress={() => onItemPress(item)} />
+      <UserListItem 
+        style={opacityStyle} 
+        user={node}
+        onPress={() => onItemPress(item)} 
+      />
     );
   }
 
-  extractItemKey({ node }) {
-    return node.id;
-  }
+  getItemLayout = (data, index) => ({
+    length: UserListItem.ITEM_HEIGHT,
+    offset: UserListItem.ITEM_HEIGHT * index,
+    index,
+  });
 
-  getItemLayout(data, index) {
-    return {
-      length: UserListItem.ITEM_HEIGHT,
-      offset: UserListItem.ITEM_HEIGHT * index,
-      index,
-    };
+  getPlaceholders() {
+    return range(3).map(index => ({ 
+      key: index.toString(),
+      opacity: 1 - index * 0.3,
+    }));
   }
 
   render() {
-    const { edges, ...listProps } = this.props;
+    const { 
+      edges, 
+      loading, 
+      styleSheet: styles, 
+      noContentText, 
+      noContentStyle, 
+      ...listProps 
+    } = this.props;
+    const data = loading ? this.getPlaceholders() : edges;
 
     return (
       <FlatList
         {...listProps}
-        data={edges}
-        keyExtractor={::this.extractItemKey}
-        renderItem={::this.renderItem}
-        getItemLayout={::this.getItemLayout}
+        data={data}
+        keyExtractor={this.extractItemKey}
+        renderItem={this.renderItem}
+        getItemLayout={this.getItemLayout}
+        ListEmptyComponent={<NoContent style={noContentStyle} icon="people" text={noContentText} />}
 
         // Performance tweaks
         updateCellsBatchingPeriod={25}

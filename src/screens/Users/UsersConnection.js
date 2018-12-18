@@ -1,7 +1,5 @@
-import { debounce } from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FlatList } from "react-native";
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
@@ -41,11 +39,11 @@ export default class UsersConnection extends Component {
     return prev.users !== users || prev.networkStatus !== networkStatus;
   }
 
-  refresh(vars = {}) {
+  refresh = (vars = {}) => {
     this.props.data.refetch(vars);
   }
 
-  loadMore({ distanceFromEnd }) {
+  loadMore = ({ distanceFromEnd }) => {
     const { fetchMore, users: { pageInfo } } = this.props.data;
 
     if (!pageInfo.hasNextPage) {
@@ -81,16 +79,16 @@ export default class UsersConnection extends Component {
   }
 
   render() {
-    const { data: { users, networkStatus }, onItemPress } = this.props;
-    const reFetching = networkStatus === NetworkStatus.refetch;
+    const { data: { users, networkStatus, loading }, onItemPress } = this.props;
 
-    return !users ? null : (
+    return (
       <UserList
-        edges={users.edges}
+        loading={loading}
+        edges={users ? users.edges : []}
         onItemPress={onItemPress}
-        onRefresh={::this.refresh}
-        refreshing={reFetching}
-        onEndReached={::this.loadMore}
+        onRefresh={this.refresh}
+        // refreshing={networkStatus === NetworkStatus.refetch}
+        // onEndReached={this.loadMore}
       />
     );
   }

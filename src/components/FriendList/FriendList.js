@@ -1,34 +1,45 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
 import UserList from '../UserList';
 
-const edgeFragment = gql`
-  fragment FriendList_edge on UserEdge {
-    ...UserList_edge
+const userQuery = gql`
+  query UserFriendsQuery($id: ID!) {
+    user: node(id: $id) {
+      ...on User {
+        id
+        friends {
+          edges {
+            ...UserList_edge
+          }
+        }
+      }
+    }
   }
   
   ${UserList.fragments.edge}
 `;
 
 export default class FriendList extends Component {
-  static fragments = {
-    edge: edgeFragment,
-  };
-
   static propTypes = {
-    edges: PropTypes.arrayOf(
-      fragmentProp(edgeFragment).isRequired
-    ),
+    userId: PropTypes.string.isRequired,
   };
 
   render() {
-    const { edges, ...restProps } = this.props;
+    const { userId: id, ...props } = this.props;
 
     return (
-      <UserList {...restProps} edges={edges} />
+      <Query query={userQuery} variables={{ id }}>
+        {({ loading, networkStatus, data: { user } }) => (
+          <UserList
+            {...props}
+            edges={loading ? [] : user.friends.edges}
+            networkStatus={networkStatus} 
+          />
+        )}
+      </Query>
     );
   }
 }

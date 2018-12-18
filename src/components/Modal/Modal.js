@@ -1,19 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ModalRN from 'react-native-modal';
-import { noop } from 'lodash';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-} from 'react-native';
+import { noop, isString } from 'lodash';
+import { TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { View, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme/index';
 import { getInAnimation, getOutAnimation } from './animations';
 
-const maxHeight = Dimensions.get("window").height * 0.6;
+const maxHeight = Dimensions.get('window').height * 0.6;
 
 @styleSheet('Sparkle.Modal', {
   root: {
@@ -25,7 +20,7 @@ const maxHeight = Dimensions.get("window").height * 0.6;
   modal: {
     margin: 0,
     padding: 0,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
 
   backdrop: {
@@ -34,30 +29,49 @@ const maxHeight = Dimensions.get("window").height * 0.6;
   },
 
   header: {
-    height: 62,
+    height: 60,
+  },
+
+  topRectangle: {
+    width: 64,
+    height: 4,
+    marginTop: 12,
+    alignSelf: 'center',
+    backgroundColor: '#E1E3E8',
+  },
+
+  headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    flex: 1,
   },
 
-  headerDoneText: {
-    color: '#5F96F2',
-  },
-
-  headerCancelText: {
+  cancel: {
+    fontSize: 14,
     color: '#BDC0CB',
   },
 
-  content: {
+  title: {
+    fontSize: 16,
+  },
 
-  }
+  done: {
+    fontSize: 14,
+    color: '#5F96F2',
+  },
 })
 export default class Modal extends PureComponent {
   static propTypes = {
     isVisible: PropTypes.bool.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+    ]).isRequired,
     children: PropTypes.element.isRequired,
     height: PropTypes.number,
+    footer: PropTypes.object,
+    noScrollViewForContent: PropTypes.bool,
 
     onDismiss: PropTypes.func,
     onShow: PropTypes.func,
@@ -65,17 +79,19 @@ export default class Modal extends PureComponent {
     onDone: PropTypes.func,
     onCancel: PropTypes.func,
     onRequestClose: PropTypes.func,
-  }
+  };
 
   static defaultProps = {
     height: maxHeight,
+    footer: null,
     onDismiss: noop,
     onShow: noop,
     onSwipe: noop,
     onDone: noop,
     onCancel: noop,
     onRequestClose: noop,
-  }
+    noScrollViewForContent: false,
+  };
 
   animations = {
     show: null,
@@ -89,6 +105,8 @@ export default class Modal extends PureComponent {
       isVisible,
       children,
       height,
+      footer,
+      noScrollViewForContent,
 
       onDismiss,
       onShow,
@@ -99,6 +117,7 @@ export default class Modal extends PureComponent {
     } = this.props;
 
     const modalHeight = height + styles.header.height;
+    const ContentWrapper = noScrollViewForContent ? View : ScrollView;
 
     return (
       <ModalRN
@@ -119,21 +138,22 @@ export default class Modal extends PureComponent {
         onBackButtonPress={onRequestClose}
       >
         <View style={styles.root}>
-          <View
-            style={styles.header}
-            horizontalPadder
-          >
-            <TouchableOpacity onPress={onCancel}>
-              <Text style={styles.headerCancelText}>Cancel</Text>
-            </TouchableOpacity>
-            <Text>{title}</Text>
-            <TouchableOpacity onPress={onDone}>
-              <Text style={styles.headerDoneText}>Done</Text>
-            </TouchableOpacity>
+          <View style={styles.header} horizontalPadder>
+            <View style={styles.topRectangle} />
+            <View style={styles.headerContent}>
+              <TouchableOpacity onPress={onCancel}>
+                <Text style={styles.cancel}>Cancel</Text>
+              </TouchableOpacity>
+              {isString(title) ? <Text style={styles.title}>{title}</Text> : title}
+              <TouchableOpacity onPress={onDone}>
+                <Text style={styles.done}>Done</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <ScrollView style={[styles.content, { height }]}>
+          <ContentWrapper style={{ height }}>
             {children}
-          </ScrollView>
+          </ContentWrapper>
+          {footer}
         </View>
       </ModalRN>
     );

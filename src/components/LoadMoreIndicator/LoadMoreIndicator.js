@@ -4,7 +4,7 @@ import { Text } from 'native-base';
 
 import { withStyle } from 'theme';
 
-@withStyle('Sparkle.MessageListLoadIndicator', {
+@withStyle('Sparkle.LoadMoreIndicator', {
   height: 50,
   alignItems: 'center',
   justifyContent: 'center',
@@ -14,7 +14,7 @@ import { withStyle } from 'theme';
     fontSize: 14,
   }
 })
-export default class LoadIndicator extends PureComponent {
+export default class LoadMoreIndicator extends PureComponent {
   render() {
     const { style, time } = this.props;
 

@@ -1,29 +1,68 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Card,
-  CardItem,
-  Text,
-} from 'native-base';
+import { Card, CardItem, Text, View } from 'native-base';
 
+import { withStyle } from 'theme';
+import Placeholder from '../Placeholder';
+
+@withStyle('Sparkle.FieldSection', {
+  'Sparkle.Placeholder': {
+    'NativeBase.Card': {
+      'NativeBase.CardItem': {
+        '.header': {
+          'NativeBase.Text': {
+            backgroundColor: '#F8F9FB',
+            borderRadius: 4,
+            width: 150,
+          },
+        },
+
+        '.cardBody': {
+          alignItems: 'stretch',
+
+          'NativeBase.ViewNB': {
+            backgroundColor: '#F8F9FB',
+            borderRadius: 4,
+            height: 20,
+            marginBottom: 10,
+          },
+        },
+      },
+    },
+  },
+})
 export default class FieldSection extends PureComponent {
   static propTypes = {
-    label: PropTypes.string.isRequired,
+    label: PropTypes.string,
+    loading: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    label: "",
+    loading: false,
   };
 
   render() {
-    const { children, label } = this.props;
+    const { children, style, loading, label } = this.props;
 
-    return (
-      <Card transparent>
+    const section = (
+      <Card transparent style={style}>
         <CardItem header padder>
           <Text>{label}</Text>
         </CardItem>
 
-        <CardItem cardBody highlight horizontalPadder>
-          {children}
+        <CardItem cardBody highlight={!loading} horizontalPadder>
+          {!loading ? children : (
+            <Fragment>
+              <View />
+              <View />
+              <View />
+            </Fragment>
+          )}
         </CardItem>
       </Card>
     );
+
+    return !loading ? section : <Placeholder>{section}</Placeholder>;
   }
 }

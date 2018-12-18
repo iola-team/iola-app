@@ -8,13 +8,14 @@ export default class TabNavigatorView extends Component {
   static defaultProps = {
     renderHeader: () => null,
     renderTabs: props => <TabBar {...props} />,
+    tabBarHeight: TabBar.HEIGHT,
   };
 
   state = {
     scrollOffset: 0,
   };
 
-  renderHeader = (props) => {
+  renderHeader = (props = {}) => {
     const { renderHeader, navigation } = this.props;
 
     return renderHeader({
@@ -23,7 +24,7 @@ export default class TabNavigatorView extends Component {
     });
   };
 
-  renderTabs = (props) => {
+  renderTabs = (props = {}) => {
     const { renderTabs, ...restProps } = this.props;
 
     return renderTabs({
@@ -35,21 +36,14 @@ export default class TabNavigatorView extends Component {
   onScrollEnd = (scrollOffset) => this.setState({ scrollOffset });
 
   render() {
-    const { navigation: { state }, renderScene } = this.props;
+    const { navigation: { state }, ...restProps } = this.props;
     const { scrollOffset } = this.state;
     const commonProps = {
-      /**
-       * Data
-       */
+      ...restProps,
       scrollOffset,
-
-      /**
-       * Callbacks
-       */
       onScrollEnd: this.onScrollEnd,
       renderTabs: this.renderTabs,
       renderHeader: this.renderHeader,
-      renderScene,
     };
 
     return (

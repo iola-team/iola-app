@@ -592,18 +592,4 @@ const WithData = ({ userId: id }) => {
 stories.add('With filled data', () => <WithData userId="User:1" />);
 stories.add('No data', () => <WithData userId="User:2" />);
 stories.add('With async data', () => <WithData userId="User:3" />);
-stories.add('Loading data', () => {
-  const id = 'User:1';
-
-  return (
-    <Query query={fieldsQuery} variables={{ id }} pollInterval={1000}>
-      {({ data: fieldsData, loading }) => !loading && (
-        <ProfileFieldForm
-          fields={fieldsData.user.profile.accountType.fields}
-          values={undefined}
-          onSubmit={action('onSubmit')}
-        />
-      )}
-    </Query>
-  );
-});
+stories.add('Loading', () => <ProfileFieldForm loading />);

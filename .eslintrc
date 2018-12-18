@@ -33,8 +33,9 @@
     "react/react-in-jsx-scope": 0,
     "react/no-children-prop": 0,
     "no-nested-ternary": 1,
-    "lines-between-class-members": 0,
+    "react/jsx-one-expression-per-line": [1, { "allow": "single-child" }],
     "react/destructuring-assignment": 0,
+    "lines-between-class-members": 0,
     "prefer-destructuring": 0
   },
   "settings": {
