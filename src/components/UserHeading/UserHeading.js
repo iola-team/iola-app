@@ -114,8 +114,8 @@ export default class UserHeading extends PureComponent {
 
           <View style={styles.infoLine}>
             <Placeholder isActive={loading}>
-              <Text 
-                note 
+              <Text
+                note
                 style={loading ? [styles.placeholder, styles.headlinePlaceholder] : styles.headline}
               >
                 {loading ? ' ' : user.info.headline}

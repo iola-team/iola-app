@@ -13,6 +13,9 @@ import DashboardHeading from './DashboardHeading';
 import AvatarEdit from './AvatarEdit';
 import PhotoEdit from './PhotoEdit';
 import ImageView from './ImageView';
+import ImageComments from './ImageComments';
+import ImageCommentsConnection from './ImageComments/ImageCommentsConnection';
+import ImageCommentsList from './ImageCommentsList';
 import ProfileFieldsEdit from './ProfileFieldsEdit';
 import Chat from './Chat';
 import ChatList from './ChatList';
@@ -42,6 +45,9 @@ export {
   AvatarEdit,
   PhotoEdit,
   ImageView,
+  ImageComments,
+  ImageCommentsConnection,
+  ImageCommentsList,
   ProfileFieldsEdit,
   Chat,
   ChatList,

@@ -1,27 +1,63 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, StatusBar, Modal, Text, View } from 'react-native';
+import { Badge, Spinner } from 'native-base';
 import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-import FoundationIcon from 'react-native-vector-icons/Foundation';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
+import { propType as graphqlPropType } from 'graphql-anywhere';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import BackButton from '../BackButton';
+import UserOnlineStatus from '../UserOnlineStatus';
+import TouchableOpacity from '../TouchableOpacity';
+import ImageComments from '../ImageComments';
 
+const SpinnerContainer = connectToStyleSheet('spinnerContainer', View);
 const ModalContent = connectToStyleSheet('modalContent', View);
 const Header = connectToStyleSheet('header', View);
 const Indicator = connectToStyleSheet('indicator', Text);
 const Footer = connectToStyleSheet('footer', View);
+const NameBlock = connectToStyleSheet('nameBlock', View);
 const Name = connectToStyleSheet('name', Text);
 const Caption = connectToStyleSheet('caption', Text);
 const DateTime = connectToStyleSheet('dateTime', Text);
-const LeftBlock = connectToStyleSheet('leftBlock', View);
-const RightBlock = connectToStyleSheet('rightBlock', View);
-const ShareButton = connectToStyleSheet('footerButton', IoniconsIcon).withProps({ name: 'ios-share-alt' });
-const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withProps({ name: 'trash' });
+const ActionsBlock = connectToStyleSheet('actionsBlock', View);
+const LikeIcon = connectToStyleSheet('actionIcon', IoniconsIcon).withProps({ name: 'ios-heart-outline' });
+// const CommentIcon = connectToStyleSheet('actionIcon', EvilIcons).withProps({ name: 'comment' });
+const ShareIcon = connectToStyleSheet('actionIcon', IoniconsIcon).withProps({ name: 'ios-share-alt' });
+const ActionButton = connectToStyleSheet('actionButton', TouchableOpacity);
+const ActionText = connectToStyleSheet('actionText', Text);
+const ActionBadge = connectToStyleSheet('actionBadge', Badge);
+const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
+
+const photoCommentsTotalCountQuery = gql`
+  query photoCommentsTotalCountQuery($id: ID!) {
+    photo: node(id: $id) {
+      ...on Photo {
+        id
+        comments {
+          ...on PhotoCommentsConnection {
+            totalCount
+          }
+        }
+      }
+    }
+  }
+`;
 
 @styleSheet('Sparkle.ImageView', {
+  spinnerContainer: {
+    margin: 'auto',
+    width: '100%',
+    height: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
   modalContent: {
     // @TODO: use mixin
     flex: 1,
@@ -53,17 +89,17 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
     paddingTop: 25,
     paddingBottom: 29,
     paddingHorizontal: 17,
-    flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'rgba(46, 48, 55, 0.3)',
   },
 
-  leftBlock: {
-    flexShrink: 1,
+  nameBlock: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 
   name: {
-    paddingBottom: 7,
+    paddingRight: 7,
     fontFamily: 'SF Pro Text',
     fontSize: 16,
     fontWeight: '600',
@@ -73,6 +109,7 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
   },
 
   caption: {
+    paddingTop: 10,
     paddingBottom: 19,
     fontFamily: 'SF Pro Text',
     fontSize: 14,
@@ -81,35 +118,64 @@ const DeleteButton = connectToStyleSheet('footerButton', FoundationIcon).withPro
   },
 
   dateTime: {
+    paddingBottom: 19,
     fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 17,
     color: '#BDC0CB',
   },
 
-  rightBlock: {
-    flexShrink: 0,
-    width: (24 * 2 + 14),
+  actionsBlock: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 58,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(189, 192, 203, 0.5)',
   },
 
-  footerButton: {
-    height: 24,
-    width: 24,
-    borderWidth: 1.5,
-    borderColor: 'rgba(189, 192, 203, 0.25)',
-    borderRadius: 8,
-    textAlign: 'center',
-    lineHeight: 24,
-    fontSize: 14,
+  actionButton: {
+    flexDirection: 'row',
+  },
+
+  actionIcon: {
+    marginRight: 5,
+    fontSize: 20,
+    fontWeight: '700',
     color: '#BDC0CB',
+  },
+
+  actionText: {
+    color: '#BDC0CB',
+    fontSize: 14,
+    fontFamily: 'SF Pro Text',
+  },
+
+  actionBadge: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 7,
+    marginTop: 2,
+    height: 16,
+    backgroundColor: '#BDC0CB',
+  },
+
+  actionBadgeText: {
+    paddingVertical: 0,
+    fontSize: 12,
+    lineHeight: 58,
+    color: '#FFFFFF',
   },
 })
 export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
-    images: PropTypes.array.isRequired,
+    images: PropTypes.array.isRequired, // @TODO
+    photoCommentsTotalCountQuery: graphqlPropType(photoCommentsTotalCountQuery),
+  };
+
+  static queries = {
+    photoCommentsTotalCountQuery,
   };
 
   state = {
@@ -117,7 +183,7 @@ export default class ImageView extends Component {
     visible: false,
   };
 
-  onOpen(index) {
+  onShowImage(index) {
     this.setState({ index, visible: true });
   }
 
@@ -142,23 +208,64 @@ export default class ImageView extends Component {
   }
 
   renderFooter() {
-    const { images } = this.props;
+    const { images, styleSheet: styles } = this.props;
     const { index } = this.state;
-    const { name, caption, createdAt } = images[index];
+    const {
+      id,
+      caption,
+      createdAt,
+      user: {
+        name,
+        isOnline, // @TODO
+      },
+      totalCountLikes, // @TODO
+    } = images[index];
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
 
     return (
       <Footer>
-        <LeftBlock>
-          <Name>{name}</Name>
+        <View>
+          <NameBlock>
+            <Name>{name}</Name>
+            <UserOnlineStatus isOnline={isOnline} />
+          </NameBlock>
           <Caption>{caption}</Caption>
           <DateTime>{dateFormatted}</DateTime>
-        </LeftBlock>
-        <RightBlock>
-          <ShareButton onPress={() => alert('Share')} />
-          <DeleteButton onPress={() => alert('Delete')} />
-        </RightBlock>
+        </View>
+
+        <ActionsBlock>
+          <ActionButton onPress={() => alert('Like')}>
+            <LikeIcon />
+            <ActionText>Like</ActionText>
+            {totalCountLikes ? (
+              <ActionBadge>
+                <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
+              </ActionBadge>
+            ) : null}
+          </ActionButton>
+          <Query query={photoCommentsTotalCountQuery} variables={{ id }}>
+            {({ loading, data: { photo } }) => (loading ? null : ( // @TODO: add spinner
+              <ImageComments photoId={id} totalCount={photo.comments.totalCount}>
+                {onShowImageComments => (
+                  <TouchableOpacity onPress={onShowImageComments} style={styles.actionButton}>
+                    <EvilIcons name="comment" style={styles.actionIcon} />
+                    <Text style={styles.actionText}>Comment</Text>
+                    {!photo.comments.totalCount ? null : (
+                      <Badge style={styles.actionBadge}>
+                        <Text style={styles.actionBadgeText}>{photo.comments.totalCount}</Text>
+                      </Badge>
+                    )}
+                  </TouchableOpacity>
+                )}
+              </ImageComments>
+            ))}
+          </Query>
+          <ActionButton onPress={() => alert('Share')}>
+            <ShareIcon />
+            <ActionText>Share</ActionText>
+          </ActionButton>
+        </ActionsBlock>
       </Footer>
     );
   }
@@ -169,7 +276,7 @@ export default class ImageView extends Component {
 
     return (
       <Fragment>
-        {children(::this.onOpen)}
+        {children(::this.onShowImage)}
 
         <Modal
           visible={visible}
@@ -186,8 +293,8 @@ export default class ImageView extends Component {
               renderHeader={::this.renderHeader}
               renderIndicator={this.renderIndicator}
               renderFooter={::this.renderFooter}
-              failImageSource={{ uri: '@TODO' }}
-              loadingRender={() => null /* '@TODO' */}
+              failImageSource={{ uri: 'https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif' /* @TODO */ }}
+              loadingRender={() => <SpinnerContainer><Spinner /></SpinnerContainer>}
               footerContainerStyle={{ width: '100%' }}
               backgroundColor="rgba(46, 48, 55, 0.95)"
             />
