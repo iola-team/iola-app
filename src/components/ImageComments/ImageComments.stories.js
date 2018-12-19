@@ -13,7 +13,7 @@ import moment from 'moment';
 import { getApolloDecorator, getContentDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
 import ImageComments from './ImageComments';
-import { photoDetailsQuery } from '../ImageView';
+import { photoDetailsQuery } from '../ImageView/ImageView';
 
 const stories = storiesOf('Components/ImageComments', module);
 
