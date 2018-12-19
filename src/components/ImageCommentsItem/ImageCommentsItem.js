@@ -7,6 +7,7 @@ import moment from 'moment';
 import { withStyleSheet as styleSheet } from 'theme';
 import UserOnlineStatus from '../UserOnlineStatus';
 import UserAvatar from '../UserAvatar';
+import Placeholder from '../Placeholder';
 
 const imageCommentsItemFragment = gql`
   fragment ImageCommentsItemFragment on Comment {
@@ -88,7 +89,25 @@ export default class ImageCommentsItem extends Component {
     comment: imageCommentsItemFragment,
   };
 
+  renderPlaceholder() {
+    const { styleSheet: styles } = this.props;
+
+    return (
+      <Placeholder>
+        <View style={styles.container}>
+          <View style={styles.content}>
+            <View style={styles.nameRow} />
+            <Text style={styles.text}>test</Text>
+            <Text style={styles.createdAt}>test</Text>
+          </View>
+        </View>
+      </Placeholder>
+    );
+  }
+
   render() {
+    if (this.props.comment.id === 'placeholder') return this.renderPlaceholder();
+
     const { styleSheet: styles, comment: { id, text, createdAt, user } } = this.props;
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;

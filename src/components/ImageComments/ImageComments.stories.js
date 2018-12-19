@@ -136,7 +136,16 @@ const dataStore = (() => {
 const resolvers = {
   Query: {
     me: (root, args, { dataStore: { users } }) => find(users, { id: 'User:1' }),
-    node: (root, { id }, { dataStore: { photos } }) => find(photos, { id }),
+    node: async (root, { id }, { dataStore: { photos } }) => {
+      // This is Kostyl but it's just for Storybook
+      if (id === 'Photo:Placeholders') {
+        // await delay(3 * 1000);
+
+        return find(photos, { id: 'Photo:2' });
+      }
+
+      return find(photos, { id });
+    },
   },
 
   Mutation: {
@@ -180,7 +189,7 @@ const resolvers = {
 
   Photo: {
     async comments(photo, args) {
-      await delay(2000);
+      await delay(5000);
 
       return createConnection(photo.comments, args);
     },
@@ -192,27 +201,49 @@ stories.addDecorator(getContentDecorator({ padder: true }));
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
 // Stories
-const getComponent = photoId => (
-  <Query query={ImageView.queries.photoCommentsTotalCountQuery} variables={{ id: photoId }}>
-    {({ loading, data: { photo } }) => (loading ? null : ( // @TODO: add spinner
-      <ImageComments
-        photoId={photoId}
-        totalCount={photo.comments.totalCount}
-        onDismiss={action('onDismiss')}
-        onShow={action('onShow')}
-        onDone={action('onDone')}
-        onCancel={action('onCancel')}
-        onRequestClose={action('onRequestClose')}
-      >
-        {onShowImageComments => (
-          <Button onPress={onShowImageComments}>
-            <Text>Show Comments {photo.comments.totalCount}</Text>
-          </Button>
-        )}
-      </ImageComments>
-    ))}
-  </Query>
-);
 
-stories.add('Empty State', () => getComponent('Photo:1'));
-stories.add('Fake Comments', () => getComponent('Photo:2'));
+stories.add('Placeholders', () => (
+  <ImageComments photoId="Photo:2" totalCount={0}>
+    {onShowImageComments => (
+      <Button onPress={onShowImageComments}>
+        <Text>Show Comments (Placeholders)</Text>
+      </Button>
+    )}
+  </ImageComments>
+));
+
+stories.add('Empty State', () => (
+  <ImageComments photoId="Photo:1" totalCount={0}>
+    {onShowImageComments => (
+      <Button onPress={onShowImageComments}>
+        <Text>Show Comments (Empty State)</Text>
+      </Button>
+    )}
+  </ImageComments>
+));
+
+stories.add('Fake Comments', () => {
+  const photoId = 'Photo:2';
+
+  return (
+    <Query query={ImageView.queries.photoCommentsTotalCountQuery} variables={{ id: photoId }}>
+      {({ loading, data: { photo } }) => (loading ? null : (
+        <ImageComments
+          photoId={photoId}
+          totalCount={photo.comments.totalCount}
+          onDismiss={action('onDismiss')}
+          onShow={action('onShow')}
+          onDone={action('onDone')}
+          onCancel={action('onCancel')}
+          onRequestClose={action('onRequestClose')}
+        >
+          {onShowImageComments => (
+            <Button onPress={onShowImageComments}>
+              <Text>Show Comments {photo.comments.totalCount}</Text>
+            </Button>
+          )}
+        </ImageComments>
+      ))}
+    </Query>
+  );
+});

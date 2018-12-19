@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 
 import ImageCommentsItem from '../ImageCommentsItem';
+import Placeholder from '../Placeholder';
 import NoComments from './NoComments';
 
 const edgeFragment = gql`
@@ -77,16 +78,16 @@ export default class ImageCommentsList extends Component {
 
   render() {
     const { height, edges, loading, ...listProps } = this.props;
-
+console.log('>.. edges', edges);
     return (
       <FlatList
         {...listProps}
         ref={ref => this.flatList = ref}
         data={edges}
-        onViewableItemsChanged={this.onViewableItemsChanged}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         ListEmptyComponent={<NoComments height={height} />}
+        onViewableItemsChanged={this.onViewableItemsChanged}
       />
     );
   }

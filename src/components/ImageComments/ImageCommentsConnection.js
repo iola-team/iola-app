@@ -4,10 +4,9 @@ import { Query } from 'react-apollo';
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { propType as graphqlPropType } from 'graphql-anywhere';
-import { get } from 'lodash';
+import { get, range } from 'lodash';
 
 import ImageCommentsList from '../ImageCommentsList';
-import LoadMoreIndicator from '../LoadMoreIndicator';
 
 const photoCommentsQuery = gql`
   query photoCommentsQuery($id: ID!, $cursor: Cursor = null) {
@@ -90,17 +89,23 @@ export default class ImageCommentsConnection extends Component {
     });
   }
 
+  getPlaceholders() {
+    return range(9).map(index => ({
+      node: {
+        id: 'placeholder',
+      },
+    }));
+  }
+
   render() {
     const { photoId, height, onItemPress } = this.props;
 
     return (
       <Query query={photoCommentsQuery} variables={{ id: photoId }}>
         {({ loading, data, fetchMore, networkStatus }) => {
-          if (loading) return <LoadMoreIndicator />;
-
           const refreshing = networkStatus === NetworkStatus.refetch;
-          const edges = get(data, 'photo.comments.edges', []);
-
+          const edges = loading ? this.getPlaceholders() : get(data, 'photo.comments.edges', []);
+console.log('loading', loading);
           return (
             <ImageCommentsList
               photoId={photoId}
@@ -110,7 +115,7 @@ export default class ImageCommentsConnection extends Component {
               refreshing={refreshing}
               edges={edges}
               onRefresh={data.refetch}
-              onEndReached={() => this.handleLoadMore(data, fetchMore)}
+              onEndReached={() => loading ? null : this.handleLoadMore(data, fetchMore)}
               onEndReachedThreshold={2}
               inverted={!!edges.length}
             />
