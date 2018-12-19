@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import { has } from 'lodash';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet } from 'theme';
@@ -82,7 +84,10 @@ const imageCommentsItemFragment = gql`
 })
 export default class ImageCommentsItem extends Component {
   static propTypes = {
-    comment: fragmentProp(imageCommentsItemFragment).isRequired,
+    comment: PropTypes.oneOfType([
+      fragmentProp(imageCommentsItemFragment),
+      PropTypes.shape({ isPlaceholder: PropTypes.bool.isRequired }),
+    ]).isRequired,
   };
 
   static fragments = {
@@ -93,12 +98,16 @@ export default class ImageCommentsItem extends Component {
     const { styleSheet: styles } = this.props;
 
     return (
-      <Placeholder>
+      <Placeholder style={{ flex: 1, height: 100 }}>
         <View style={styles.container}>
-          <View style={styles.content}>
-            <View style={styles.nameRow} />
-            <Text style={styles.text}>test</Text>
-            <Text style={styles.createdAt}>test</Text>
+          {/*TODO: in progress...*/}
+          <UserAvatar style={[styles.avatar, { backgroundColor: '#E4E8EF' }]} loading />
+          <View style={[styles.content, { backgroundColor: '#E4E8EF', elevation: 0 }]}>
+            <View style={styles.nameRow}>
+              <Text style={styles.name} />
+            </View>
+            <Text style={styles.text} />
+            <Text style={styles.createdAt} />
           </View>
         </View>
       </Placeholder>
@@ -106,7 +115,7 @@ export default class ImageCommentsItem extends Component {
   }
 
   render() {
-    if (this.props.comment.id === 'placeholder') return this.renderPlaceholder();
+    if (has(this.props.comment, 'isPlaceholder')) return this.renderPlaceholder();
 
     const { styleSheet: styles, comment: { id, text, createdAt, user } } = this.props;
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();

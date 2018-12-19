@@ -13,7 +13,6 @@ import moment from 'moment';
 import { getApolloDecorator, getContentDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
 import ImageComments from './ImageComments';
-import ImageView from './ImageView';
 import { photoDetailsQuery } from '../ImageView/ImageView';
 
 const stories = storiesOf('Components/ImageComments', module);
@@ -141,7 +140,7 @@ const resolvers = {
     node: async (root, { id }, { dataStore: { photos } }) => {
       // This is Kostyl but it's just for Storybook
       if (id === 'Photo:Placeholders') {
-        // await delay(3 * 1000);
+        await delay(60 * 1000);
 
         return find(photos, { id: 'Photo:2' });
       }
@@ -205,7 +204,7 @@ stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 // Stories
 
 stories.add('Placeholders', () => (
-  <ImageComments photoId="Photo:2" totalCount={0}>
+  <ImageComments photoId="Photo:Placeholders" totalCount={0}>
     {onShowImageComments => (
       <Button onPress={onShowImageComments}>
         <Text>Show Comments (Placeholders)</Text>

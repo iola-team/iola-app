@@ -90,9 +90,13 @@ export default class ImageCommentsConnection extends Component {
   }
 
   getPlaceholders() {
-    return range(9).map(index => ({
+    const placeholderHeight = 100;
+    const count = Math.round(this.props.height / placeholderHeight);
+
+    return range(count).map(index => ({
+      key: `placeholder:${index}`,
       node: {
-        id: 'placeholder',
+        isPlaceholder: true,
       },
     }));
   }
@@ -105,7 +109,7 @@ export default class ImageCommentsConnection extends Component {
         {({ loading, data, fetchMore, networkStatus }) => {
           const refreshing = networkStatus === NetworkStatus.refetch;
           const edges = loading ? this.getPlaceholders() : get(data, 'photo.comments.edges', []);
-console.log('loading', loading);
+
           return (
             <ImageCommentsList
               photoId={photoId}

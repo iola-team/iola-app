@@ -5,7 +5,6 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 
 import ImageCommentsItem from '../ImageCommentsItem';
-import Placeholder from '../Placeholder';
 import NoComments from './NoComments';
 
 const edgeFragment = gql`
@@ -23,7 +22,16 @@ export default class ImageCommentsList extends Component {
   static propTypes = {
     height: PropTypes.number.isRequired,
     onItemPress: PropTypes.func,
-    edges: PropTypes.arrayOf(fragmentProp(edgeFragment)),
+    edges: PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        fragmentProp(edgeFragment),
+        PropTypes.shape({
+          node: PropTypes.shape({
+            isPlaceholder: PropTypes.bool.isRequired,
+          }).isRequired,
+        }),
+      ]).isRequired
+    ),
     loading: PropTypes.bool.isRequired,
   };
 
@@ -68,9 +76,7 @@ export default class ImageCommentsList extends Component {
     }
   }
 
-  extractItemKey({ node }) {
-    return node.id;
-  }
+  extractItemKey = ({ node, key }) => key || node.id;
 
   renderItem({ item: { node } }) {
     return <ImageCommentsItem comment={node} />;
@@ -78,7 +84,7 @@ export default class ImageCommentsList extends Component {
 
   render() {
     const { height, edges, loading, ...listProps } = this.props;
-console.log('>.. edges', edges);
+
     return (
       <FlatList
         {...listProps}
