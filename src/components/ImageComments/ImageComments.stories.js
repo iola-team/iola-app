@@ -12,7 +12,9 @@ import moment from 'moment';
 
 import { getApolloDecorator, getContentDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
-import { ImageComments, ImageView } from 'components';
+import ImageComments from './ImageComments';
+import ImageView from './ImageView';
+import { photoDetailsQuery } from '../ImageView/ImageView';
 
 const stories = storiesOf('Components/ImageComments', module);
 
@@ -189,7 +191,7 @@ const resolvers = {
 
   Photo: {
     async comments(photo, args) {
-      await delay(5000);
+      await delay(2000);
 
       return createConnection(photo.comments, args);
     },
@@ -226,7 +228,7 @@ stories.add('Fake Comments', () => {
   const photoId = 'Photo:2';
 
   return (
-    <Query query={ImageView.queries.photoCommentsTotalCountQuery} variables={{ id: photoId }}>
+    <Query query={photoDetailsQuery} variables={{ id: photoId }}>
       {({ loading, data: { photo } }) => (loading ? null : (
         <ImageComments
           photoId={photoId}

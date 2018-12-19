@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
 import PhotoList from '../PhotoList';
+import ImageView from '../ImageView';
 
 const userPhotosQuery = gql`
   query UserPhotosQuery($id: ID!) {
@@ -32,17 +33,22 @@ export default class UserPhotos extends Component {
 
     return (
       <Query query={userPhotosQuery} variables={{ id: userId }}>
-        {({ loading, data: { user } }) => (loading ? null : (
-          <ImageView images={user.photos.edges.map(({ node }) => ({ user, ...node }))}>
-// RR
-{onOpen => <UserPhotosCard user={user} onPress={index => onOpen(index)} />}
-            <PhotoList
-              {...props}
-              edges={loading ? [] : user.photos.edges}
-              loading={loading}
-            />
-          </ImageView>
-        ))}
+        {({ loading, data }) => {
+          const edges = loading ? [] : data.user.photos.edges;
+
+          return (
+            <ImageView edges={edges}>
+              {onShowImage => (
+                <PhotoList
+                  {...props}
+                  edges={edges}
+                  loading={loading}
+                  onPress={onShowImage}
+                />
+              )}
+            </ImageView>
+          );
+        }}
       </Query>
     );
   }
