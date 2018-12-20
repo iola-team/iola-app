@@ -2,9 +2,11 @@ import React, { PureComponent } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { View, Button, Text, H2 } from 'native-base';
+import { View, Text, H2 } from 'native-base';
+import { Animated, StyleSheet } from 'react-native';
 
 import { withStyleSheet } from 'theme';
+import ScreenHeader from '../ScreenHeader';
 import UserAvatar from '../UserAvatar';
 import Placeholder from '../Placeholder';
 
@@ -22,20 +24,18 @@ const userFragment = gql`
   ${UserAvatar.fragments.user}
 `;
 
-const headerHeight = 330;
+const headerHeight = 350 + ScreenHeader.HEIGHT;
+
 @withStyleSheet('Sparkle.UserHeading', {
   root: {
     alignItems: 'center',
     overflow: 'hidden',
     height: headerHeight,
+    paddingTop: ScreenHeader.HEIGHT,
   },
 
   avatar: {
     marginBottom: 25,
-  },
-
-  buttons: {
-    flexDirection: 'row',
   },
 
   info: {
@@ -64,10 +64,23 @@ const headerHeight = 330;
     width: 150,
   },
 
-  button: {
-    width: '30%',
-    alignSelf: 'center',
-    marginHorizontal: 5,
+  toolbar: {
+
+  },
+
+  navBarBg: {
+    ...StyleSheet.absoluteFillObject,
+    bottom: null,
+    height: ScreenHeader.HEIGHT,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+  },
+
+  navBarBgText: {
+    fontWeight: '600',
+    fontSize: 16,
+    color: '#585A61',
   },
 
   'NativeBase.ViewNB': {
@@ -85,22 +98,49 @@ export default class UserHeading extends PureComponent {
   };
 
   static propTypes = {
+    shrinkAnimationHeight: PropTypes.number.isRequired,
+    shrinkAnimatedValue: PropTypes.object.isRequired,
+
     user: fragmentProp(userFragment),
     loading: PropTypes.bool,
-    onChatPress: PropTypes.func,
   }
 
   static defaultProps = {
     user: null,
     loading: false,
-    onChatPress: () => {},
   };
 
   render() {
-    const { style, styleSheet: styles, user, loading, onChatPress } = this.props;
+    const { 
+      style, 
+      styleSheet: styles, 
+      user, 
+      loading, 
+      children,
+      shrinkAnimatedValue,
+      shrinkAnimationHeight,
+      ...props 
+    } = this.props;
+
+    const navBarStyle = {
+      opacity: shrinkAnimatedValue.interpolate({
+        inputRange: [0, 0.3],
+        outputRange: [1, 0],
+        extrapolate: 'clamp',
+      }),
+      transform: [
+        {
+          translateY: shrinkAnimatedValue.interpolate({
+            inputRange: [0, 1],
+            outputRange: [shrinkAnimationHeight, 0],
+            extrapolate: 'clamp',
+          }),
+        },
+      ],
+    };
 
     return (
-      <View style={[styles.root, style]}>
+      <View style={[styles.root, style]} {...props}>
         <UserAvatar style={styles.avatar} loading={loading} user={user} size="large" />
 
         <View style={styles.info}>
@@ -124,15 +164,13 @@ export default class UserHeading extends PureComponent {
           </View>
         </View>
 
-        <View style={styles.buttons}>
-          <Button block style={styles.button} onPress={onChatPress}>
-            <Text>Chat</Text>
-          </Button>
-
-          <Button light bordered secondary block style={styles.button} onPress={() => {}}>
-            <Text>Friends</Text>
-          </Button>
+        <View style={styles.toolbar}>
+          {children}
         </View>
+
+        <Animated.View style={[styles.navBarBg, navBarStyle]}>
+          <Text style={styles.navBarBgText}>{!loading && user.name}</Text>
+        </Animated.View>
       </View>
     );
   }

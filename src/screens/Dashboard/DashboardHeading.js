@@ -6,8 +6,8 @@ import { UserHeading } from 'components';
 import * as routes from '../roteNames';
 
 const userQuery = gql`
-  query UserDetailsQuery($userId: ID!) {
-    user: node(id: $userId) {
+  query DashboardHeadingQuery {
+    user: me {
       id
       ...UserHeading_user
     }
@@ -16,14 +16,14 @@ const userQuery = gql`
   ${UserHeading.fragments.user}
 `;
 
-export default class UserScreenHead extends PureComponent {
+export default class DashboardHeading extends PureComponent {
   static HEIGHT = UserHeading.HEIGHT;
 
   render() {
-    const { navigation: { goBack, navigate, state: { params } }, ...props } = this.props;
+    const { navigation: { goBack, navigate }, ...props } = this.props;
 
     return (
-      <Query query={userQuery} variables={{ userId: params.id }}>
+      <Query query={userQuery}>
         {({ data: { user }, loading }) => (
           <UserHeading {...props} highlight loading={loading} user={user} />
         )}
