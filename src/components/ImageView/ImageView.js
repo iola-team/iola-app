@@ -39,7 +39,10 @@ const edgeFragment = gql`
   fragment ImageView_edge on PhotoEdge {
     node {
       id
-      ...PhotoListItem_photo
+      ...on Photo {
+        id
+        url
+      }
     }
   }
 
