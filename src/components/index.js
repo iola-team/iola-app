@@ -12,6 +12,7 @@ import UserHeading from './UserHeading';
 import DashboardHeading from './DashboardHeading';
 import AvatarEdit from './AvatarEdit';
 import PhotoEdit from './PhotoEdit';
+import Icon from './Icon';
 import ImageView from './ImageView';
 import ImageComments from './ImageComments';
 import ImageCommentsConnection from './ImageComments/ImageCommentsConnection';
@@ -44,6 +45,7 @@ export {
   DashboardHeading,
   AvatarEdit,
   PhotoEdit,
+  Icon,
   ImageView,
   ImageComments,
   ImageCommentsConnection,

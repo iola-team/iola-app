@@ -160,5 +160,8 @@
   },
   "resolutions": {
     "native-base-shoutem-theme": "github:greyexpert/theme#master"
+  },
+  "rnpm": {
+    "assets": ["resources/fonts"]
   }
 }
