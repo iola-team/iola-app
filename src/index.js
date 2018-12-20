@@ -19,10 +19,6 @@ class ApplicationRoot extends Component {
 
   apiClient = null;
 
-  constructor(props) {
-    super(props);
-  }
-
   async init() {
     this.apiClient = await createApiClient();
   }

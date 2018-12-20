@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { Container, Content, View, Icon, Spinner } from 'native-base';
+import { Container, Content, View, Spinner } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import {
@@ -10,6 +10,7 @@ import {
   UserFriendsCard,
   UserPhotosCard,
   UserPhotos,
+  Icon,
 } from 'components';
 import * as routes from '../roteNames';
 import LogoutButton from './LogoutButton';
@@ -34,7 +35,7 @@ import LogoutButton from './LogoutButton';
 export default class Dashboard extends Component {
   static navigationOptions = {
     tabBarIcon: ({ focused, tintColor }) => (
-      <Icon name="ios-settings-outline" style={{ color: tintColor }} />
+      <Icon name="dashboard-bar" style={{ color: tintColor, fontSize: 20 }} />
     ),
 
     headerStyle: {
