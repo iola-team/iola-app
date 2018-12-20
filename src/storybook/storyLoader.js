@@ -18,6 +18,7 @@ function loadStories() {
   require('../components/FieldSection/FieldSection.stories');
   require('../components/FieldView/FieldView.stories');
   require('../components/FriendList/FriendList.stories');
+  require('../components/Icon/Icon.stories');
   require('../components/Image/Image.stories');
   require('../components/ImageComments/ImageComments.stories');
   require('../components/ImageCommentsItem/ImageCommentsItem.stories');
@@ -68,6 +69,7 @@ const stories = [
   '../components/FieldSection/FieldSection.stories',
   '../components/FieldView/FieldView.stories',
   '../components/FriendList/FriendList.stories',
+  '../components/Icon/Icon.stories',
   '../components/Image/Image.stories',
   '../components/ImageComments/ImageComments.stories',
   '../components/ImageCommentsItem/ImageCommentsItem.stories',
