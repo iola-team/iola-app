@@ -90,13 +90,14 @@ export default class ImageCommentsConnection extends Component {
   }
 
   getPlaceholders() {
-    const placeholderHeight = 100;
+    const placeholderHeight = 88 + 8; // @TODO(x2): imageCommentHeight theme variable?
     const count = Math.round(this.props.height / placeholderHeight);
 
     return range(count).map(index => ({
       key: `placeholder:${index}`,
       node: {
         isPlaceholder: true,
+        opacity: 1 - (1 / count * index),
       },
     }));
   }

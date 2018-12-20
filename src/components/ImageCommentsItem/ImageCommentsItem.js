@@ -81,12 +81,32 @@ const imageCommentsItemFragment = gql`
     lineHeight: 16,
     color: '#BDC0CB',
   },
+
+  placeholderContainer: {
+    flex: 1,
+    height: 88, // @TODO(x2): imageCommentHeight theme variable?
+  },
+
+  placeholderContent: {
+    backgroundColor: '#E4E8EF',
+    elevation: 0,
+  },
+
+  placeholderAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 8,
+    backgroundColor: '#E4E8EF',
+  },
 })
 export default class ImageCommentsItem extends Component {
   static propTypes = {
     comment: PropTypes.oneOfType([
       fragmentProp(imageCommentsItemFragment),
-      PropTypes.shape({ isPlaceholder: PropTypes.bool.isRequired }),
+      PropTypes.shape({
+        isPlaceholder: PropTypes.bool.isRequired,
+        opacity: PropTypes.number.isRequired,
+      }),
     ]).isRequired,
   };
 
@@ -95,20 +115,17 @@ export default class ImageCommentsItem extends Component {
   };
 
   renderPlaceholder() {
-    const { styleSheet: styles } = this.props;
+    const { styleSheet: styles, comment: { opacity } } = this.props;
 
     return (
-      <Placeholder style={{ flex: 1, height: 100 }}>
-        <View style={styles.container}>
-          {/*TODO: in progress...*/}
-          <UserAvatar style={[styles.avatar, { backgroundColor: '#E4E8EF' }]} loading />
-          <View style={[styles.content, { backgroundColor: '#E4E8EF', elevation: 0 }]}>
-            <View style={styles.nameRow}>
-              <Text style={styles.name} />
-            </View>
-            <Text style={styles.text} />
-            <Text style={styles.createdAt} />
+      <Placeholder style={[styles.container, styles.placeholderContainer, { opacity }]}>
+        <View style={[styles.avatar, styles.placeholderAvatar]} />
+        <View style={[styles.content, styles.placeholderContent]}>
+          <View style={styles.nameRow}>
+            <Text style={styles.name} />
           </View>
+          <Text style={styles.text} />
+          <Text style={styles.createdAt} />
         </View>
       </Placeholder>
     );
