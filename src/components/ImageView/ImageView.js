@@ -7,6 +7,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
@@ -32,6 +33,18 @@ const ActionButton = connectToStyleSheet('actionButton', TouchableOpacity);
 const ActionText = connectToStyleSheet('actionText', Text);
 const ActionBadge = connectToStyleSheet('actionBadge', Badge);
 const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
+
+const edgeFragment = gql`
+  fragment ImageView_edge on PhotoEdge {
+    node {
+      id
+      ...on Photo {
+        id
+        url
+      }
+    }
+  }
+`;
 
 export const photoDetailsQuery = gql`
   query photoDetailsQuery($id: ID!) {
@@ -176,7 +189,9 @@ export const photoDetailsQuery = gql`
 export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
-    edges: PropTypes.array.isRequired,
+    edges: PropTypes.arrayOf(
+      fragmentProp(edgeFragment).isRequired
+    ).isRequired,
   };
 
   state = {
@@ -184,7 +199,7 @@ export default class ImageView extends Component {
     visible: false,
   };
 
-  onShowImage(index) {
+  onShowImage({ item, index }) {
     this.setState({ index, visible: true });
   }
 

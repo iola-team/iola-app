@@ -14,11 +14,6 @@ const edgeFragment = gql`
     node {
       id
       ...PhotoListItem_photo
-#// RR
-#user {
-#  id
-#  name
-#}
     }
   }
 
@@ -41,26 +36,30 @@ export default class PhotoList extends Component {
       fragmentProp(edgeFragment).isRequired
     ).isRequired,
     loading: PropTypes.bool,
-    onPress: PropTypes.func,
+    onItemPress: PropTypes.func,
     noContentText: PropTypes.string,
     noContentStyle: PropTypes.object,
   };
 
   static defaultProps = {
     loading: false,
-    onPress: () => null,
+    onItemPress: () => null,
     noContentText: null,
     noContentStyle: null,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
 
-  renderItem = ({ item: { node, opacity }, index }) => {
-    const { styleSheet, onPress } = this.props;
+  renderItem = ({ item, index }) => {
+    const { styleSheet, onItemPress } = this.props;
+    const { node, opacity } = item;
     const opacityStyle = opacity && { opacity };
 
     return (
-      <TouchableOpacity onPress={() => onPress(index)} style={[opacityStyle, styleSheet.item]}>
+      <TouchableOpacity
+        onPress={() => onItemPress({ item, index })}
+        style={[opacityStyle, styleSheet.item]}
+      >
         <Item photo={node} />
       </TouchableOpacity>
     );

@@ -43,7 +43,7 @@ export default class UserPhotos extends Component {
                   {...props}
                   edges={edges}
                   loading={loading}
-                  onPress={onShowImage}
+                  onItemPress={onShowImage}
                 />
               )}
             </ImageView>
