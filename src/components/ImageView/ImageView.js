@@ -5,7 +5,7 @@ import { Badge, Spinner } from 'native-base';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { propType as graphqlPropType } from 'graphql-anywhere';
+import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
@@ -29,15 +29,34 @@ const ActionText = connectToStyleSheet('actionText', Text);
 const ActionBadge = connectToStyleSheet('actionBadge', Badge);
 const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
 
-const photoCommentsTotalCountQuery = gql`
-  query photoCommentsTotalCountQuery($id: ID!) {
+const edgeFragment = gql`
+  fragment ImageView_edge on PhotoEdge {
+    node {
+      id
+      ...on Photo {
+        id
+        url
+      }
+    }
+  }
+`;
+
+export const photoDetailsQuery = gql`
+  query photoDetailsQuery($id: ID!) {
     photo: node(id: $id) {
       ...on Photo {
         id
+        url
+        caption
+        createdAt
+
+        user {
+          id
+          name
+        }
+
         comments {
-          ...on PhotoCommentsConnection {
-            totalCount
-          }
+          totalCount
         }
       }
     }
@@ -167,12 +186,9 @@ const photoCommentsTotalCountQuery = gql`
 export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
-    images: PropTypes.array.isRequired, // @TODO
-    photoCommentsTotalCountQuery: graphqlPropType(photoCommentsTotalCountQuery),
-  };
-
-  static queries = {
-    photoCommentsTotalCountQuery,
+    edges: PropTypes.arrayOf(
+      fragmentProp(edgeFragment).isRequired
+    ).isRequired,
   };
 
   state = {
@@ -180,7 +196,7 @@ export default class ImageView extends Component {
     visible: false,
   };
 
-  onShowImage(index) {
+  onShowImage({ item, index }) {
     this.setState({ index, visible: true });
   }
 
@@ -205,71 +221,83 @@ export default class ImageView extends Component {
   }
 
   renderFooter() {
-    const { images, styleSheet: styles } = this.props;
+    const { styleSheet: styles, edges } = this.props;
     const { index } = this.state;
-    const {
-      id,
-      caption,
-      createdAt,
-      user: {
-        name,
-        isOnline, // @TODO
-      },
-      totalCountLikes, // @TODO
-    } = images[index];
-    const date = moment.duration(moment(createdAt).diff(moment())).humanize();
-    const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
+    const { node: { id } } = edges[index];
 
     return (
-      <Footer>
-        <View>
-          <NameBlock>
-            <Name>{name}</Name>
-            <UserOnlineStatus isOnline={isOnline} />
-          </NameBlock>
-          <Caption>{caption}</Caption>
-          <DateTime>{dateFormatted}</DateTime>
-        </View>
+      <Query query={photoDetailsQuery} variables={{ id }}>
+        {({ loading, data }) => {
+          if (loading) return null; // @TODO: add spinner
 
-        <ActionsBlock>
-          <Query query={photoCommentsTotalCountQuery} variables={{ id }}>
-            {({ loading, data: { photo } }) => (loading ? null : ( // @TODO: add spinner
-              <ImageComments photoId={id} totalCount={photo.comments.totalCount}>
-                {onShowImageComments => (
-                  <TouchableOpacity
-                    onPress={onShowImageComments}
-                    style={[styles.actionButton, styles.buttonComments]}
-                  >
-                    <Icon name="chats-bar" style={styles.actionIcon} />
-                    <Text style={styles.actionText}>Comment</Text>
-                    {!photo.comments.totalCount ? null : (
-                      <Badge style={styles.actionBadge}>
-                        <Text style={styles.actionBadgeText}>{photo.comments.totalCount}</Text>
-                      </Badge>
-                    )}
-                  </TouchableOpacity>
-                )}
-              </ImageComments>
-            ))}
-          </Query>
+          const {
+            id,
+            caption,
+            createdAt,
+            user: {
+              name,
+              // isOnline, // @TODO
+            },
+            comments: {
+              totalCount,
+            },
+            // totalCountLikes, // @TODO
+          } = data.photo;
+          const isOnline = false; // @TODO
+          const totalCountLikes = 0; // @TODO
+          const date = moment.duration(moment(createdAt).diff(moment())).humanize();
+          const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
 
-          <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
-            <Icon name="cancel" style={styles.actionIcon} />
-            <ActionText>Like</ActionText>
-            {totalCountLikes ? (
-              <ActionBadge>
-                <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
-              </ActionBadge>
-            ) : null}
-          </TouchableOpacity>
-        </ActionsBlock>
-      </Footer>
+          return (
+            <Footer>
+              <View>
+                <NameBlock>
+                  <Name>{name}</Name>
+                  <UserOnlineStatus isOnline={isOnline} />
+                </NameBlock>
+                <Caption>{caption}</Caption>
+                <DateTime>{dateFormatted}</DateTime>
+              </View>
+
+              <ActionsBlock>
+                <ImageComments photoId={id} totalCount={totalCount}>
+                  {onShowImageComments => (
+                    <TouchableOpacity
+                      onPress={onShowImageComments}
+                      style={[styles.actionButton, styles.buttonComments]}
+                    >
+                      <Icon name="chats-bar" style={styles.actionIcon} />
+                      <Text style={styles.actionText}>Comment</Text>
+                      {!totalCount ? null : (
+                        <Badge style={styles.actionBadge}>
+                          <Text style={styles.actionBadgeText}>{totalCount}</Text>
+                        </Badge>
+                      )}
+                    </TouchableOpacity>
+                  )}
+                </ImageComments>
+
+                <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
+                  <Icon name="cancel" style={styles.actionIcon} />
+                  <ActionText>Like</ActionText>
+                  {totalCountLikes ? (
+                    <ActionBadge>
+                      <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
+                    </ActionBadge>
+                  ) : null}
+                </TouchableOpacity>
+              </ActionsBlock>
+            </Footer>
+          );
+        }}
+      </Query>
     );
   }
 
   render() {
-    const { children, images } = this.props;
+    const { edges, children } = this.props;
     const { index, visible } = this.state;
+    const imageUrls = edges.map(({ node: { url } }) => ({ url }));
 
     return (
       <Fragment>
@@ -283,7 +311,7 @@ export default class ImageView extends Component {
         >
           <ModalContent>
             <ImageViewer
-              imageUrls={images}
+              imageUrls={imageUrls}
               index={index}
               onChange={::this.onChange}
               onSwipeDown={::this.onClose}

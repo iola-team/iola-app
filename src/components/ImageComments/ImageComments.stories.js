@@ -12,7 +12,8 @@ import moment from 'moment';
 
 import { getApolloDecorator, getContentDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
-import { ImageComments, ImageView } from 'components';
+import ImageComments from './ImageComments';
+import { photoDetailsQuery } from '../ImageView/ImageView';
 
 const stories = storiesOf('Components/ImageComments', module);
 
@@ -193,7 +194,7 @@ stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
 // Stories
 const getComponent = photoId => (
-  <Query query={ImageView.queries.photoCommentsTotalCountQuery} variables={{ id: photoId }}>
+  <Query query={photoDetailsQuery} variables={{ id: photoId }}>
     {({ loading, data: { photo } }) => (loading ? null : ( // @TODO: add spinner
       <ImageComments
         photoId={photoId}
