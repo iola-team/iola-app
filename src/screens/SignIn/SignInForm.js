@@ -15,7 +15,7 @@ const CommonErrorText = connectToStyleSheet('commonErrorText', Text);
 const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
 const SubmitButton = connectToStyleSheet('submitButton', Button);
 
-readTokenQuery = gql`
+const readTokenQuery = gql`
   {
     auth @client {
       token

@@ -96,8 +96,8 @@ export default async () => {
   const debug = false;
 
   /**
-   * TODO: Review the app logic to decide if query batching is needed to be enabled back 
-   * 
+   * TODO: Review the app logic to decide if query batching is needed to be enabled back
+   *
    * For now I disabled query batching, since we use manual batching technique such as fragments composition.
    */
   const enableBatching = false;
@@ -123,7 +123,7 @@ export default async () => {
     }
   });
 
-  
+
   if (enableBatching) {
     const batchHttpLink = new BatchHttpLink({
       uri: queryUri,
