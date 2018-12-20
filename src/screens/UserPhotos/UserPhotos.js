@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
-import { PhotoList } from 'components';
+import { PhotoList, ImageView } from 'components';
 
 const userPhotosQuery = gql`
   query UserPhotosQuery($id: ID!) {
@@ -45,15 +45,24 @@ export default class UserPhotos extends PureComponent {
 
     return (
       <Query skip={!isFocused} query={userPhotosQuery} variables={{ id }}>
-        {({ loading, data }) => (
-          <PhotoList
-            contentContainerStyle={styles.list}
-            edges={loading || !isFocused ? [] : data.user.photos.edges}
-            loading={loading || !isFocused}
-            noContentText="No photos"
-            noContentStyle={styles.noContent}
-          />
-        )}
+        {({ loading, data }) => {
+          const edges = loading || !isFocused ? [] : data.user.photos.edges;
+
+          return (
+            <ImageView edges={edges}>
+              {onShowImage => (
+                <PhotoList
+                  contentContainerStyle={styles.list}
+                  edges={edges}
+                  loading={loading || !isFocused}
+                  onItemPress={onShowImage}
+                  noContentText="No photos"
+                  noContentStyle={styles.noContent}
+                />
+              )}
+            </ImageView>
+          );
+        }}
       </Query>
     );
   }

@@ -12,6 +12,7 @@ import { getApolloDecorator, getContentDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
 import ImageView from './ImageView';
 import TouchableOpacity from '../TouchableOpacity';
+import PhotoList from '../PhotoList';
 
 const stories = storiesOf('Components/ImageView', module);
 
@@ -96,28 +97,19 @@ const typeDefs = gql`
 `;
 
 const userPhotosQuery = gql`
-  query userPhotosQuery {
+  query UserPhotosQuery {
     user: me {
       ...on User {
         photos {
           edges {
-            node {
-              ...on Photo {
-                id
-                url
-                caption
-                createdAt
-                user {
-                  id
-                  name
-                }
-              }
-            }
+            ...PhotoList_edge
           }
         }
       }
     }
   }
+
+  ${PhotoList.fragments.edge}
 `;
 
 const dataStore = (() => {
@@ -205,17 +197,20 @@ stories.add('Default', () => {
         if (loading) return null;
 
         const { user: { photos: { edges } } } = data;
-        const photos = edges.map(edge => ({ ...edge.node }));
 
         return (
-          <ImageView images={photos}>
+          <ImageView edges={edges}>
             {onShowImage => (
               <View style={styles.view}>
-                {photos.map(({ id, url }, index) => (
-                  <TouchableOpacity key={id} onPress={() => onShowImage(index)}>
-                    <Image source={{ uri: url }} style={styles.image} />
-                  </TouchableOpacity>
-                ))}
+                {edges.map((item, index) => {
+                  const { node: { id, url } } = item;
+
+                  return (
+                    <TouchableOpacity key={id} onPress={() => onShowImage({ item, index })}>
+                      <Image source={{ uri: url }} style={styles.image} />
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
             )}
           </ImageView>

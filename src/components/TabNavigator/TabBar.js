@@ -3,7 +3,7 @@ import { View as ViewRN } from 'react-native';
 import { Text, View } from 'native-base';
 
 import { withStyle } from 'theme';
-import { TouchableOpacity } from 'components';
+import TouchableOpacity from '../TouchableOpacity';
 
 @withStyle('Sparkle.TabBar', {
   backgroundColor: '#F8F9FB',
@@ -43,8 +43,8 @@ export default class TabBar extends Component {
       <ViewRN style={style}>
         {
           state.routes.map((route, index) => (
-            <TouchableOpacity 
-              key={route.key} 
+            <TouchableOpacity
+              key={route.key}
               primary={state.index === index}
               onPress={() => onTabPress({ route })}
             >

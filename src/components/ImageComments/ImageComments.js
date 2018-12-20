@@ -11,7 +11,6 @@ import Avatar from '../UserAvatar';
 import Modal from '../Modal';
 import ChatFooter from '../ChatFooter';
 import ImageCommentsConnection from './ImageCommentsConnection';
-import ImageView from '../ImageView';
 
 const getModalHeight = () => {
   const { height } = Dimensions.get('window');
@@ -39,6 +38,19 @@ const addPhotoCommentMutation = gql`
         id
         text
         createdAt
+      }
+    }
+  }
+`;
+
+const updateCachePhotoCommentsTotalCountQuery = gql`
+  query updateCachePhotoCommentsTotalCountQuery($id: ID!) {
+    photo: node(id: $id) {
+      ...on Photo {
+        id
+        comments {
+          totalCount
+        }
       }
     }
   }
@@ -178,7 +190,7 @@ export default class ImageComments extends Component {
         });
 
         cache.writeQuery({
-          query: ImageView.queries.photoCommentsTotalCountQuery,
+          query: updateCachePhotoCommentsTotalCountQuery,
           variables: { id: photoId },
           data: {
             photo: {
