@@ -7,6 +7,7 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
@@ -14,6 +15,7 @@ import BackButton from '../BackButton';
 import UserOnlineStatus from '../UserOnlineStatus';
 import TouchableOpacity from '../TouchableOpacity';
 import ImageComments from '../ImageComments';
+import PhotoList from '../PhotoList';
 
 const SpinnerContainer = connectToStyleSheet('spinnerContainer', View);
 const ModalContent = connectToStyleSheet('modalContent', View);
@@ -176,7 +178,9 @@ export const photoDetailsQuery = gql`
 export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
-    edges: PropTypes.array.isRequired,
+    edges: PropTypes.arrayOf(
+      fragmentProp(PhotoList.fragments.edge).isRequired
+    ).isRequired,
   };
 
   state = {

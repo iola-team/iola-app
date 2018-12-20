@@ -14,11 +14,6 @@ const edgeFragment = gql`
     node {
       id
       ...PhotoListItem_photo
-#// RR
-#user {
-#  id
-#  name
-#}
     }
   }
 
