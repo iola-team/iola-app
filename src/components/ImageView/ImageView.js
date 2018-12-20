@@ -15,7 +15,7 @@ import BackButton from '../BackButton';
 import UserOnlineStatus from '../UserOnlineStatus';
 import TouchableOpacity from '../TouchableOpacity';
 import ImageComments from '../ImageComments';
-import PhotoList from '../PhotoList';
+import Item from '../PhotoListItem';
 
 const SpinnerContainer = connectToStyleSheet('spinnerContainer', View);
 const ModalContent = connectToStyleSheet('modalContent', View);
@@ -34,6 +34,17 @@ const ActionButton = connectToStyleSheet('actionButton', TouchableOpacity);
 const ActionText = connectToStyleSheet('actionText', Text);
 const ActionBadge = connectToStyleSheet('actionBadge', Badge);
 const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
+
+const edgeFragment = gql`
+  fragment ImageView_edge on PhotoEdge {
+    node {
+      id
+      ...PhotoListItem_photo
+    }
+  }
+
+  ${Item.fragments.photo}
+`;
 
 export const photoDetailsQuery = gql`
   query photoDetailsQuery($id: ID!) {
@@ -179,7 +190,7 @@ export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     edges: PropTypes.arrayOf(
-      fragmentProp(PhotoList.fragments.edge).isRequired
+      fragmentProp(edgeFragment).isRequired
     ).isRequired,
   };
 
