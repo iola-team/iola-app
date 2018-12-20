@@ -199,7 +199,7 @@ export default class ImageView extends Component {
     visible: false,
   };
 
-  onShowImage(index) {
+  onShowImage({ item, index }) {
     this.setState({ index, visible: true });
   }
 

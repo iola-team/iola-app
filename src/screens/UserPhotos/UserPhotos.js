@@ -55,7 +55,7 @@ export default class UserPhotos extends PureComponent {
                   contentContainerStyle={styles.list}
                   edges={edges}
                   loading={loading || !isFocused}
-                  onPress={onShowImage}
+                  onItemPress={onShowImage}
                   noContentText="No photos"
                   noContentStyle={styles.noContent}
                 />

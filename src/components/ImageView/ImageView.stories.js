@@ -202,11 +202,15 @@ stories.add('Default', () => {
           <ImageView edges={edges}>
             {onShowImage => (
               <View style={styles.view}>
-                {edges.map(({ node: { id, url } }, index) => (
-                  <TouchableOpacity key={id} onPress={() => onShowImage(index)}>
-                    <Image source={{ uri: url }} style={styles.image} />
-                  </TouchableOpacity>
-                ))}
+                {edges.map((item, index) => {
+                  const { node: { id, url } } = item;
+
+                  return (
+                    <TouchableOpacity key={id} onPress={() => onShowImage({ item, index })}>
+                      <Image source={{ uri: url }} style={styles.image} />
+                    </TouchableOpacity>
+                  );
+                })}
               </View>
             )}
           </ImageView>
