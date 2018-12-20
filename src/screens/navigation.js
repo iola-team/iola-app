@@ -41,6 +41,8 @@ const TabsNavigator = createBottomTabNavigator({
     [routes.DASHBOARD_PHOTOS]: MyPhotos,
     [routes.DASHBOARD_INFO]: MyInfo,
     [routes.DASHBOARD_FRIENDS]: MyFriends,
+  }, {
+    bottomBarHeight: BottomTabBar.HEIGHT,
   }),
 }, {
   initialRouteName: routes.USERS,
