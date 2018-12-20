@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -58,6 +57,9 @@
 		F15DEF5D445A4987BBD477C4 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D326FFABCC164535865AFB59 /* Foundation.ttf */; };
 		F8949665A8F243DBBDA56A4B /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D73007E6A214749975BBF37 /* Roboto.ttf */; };
 		FD4201197F8C460D9F58A484 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C46EC94349684473AF8A2CEB /* libSplashScreen.a */; };
+		87CE1880770940C4BFAB2AB7 /* iola-icons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 51A80F30B72343B28D9DD282 /* iola-icons.ttf */; };
+		DDEE899FF9EA4FC58B7EEBDB /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A11719A3B5434562AD6DDD16 /* Feather.ttf */; };
+		252F535550444260BEED2DBA /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DAD9443F3F141AE8BD1543E /* MaterialCommunityIcons.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -445,6 +447,9 @@
 		DC96EC7B409C4DCDA54BDE45 /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		F364659958D74750879F025B /* libimageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libimageCropPicker.a; sourceTree = "<group>"; };
 		FC90654E1573494DA84B1190 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
+		51A80F30B72343B28D9DD282 /* iola-icons.ttf */ = {isa = PBXFileReference; name = "iola-icons.ttf"; path = "../resources/fonts/iola-icons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		A11719A3B5434562AD6DDD16 /* Feather.ttf */ = {isa = PBXFileReference; name = "Feather.ttf"; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		2DAD9443F3F141AE8BD1543E /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; name = "MaterialCommunityIcons.ttf"; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -712,6 +717,9 @@
 				4B5803346B094F21B4EE0488 /* SimpleLineIcons.ttf */,
 				5BE8E6287D18466DBE8D80CD /* Zocial.ttf */,
 				89C315A20D4341DFABE335DC /* OFL.txt */,
+				51A80F30B72343B28D9DD282 /* iola-icons.ttf */,
+				A11719A3B5434562AD6DDD16 /* Feather.ttf */,
+				2DAD9443F3F141AE8BD1543E /* MaterialCommunityIcons.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1343,6 +1351,9 @@
 				347F14F66DB5440F9178E660 /* SimpleLineIcons.ttf in Resources */,
 				8756ACEB0C584C678ED09218 /* Zocial.ttf in Resources */,
 				E741CF68AB76438FAE4D484E /* OFL.txt in Resources */,
+				87CE1880770940C4BFAB2AB7 /* iola-icons.ttf in Resources */,
+				DDEE899FF9EA4FC58B7EEBDB /* Feather.ttf in Resources */,
+				252F535550444260BEED2DBA /* MaterialCommunityIcons.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

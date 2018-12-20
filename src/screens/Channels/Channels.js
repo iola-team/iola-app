@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { Container, Content, Text, Icon } from 'native-base';
+import { Container } from 'native-base';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import { ChatList, SearchBar } from 'components';
+import { ChatList, Icon, SearchBar } from 'components';
 import * as routes from '../roteNames';
 
 @graphql(gql`
   query {
     me {
       id
-      
       ...ChatList_user
     }
   }
@@ -21,7 +20,7 @@ export default class Channels extends Component {
   static navigationOptions = {
     title: 'Chats',
     tabBarIcon: ({ focused, tintColor }) => (
-      <Icon name="ios-chatbubbles-outline" style={{ color: tintColor }} />
+      <Icon name="chats-bar" style={{ color: tintColor, fontSize: 20 }} />
     ),
   };
 

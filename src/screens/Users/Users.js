@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Container, Icon } from 'native-base';
+import { Container } from 'native-base';
 import { debounce } from 'lodash';
 
-import { SearchBar } from 'components';
+import { Icon, SearchBar } from 'components';
 import { USER } from '../roteNames';
 import UsersConnection from './UsersConnection';
 
@@ -10,7 +10,7 @@ export default class Users extends PureComponent {
   static navigationOptions = {
     title: 'Users',
     tabBarIcon: ({ focused, tintColor }) => (
-      <Icon name="ios-people-outline" style={{ color: tintColor, fontSize: 35 }} />
+      <Icon name="users-bar" style={{ color: tintColor, fontSize: 20 }} />
     ),
   };
 
