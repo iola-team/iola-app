@@ -1,23 +1,11 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  StyleSheet,
-} from 'react-native';
-
-import {
-  Label,
-  Body,
-  Right,
-  Icon,
-  Spinner,
-  Toast,
-  Button,
-} from 'native-base';
+import { Label, Body, Right, Spinner, Toast } from 'native-base';
 
 import { withStyle } from 'theme';
 import TouchableOpacity from '../TouchableOpacity';
 import FieldItem from '../FieldItem';
+import Icon from '../Icon';
 
 @withStyle('Sparkle.FieldItemInput', {
   'Sparkle.FieldItem': {
@@ -44,12 +32,13 @@ export default class FieldInput extends PureComponent {
 
   static defaultProps = {
     isLoading: false,
+    error: '',
     last: false,
   };
 
   state = {
     isToastVisible: false,
-  }
+  };
 
   showErrorToast = () => {
     const { error } = this.props;
@@ -71,19 +60,12 @@ export default class FieldInput extends PureComponent {
     const { isLoading, error } = this.props;
     const { isToastVisible } = this.state;
 
-    if (isLoading) {
-      return (
-        <Spinner size={20} />
-      );
-    }
+    if (isLoading) return <Spinner size={20} />;
 
     if (error) {
       return (
-        <TouchableOpacity
-          disabled={isToastVisible}
-          onPress={this.showErrorToast}
-        >
-          <Icon name="ios-alert-outline" />
+        <TouchableOpacity disabled={isToastVisible} onPress={this.showErrorToast}>
+          <Icon name="cancel" />
         </TouchableOpacity>
       );
     }
@@ -92,11 +74,7 @@ export default class FieldInput extends PureComponent {
   }
 
   render() {
-    const {
-      label,
-      last,
-      children,
-    } = this.props;
+    const { label, last, children } = this.props;
 
     return(
       <FieldItem last={last}>

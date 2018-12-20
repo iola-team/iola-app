@@ -95,7 +95,9 @@ export default class PhotoList extends Component {
             data={data}
             renderItem={edge => this.renderItem(edge, onShowImage)}
             keyExtractor={this.extractItemKey}
-            ListEmptyComponent={<NoContent style={noContentStyle} icon="images" text={noContentText} />}
+            ListEmptyComponent={(
+              <NoContent style={noContentStyle} text={noContentText} icon="photos-empty-state" />
+            )}
           />
         )}
       </ImageView>

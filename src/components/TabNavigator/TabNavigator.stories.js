@@ -48,7 +48,7 @@ const Header = ({ animatedValue }) => {
 };
 
 const createScrollViewTab = (backgroundColor, count = 100) => class Tab extends PureComponent {
-  
+
   render() {
     return (
       <ScrollView>
@@ -76,7 +76,7 @@ const createFlatListTab = (backgroundColor, count = 100) => class Tab extends Pu
       <FlatList
         data={data}
         renderItem={this.renderItem}
-        ListEmptyComponent={<NoContent icon="people" text="No users" />}
+        ListEmptyComponent={<NoContent icon="comments-empty-state" text="No users" />}
       />
     );
   }

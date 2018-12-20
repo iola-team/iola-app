@@ -3,12 +3,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
-import {
-  Card,
-  CardItem,
-  Icon,
-  Text,
-} from 'native-base';
+import { Card, CardItem, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import UserAvatar from '../UserAvatar';
@@ -50,7 +45,7 @@ export default class UserFriendsCard extends PureComponent {
 
   static defaultProps = {
     onItemPress: () => {}
-  }
+  };
 
   renderEdge({ node }) {
     const { styleSheet, onItemPress  } = this.props;

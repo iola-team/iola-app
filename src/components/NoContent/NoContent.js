@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
-import { View, Text, Icon } from 'native-base';
+import { View, Text } from 'native-base';
 
 import { withStyle } from 'theme';
+import Icon from '../Icon';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 const AnimatedText = Animated.createAnimatedComponent(Text);
@@ -24,7 +25,7 @@ const iconMargin = 17;
 
     'NativeBase.Icon': {
       color: '#C5CAD1',
-      fontSize: 120,
+      fontSize: 85,
     },
   },
 
@@ -55,7 +56,7 @@ export default class NoContent extends Component {
 
     const labelStyle = iconScale && text ? {
       transform: [
-        { 
+        {
           translateY: iconScale.interpolate({
             inputRange: [0, 1],
             outputRange: [-120, 0],

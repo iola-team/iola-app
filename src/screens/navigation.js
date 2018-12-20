@@ -1,8 +1,8 @@
 import React from 'react';
-import { 
-  createBottomTabNavigator, 
-  createSwitchNavigator, 
-  createStackNavigator, 
+import {
+  createBottomTabNavigator,
+  createSwitchNavigator,
+  createStackNavigator,
   createAppContainer,
 } from 'react-navigation';
 
@@ -19,6 +19,7 @@ import ForgotPassword from './ForgotPassword';
 import EmailVerification from './EmailVerification';
 import Launch from './Launch';
 import Channels from './Channels';
+import Notifications from './Notifications';
 import Users from './Users';
 import Dashboard from './Dashboard';
 import Channel from './Channel';
@@ -38,6 +39,10 @@ const TabsNavigator = createBottomTabNavigator({
 
   [routes.CHANNELS]: {
     screen: Channels,
+  },
+
+  [routes.NOTIFICATIONS]: {
+    screen: Notifications,
   },
 
   [routes.DASHBOARD]: {

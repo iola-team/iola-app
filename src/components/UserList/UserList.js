@@ -50,10 +50,10 @@ export default class UserList extends Component {
     const opacityStyle = opacity && { opacity };
 
     return (
-      <UserListItem 
-        style={opacityStyle} 
+      <UserListItem
+        style={opacityStyle}
         user={node}
-        onPress={() => onItemPress(item)} 
+        onPress={() => onItemPress(item)}
       />
     );
   }
@@ -65,20 +65,20 @@ export default class UserList extends Component {
   });
 
   getPlaceholders() {
-    return range(3).map(index => ({ 
+    return range(3).map(index => ({
       key: index.toString(),
       opacity: 1 - index * 0.3,
     }));
   }
 
   render() {
-    const { 
-      edges, 
-      loading, 
-      styleSheet: styles, 
-      noContentText, 
-      noContentStyle, 
-      ...listProps 
+    const {
+      edges,
+      loading,
+      styleSheet: styles,
+      noContentText,
+      noContentStyle,
+      ...listProps
     } = this.props;
     const data = loading ? this.getPlaceholders() : edges;
 
@@ -89,7 +89,7 @@ export default class UserList extends Component {
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         getItemLayout={this.getItemLayout}
-        ListEmptyComponent={<NoContent style={noContentStyle} icon="people" text={noContentText} />}
+        ListEmptyComponent={<NoContent style={noContentStyle} icon="comments-empty-state" text={noContentText} />}
 
         // Performance tweaks
         updateCellsBatchingPeriod={25}
