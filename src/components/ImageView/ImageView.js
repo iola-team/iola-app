@@ -15,7 +15,6 @@ import BackButton from '../BackButton';
 import UserOnlineStatus from '../UserOnlineStatus';
 import TouchableOpacity from '../TouchableOpacity';
 import ImageComments from '../ImageComments';
-import Item from '../PhotoListItem';
 
 const SpinnerContainer = connectToStyleSheet('spinnerContainer', View);
 const ModalContent = connectToStyleSheet('modalContent', View);
@@ -45,8 +44,6 @@ const edgeFragment = gql`
       }
     }
   }
-
-  ${Item.fragments.photo}
 `;
 
 export const photoDetailsQuery = gql`
