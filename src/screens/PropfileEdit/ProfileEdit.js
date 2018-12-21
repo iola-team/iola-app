@@ -12,7 +12,7 @@ import {
 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import { AvatarEdit, PhotoEdit, ProfileFieldsEdit } from 'components';
+import { AvatarEdit, ProfileFieldsEdit } from 'components';
 
 @graphql(gql`
   query ProfileEditQuery {
@@ -20,13 +20,11 @@ import { AvatarEdit, PhotoEdit, ProfileFieldsEdit } from 'components';
       id
 
       ...AvatarEdit_user
-      ...PhotoEdit_user
       ...ProfileFieldsEdit_user
     }
   }
 
   ${AvatarEdit.fragments.user}
-  ${PhotoEdit.fragments.user}
   ${ProfileFieldsEdit.fragments.user}
 `)
 @styleSheet('Sparkle.ProfileEditScreen', {
@@ -103,7 +101,6 @@ export default class ProfileEditScreen extends Component {
             user ? (
               <View>
                 <AvatarEdit user={user} />
-                <PhotoEdit user={user} />
                 <ProfileFieldsEdit
                   user={user}
                   onFormReady={(form) => {

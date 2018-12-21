@@ -64,7 +64,7 @@ const headerHeight = 350 + ScreenHeader.HEIGHT;
     width: 150,
   },
 
-  toolbar: {
+  content: {
 
   },
 
@@ -164,7 +164,7 @@ export default class UserHeading extends PureComponent {
           </View>
         </View>
 
-        <View style={styles.toolbar}>
+        <View style={styles.content}>
           {children}
         </View>
 
