@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import emitter from 'tiny-emitter/instance';
 
 import ImageCommentsItem from '../ImageCommentsItem';
 import NoContent from '../NoContent';
@@ -46,33 +47,13 @@ export default class ImageCommentsList extends Component {
     super(props);
 
     this.flatList = null;
-    this.scrollOffset = 0;
-    this.itemsCount = 0;
-    this.onViewableItemsChanged = this.onViewableItemsChanged.bind(this); // Invariant Violation: Changing onViewableItemsChanged on the fly is not supported (also :: operator)
+    emitter.on('commentSentEvent', () => this.flatList.scrollToIndex({ animated: true, index: 0 }));
   }
 
   shouldComponentUpdate(nextProps) {
     const { edges, loading } = this.props;
 
     return edges.length !== nextProps.edges.length || loading !== nextProps.loading;
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.loading !== prevProps.loading) {
-      this.itemsCount = this.props.edges.length;
-    }
-  }
-
-  onViewableItemsChanged() {
-    const { edges } = this.props;
-
-    if (this.itemsCount === edges.length) return;
-
-    this.itemsCount = edges.length;
-
-    if (this.flatList) {
-      this.flatList.scrollToIndex({ animated: true, index: 0 });
-    }
   }
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -91,6 +72,7 @@ export default class ImageCommentsList extends Component {
         data={edges}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
+        contentContainerStyle={{ flexGrow: 1 }}
         ListEmptyComponent={(
           <NoContent
             icon="chatbubbles"
@@ -98,8 +80,6 @@ export default class ImageCommentsList extends Component {
             inverted
           />
         )}
-        contentContainerStyle={{ flexGrow: 1 }}
-        onViewableItemsChanged={this.onViewableItemsChanged}
       />
     );
   }

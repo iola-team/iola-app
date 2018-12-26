@@ -5,6 +5,7 @@ import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
 import uuid from 'uuid/v4';
+import emitter from 'tiny-emitter/instance';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import Avatar from '../UserAvatar';
@@ -138,7 +139,7 @@ export default class ImageComments extends Component {
     const { photoId, totalCount } = this.props;
     const { queries: { photoCommentsQuery } } = ImageCommentsConnection;
 
-    return mutate({
+    mutate({
       variables: {
         input: {
           userId: user.id,
@@ -205,6 +206,8 @@ export default class ImageComments extends Component {
         });
       },
     });
+
+    emitter.emit('commentSentEvent');
   };
 
   renderTitle() {
@@ -221,9 +224,7 @@ export default class ImageComments extends Component {
   renderFooter(user) {
     return (
       <Mutation mutation={addPhotoCommentMutation}>
-        {mutate => (
-          <ChatFooter onSend={text => this.onCommentSend(text, user, mutate)} />
-        )}
+        {mutate => <ChatFooter onSend={text => this.onCommentSend(text, user, mutate)} />}
       </Mutation>
     );
   }
