@@ -44,13 +44,7 @@ export default class ImageCommentsConnection extends Component {
     photoCommentsQuery,
   };
 
-  state = {
-    loading: false,
-  };
-
   handleLoadMore({ photo: { comments: { pageInfo } } }, fetchMore) {
-    this.setState({ loading: pageInfo.hasNextPage });
-
     if (!pageInfo.hasNextPage) return;
 
     this.fetchMorePromise = this.fetchMorePromise || fetchMore({
@@ -84,15 +78,7 @@ export default class ImageCommentsConnection extends Component {
       }
     }).then(() => {
       this.fetchMorePromise = null;
-      this.setState({ loading: false });
     });
-  }
-
-  getPlaceholders() {
-    return range(3).map(index => ({
-      key: `placeholder:${index}`,
-      node: { isPlaceholder: true },
-    }));
   }
 
   render() {
@@ -102,19 +88,19 @@ export default class ImageCommentsConnection extends Component {
       <Query query={photoCommentsQuery} variables={{ id: photoId }}>
         {({ loading, data, fetchMore, networkStatus }) => {
           const refreshing = networkStatus === NetworkStatus.refetch;
-          const edges = loading ? this.getPlaceholders() : get(data, 'photo.comments.edges', []);
+          const edges = get(data, 'photo.comments.edges', []);
 
           return (
             <ImageCommentsList
               photoId={photoId}
               onItemPress={onItemPress}
-              loading={this.state.loading}
+              loading={loading}
               refreshing={refreshing}
               edges={edges}
               onRefresh={data.refetch}
               onEndReached={() => loading ? null : this.handleLoadMore(data, fetchMore)}
               onEndReachedThreshold={2}
-              inverted={!!edges.length}
+              inverted={!!edges}
             />
           );
         }}

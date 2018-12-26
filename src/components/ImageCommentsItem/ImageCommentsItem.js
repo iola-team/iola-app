@@ -101,12 +101,11 @@ const imageCommentsItemFragment = gql`
 })
 export default class ImageCommentsItem extends Component {
   static propTypes = {
-    comment: PropTypes.oneOfType([
-      fragmentProp(imageCommentsItemFragment),
-      PropTypes.shape({
-        isPlaceholder: PropTypes.bool.isRequired,
-      }),
-    ]).isRequired,
+    comment: fragmentProp(imageCommentsItemFragment),
+  };
+
+  static defaultProps = {
+    comment: null,
   };
 
   static fragments = {
@@ -131,7 +130,7 @@ export default class ImageCommentsItem extends Component {
   }
 
   render() {
-    if (has(this.props.comment, 'isPlaceholder')) return this.renderPlaceholder();
+    if (!this.props.comment) return this.renderPlaceholder();
 
     const { styleSheet: styles, comment: { id, text, createdAt, user } } = this.props;
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
