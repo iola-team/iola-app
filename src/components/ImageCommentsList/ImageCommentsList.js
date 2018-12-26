@@ -86,7 +86,6 @@ export default class ImageCommentsList extends Component {
 
     return (
       <FlatList
-        style={{ backgroundColor: 'red' }}
         {...listProps}
         ref={ref => this.flatList = ref}
         data={edges}

@@ -91,10 +91,7 @@ export default class ImageCommentsConnection extends Component {
   getPlaceholders() {
     return range(3).map(index => ({
       key: `placeholder:${index}`,
-      node: {
-        isPlaceholder: true,
-        opacity: 1 - (1 / 3 * index),
-      },
+      node: { isPlaceholder: true },
     }));
   }
 

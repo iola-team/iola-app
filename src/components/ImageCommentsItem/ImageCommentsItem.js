@@ -84,7 +84,7 @@ const imageCommentsItemFragment = gql`
 
   placeholderContainer: {
     flex: 1,
-    height: 88, // @TODO(x2): imageCommentHeight theme variable?
+    height: 88, // @TODO: "magic number issue" - imageComment height
   },
 
   placeholderContent: {
@@ -105,7 +105,6 @@ export default class ImageCommentsItem extends Component {
       fragmentProp(imageCommentsItemFragment),
       PropTypes.shape({
         isPlaceholder: PropTypes.bool.isRequired,
-        opacity: PropTypes.number.isRequired,
       }),
     ]).isRequired,
   };
@@ -115,10 +114,10 @@ export default class ImageCommentsItem extends Component {
   };
 
   renderPlaceholder() {
-    const { styleSheet: styles, comment: { opacity } } = this.props;
+    const { styleSheet: styles } = this.props;
 
     return (
-      <Placeholder style={[styles.container, styles.placeholderContainer, { opacity }]}>
+      <Placeholder style={[styles.container, styles.placeholderContainer]}>
         <View style={[styles.avatar, styles.placeholderAvatar]} />
         <View style={[styles.content, styles.placeholderContent]}>
           <View style={styles.nameRow}>
