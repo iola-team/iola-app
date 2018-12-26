@@ -9,8 +9,8 @@ import {
 // Components
 import { ScreenHeader, BottomTabBar } from 'components';
 
-// Rout names
-import * as routes from './roteNames';
+// Route names
+import * as routes from './routeNames';
 
 // Screens
 import SignIn from './SignIn';
@@ -38,14 +38,11 @@ import createDashboardNavigator from './Dashboard';
 const TabsNavigator = createBottomTabNavigator({
   [routes.USERS]: Users,
   [routes.CHANNELS]: Channels,
+  [routes.NOTIFICATIONS]: Notifications,
   [routes.DASHBOARD]: createDashboardNavigator({
     [routes.DASHBOARD_PHOTOS]: MyPhotos,
     [routes.DASHBOARD_INFO]: MyInfo,
-    [routes.NOTIFICATIONS]: {
-    screen: Notifications,
-  },
-
-  [routes.DASHBOARD_FRIENDS]: MyFriends,
+    [routes.DASHBOARD_FRIENDS]: MyFriends,
   }, {
     bottomBarHeight: BottomTabBar.HEIGHT,
   }),

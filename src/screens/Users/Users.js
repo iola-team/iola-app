@@ -3,7 +3,7 @@ import { Container } from 'native-base';
 import { debounce } from 'lodash';
 
 import { Icon, SearchBar } from 'components';
-import { USER } from '../roteNames';
+import { USER } from '../routeNames';
 import UsersConnection from './UsersConnection';
 
 export default class Users extends PureComponent {

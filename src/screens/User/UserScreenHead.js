@@ -5,7 +5,7 @@ import { Button, Text, View } from 'native-base';
 
 import { withStyleSheet } from 'theme';
 import { UserHeading } from 'components';
-import * as routes from '../roteNames';
+import * as routes from '../routeNames';
 
 const userQuery = gql`
   query UserDetailsQuery($userId: ID!) {
@@ -53,9 +53,9 @@ export default class UserScreenHead extends PureComponent {
         {({ data: { user }, loading }) => (
           <UserHeading {...props} highlight loading={loading} user={user}>
             <View style={styles.buttons}>
-              <Button 
-                block 
-                style={styles.button} 
+              <Button
+                block
+                style={styles.button}
                 onPress={() => navigate(routes.CHANNEL, { userId })}
               >
                 <Text>Chat</Text>
