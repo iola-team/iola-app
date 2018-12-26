@@ -30,7 +30,7 @@ export default class SearchBar extends PureComponent {
     return (
       <ListItem searchBar noBorder>
         <Item>
-          <Icon name="cancel" />
+          <Icon name="search" />
           <Input
             placeholder="Search for contacts"
             placeholderTextColor="#BDC0CB"

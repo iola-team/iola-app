@@ -65,7 +65,7 @@ export default class FieldInput extends PureComponent {
     if (error) {
       return (
         <TouchableOpacity disabled={isToastVisible} onPress={this.showErrorToast}>
-          <Icon name="cancel" />
+          <Icon name="alert" />
         </TouchableOpacity>
       );
     }

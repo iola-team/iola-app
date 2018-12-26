@@ -278,7 +278,7 @@ export default class ImageView extends Component {
                 </ImageComments>
 
                 <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
-                  <Icon name="cancel" style={styles.actionIcon} />
+                  <Icon name="like" style={styles.actionIcon} />
                   <ActionText>Like</ActionText>
                   {totalCountLikes ? (
                     <ActionBadge>

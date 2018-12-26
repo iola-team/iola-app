@@ -123,7 +123,7 @@ export default class Input extends PureComponent {
           disabled={isToastVisible}
           onPress={this.showErrorToast}
         >
-          <Icon name="cancel" />
+          <Icon name="alert" />
         </TouchableOpacity>
       );
     }

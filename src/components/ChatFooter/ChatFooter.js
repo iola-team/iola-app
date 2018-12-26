@@ -64,7 +64,7 @@ export default class ChatFooter extends Component {
           <Input placeholder="Type Message" onChangeText={this.onChange} value={text} />
         </Item>
         <Button style={styles.sendButton} onPress={this.onSend}>
-          <Icon style={styles.sendIcon} name="cancel" />
+          <Icon style={styles.sendIcon} name="send-message" />
         </Button>
       </View>
     );
