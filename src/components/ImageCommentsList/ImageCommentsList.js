@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 
 import ImageCommentsItem from '../ImageCommentsItem';
-import NoComments from './NoComments';
+import NoContent from '../NoContent';
 
 const edgeFragment = gql`
   fragment ImageCommentsList_edge on CommentEdge {
@@ -20,7 +20,6 @@ const edgeFragment = gql`
 
 export default class ImageCommentsList extends Component {
   static propTypes = {
-    height: PropTypes.number.isRequired,
     onItemPress: PropTypes.func,
     edges: PropTypes.arrayOf(
       PropTypes.oneOfType([
@@ -83,16 +82,24 @@ export default class ImageCommentsList extends Component {
   }
 
   render() {
-    const { height, edges, loading, ...listProps } = this.props;
+    const { edges, loading, ...listProps } = this.props;
 
     return (
       <FlatList
+        style={{ backgroundColor: 'red' }}
         {...listProps}
         ref={ref => this.flatList = ref}
         data={edges}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
-        ListEmptyComponent={<NoComments height={height} />}
+        ListEmptyComponent={(
+          <NoContent
+            icon="chatbubbles"
+            text={'No comments yet\nBe the first to comment'/* ' - don't replace with " */}
+            inverted
+          />
+        )}
+        contentContainerStyle={{ flexGrow: 1 }}
         onViewableItemsChanged={this.onViewableItemsChanged}
       />
     );

@@ -75,7 +75,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
   },
 
   container: {
-    minHeight: getModalHeight(),
+    flexGrow: 1,
     paddingHorizontal: 15,
     backgroundColor: '#F8F9FB',
   },
@@ -249,7 +249,7 @@ export default class ImageComments extends Component {
             noScrollViewForContent
           >
             <View style={styles.container}>
-              <ImageCommentsConnection photoId={photoId} height={getModalHeight()} />
+              <ImageCommentsConnection photoId={photoId} />
             </View>
           </Modal>
         ))}

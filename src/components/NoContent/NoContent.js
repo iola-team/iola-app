@@ -19,18 +19,19 @@ const iconMargin = 17;
     justifyContent: 'center',
     width: 200,
     height: 200,
-    borderRadius: 100,
     marginBottom: iconMargin,
+    borderRadius: 100,
 
     'NativeBase.Icon': {
-      color: '#C5CAD1',
       fontSize: 120,
     },
   },
 
   'NativeBase.Text': {
-    color: '#C5CAD1',
-    fontSize: 16,
+    textAlign: 'center',
+    fontFamily: 'SF Pro Text',
+    fontSize: 14,
+    lineHeight: 20,
   },
 })
 export default class NoContent extends Component {
@@ -38,36 +39,42 @@ export default class NoContent extends Component {
     icon: PropTypes.string.isRequired,
     text: PropTypes.string,
     iconScale: PropTypes.object,
+    inverted: PropTypes.bool,
   };
 
   static defaultProps = {
     text: null,
     iconScale: null,
+    inverted: false,
   };
 
   render() {
-    const { icon, text, iconScale, ...props } = this.props;
-    const iconStyle = iconScale && {
-      transform: [
-        { scale: iconScale },
-      ],
-    };
+    const { icon, text, iconScale, inverted, ...props } = this.props;
+    const iconContainerStyle = { backgroundColor: inverted ? 'white' : '#F8F9FB' };
+    const iconStyle = { color: inverted ? '#F1F2F7' : '#C5CAD1' };
+    const labelStyle = { color: inverted ? '#BDC0CB' : '#C5CAD1' };
 
-    const labelStyle = iconScale && text ? {
-      transform: [
-        { 
-          translateY: iconScale.interpolate({
-            inputRange: [0, 1],
-            outputRange: [-120, 0],
-          }),
-        }
-      ],
-    } : null;
+    if (iconScale) {
+      iconContainerStyle.transform = [
+        { scale: iconScale },
+      ];
+
+      if (text) {
+        labelStyle.transform = [
+          {
+            translateY: iconScale.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-120, 0],
+            }),
+          }
+        ];
+      }
+    }
 
     return (
       <Animated.View {...props}>
-        <AnimatedView highlight style={iconStyle}>
-          <Icon name={icon} />
+        <AnimatedView highlight style={iconContainerStyle}>
+          <Icon name={icon} style={iconStyle} />
         </AnimatedView>
 
         {text && <AnimatedText style={labelStyle}>{text}</AnimatedText>}

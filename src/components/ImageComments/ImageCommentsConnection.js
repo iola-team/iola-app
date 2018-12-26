@@ -32,7 +32,6 @@ const photoCommentsQuery = gql`
 export default class ImageCommentsConnection extends Component {
   static propTypes = {
     photoId: PropTypes.string.isRequired,
-    height: PropTypes.number.isRequired,
     onItemPress: PropTypes.func,
     photoCommentsQuery: graphqlPropType(photoCommentsQuery),
   };
@@ -90,20 +89,17 @@ export default class ImageCommentsConnection extends Component {
   }
 
   getPlaceholders() {
-    const placeholderHeight = 88 + 8; // @TODO(x2): imageCommentHeight theme variable?
-    const count = Math.round(this.props.height / placeholderHeight);
-
-    return range(count).map(index => ({
+    return range(3).map(index => ({
       key: `placeholder:${index}`,
       node: {
         isPlaceholder: true,
-        opacity: 1 - (1 / count * index),
+        opacity: 1 - (1 / 3 * index),
       },
     }));
   }
 
   render() {
-    const { photoId, height, onItemPress } = this.props;
+    const { photoId, onItemPress } = this.props;
 
     return (
       <Query query={photoCommentsQuery} variables={{ id: photoId }}>
@@ -114,7 +110,6 @@ export default class ImageCommentsConnection extends Component {
           return (
             <ImageCommentsList
               photoId={photoId}
-              height={height}
               onItemPress={onItemPress}
               loading={this.state.loading}
               refreshing={refreshing}
