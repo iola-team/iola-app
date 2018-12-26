@@ -25,6 +25,14 @@ import { withStyleSheet as styleSheet } from 'theme';
   inactiveBackgroundColor: 'transparent',
 })
 export default class BottomTabBar extends Component {
+  /**
+   * Bottom bar height is retreived from:
+   * https://github.com/react-navigation/react-navigation-tabs/blob/d2aa789109ed0df61c0c0ac7b759ac386a720804/src/views/BottomTabBar.js#L229
+   * 
+   * TODO: try to not use magic number
+   */
+  static HEIGHT = 49;
+
   render() {
     const { styleSheet: styles, ...props } = this.props;
 

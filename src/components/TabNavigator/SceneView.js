@@ -99,11 +99,13 @@ export default class SceneView extends PureComponent {
     headerHeight: PropTypes.number.isRequired,
     tabBarHeight: PropTypes.number.isRequired,
     headerShrinkHeight: PropTypes.number,
+    bottomBarHeight: PropTypes.number,
   };
 
   static defaultProps = {
     scrollOffset: 0,
     headerShrinkHeight: 0,
+    bottomBarHeight: 0,
   };
 
   subscribers = {
@@ -151,9 +153,11 @@ export default class SceneView extends PureComponent {
   }
 
   createContext() {
-    const { headerShrinkHeight, tabBarHeight, headerHeight, ...restProps } = this.props;
+    const { 
+      headerShrinkHeight, tabBarHeight, headerHeight, bottomBarHeight, ...restProps 
+    } = this.props;
 
-    const screenHeight = Dimensions.get('window').height - getStatusBarHeight();
+    const screenHeight = Dimensions.get('window').height - getStatusBarHeight() - bottomBarHeight;
     const shrinkAnimationHeight = headerHeight ? headerHeight - headerShrinkHeight : 0;
     const shrinkAnimatedValue = this.scrollAnimatedValue.interpolate({
       inputRange: [0, shrinkAnimationHeight],
