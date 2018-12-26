@@ -35,7 +35,7 @@ import LogoutButton from './LogoutButton';
 export default class Dashboard extends Component {
   static navigationOptions = {
     tabBarIcon: ({ focused, tintColor }) => (
-      <Icon name="dashboard-bar" style={{ color: tintColor, fontSize: 20 }} />
+      <Icon name="user-bar" style={{ color: tintColor, fontSize: 20 }} />
     ),
 
     headerStyle: {

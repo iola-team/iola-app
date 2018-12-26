@@ -10,7 +10,7 @@ export default class Users extends PureComponent {
   static navigationOptions = {
     title: 'Users',
     tabBarIcon: ({ focused, tintColor }) => (
-      <Icon name="users-bar" style={{ color: tintColor, fontSize: 20 }} />
+      <Icon name="dashboard-bar" style={{ color: tintColor, fontSize: 25 }} />
     ),
   };
 
