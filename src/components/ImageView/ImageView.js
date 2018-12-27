@@ -335,7 +335,7 @@ export default class ImageView extends Component {
               backgroundColor="rgba(46, 48, 55, 0.95)"
             />
 
-            {this.renderControls()}
+            {visible && this.renderControls()}
           </View>
         </Modal>
       </Fragment>
