@@ -83,7 +83,9 @@ export default class PhotoList extends Component {
         data={data}
         renderItem={this.renderItem}
         keyExtractor={this.extractItemKey}
-        ListEmptyComponent={<NoContent style={noContentStyle} icon="images" text={noContentText} />}
+        ListEmptyComponent={(
+              <NoContent style={noContentStyle} text={noContentText} icon="photos-empty-state" />
+            )}
       />
     );
   }

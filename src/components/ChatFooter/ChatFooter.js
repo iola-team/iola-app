@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Item, Input, Icon } from 'native-base';
+import { View, Item, Input } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import Button from '../TouchableOpacity';
+import Icon from '../Icon';
 
 @styleSheet('Sparkle.ChatFooter', {
   root: {
@@ -63,7 +64,7 @@ export default class ChatFooter extends Component {
           <Input placeholder="Type Message" onChangeText={this.onChange} value={text} />
         </Item>
         <Button style={styles.sendButton} onPress={this.onSend}>
-          <Icon style={styles.sendIcon} name="md-send" />
+          <Icon style={styles.sendIcon} name="send-message" />
         </Button>
       </View>
     );

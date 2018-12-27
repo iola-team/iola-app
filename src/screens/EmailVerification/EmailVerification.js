@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Container, Text, View } from 'native-base';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { Icon } from 'components';
 import ForgotPasswordForm from './EmailVerificationForm';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
@@ -11,7 +11,7 @@ const Background = connectToStyleSheet('background', ImageBackground).withProps(
 });
 const Content = connectToStyleSheet('content', View);
 const Header = connectToStyleSheet('header', View);
-const EmailIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'envelope-letter' });
+const EmailIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'envelope' });
 const Title = connectToStyleSheet('title', Text);
 const Description = connectToStyleSheet('description', Text);
 
@@ -38,10 +38,10 @@ const Description = connectToStyleSheet('description', Text);
     width: 48,
     height: 48,
     borderRadius: 25,
-    fontSize: 24,
+    fontSize: 19,
     lineHeight: 48,
     textAlign: 'center',
-    color: 'red',
+    color: '#BCBFCA',
     backgroundColor: '#FFFFFF',
   },
 

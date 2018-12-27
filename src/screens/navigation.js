@@ -1,16 +1,16 @@
 import React from 'react';
-import { 
-  createBottomTabNavigator, 
-  createSwitchNavigator, 
-  createStackNavigator, 
+import {
+  createBottomTabNavigator,
+  createSwitchNavigator,
+  createStackNavigator,
   createAppContainer,
 } from 'react-navigation';
 
 // Components
 import { ScreenHeader, BottomTabBar } from 'components';
 
-// Rout names
-import * as routes from './roteNames';
+// Route names
+import * as routes from './routeNames';
 
 // Screens
 import SignIn from './SignIn';
@@ -19,30 +19,33 @@ import ForgotPassword from './ForgotPassword';
 import EmailVerification from './EmailVerification';
 import Launch from './Launch';
 import Channels from './Channels';
+import Notifications from './Notifications';
 import Users from './Users';
-import Dashboard from './Dashboard';
 import Channel from './Channel';
 import ProfileEdit from './PropfileEdit';
 import Settings from './Settings';
 import UserPhotos from './UserPhotos';
 import UserFriends from './UserFriends';
 import UserInfo from './UserInfo';
+import MyPhotos from './MyPhotos';
+import MyInfo from './MyInfo';
+import MyFriends from './MyFriends';
 
 import createUserNavigator from './User';
+import createDashboardNavigator from './Dashboard';
 
 // Navigator
 const TabsNavigator = createBottomTabNavigator({
-  [routes.USERS]: {
-    screen: Users,
-  },
-
-  [routes.CHANNELS]: {
-    screen: Channels,
-  },
-
-  [routes.DASHBOARD]: {
-    screen: Dashboard,
-  },
+  [routes.USERS]: Users,
+  [routes.CHANNELS]: Channels,
+  [routes.NOTIFICATIONS]: Notifications,
+  [routes.DASHBOARD]: createDashboardNavigator({
+    [routes.DASHBOARD_PHOTOS]: MyPhotos,
+    [routes.DASHBOARD_INFO]: MyInfo,
+    [routes.DASHBOARD_FRIENDS]: MyFriends,
+  }, {
+    bottomBarHeight: BottomTabBar.HEIGHT,
+  }),
 }, {
   initialRouteName: routes.USERS,
   tabBarComponent: BottomTabBar,
@@ -83,17 +86,9 @@ const RootNavigator = createSwitchNavigator({
       }),
     },
 
-    [routes.CHANNEL]: {
-      screen: Channel,
-    },
-
-    [routes.SETTINGS]: {
-      screen: Settings,
-    },
-
-    [routes.PROFILE_EDIT]: {
-      screen: ProfileEdit,
-    },
+    [routes.CHANNEL]: Channel,
+    [routes.SETTINGS]: Settings,
+    [routes.PROFILE_EDIT]: ProfileEdit,
   }, {
     headerLayoutPreset: 'center',
     headerMode: 'screen',

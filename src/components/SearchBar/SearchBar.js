@@ -1,15 +1,9 @@
 import React, { PureComponent } from 'react';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import {
-  Icon,
-  Text,
-  Item,
-  ListItem,
-  Header,
-  Input,
-  Button,
-} from 'native-base';
+import { Text, Item, ListItem, Input, Button } from 'native-base';
+
+import Icon from '../Icon';
 
 export default class SearchBar extends PureComponent {
   static propTypes = {
@@ -36,7 +30,7 @@ export default class SearchBar extends PureComponent {
     return (
       <ListItem searchBar noBorder>
         <Item>
-          <Icon name="ios-search" />
+          <Icon name="search" />
           <Input
             placeholder="Search for contacts"
             placeholderTextColor="#BDC0CB"

@@ -3,7 +3,7 @@ import { NavigationActions } from 'react-navigation';
 import { Container, Content as RNContent, View, Text, Button, Spinner } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import * as routes from '../roteNames';
+import * as routes from '../routeNames';
 
 const Content = connectToStyleSheet((styleSheet) => ({
   contentContainerStyle: styleSheet.content,
