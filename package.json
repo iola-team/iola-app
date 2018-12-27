@@ -104,7 +104,6 @@
     "recompose": "^0.30.0",
     "rn-fetch-blob": "^0.10.13",
     "subscriptions-transport-sse": "^0.9.2",
-    "tiny-emitter": "^2.0.2",
     "url-parse": "^1.4.4",
     "uuid": "^3.3.2",
     "yup": "^0.26.6"

@@ -27,6 +27,7 @@ export default class ImageCommentsList extends Component {
       fragmentProp(edgeFragment).isRequired,
     ),
     loading: PropTypes.bool.isRequired,
+    imageCommentsListForwardedRef: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -37,21 +38,10 @@ export default class ImageCommentsList extends Component {
     edge: edgeFragment,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.flatList = null;
-    emitter.on('commentSentEvent', () => this.flatList.scrollToIndex({ animated: true, index: 0 }));
-  }
-
   shouldComponentUpdate(nextProps) {
     const { edges, loading } = this.props;
 
     return edges.length !== nextProps.edges.length || loading !== nextProps.loading;
-  }
-
-  componentWillUnmount() {
-    emitter.off('commentSentEvent');
   }
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -68,13 +58,13 @@ export default class ImageCommentsList extends Component {
   }
 
   render() {
-    const { edges, loading, ...listProps } = this.props;
+    const { edges, loading, imageCommentsListForwardedRef, ...listProps } = this.props;
     const data = loading && !edges.length ? this.getPlaceholders() : edges;
 
     return (
       <FlatList
         {...listProps}
-        ref={ref => this.flatList = ref}
+        ref={imageCommentsListForwardedRef}
         data={data}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}

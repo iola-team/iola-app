@@ -34,6 +34,7 @@ export default class ImageCommentsConnection extends Component {
     photoId: PropTypes.string.isRequired,
     onItemPress: PropTypes.func,
     photoCommentsQuery: graphqlPropType(photoCommentsQuery),
+    imageCommentsListForwardedRef: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -82,7 +83,7 @@ export default class ImageCommentsConnection extends Component {
   }
 
   render() {
-    const { photoId, onItemPress } = this.props;
+    const { photoId, onItemPress, imageCommentsListForwardedRef } = this.props;
 
     return (
       <Query query={photoCommentsQuery} variables={{ id: photoId }}>
@@ -98,6 +99,7 @@ export default class ImageCommentsConnection extends Component {
               refreshing={refreshing}
               edges={edges}
               onRefresh={data.refetch}
+              imageCommentsListForwardedRef={imageCommentsListForwardedRef}
               onEndReached={() => loading ? null : this.handleLoadMore(data, fetchMore)}
               onEndReachedThreshold={2}
               inverted={!!edges}

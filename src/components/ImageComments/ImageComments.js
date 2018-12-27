@@ -116,6 +116,8 @@ export default class ImageComments extends Component {
     isVisible: false,
   };
 
+  imageCommentsListForwardedRef = React.createRef();
+
   action = (handler, preHandler = noop) => () => {
     preHandler();
     this.props[handler](this.state.value);
@@ -207,7 +209,12 @@ export default class ImageComments extends Component {
       },
     });
 
-    emitter.emit('commentSentEvent');
+    if (this.imageCommentsListForwardedRef.current) {
+      this.imageCommentsListForwardedRef.current.scrollToIndex({
+        animated: true,
+        index: 0,
+      });
+    }
   };
 
   renderTitle() {
@@ -250,7 +257,10 @@ export default class ImageComments extends Component {
             noScrollViewForContent
           >
             <View style={styles.container}>
-              <ImageCommentsConnection photoId={photoId} />
+              <ImageCommentsConnection
+                photoId={photoId}
+                imageCommentsListForwardedRef={this.imageCommentsListForwardedRef}
+              />
             </View>
           </Modal>
         ))}
