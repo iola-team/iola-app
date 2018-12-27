@@ -1,10 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { ImageBackground, TouchableOpacity } from 'react-native';
 import { Button, Container, Text, View } from 'native-base';
-import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { Icon } from 'components';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
@@ -44,17 +44,19 @@ const SignInButton = connectToStyleSheet('signInButton', Button);
     width: 48,
     height: 48,
     borderRadius: 25,
-    fontSize: 24,
+    fontSize: 23,
     lineHeight: 48,
     textAlign: 'center',
-    color: 'red',
+    color: '#BCBFCA',
     backgroundColor: '#FFFFFF',
   },
 
   title: {
+    paddingTop: 25,
     paddingBottom: 22,
     alignSelf: 'center',
-    fontSize: 30,
+    fontSize: 24,
+    lineHeight: 29,
     color: '#FFFFFF',
   },
 

@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 import { ChatList, Icon, SearchBar } from 'components';
-import * as routes from '../roteNames';
+import * as routes from '../routeNames';
 
 @graphql(gql`
   query {

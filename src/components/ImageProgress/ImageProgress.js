@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { noop } from 'lodash';
 import PropTypes from 'prop-types';
 import { StyleSheet, ImageBackground } from 'react-native';
-import { View, Button, Icon } from 'native-base';
+import { View, Button } from 'native-base';
+import { noop } from 'lodash';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import CircularProgress from '../CircularProgress';
+import Icon from '../Icon';
 
 const Root = connectToStyleSheet('root', View);
 const Layer = connectToStyleSheet('layer', View);
@@ -13,10 +14,6 @@ const Progress = connectToStyleSheet('progress', CircularProgress);
 const Background = connectToStyleSheet('background', ImageBackground);
 
 @styleSheet('Sparkle.ImageProgress', {
-  root: {
-
-  },
-
   layer: {
     ...StyleSheet.absoluteFillObject,
   },
@@ -65,22 +62,19 @@ export default class ImageProgress extends Component {
       <Root style={style}>
         {children}
 
-        {
-          active && (
-            <Layer>
-              <Background source={{ uri: previewUrl }} blurRadius={blurRadius}>
-                <Progress animated={progress !== null} progress={progress || 0}>
-                  {cancelable && (
-                    <Button block light transparent rounded onPress={onCancel}>
-                      <Icon name="md-close" />
-                    </Button>
-                  )}
-                </Progress>
-              </Background>
-            </Layer>
-          )
-        }
-
+        {active && (
+          <Layer>
+            <Background source={{ uri: previewUrl }} blurRadius={blurRadius}>
+              <Progress animated={progress !== null} progress={progress || 0}>
+                {cancelable && (
+                  <Button block light transparent rounded onPress={onCancel}>
+                    <Icon name="close" />
+                  </Button>
+                )}
+              </Progress>
+            </Background>
+          </Layer>
+        )}
       </Root>
     );
   }

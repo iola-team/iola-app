@@ -1,28 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { includes, filter, isFunction, isUndefined, without, noop } from 'lodash';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Easing,
-  Dimensions,
-} from 'react-native';
-import {
-  View,
-  Text,
-  List,
-  ListItem,
-  Body,
-  Right,
-  Left,
-  Icon,
-} from 'native-base';
+import { StyleSheet, Dimensions } from 'react-native';
+import { View, Text, List, ListItem, Body } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import Modal from '../Modal';
+import Icon from '../Icon';
 
-const maxHeight = Dimensions.get("window").height * 0.6;
+const maxHeight = Dimensions.get('window').height * 0.6;
 const valueShape = PropTypes.oneOfType([
   PropTypes.string,
   PropTypes.number,
@@ -39,10 +25,6 @@ const itemShape = PropTypes.shape({
 });
 
 @styleSheet('Sparkle.ListPicker', {
-  list: {
-
-  },
-
   item: {
     marginRight: 20,
   },
@@ -61,9 +43,10 @@ const itemShape = PropTypes.shape({
   },
 
   checkIcon: {
-    color: '#C4C7D1',
-    fontSize: 20,
+    marginTop: 4,
     marginRight: 10,
+    fontSize: 12,
+    color: '#C4C7D1',
   },
 })
 export default class ListPicker extends PureComponent {
@@ -84,7 +67,7 @@ export default class ListPicker extends PureComponent {
     onCancel: PropTypes.func,
     onItemPress: PropTypes.func,
     onRequestClose: PropTypes.func,
-  }
+  };
 
   static defaultProps = {
     isVisible: undefined,
@@ -99,7 +82,7 @@ export default class ListPicker extends PureComponent {
     onDone: noop,
     onCancel: noop,
     onRequestClose: noop,
-  }
+  };
 
   static getDerivedStateFromProps(props, state) {
     return {
@@ -162,12 +145,12 @@ export default class ListPicker extends PureComponent {
         onPress={() => this.onItemPress(item)}
       >
         <Body style={styles.itemBody}>
-          <Icon style={[styles.checkIcon, selectedStyle]} name="checkmark" />
+          <Icon style={[styles.checkIcon, selectedStyle]} name="check" />
           <Text style={selectedStyle}>{label}</Text>
         </Body>
       </ListItem>
     );
-  }
+  };
 
   renderModal() {
     const { isVisible, value } = this.state;
@@ -198,11 +181,7 @@ export default class ListPicker extends PureComponent {
         onCancel={this.action('onCancel', this.hide)}
         onRequestClose={this.action('onRequestClose', this.hide)}
       >
-        <List
-          style={styles.list}
-          dataArray={items}
-          renderRow={this.renderRow}
-        />
+        <List dataArray={items} renderRow={this.renderRow} />
       </Modal>
     );
   }

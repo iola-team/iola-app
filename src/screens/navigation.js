@@ -1,16 +1,16 @@
 import React from 'react';
-import { 
-  createBottomTabNavigator, 
-  createSwitchNavigator, 
-  createStackNavigator, 
+import {
+  createBottomTabNavigator,
+  createSwitchNavigator,
+  createStackNavigator,
   createAppContainer,
 } from 'react-navigation';
 
 // Components
 import { ScreenHeader, BottomTabBar } from 'components';
 
-// Rout names
-import * as routes from './roteNames';
+// Route names
+import * as routes from './routeNames';
 
 // Screens
 import SignIn from './SignIn';
@@ -19,6 +19,7 @@ import ForgotPassword from './ForgotPassword';
 import EmailVerification from './EmailVerification';
 import Launch from './Launch';
 import Channels from './Channels';
+import Notifications from './Notifications';
 import Users from './Users';
 import Channel from './Channel';
 import ProfileEdit from './PropfileEdit';
@@ -37,6 +38,7 @@ import createDashboardNavigator from './Dashboard';
 const TabsNavigator = createBottomTabNavigator({
   [routes.USERS]: Users,
   [routes.CHANNELS]: Channels,
+  [routes.NOTIFICATIONS]: Notifications,
   [routes.DASHBOARD]: createDashboardNavigator({
     [routes.DASHBOARD_PHOTOS]: MyPhotos,
     [routes.DASHBOARD_INFO]: MyInfo,

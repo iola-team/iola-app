@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import Icon from 'react-native-vector-icons/Ionicons';
+
+import Icon from '../Icon';
 
 const FormItem = connectToStyleSheet('formItem', Item, ({ customStyle, isValid }) => ({
   ...customStyle,
@@ -17,7 +18,7 @@ const FormInput = connectToStyleSheet('formInput', Input, ({ isValid }) => !isVa
   placeholderFontSize: 16,
   placeholderTextColor: isValid ? '#FFFFFF' : '#FF8787',
 }));
-const CheckMark = connectToStyleSheet('checkMark', Icon).withProps({ name: 'ios-checkmark' });
+const CheckMark = connectToStyleSheet('checkMark', Icon).withProps({ name: 'check' });
 const InfoText = connectToStyleSheet('infoText', Text);
 const ErrorText = connectToStyleSheet('errorText', Text);
 
@@ -37,7 +38,7 @@ const ErrorText = connectToStyleSheet('errorText', Text);
 
   checkMark: {
     paddingRight: 8,
-    fontSize: 30,
+    fontSize: 11,
     color: '#FFFFFF',
   },
 
