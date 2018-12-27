@@ -105,11 +105,14 @@ export const photoDetailsQuery = gql`
     color: '#BDC0CB',
   },
 
-  close: {
+  closeButton: {
     marginLeft: 'auto',
-    width: 50,
-    height: 50,
-    backgroundColor: 'red', // @TODO: here will be the new icon
+  },
+
+  close: {
+    margin: 14,
+    fontSize: 14,
+    color: '#BDC0CB',
   },
 
   footer: {
@@ -230,7 +233,9 @@ export default class ImageView extends Component {
       <View style={styles.controls}>
         <View style={styles.header}>
           {totalCount > 1 ? <Text style={styles.indicator}>{`${index} of ${totalCount}`}</Text> : null}
-          <TouchableOpacity onPress={::this.onClose} style={styles.close} />
+          <TouchableOpacity onPress={::this.onClose} style={styles.closeButton}>
+            <Icon name="close" style={styles.close} />
+          </TouchableOpacity>
         </View>
 
         <Query query={photoDetailsQuery} variables={{ id }}>
@@ -269,7 +274,10 @@ export default class ImageView extends Component {
                 <ActionsBlock>
                   <ImageComments photoId={id} totalCount={totalCount}>
                     {onShowImageComments => (
-                      <TouchableOpacity onPress={onShowImageComments} style={styles.actionButton}>
+                      <TouchableOpacity
+                        onPress={onShowImageComments}
+                        style={[styles.actionButton, styles.buttonComments]}
+                      >
                         <Icon name="chats-bar" style={styles.actionIcon} />
                         <Text style={styles.actionText}>Comment</Text>
                         {!totalCount ? null : (
