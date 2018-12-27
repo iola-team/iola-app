@@ -12,6 +12,11 @@ import Icon from '../Icon';
     borderBottomWidth: 0,
   },
 
+  icon: {
+    fontSize: 16,
+    color: '#BDC0CB',
+  },
+
   title: {
     fontWeight: '600',
     fontSize: 16,
@@ -30,7 +35,7 @@ export default class ScreenHeader extends PureComponent {
   getSceneOptions(scene) {
     const { descriptor: { options } } = scene;
     const {
-      styleSheet,
+      styleSheet: styles,
       title = options.title,
       renderLeft = constant(options.headerLeft),
       renderRight = constant(options.headerRight),
@@ -40,11 +45,11 @@ export default class ScreenHeader extends PureComponent {
       ...options,
 
       title,
-      headerBackImage: <Icon name="back" />,
+      headerBackImage: <Icon name="back" style={styles.icon} />,
       headerLeft: renderLeft(scene),
       headerRight: renderRight(scene),
-      headerStyle: [styleSheet.header, options.headerStyle],
-      headerTitleStyle: [styleSheet.title, options.headerTitleStyle],
+      headerStyle: [styles.header, options.headerStyle],
+      headerTitleStyle: [styles.title, options.headerTitleStyle],
     };
   }
 
