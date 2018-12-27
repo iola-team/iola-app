@@ -98,3 +98,7 @@ stories.add('Long text', () => (
     {({ data: { comment }, loading }) => !loading && <ImageCommentsItem comment={comment} />}
   </Query>
 ));
+
+stories.add('Placeholder', () => (
+  <ImageCommentsItem comment={{ isPlaceholder: true, opacity: 1 }} />
+));

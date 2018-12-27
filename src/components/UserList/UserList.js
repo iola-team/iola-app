@@ -44,6 +44,7 @@ export default class UserList extends Component {
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
+
   renderItem = ({ item }) => {
     const { onItemPress } = this.props;
     const { node, opacity } = item;
@@ -56,7 +57,7 @@ export default class UserList extends Component {
         onPress={() => onItemPress(item)}
       />
     );
-  }
+  };
 
   getItemLayout = (data, index) => ({
     length: UserListItem.ITEM_HEIGHT,
