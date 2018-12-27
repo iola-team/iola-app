@@ -5,7 +5,6 @@ import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
 import uuid from 'uuid/v4';
-import emitter from 'tiny-emitter/instance';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import Avatar from '../UserAvatar';

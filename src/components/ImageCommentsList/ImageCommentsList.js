@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import emitter from 'tiny-emitter/instance';
 import { range } from 'lodash';
 
 import ImageCommentsItem from '../ImageCommentsItem';
