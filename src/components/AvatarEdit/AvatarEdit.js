@@ -14,7 +14,6 @@ const userFragment = gql`
     avatar {
       id
       url
-      medium: url(size: MEDIUM)
     }
   }
 `;

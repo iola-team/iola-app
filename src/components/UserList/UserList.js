@@ -44,19 +44,20 @@ export default class UserList extends Component {
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
+
   renderItem = ({ item }) => {
     const { onItemPress } = this.props;
     const { node, opacity } = item;
     const opacityStyle = opacity && { opacity };
 
     return (
-      <UserListItem 
-        style={opacityStyle} 
+      <UserListItem
+        style={opacityStyle}
         user={node}
-        onPress={() => onItemPress(item)} 
+        onPress={() => onItemPress(item)}
       />
     );
-  }
+  };
 
   getItemLayout = (data, index) => ({
     length: UserListItem.ITEM_HEIGHT,
@@ -65,20 +66,20 @@ export default class UserList extends Component {
   });
 
   getPlaceholders() {
-    return range(3).map(index => ({ 
+    return range(3).map(index => ({
       key: index.toString(),
       opacity: 1 - index * 0.3,
     }));
   }
 
   render() {
-    const { 
-      edges, 
-      loading, 
-      styleSheet: styles, 
-      noContentText, 
-      noContentStyle, 
-      ...listProps 
+    const {
+      edges,
+      loading,
+      styleSheet: styles,
+      noContentText,
+      noContentStyle,
+      ...listProps
     } = this.props;
     const data = loading ? this.getPlaceholders() : edges;
 

@@ -1,21 +1,16 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { View, Text } from 'native-base';
-import { Animated, StyleSheet } from 'react-native';
+import { Button, Text, View } from 'native-base';
 
 import { withStyleSheet } from 'theme';
-import { UserHeading, ScreenHeader } from 'components';
+import { UserHeading } from 'components';
 import * as routes from '../roteNames';
 
-const AnimatedView = Animated.createAnimatedComponent(View);
 const userQuery = gql`
   query UserDetailsQuery($userId: ID!) {
     user: node(id: $userId) {
       id
-      ...on User {
-        name
-      }
       ...UserHeading_user
     }
   }
@@ -24,78 +19,55 @@ const userQuery = gql`
 `;
 
 @withStyleSheet('Sparkle.UserScreenHead', {
-  head: {
-    marginTop: ScreenHeader.HEIGHT,
-    marginBottom: 30,
+  buttons: {
+    flexDirection: 'row',
+    width: '100%',
   },
 
-  navBar: {
-    ...StyleSheet.absoluteFillObject,
-    bottom: null,
-    height: ScreenHeader.HEIGHT,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
-  },
-
-  navBarText: {
-    fontWeight: '600',
-    fontSize: 16,
-    color: '#585A61',
-  },
+  button: {
+    width: '30%',
+    alignSelf: 'center',
+    marginHorizontal: 5,
+  }
 })
 export default class UserScreenHead extends PureComponent {
-  static HEIGHT = UserHeading.HEIGHT + ScreenHeader.HEIGHT + 30;
+  static HEIGHT = UserHeading.HEIGHT;
 
   render() {
     const {
-      style,
       styleSheet: styles,
-      navigation: { goBack, navigate, state },
-      shrinkAnimatedValue,
-      shrinkAnimationHeight,
+      navigation: {
+        goBack,
+        navigate,
+        state: {
+          params: {
+            id: userId,
+          },
+        }
+      },
       ...props
     } = this.props;
 
-    const navBarStyle = {
-      opacity: shrinkAnimatedValue.interpolate({
-        inputRange: [0, 0.3],
-        outputRange: [1, 0],
-        extrapolate: 'clamp',
-      }),
-      transform: [
-        {
-          translateY: shrinkAnimatedValue.interpolate({
-            inputRange: [0, 1],
-            outputRange: [shrinkAnimationHeight, 0],
-            extrapolate: 'clamp',
-          }),
-        },
-      ],
-    };
-
     return (
-      <View style={style} highlight>
-        <Query query={userQuery} variables={{ userId: state.params.id }}>
-          {({ data: { user }, loading }) => (
-            <Fragment>
-              <AnimatedView style={styles.head}>
-                <UserHeading
-                  {...props}
-                  loading={loading}
-                  user={user}
-                  onBackPress={() => goBack()}
-                  onChatPress={() => navigate(routes.CHANNEL, { userId: state.params.id })}
-                />
-              </AnimatedView>
+      <Query query={userQuery} variables={{ userId }}>
+        {({ data: { user }, loading }) => (
+          <UserHeading {...props} highlight loading={loading} user={user}>
+            <View style={styles.buttons}>
+              <Button 
+                block 
+                style={styles.button} 
+                onPress={() => navigate(routes.CHANNEL, { userId })}
+              >
+                <Text>Chat</Text>
+              </Button>
 
-              <AnimatedView style={[styles.navBar, navBarStyle]}>
-                <Text style={styles.navBarText}>{user && user.name}</Text>
-              </AnimatedView>
-            </Fragment>
-          )}
-        </Query>
-      </View>
+              <Button light bordered secondary block style={styles.button}>
+                <Text>Friends</Text>
+              </Button>
+            </View>
+          </UserHeading>
+        )}
+      </Query>
     );
   }
 }

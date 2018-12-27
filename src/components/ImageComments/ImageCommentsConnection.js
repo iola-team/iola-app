@@ -4,10 +4,9 @@ import { Query } from 'react-apollo';
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { propType as graphqlPropType } from 'graphql-anywhere';
-import { get } from 'lodash';
+import { get, range } from 'lodash';
 
 import ImageCommentsList from '../ImageCommentsList';
-import LoadMoreIndicator from '../LoadMoreIndicator';
 
 const photoCommentsQuery = gql`
   query photoCommentsQuery($id: ID!, $cursor: Cursor = null) {
@@ -33,9 +32,9 @@ const photoCommentsQuery = gql`
 export default class ImageCommentsConnection extends Component {
   static propTypes = {
     photoId: PropTypes.string.isRequired,
-    height: PropTypes.number.isRequired,
     onItemPress: PropTypes.func,
     photoCommentsQuery: graphqlPropType(photoCommentsQuery),
+    imageCommentsListForwardedRef: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -46,13 +45,7 @@ export default class ImageCommentsConnection extends Component {
     photoCommentsQuery,
   };
 
-  state = {
-    loading: false,
-  };
-
   handleLoadMore({ photo: { comments: { pageInfo } } }, fetchMore) {
-    this.setState({ loading: pageInfo.hasNextPage });
-
     if (!pageInfo.hasNextPage) return;
 
     this.fetchMorePromise = this.fetchMorePromise || fetchMore({
@@ -86,33 +79,30 @@ export default class ImageCommentsConnection extends Component {
       }
     }).then(() => {
       this.fetchMorePromise = null;
-      this.setState({ loading: false });
     });
   }
 
   render() {
-    const { photoId, height, onItemPress } = this.props;
+    const { photoId, onItemPress, imageCommentsListForwardedRef } = this.props;
 
     return (
       <Query query={photoCommentsQuery} variables={{ id: photoId }}>
         {({ loading, data, fetchMore, networkStatus }) => {
-          if (loading) return <LoadMoreIndicator />;
-
           const refreshing = networkStatus === NetworkStatus.refetch;
           const edges = get(data, 'photo.comments.edges', []);
 
           return (
             <ImageCommentsList
               photoId={photoId}
-              height={height}
               onItemPress={onItemPress}
-              loading={this.state.loading}
+              loading={loading}
               refreshing={refreshing}
               edges={edges}
               onRefresh={data.refetch}
-              onEndReached={() => this.handleLoadMore(data, fetchMore)}
+              imageCommentsListForwardedRef={imageCommentsListForwardedRef}
+              onEndReached={() => loading ? null : this.handleLoadMore(data, fetchMore)}
               onEndReachedThreshold={2}
-              inverted={!!edges.length}
+              inverted={!!edges}
             />
           );
         }}

@@ -1,13 +1,15 @@
 import React from 'react';
-import { withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
+import { number, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 import { find } from 'lodash';
+import { Animated } from 'react-native';
+import { Button, Text } from 'native-base';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook/index';
 import UserHeading from './UserHeading';
-import gql from 'graphql-tag'
+import ScreenHeader from '../ScreenHeader';
 
 const stories = storiesOf('Components/UserHeading', module);
 
@@ -82,18 +84,39 @@ const userQuery = gql`
 `;
 
 // Stories
+const shrinkAnimationHeight = UserHeading.HEIGHT - ScreenHeader.HEIGHT;
+const getAnimatedValue = () => {
+  const value = number('Animation state', 1, {
+    range: true,
+    min: 0,
+    max: 1,
+    step: 0.01,
+  });
+
+  return new Animated.Value(value);
+};
+
 stories.add('Default', () => (
   <Query query={userQuery} variables={{ id: 'User:1' }}>
     {({ loading, data }) => (
       <UserHeading
+        shrinkAnimatedValue={getAnimatedValue()}
+        shrinkAnimationHeight={shrinkAnimationHeight}
         loading={loading}
         user={data.user}
-        onChatPress={action('onChatPress')}
-      />
+      >
+        <Button primary>
+          <Text>Chat</Text>
+        </Button>
+      </UserHeading>
     )}
   </Query>
 ));
 
 stories.add('Loading', () => (
-  <UserHeading loading />
+  <UserHeading 
+    loading 
+    shrinkAnimatedValue={getAnimatedValue()}
+    shrinkAnimationHeight={shrinkAnimationHeight}
+  />
 ));

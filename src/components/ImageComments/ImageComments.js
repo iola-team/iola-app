@@ -75,7 +75,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
   },
 
   container: {
-    minHeight: getModalHeight(),
+    flexGrow: 1,
     paddingHorizontal: 15,
     backgroundColor: '#F8F9FB',
   },
@@ -115,6 +115,8 @@ export default class ImageComments extends Component {
     isVisible: false,
   };
 
+  imageCommentsListForwardedRef = React.createRef();
+
   action = (handler, preHandler = noop) => () => {
     preHandler();
     this.props[handler](this.state.value);
@@ -138,7 +140,7 @@ export default class ImageComments extends Component {
     const { photoId, totalCount } = this.props;
     const { queries: { photoCommentsQuery } } = ImageCommentsConnection;
 
-    return mutate({
+    mutate({
       variables: {
         input: {
           userId: user.id,
@@ -205,6 +207,13 @@ export default class ImageComments extends Component {
         });
       },
     });
+
+    if (this.imageCommentsListForwardedRef.current) {
+      this.imageCommentsListForwardedRef.current.scrollToIndex({
+        animated: true,
+        index: 0,
+      });
+    }
   };
 
   renderTitle() {
@@ -221,9 +230,7 @@ export default class ImageComments extends Component {
   renderFooter(user) {
     return (
       <Mutation mutation={addPhotoCommentMutation}>
-        {mutate => (
-          <ChatFooter onSend={text => this.onCommentSend(text, user, mutate)} />
-        )}
+        {mutate => <ChatFooter onSend={text => this.onCommentSend(text, user, mutate)} />}
       </Mutation>
     );
   }
@@ -249,7 +256,10 @@ export default class ImageComments extends Component {
             noScrollViewForContent
           >
             <View style={styles.container}>
-              <ImageCommentsConnection photoId={photoId} height={getModalHeight()} />
+              <ImageCommentsConnection
+                photoId={photoId}
+                imageCommentsListForwardedRef={this.imageCommentsListForwardedRef}
+              />
             </View>
           </Modal>
         ))}
