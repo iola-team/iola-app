@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Moment from 'react-moment';
 import { View, StyleSheet } from 'react-native';
-import { Text, Icon } from 'native-base';
+import { Text } from 'native-base';
 
 import { withStyle } from 'theme';
 import MessageStateIndicator from '../MessageStateIndicator';
@@ -32,7 +32,7 @@ export default class MessageStatus extends PureComponent {
   };
 
   static defaultProps = {
-
+    hasStatus: false,
   };
 
   render() {

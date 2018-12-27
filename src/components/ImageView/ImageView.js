@@ -2,8 +2,6 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, StatusBar, Modal, Text, View } from 'react-native';
 import { Badge, Spinner } from 'native-base';
-import IoniconsIcon from 'react-native-vector-icons/Ionicons';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -12,6 +10,7 @@ import moment from 'moment';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import BackButton from '../BackButton';
+import Icon from '../Icon';
 import UserOnlineStatus from '../UserOnlineStatus';
 import TouchableOpacity from '../TouchableOpacity';
 import ImageComments from '../ImageComments';
@@ -26,10 +25,6 @@ const Name = connectToStyleSheet('name', Text);
 const Caption = connectToStyleSheet('caption', Text);
 const DateTime = connectToStyleSheet('dateTime', Text);
 const ActionsBlock = connectToStyleSheet('actionsBlock', View);
-const LikeIcon = connectToStyleSheet('actionIcon', IoniconsIcon).withProps({ name: 'ios-heart-outline' });
-// const CommentIcon = connectToStyleSheet('actionIcon', EvilIcons).withProps({ name: 'comment' });
-const ShareIcon = connectToStyleSheet('actionIcon', IoniconsIcon).withProps({ name: 'ios-share-alt' });
-const ActionButton = connectToStyleSheet('actionButton', TouchableOpacity);
 const ActionText = connectToStyleSheet('actionText', Text);
 const ActionBadge = connectToStyleSheet('actionBadge', Badge);
 const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
@@ -95,7 +90,7 @@ export const photoDetailsQuery = gql`
   indicator: {
     width: '100%',
     position: 'absolute',
-    top: 15,
+    top: 10,
     textAlign: 'center',
     fontFamily: 'SF Pro Text',
     fontSize: 14,
@@ -146,7 +141,6 @@ export const photoDetailsQuery = gql`
 
   actionsBlock: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     height: 58,
     borderTopWidth: 1,
@@ -157,15 +151,18 @@ export const photoDetailsQuery = gql`
     flexDirection: 'row',
   },
 
+  buttonComments: {
+    marginRight: 31,
+  },
+
   actionIcon: {
-    marginRight: 5,
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#BDC0CB',
+    marginRight: 8,
+    fontSize: 16,
+    color: '#C5CAD1',
   },
 
   actionText: {
-    color: '#BDC0CB',
+    color: '#AFB2BF',
     fontSize: 14,
     fontFamily: 'SF Pro Text',
   },
@@ -263,20 +260,13 @@ export default class ImageView extends Component {
               </View>
 
               <ActionsBlock>
-                <ActionButton onPress={() => alert('Like')}>
-                  <LikeIcon />
-                  <ActionText>Like</ActionText>
-                  {totalCountLikes ? (
-                    <ActionBadge>
-                      <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
-                    </ActionBadge>
-                  ) : null}
-                </ActionButton>
-
                 <ImageComments photoId={id} totalCount={totalCount}>
                   {onShowImageComments => (
-                    <TouchableOpacity onPress={onShowImageComments} style={styles.actionButton}>
-                      <EvilIcons name="comment" style={styles.actionIcon} />
+                    <TouchableOpacity
+                      onPress={onShowImageComments}
+                      style={[styles.actionButton, styles.buttonComments]}
+                    >
+                      <Icon name="chats-bar" style={styles.actionIcon} />
                       <Text style={styles.actionText}>Comment</Text>
                       {!totalCount ? null : (
                         <Badge style={styles.actionBadge}>
@@ -287,10 +277,15 @@ export default class ImageView extends Component {
                   )}
                 </ImageComments>
 
-                <ActionButton onPress={() => alert('Share')}>
-                  <ShareIcon />
-                  <ActionText>Share</ActionText>
-                </ActionButton>
+                <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
+                  <Icon name="like" style={styles.actionIcon} />
+                  <ActionText>Like</ActionText>
+                  {totalCountLikes ? (
+                    <ActionBadge>
+                      <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
+                    </ActionBadge>
+                  ) : null}
+                </TouchableOpacity>
               </ActionsBlock>
             </Footer>
           );

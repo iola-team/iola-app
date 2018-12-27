@@ -5,7 +5,7 @@ import { Button, Text } from 'native-base';
 
 import { withStyleSheet } from 'theme';
 import { UserHeading } from 'components';
-import * as routes from '../roteNames';
+import * as routes from '../routeNames';
 
 const userQuery = gql`
   query DashboardHeadingQuery {
@@ -34,11 +34,11 @@ export default class DashboardHeading extends PureComponent {
       <Query query={userQuery}>
         {({ data: { user }, loading }) => (
           <UserHeading {...props} highlight loading={loading} user={user}>
-            <Button 
-              light 
-              bordered 
-              secondary 
-              block 
+            <Button
+              light
+              bordered
+              secondary
+              block
               style={styles.button}
               onPress={() => navigate(routes.PROFILE_EDIT)}
             >

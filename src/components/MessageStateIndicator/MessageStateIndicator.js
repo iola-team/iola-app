@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View as ViewRN, StyleSheet } from 'react-native';
-import { Icon } from 'native-base';
 
 import { withStyle } from 'theme';
+import Icon from '../Icon';
 
 @withStyle('Sparkle.MessageStateIndicator', {
   height: 14,
@@ -39,7 +39,7 @@ export default class MessageStateIndicator extends Component {
 
     return (
       <ViewRN style={flatStyle}>
-        <Icon style={colorStyle} name={done ? 'ios-done-all' : 'checkmark'} />
+        <Icon style={colorStyle} name={done ? 'double-check' : 'check'} />
       </ViewRN>
     );
   }

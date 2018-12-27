@@ -12,7 +12,8 @@ stories.addDecorator(withKnobs());
 stories.addDecorator(getContainerDecorator());
 
 // Stories
-const getIcon = () => select('Icon', ['images', 'people', 'chatbubbles'], 'images');
+const icons = ['photos-empty-state', 'chats-empty-state', 'comments-empty-state'];
+const getIcon = () => select('Icon', icons, icons[0]);
 const getText = () => text('Text', 'No content');
 
 stories.add('Default', () => <NoContent icon={getIcon()} text={getText()} />);

@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
-import { View, Text, Icon } from 'native-base';
+import { View, Text } from 'native-base';
 
 import { withStyle } from 'theme';
+import Icon from '../Icon';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 const AnimatedText = Animated.createAnimatedComponent(Text);

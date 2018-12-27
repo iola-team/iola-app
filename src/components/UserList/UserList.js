@@ -90,7 +90,7 @@ export default class UserList extends Component {
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         getItemLayout={this.getItemLayout}
-        ListEmptyComponent={<NoContent style={noContentStyle} icon="people" text={noContentText} />}
+        ListEmptyComponent={<NoContent style={noContentStyle} icon="comments-empty-state" text={noContentText} />}
 
         // Performance tweaks
         updateCellsBatchingPeriod={25}

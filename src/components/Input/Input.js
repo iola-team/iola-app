@@ -1,22 +1,11 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  StyleSheet,
-} from 'react-native';
-
-import {
-  Label,
-  Body,
-  Right,
-  Icon,
-  Spinner,
-  Toast,
-  Button,
-} from 'native-base';
+import { View, StyleSheet } from 'react-native';
+import { Label, Body, Right, Spinner, Toast } from 'native-base';
 
 import { withStyle } from 'theme';
 import TouchableOpacity from '../TouchableOpacity';
+import Icon from '../Icon';
 
 const iconTheme = {
   '.disabled': {
@@ -98,12 +87,13 @@ export default class Input extends PureComponent {
 
   static defaultProps = {
     isLoading: false,
+    error: '',
     last: false,
   };
 
   state = {
     isToastVisible: false,
-  }
+  };
 
   showErrorToast = () => {
     const { error } = this.props;
@@ -125,11 +115,7 @@ export default class Input extends PureComponent {
     const { isLoading, error } = this.props;
     const { isToastVisible } = this.state;
 
-    if (isLoading) {
-      return (
-        <Spinner size={20} />
-      );
-    }
+    if (isLoading) return <Spinner size={20} />;
 
     if (error) {
       return (
@@ -137,7 +123,7 @@ export default class Input extends PureComponent {
           disabled={isToastVisible}
           onPress={this.showErrorToast}
         >
-          <Icon name="ios-alert-outline" />
+          <Icon name="alert" />
         </TouchableOpacity>
       );
     }
@@ -146,12 +132,7 @@ export default class Input extends PureComponent {
   }
 
   render() {
-    const {
-      label,
-      error,
-      style,
-      children,
-    } = this.props;
+    const { label, error, style, children } = this.props;
 
     return(
       <View style={style}>

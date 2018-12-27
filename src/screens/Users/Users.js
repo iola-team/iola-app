@@ -3,14 +3,14 @@ import { Container } from 'native-base';
 import { debounce } from 'lodash';
 
 import { Icon, SearchBar } from 'components';
-import { USER } from '../roteNames';
+import { USER } from '../routeNames';
 import UsersConnection from './UsersConnection';
 
 export default class Users extends PureComponent {
   static navigationOptions = {
     title: 'Users',
     tabBarIcon: ({ focused, tintColor }) => (
-      <Icon name="users-bar" style={{ color: tintColor, fontSize: 20 }} />
+      <Icon name="dashboard-bar" style={{ color: tintColor, fontSize: 25 }} />
     ),
   };
 
