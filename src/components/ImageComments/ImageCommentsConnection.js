@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { Query, subscribeToMore } from 'react-apollo';
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { propType as graphqlPropType } from 'graphql-anywhere';
@@ -10,7 +10,7 @@ import ImageCommentsList from '../ImageCommentsList';
 import LoadMoreIndicator from '../LoadMoreIndicator';
 
 const photoCommentsQuery = gql`
-  query photoCommentsQuery($id: ID!, $cursor: Cursor = null) {
+  query PhotoCommentsQuery($id: ID!, $cursor: Cursor = null) {
     photo: node(id: $id) {
       ...on Photo {
         id
@@ -28,6 +28,18 @@ const photoCommentsQuery = gql`
   }
 
   ${ImageCommentsList.fragments.edge}
+`;
+
+const photoCommentsSubscriptionAdd = gql`
+  subscription PhotoCommentAddSubscription($photoId: String!) {
+    onPhotoCommentAdd(photoId: $photoId) {
+      node {
+        id
+        text
+        createdAt
+      }
+    }
+  }
 `;
 
 export default class ImageCommentsConnection extends Component {
@@ -95,9 +107,8 @@ export default class ImageCommentsConnection extends Component {
 
     return (
       <Query query={photoCommentsQuery} variables={{ id: photoId }}>
-        {({ loading, data, fetchMore, networkStatus }) => {
+        {({ loading, data, fetchMore, networkStatus, subscribeToMore }) => {
           if (loading) return <LoadMoreIndicator />;
-
           const refreshing = networkStatus === NetworkStatus.refetch;
           const edges = get(data, 'photo.comments.edges', []);
 
@@ -112,6 +123,15 @@ export default class ImageCommentsConnection extends Component {
               onRefresh={data.refetch}
               onEndReached={() => this.handleLoadMore(data, fetchMore)}
               onEndReachedThreshold={2}
+              subscribeToNewComments={() => subscribeToMore({
+                document: photoCommentsSubscriptionAdd,
+                variables: { photoId },
+                updateQuery: (prev, { subscriptionData }) => {
+                  if (!subscriptionData.data) return prev;
+console.log('subscriptionData', prev, subscriptionData);
+return prev;
+                }
+              })}
               inverted={!!edges.length}
             />
           );

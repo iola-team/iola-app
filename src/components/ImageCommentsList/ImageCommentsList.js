@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import emitter from 'tiny-emitter/instance';
+import { range } from 'lodash';
 
 import ImageCommentsItem from '../ImageCommentsItem';
-import NoComments from './NoComments';
+import NoContent from '../NoContent';
 
 const edgeFragment = gql`
   fragment ImageCommentsList_edge on CommentEdge {
@@ -20,9 +22,10 @@ const edgeFragment = gql`
 
 export default class ImageCommentsList extends Component {
   static propTypes = {
-    height: PropTypes.number.isRequired,
     onItemPress: PropTypes.func,
-    edges: PropTypes.arrayOf(fragmentProp(edgeFragment)),
+    edges: PropTypes.arrayOf(
+      fragmentProp(edgeFragment).isRequired,
+    ),
     loading: PropTypes.bool.isRequired,
   };
 
@@ -38,9 +41,11 @@ export default class ImageCommentsList extends Component {
     super(props);
 
     this.flatList = null;
-    this.scrollOffset = 0;
-    this.itemsCount = 0;
-    this.onViewableItemsChanged = this.onViewableItemsChanged.bind(this); // Invariant Violation: Changing onViewableItemsChanged on the fly is not supported (also :: operator)
+    emitter.on('commentSentEvent', () => this.flatList.scrollToIndex({ animated: true, index: 0 }));
+  }
+
+  componentDidMount() {
+    this.props.subscribeToNewComments();
   }
 
   shouldComponentUpdate(nextProps) {
@@ -49,26 +54,17 @@ export default class ImageCommentsList extends Component {
     return edges.length !== nextProps.edges.length || loading !== nextProps.loading;
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.loading !== prevProps.loading) {
-      this.itemsCount = this.props.edges.length;
-    }
+  componentWillUnmount() {
+    emitter.off('commentSentEvent');
   }
 
-  onViewableItemsChanged() {
-    const { edges } = this.props;
+  extractItemKey = ({ node, key }) => key || node.id;
 
-    if (this.itemsCount === edges.length) return;
-
-    this.itemsCount = edges.length;
-
-    if (this.flatList) {
-      this.flatList.scrollToIndex({ animated: true, index: 0 });
-    }
-  }
-
-  extractItemKey({ node }) {
-    return node.id;
+  getPlaceholders() {
+    return range(3).map(index => ({
+      key: `placeholder:${index}`,
+      node: null,
+    }));
   }
 
   renderItem({ item: { node } }) {
@@ -76,17 +72,19 @@ export default class ImageCommentsList extends Component {
   }
 
   render() {
-    const { height, edges, loading, ...listProps } = this.props;
+    const { edges, loading, ...listProps } = this.props;
+    const data = loading && !edges.length ? this.getPlaceholders() : edges;
+    const emptyStateText = 'No comments yet\nBe the first to comment';
 
     return (
       <FlatList
         {...listProps}
         ref={ref => this.flatList = ref}
-        data={edges}
-        onViewableItemsChanged={this.onViewableItemsChanged}
+        data={data}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
-        ListEmptyComponent={<NoComments height={height} />}
+        contentContainerStyle={{ flexGrow: 1 }}
+        ListEmptyComponent={<NoContent icon="chatbubbles" text={emptyStateText} inverted />}
       />
     );
   }
