@@ -26,6 +26,7 @@ export default class ImageCommentsList extends Component {
       fragmentProp(edgeFragment).isRequired,
     ),
     loading: PropTypes.bool.isRequired,
+    subscribeToNewComments: PropTypes.func.isRequired,
     imageCommentsListForwardedRef: PropTypes.object.isRequired,
   };
 

@@ -29,13 +29,21 @@ const photoCommentsQuery = gql`
   ${ImageCommentsList.fragments.edge}
 `;
 
-const photoCommentsSubscriptionAdd = gql`
-  subscription PhotoCommentAddSubscription($photoId: String!) {
+const photoCommentAddSubscription = gql`
+  subscription PhotoCommentAddSubscription($photoId: ID!) {
     onPhotoCommentAdd(photoId: $photoId) {
-      node {
-        id
-        text
-        createdAt
+      ...on PhotoCommentCreatePayload {
+        node {
+          id
+          text
+          createdAt
+        }
+
+        edge {
+          node {
+            text
+          }
+        }
       }
     }
   }
@@ -116,7 +124,7 @@ export default class ImageCommentsConnection extends Component {
               onEndReachedThreshold={2}
               inverted={!!edges}
               subscribeToNewComments={() => subscribeToMore({
-                document: photoCommentsSubscriptionAdd,
+                document: photoCommentAddSubscription,
                 variables: { photoId },
                 updateQuery: (prev, { subscriptionData }) => {
                   if (!subscriptionData.data) return prev;
@@ -124,7 +132,6 @@ console.log('subscriptionData', prev, subscriptionData);
 return prev;
                 }
               })}
-              inverted={!!edges.length}
             />
           );
         }}
