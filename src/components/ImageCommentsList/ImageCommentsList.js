@@ -74,13 +74,7 @@ export default class ImageCommentsList extends Component {
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         contentContainerStyle={{ flexGrow: 1 }}
-        ListEmptyComponent={(
-          <NoContent
-            icon="chatbubbles"
-            text={'No comments yet\nBe the first to comment'/* ' - don't replace with " */}
-            inverted
-          />
-        )}
+        ListEmptyComponent={<NoContent icon="chatbubbles" text={emptyStateText} inverted />}
       />
     );
   }
