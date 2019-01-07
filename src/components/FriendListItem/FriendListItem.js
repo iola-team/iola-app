@@ -1,7 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { Button, Text, View } from 'native-base';
+import PropTypes from 'prop-types';
+import { Button, Text } from 'native-base';
+import { noop } from 'lodash';
 
 import { withStyle } from 'theme';
 import UserListItem from '../UserListItem';
@@ -48,25 +50,41 @@ export default class FriendListItem extends Component {
   static propTypes = {
     friendship: fragmentProp(friendshipFragment),
     user: fragmentProp(userFragment),
+
+    /**
+     * Handlers
+     */
+    onAcceptPress: PropTypes.func,
+    onIgnorePress: PropTypes.func,
+    onCancelPress: PropTypes.func,
   };
 
   static defaultProps = {
     friendship: null,
     user: null,
+    onAcceptPress: noop,
+    onIgnorePress: noop,
+    onCancelPress: noop,
   };
 
   render() {
-    const { user, friendship, ...props } = this.props;
+    const { 
+      user,
+      friendship,
+      onAcceptPress,
+      onIgnorePress,
+      ...props
+    } = this.props;
 
     return (
       <UserListItem {...props} user={user}>
         {friendship && friendship.status === 'PENDING' && (
           <Fragment>
-            <Button>
+            <Button onPress={onAcceptPress}>
               <Text>Accept</Text>
             </Button>
 
-            <Button secondary>
+            <Button secondary onPress={onIgnorePress}>
               <Text>Ignore</Text>
             </Button>
           </Fragment>

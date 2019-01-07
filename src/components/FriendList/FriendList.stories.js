@@ -157,7 +157,15 @@ const friendsQuery = gql`
 stories.add('Full flow', () => (
   <Query query={friendsQuery}>
     {({ loading, data }) => (
-      <FriendList edges={loading ? [] : data.user.friends.edges} loading={loading} />
+      <FriendList 
+        edges={loading ? [] : data.user.friends.edges} 
+        loading={loading} 
+
+        onItemPress={action('onItemPress')}
+        onAcceptPress={action('onAcceptPress')}
+        onIgnorePress={action('onIgnorePress')}
+        onCancelPress={action('onCancelPress')}
+      />
     )}
   </Query>
 ));

@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import { propType as fragmentProp } from 'graphql-anywhere';
+import { noop } from 'lodash';
 
+import { withStyle } from 'theme';
 import UserList from '../UserList';
 import FriendListItem from '../FriendListItem';
 
@@ -21,15 +24,47 @@ const edgeFragment = gql`
   ${UserList.fragments.edge}
 `;
 
+@withStyle('Sparkle.FriendList')
 export default class FriendList extends Component {
   static fragments = {
     edge: edgeFragment,
   };
 
+  static propTypes = {
+    edges: PropTypes.arrayOf(
+      fragmentProp(edgeFragment).isRequired
+    ).isRequired,
+
+    /**
+     * Handlers
+     */
+    onItemPress: PropTypes.func,
+    onAcceptPress: PropTypes.func,
+    onIgnorePress: PropTypes.func,
+    onCancelPress: PropTypes.func,
+  };
+
+  static defaultProps = {
+    onItemPress: noop,
+    onAcceptPress: noop,
+    onIgnorePress: noop,
+    onCancelPress: noop,
+  };
+
   renderItem = ({ item }) => {
+    const { onItemPress, onAcceptPress, onIgnorePress, onCancelPress } = this.props;
     const { node, friendship } = item;
 
-    return <FriendListItem user={node} friendship={friendship} />;
+    return (
+      <FriendListItem 
+        user={node} 
+        friendship={friendship}
+        onPress={() => onItemPress(item)}
+        onAcceptPress={() => onAcceptPress(item)}
+        onIgnorePress={() => onIgnorePress(item)}
+        onCancelPress={() => onCancelPress(item)}
+      />
+    );
   };
 
   render() {

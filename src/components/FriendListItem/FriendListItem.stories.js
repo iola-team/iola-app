@@ -2,6 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withKnobs } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import delay from 'promise-delay';
@@ -101,7 +102,15 @@ const withData = (userId, friendshipId, render) => (
 );
 
 stories.add('Default', () => withData('User:1', 'Friendship:1', ({ user, friendship }) => (
-  <FriendListItem user={user} friendship={friendship} />
+  <FriendListItem 
+    user={user}
+    friendship={friendship}
+    
+    onPress={action('onPress')}
+    onAcceptPress={action('onAcceptPress')}
+    onIgnorePress={action('onIgnorePress')}
+    onCancelPress={action('onCancelPress')}
+  />
 )));
 
 stories.add('Loading', () => <FriendListItem user={null} />);

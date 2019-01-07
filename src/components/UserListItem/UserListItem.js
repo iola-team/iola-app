@@ -75,18 +75,6 @@ export default class UserListItem extends Component {
     onPress: () => {},
   };
 
-  /**
-   * Performs deep caparison of user objects
-   * TODO: Think of how to optimize - maybe shallow equal will be better.
-   * TODO: Investigate why apollo returns new objects for the same user on each query
-   *
-   * @param user
-   * @returns {boolean}
-   */
-  shouldComponentUpdate({ user }) {
-    return user !== this.props.user;
-  }
-
   renderPlaceholder() {
     const { style } = this.props;
 
