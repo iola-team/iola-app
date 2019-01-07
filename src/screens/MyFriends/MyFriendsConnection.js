@@ -37,10 +37,6 @@ export default class MyFriendsConnection extends Component {
     skip: false,
   };
 
-  onItemPress = ({ node }) => {
-    
-  };
-
   onAcceptPress = ({ node }) => {
 
   };
@@ -64,7 +60,6 @@ export default class MyFriendsConnection extends Component {
         loading={skip || loading}
         noContentText="No friends"
 
-        onItemPress={this.onItemPress}
         onAcceptPress={this.onAcceptPress}
         onIgnorePress={this.onIgnorePress}
         onCancelPress={this.onCancelPress}
