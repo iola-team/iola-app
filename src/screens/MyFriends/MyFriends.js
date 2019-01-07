@@ -1,27 +1,8 @@
 import React, { PureComponent } from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
-import { FriendList } from 'components';
-
-const userFriendsQuery = gql`
-  query MyFriendsQuery {
-    user: me {
-      id
-      friends(filter: {
-        friendshipStatusIn: [ACTIVE, PENDING]
-      }) {
-        edges {
-          ...FriendList_edge
-        }
-      }
-    }
-  }
-  
-  ${FriendList.fragments.edge}
-`;
+import MyFriendsConnection from './MyFriendsConnection';
 
 @withStyleSheet('Sparkle.MyFriendsScreen', {
   list: {
@@ -38,16 +19,7 @@ export default class MyFriends extends PureComponent {
     const { isFocused, styleSheet: styles } = this.props;
 
     return (
-      <Query skip={!isFocused} query={userFriendsQuery}>
-        {({ loading, data }) => (
-          <FriendList
-            contentContainerStyle={styles.list}
-            edges={loading || !isFocused ? [] : data.user.friends.edges}
-            loading={loading || !isFocused}
-            noContentText="No friends"
-          />
-        )}
-      </Query>
+      <MyFriendsConnection contentContainerStyle={styles.list} skip={!isFocused} />
     );
   }
 }
