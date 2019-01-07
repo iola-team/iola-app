@@ -9,8 +9,7 @@ import { FlatList, NoContent } from '../TabNavigator';
 import UserListItem from '../UserListItem';
 
 const edgeFragment = gql`
-  fragment UserList_edge on UserEdge {
-    cursor
+  fragment UserList_edge on Edge {
     node {
       id
       ...UserListItem_user
@@ -46,12 +45,10 @@ export default class UserList extends Component {
   extractItemKey = ({ node, key }) => key || node.id;
   renderItem = ({ item }) => {
     const { onItemPress } = this.props;
-    const { node, opacity } = item;
-    const opacityStyle = opacity && { opacity };
+    const { node } = item;
 
     return (
       <UserListItem 
-        style={opacityStyle} 
         user={node}
         onPress={() => onItemPress(item)} 
       />
@@ -64,12 +61,9 @@ export default class UserList extends Component {
     index,
   });
 
-  getPlaceholders() {
-    return range(3).map(index => ({ 
-      key: index.toString(),
-      opacity: 1 - index * 0.3,
-    }));
-  }
+  getPlaceholders = () => range(3).map(index => ({ 
+    key: index.toString(),
+  }));
 
   render() {
     const { 
@@ -77,17 +71,19 @@ export default class UserList extends Component {
       loading, 
       styleSheet: styles, 
       noContentText, 
-      noContentStyle, 
+      noContentStyle,
+      renderItem = this.renderItem, 
       ...listProps 
     } = this.props;
+
     const data = loading ? this.getPlaceholders() : edges;
 
     return (
       <FlatList
         {...listProps}
         data={data}
+        renderItem={renderItem}
         keyExtractor={this.extractItemKey}
-        renderItem={this.renderItem}
         getItemLayout={this.getItemLayout}
         ListEmptyComponent={<NoContent style={noContentStyle} icon="people" text={noContentText} />}
 

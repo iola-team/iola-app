@@ -52,13 +52,12 @@ export default class PhotoList extends Component {
 
   renderItem = ({ item, index }) => {
     const { styleSheet, onItemPress } = this.props;
-    const { node, opacity } = item;
-    const opacityStyle = opacity && { opacity };
+    const { node } = item;
 
     return (
       <TouchableOpacity
         onPress={() => onItemPress({ item, index })}
-        style={[opacityStyle, styleSheet.item]}
+        style={styleSheet.item}
       >
         <Item photo={node} />
       </TouchableOpacity>
@@ -68,7 +67,6 @@ export default class PhotoList extends Component {
   getPlaceholders() {
     return range(9).map(index => ({
       key: index.toString(),
-      opacity: 1 - Math.floor(index / 3) * 0.3,
     }));
   }
 

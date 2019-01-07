@@ -32,11 +32,20 @@ const typeDefs = gql`
   scalar Date
   scalar Cursor
   
+  interface Node {
+    id: ID!
+  }
+
+  interface Edge {
+    node: Node!
+    cursor: Cursor!
+  }
+
   type Query {
     users: UserConnection!
   }
   
-  type User {
+  type User implements Node {
     id: ID!
     name: String!
     activityTime: Date!
@@ -47,12 +56,12 @@ const typeDefs = gql`
     edges: [UserEdge!]!
   }
 
-  type UserEdge {
+  type UserEdge implements Edge {
     node: User!
     cursor: Cursor!
   }
 
-  type Avatar {
+  type Avatar implements Node {
     id: ID!
     url: String!
   }

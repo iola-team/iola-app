@@ -105,7 +105,7 @@ export default class UserListItem extends Component {
   }
 
   render() {
-    const { user, onPress, style } = this.props;
+    const { user, onPress, style, children } = this.props;
 
     if (!user) {
       return this.renderPlaceholder();
@@ -124,11 +124,9 @@ export default class UserListItem extends Component {
         <Body>
           <Text>{user.name}</Text>
         </Body>
-        <Right>
-          <Moment note fromNow>
-            {user.activityTime}
-          </Moment>
-        </Right>
+        {children && (
+          <Right>{children}</Right>
+        )}
       </ListItem>
     );
   }

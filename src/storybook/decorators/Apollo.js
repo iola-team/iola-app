@@ -55,11 +55,13 @@ class SubscriptionLink extends ApolloLink {
 }
 
 function createSchemaLink({ typeDefs, mocks, resolvers, dataStore = {} }) {
+  const resolverValidationOptions = {
+    requireResolversForResolveType: false,
+  };
+
   const schema = makeExecutableSchema({
     typeDefs,
-    resolverValidationOptions :{
-      requireResolversForResolveType: false
-    },
+    resolverValidationOptions,
   });
 
   if (mocks) {
@@ -73,6 +75,7 @@ function createSchemaLink({ typeDefs, mocks, resolvers, dataStore = {} }) {
     addResolveFunctionsToSchema({
       schema,
       resolvers,
+      resolverValidationOptions,
     });
   }
 
