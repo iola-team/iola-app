@@ -73,24 +73,29 @@ export default class FriendListItem extends Component {
       friendship,
       onAcceptPress,
       onIgnorePress,
+      onCancelPress,
       ...props
     } = this.props;
 
     return (
       <UserListItem {...props} user={user}>
         {friendship && friendship.status === 'PENDING' && (
-          <Fragment>
-            <Button onPress={onAcceptPress}>
-              <Text>Accept</Text>
-            </Button>
+            friendship.user.id === user.id ? (
+              <Fragment>
+                <Button onPress={onAcceptPress}>
+                  <Text>Accept</Text>
+                </Button>
 
-            <Button secondary onPress={onIgnorePress}>
-              <Text>Ignore</Text>
-            </Button>
-          </Fragment>
+                <Button secondary onPress={onIgnorePress}>
+                  <Text>Ignore</Text>
+                </Button>
+              </Fragment>
+            ) : (
+              <Button secondary onPress={onCancelPress}>
+                <Text>Cancel</Text>
+              </Button>
+            )
         )}
-
-        
       </UserListItem>
     );
   }
