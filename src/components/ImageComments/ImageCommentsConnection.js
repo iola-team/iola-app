@@ -4,7 +4,7 @@ import { Query, subscribeToMore } from 'react-apollo';
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { propType as graphqlPropType } from 'graphql-anywhere';
-import { get, range } from 'lodash';
+import { get, noop, range } from 'lodash';
 import update from 'immutability-helper';
 
 import ImageCommentsList from '../ImageCommentsList';
@@ -23,9 +23,12 @@ const photoCommentsQuery = gql`
       ...on Photo {
         id
         comments(first: 10 after: $cursor) {
+          totalCount
+
           edges {
             ...ImageCommentsList_edge
           }
+
           pageInfo {
             hasNextPage
             endCursor
@@ -58,16 +61,30 @@ const photoCommentAddSubscription = gql`
   ${ImageCommentsList.fragments.edge}
 `;
 
+const updateCachePhotoCommentsTotalCountQuery = gql`
+  query updateCachePhotoCommentsTotalCountQuery($id: ID!) {
+    photo: node(id: $id) {
+      ...on Photo {
+        id
+
+        comments {
+          totalCount
+        }
+      }
+    }
+  }
+`;
+
 export default class ImageCommentsConnection extends Component {
   static propTypes = {
     photoId: PropTypes.string.isRequired,
     onItemPress: PropTypes.func,
     photoCommentsQuery: graphqlPropType(photoCommentsQuery),
-    imageCommentsListForwardedRef: PropTypes.object.isRequired,
+    listRef: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
-    onItemPress: () => {},
+    onItemPress: noop,
   };
 
   static queries = {
@@ -112,7 +129,7 @@ export default class ImageCommentsConnection extends Component {
   }
 
   render() {
-    const { photoId, onItemPress, imageCommentsListForwardedRef } = this.props;
+    const { photoId, onItemPress, listRef } = this.props;
 
     return (
       <Query query={meQuery}>
@@ -130,16 +147,18 @@ export default class ImageCommentsConnection extends Component {
                   refreshing={refreshing}
                   edges={edges}
                   onRefresh={data.refetch}
-                  imageCommentsListForwardedRef={imageCommentsListForwardedRef}
+                  listRef={listRef}
                   onEndReached={() => loading ? null : this.handleLoadMore(data, fetchMore)}
                   onEndReachedThreshold={2}
                   inverted={!!edges}
                   subscribeToNewComments={() => subscribeToMore({
                     document: photoCommentAddSubscription,
                     variables: { photoId },
+
                     updateQuery: (prev, { subscriptionData }) => {
                       if (!subscriptionData.data) return prev;
 
+                      const totalCount = get(data, 'photo.comments.totalCount', 0);
                       const { onPhotoCommentAdd: payload } = subscriptionData.data;
 
                       /**
@@ -153,13 +172,16 @@ export default class ImageCommentsConnection extends Component {
                       return update(prev, {
                         photo: {
                           comments: {
+                            totalCount: {
+                              $set: totalCount + 1,
+                            },
                             edges: {
-                              $unshift: [payload.edge]
+                              $unshift: [payload.edge],
                             },
                           },
                         },
                       });
-                    }
+                    },
                   })}
                 />
               );

@@ -27,7 +27,7 @@ export default class ImageCommentsList extends Component {
     ),
     loading: PropTypes.bool.isRequired,
     subscribeToNewComments: PropTypes.func.isRequired,
-    imageCommentsListForwardedRef: PropTypes.object.isRequired,
+    listRef: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -62,19 +62,19 @@ export default class ImageCommentsList extends Component {
   }
 
   render() {
-    const { edges, loading, imageCommentsListForwardedRef, ...listProps } = this.props;
+    const { edges, loading, listRef, ...listProps } = this.props;
     const data = loading && !edges.length ? this.getPlaceholders() : edges;
     const emptyStateText = 'No comments yet\nBe the first to comment';
 
     return (
       <FlatList
         {...listProps}
-        ref={imageCommentsListForwardedRef}
+        ref={listRef}
         data={data}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         contentContainerStyle={{ flexGrow: 1 }}
-        ListEmptyComponent={<NoContent icon="chatbubbles" text={emptyStateText} inverted />}
+        ListEmptyComponent={<NoContent icon="chats-bar" text={emptyStateText} inverted />}
       />
     );
   }

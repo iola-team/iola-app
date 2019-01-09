@@ -50,7 +50,7 @@ export const photoDetailsQuery = gql`
           name
         }
 
-        comments {
+        comments(first: 10 after: null) { # params (first: 10 after: $cursor) are used here for cache syncronization
           totalCount
         }
       }

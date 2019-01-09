@@ -48,7 +48,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
     photo: node(id: $id) {
       ...on Photo {
         id
-        comments {
+        comments(first: 10 after: null) { # params (first: 10 after: $cursor) are used here for cache syncronization
           totalCount
         }
       }
@@ -115,7 +115,7 @@ export default class ImageComments extends Component {
     isVisible: false,
   };
 
-  imageCommentsListForwardedRef = React.createRef();
+  listRef = React.createRef();
 
   action = (handler, preHandler = noop) => () => {
     preHandler();
@@ -208,11 +208,8 @@ export default class ImageComments extends Component {
       },
     });
 
-    if (this.imageCommentsListForwardedRef.current) {
-      this.imageCommentsListForwardedRef.current.scrollToIndex({
-        animated: true,
-        index: 0,
-      });
+    if (this.listRef.current && totalCount) {
+      this.listRef.current.scrollToIndex({ animated: true, index: 0 });
     }
   };
 
@@ -256,10 +253,7 @@ export default class ImageComments extends Component {
             noScrollViewForContent
           >
             <View style={styles.container}>
-              <ImageCommentsConnection
-                photoId={photoId}
-                imageCommentsListForwardedRef={this.imageCommentsListForwardedRef}
-              />
+              <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
             </View>
           </Modal>
         ))}
