@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import { range } from 'lodash';
 
 import ImageCommentsItem from '../ImageCommentsItem';
-import NoComments from './NoComments';
+import NoContent from '../NoContent';
 
 const edgeFragment = gql`
   fragment ImageCommentsList_edge on CommentEdge {
@@ -20,10 +21,12 @@ const edgeFragment = gql`
 
 export default class ImageCommentsList extends Component {
   static propTypes = {
-    height: PropTypes.number.isRequired,
     onItemPress: PropTypes.func,
-    edges: PropTypes.arrayOf(fragmentProp(edgeFragment)),
+    edges: PropTypes.arrayOf(
+      fragmentProp(edgeFragment).isRequired,
+    ),
     loading: PropTypes.bool.isRequired,
+    imageCommentsListForwardedRef: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -34,41 +37,19 @@ export default class ImageCommentsList extends Component {
     edge: edgeFragment,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.flatList = null;
-    this.scrollOffset = 0;
-    this.itemsCount = 0;
-    this.onViewableItemsChanged = this.onViewableItemsChanged.bind(this); // Invariant Violation: Changing onViewableItemsChanged on the fly is not supported (also :: operator)
-  }
-
   shouldComponentUpdate(nextProps) {
     const { edges, loading } = this.props;
 
     return edges.length !== nextProps.edges.length || loading !== nextProps.loading;
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.loading !== prevProps.loading) {
-      this.itemsCount = this.props.edges.length;
-    }
-  }
+  extractItemKey = ({ node, key }) => key || node.id;
 
-  onViewableItemsChanged() {
-    const { edges } = this.props;
-
-    if (this.itemsCount === edges.length) return;
-
-    this.itemsCount = edges.length;
-
-    if (this.flatList) {
-      this.flatList.scrollToIndex({ animated: true, index: 0 });
-    }
-  }
-
-  extractItemKey({ node }) {
-    return node.id;
+  getPlaceholders() {
+    return range(3).map(index => ({
+      key: `placeholder:${index}`,
+      node: null,
+    }));
   }
 
   renderItem({ item: { node } }) {
@@ -76,17 +57,24 @@ export default class ImageCommentsList extends Component {
   }
 
   render() {
-    const { height, edges, loading, ...listProps } = this.props;
+    const { edges, loading, imageCommentsListForwardedRef, ...listProps } = this.props;
+    const data = loading && !edges.length ? this.getPlaceholders() : edges;
 
     return (
       <FlatList
         {...listProps}
-        ref={ref => this.flatList = ref}
-        data={edges}
-        onViewableItemsChanged={this.onViewableItemsChanged}
+        ref={imageCommentsListForwardedRef}
+        data={data}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
-        ListEmptyComponent={<NoComments height={height} />}
+        contentContainerStyle={{ flexGrow: 1 }}
+        ListEmptyComponent={(
+          <NoContent
+            icon="chatbubbles"
+            text={'No comments yet\nBe the first to comment'/* ' - don't replace with " */}
+            inverted
+          />
+        )}
       />
     );
   }

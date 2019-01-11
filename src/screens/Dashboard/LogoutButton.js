@@ -7,7 +7,7 @@ import {
   Button,
 } from 'native-base';
 
-import * as routes from '../roteNames';
+import * as routes from '../routeNames';
 
 @graphql(gql`
   mutation {

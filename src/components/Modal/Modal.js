@@ -48,6 +48,7 @@ const maxHeight = Dimensions.get('window').height * 0.6;
   },
 
   cancel: {
+    width: 50,
     fontSize: 14,
     color: '#BDC0CB',
   },
@@ -57,6 +58,8 @@ const maxHeight = Dimensions.get('window').height * 0.6;
   },
 
   done: {
+    width: 50,
+    textAlign: 'right',
     fontSize: 14,
     color: '#5F96F2',
   },

@@ -43,6 +43,7 @@ export default class UserList extends Component {
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
+
   renderItem = ({ item }) => {
     const { onItemPress } = this.props;
     const { node } = item;
@@ -50,10 +51,10 @@ export default class UserList extends Component {
     return (
       <UserListItem 
         user={node}
-        onPress={() => onItemPress(item)} 
+        onPress={() => onItemPress(item)}
       />
     );
-  }
+  };
 
   getItemLayout = (data, index) => ({
     length: UserListItem.ITEM_HEIGHT,
@@ -66,14 +67,14 @@ export default class UserList extends Component {
   }));
 
   render() {
-    const { 
-      edges, 
-      loading, 
-      styleSheet: styles, 
-      noContentText, 
+    const {
+      edges,
+      loading,
+      styleSheet: styles,
+      noContentText,
       noContentStyle,
-      renderItem = this.renderItem, 
-      ...listProps 
+      renderItem = this.renderItem,
+      ...listProps
     } = this.props;
 
     const data = loading ? this.getPlaceholders() : edges;
@@ -85,7 +86,7 @@ export default class UserList extends Component {
         renderItem={renderItem}
         keyExtractor={this.extractItemKey}
         getItemLayout={this.getItemLayout}
-        ListEmptyComponent={<NoContent style={noContentStyle} icon="people" text={noContentText} />}
+        ListEmptyComponent={<NoContent style={noContentStyle} icon="comments-empty-state" text={noContentText} />}
 
         // Performance tweaks
         updateCellsBatchingPeriod={25}

@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Header } from 'react-navigation';
 import { constant } from 'lodash';
-import { Icon } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
+import Icon from '../Icon';
 
 @styleSheet('Sparkle.ScreenHeader', {
   header: {
@@ -12,11 +12,16 @@ import { withStyleSheet as styleSheet } from 'theme';
     borderBottomWidth: 0,
   },
 
+  icon: {
+    fontSize: 16,
+    color: '#BDC0CB',
+  },
+
   title: {
     fontWeight: '600',
     fontSize: 16,
     color: '#585A61',
-  }
+  },
 })
 export default class ScreenHeader extends PureComponent {
   static HEIGHT = Header.HEIGHT;
@@ -26,11 +31,11 @@ export default class ScreenHeader extends PureComponent {
     renderRight: PropTypes.func,
     title: PropTypes.string,
   };
-  
+
   getSceneOptions(scene) {
     const { descriptor: { options } } = scene;
     const {
-      styleSheet,
+      styleSheet: styles,
       title = options.title,
       renderLeft = constant(options.headerLeft),
       renderRight = constant(options.headerRight),
@@ -40,11 +45,11 @@ export default class ScreenHeader extends PureComponent {
       ...options,
 
       title,
-      headerBackImage: <Icon name="ios-arrow-back" />,
+      headerBackImage: <Icon name="back" style={styles.icon} />,
       headerLeft: renderLeft(scene),
       headerRight: renderRight(scene),
-      headerStyle: [styleSheet.header, options.headerStyle],
-      headerTitleStyle: [styleSheet.title, options.headerTitleStyle],
+      headerStyle: [styles.header, options.headerStyle],
+      headerTitleStyle: [styles.title, options.headerTitleStyle],
     };
   }
 

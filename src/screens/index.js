@@ -1,5 +1,5 @@
 import navigation from './navigation';
 
-export * from './roteNames';
+export * from './routeNames';
 
 export default navigation;

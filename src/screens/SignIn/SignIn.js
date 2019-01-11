@@ -3,7 +3,7 @@ import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import * as routes from '../roteNames';
+import * as routes from '../routeNames';
 import SignInForm from './SignInForm';
 import Divider from './Divider';
 

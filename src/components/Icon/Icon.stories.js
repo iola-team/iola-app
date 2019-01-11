@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
-import { select, withKnobs } from '@storybook/addon-knobs';
+import { Text, View } from 'react-native';
 
 import { getContentDecorator } from 'storybook';
 import Icon from './Icon';
@@ -9,11 +9,18 @@ import glyphMap from './glyphMap';
 const stories = storiesOf('Components/Icon', module);
 
 // Decorators
-stories.addDecorator(withKnobs());
-stories.addDecorator(getContentDecorator({ centered: true }));
+stories.addDecorator(getContentDecorator({ padder: true }));
 
 // Stories
-const icons = Object.keys(glyphMap);
-const getIcon = () => select('Icon', icons, icons[0]);
-
-stories.add('Default', () => <Icon name={getIcon()} style={{ fontSize: 300 }} />);
+stories.add('All icons', () => (
+  <View>
+    {Object.keys(glyphMap).map(name => (
+      <View key={name} style={{ flexDirection: 'row', padding: 5 }}>
+        <View style={{ width: 40 }}>
+          <Icon name={name} style={{ fontSize: 20 }} />
+        </View>
+        <Text>{name}</Text>
+      </View>
+    ))}
+  </View>
+));

@@ -173,6 +173,7 @@ export default (variables => ({
 
           'NativeBase.Icon': {
             color: '#BDC0CB',
+            fontSize: 18,
           },
         },
       },

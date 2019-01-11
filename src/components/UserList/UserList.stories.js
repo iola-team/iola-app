@@ -10,7 +10,6 @@ import { connectionFromArray } from 'graphql-relay';
 
 import { getContainerDecorator, getApolloDecorator } from 'storybook';
 import UserList from './UserList';
-import NoContent from '../NoContent';
 
 const stories = storiesOf('Components/UserList', module);
 
@@ -113,9 +112,4 @@ stories.add('Full flow', () => (
 ));
 
 stories.add('Initial Load', () => <UserList edges={[]} loading />);
-stories.add('No items', () => (
-  <UserList 
-    edges={[]} 
-    noContentText="No users"
-  />
-));
+stories.add('No items', () => <UserList edges={[]} noContentText="No users" />);
