@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
-import { USER } from '../roteNames';
+import { USER } from '../routeNames';
 import MyFriendsConnection from './MyFriendsConnection';
 
 @withStyleSheet('Sparkle.MyFriendsScreen', {

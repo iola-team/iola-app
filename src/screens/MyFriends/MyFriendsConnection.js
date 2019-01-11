@@ -25,7 +25,7 @@ const userFriendsQuery = gql`
 
 const addFriendMutation = gql`
   mutation AddFriendMutation($input: AddFriendInput!) {
-    addFriend(input: $input) {
+    result: addFriend(input: $input) {
       friendship {
         id
         status
@@ -37,11 +37,34 @@ const addFriendMutation = gql`
 
 const deleteFriendMutation = gql`
   mutation DeleteFriendMutation($input: DeleteFriendInput!) {
-    deleteFriend(input: $input) {
+    result: deleteFriend(input: $input) {
       deletedId
     }
   }
 `;
+
+const createAddFriendOptimistic = (friendship, status) => ({
+  result: {
+    __typename: 'AddFriendPayload',
+    friendship: {
+      ...friendship,
+      status,
+    },
+  },
+});
+
+const removeFromCache = (cache, toDeleteId) => {
+  const data = cache.readQuery({ query: userFriendsQuery });
+
+  /**
+   * Remove friendship from cache
+   */
+  data.me.friends.edges = filter(data.me.friends.edges, ({ friendship: { id } }) => (
+    toDeleteId !== id
+  ));
+
+  cache.writeQuery({ query: userFriendsQuery, data });
+};
 
 @graphql(userFriendsQuery, {
   skip: props => !!props.skip,
@@ -73,15 +96,7 @@ export default class MyFriendsConnection extends Component {
 
     addFriend({
       variables: { input },
-      optimisticResponse: {
-        addFriend: {
-          __typename: 'AddFriendPayload',
-          friendship: {
-            ...friendship,
-            status: 'ACTIVE',
-          },
-        },
-      },
+      optimisticResponse: createAddFriendOptimistic(friendship, 'ACTIVE'),
     });
   };
 
@@ -95,29 +110,8 @@ export default class MyFriendsConnection extends Component {
 
     addFriend({
       variables: { input },
-      optimisticResponse: {
-        addFriend: {
-          __typename: 'AddFriendPayload',
-          friendship: {
-            ...friendship,
-            status: 'IGNORED',
-          },
-        },
-      },
-
-      update: (cache, { data: { addFriend: mutationData } }) => {
-        const { friendship: { id: friendshipId } } = mutationData;
-        const data = cache.readQuery({ query: userFriendsQuery });
-
-        /**
-         * Remove friendship from cache
-         */
-        data.me.friends.edges = filter(data.me.friends.edges, ({ friendship: { id } }) => (
-          friendshipId !== id
-        ));
-
-        cache.writeQuery({ query: userFriendsQuery, data });
-      },
+      optimisticResponse: createAddFriendOptimistic(friendship, 'IGNORED'),
+      update: (cache, { data }) => removeFromCache(cache, data.result.friendship.id),
     });
   };
 
@@ -131,25 +125,13 @@ export default class MyFriendsConnection extends Component {
     deleteFriend({
       variables: { input },
       optimisticResponse: {
-        deleteFriend: {
+        result: {
           __typename: 'DeleteFriendPayload',
           deletedId: friendship.id,
         },
       },
 
-      update: (cache, { data: { deleteFriend: mutationData } }) => {
-        const { deletedId: friendshipId } = mutationData;
-        const data = cache.readQuery({ query: userFriendsQuery });
-
-        /**
-         * Remove friendship from cache
-         */
-        data.me.friends.edges = filter(data.me.friends.edges, ({ friendship: { id } }) => (
-          friendshipId !== id
-        ));
-
-        cache.writeQuery({ query: userFriendsQuery, data });
-      },
+      update: (cache, { data }) => removeFromCache(cache, data.result.deletedId),
     });
   };
 
