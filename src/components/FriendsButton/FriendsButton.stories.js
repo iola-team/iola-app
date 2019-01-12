@@ -2,6 +2,7 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { storiesOf } from '@storybook/react-native';
 import { find, without, assign } from 'lodash';
+import delay from 'promise-delay';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
@@ -108,7 +109,9 @@ const findEdge = (ds, userId, friendId) => find(ds.friendships, ({ friendship })
 
 const resolvers = {
   Mutation: {
-    addFriend(root, { input }, { dataStore: ds  }) {
+    async addFriend(root, { input }, { dataStore: ds  }) {
+      await delay(1000);
+
       const { userId, friendId, status } = input;
       let edge = findEdge(ds, userId, friendId);
 
@@ -137,7 +140,9 @@ const resolvers = {
       };
     },
 
-    deleteFriend(root, { input }, { dataStore: ds }) {
+    async deleteFriend(root, { input }, { dataStore: ds }) {
+      await delay(1000);
+      
       const { userId, friendId } = input;
       const edge = findEdge(ds, userId, friendId);
 

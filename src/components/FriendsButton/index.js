@@ -29,6 +29,9 @@ const addFriendMutation = gql`
       friendship {
         id
         status
+        user {
+          id
+        }
       }
     }
   }
@@ -49,7 +52,6 @@ const commonMutationOptions = {
    * This way of refetching data looks good, but we have some magic strings here wich is not super.
    */
   refetchQueries: [
-    'FriendsButtonQuery',
     'UserFriendsQuery',
     'MyFriendsQuery',
   ],
@@ -87,18 +89,63 @@ export default class FriendsButtonContainer extends Component {
 
     deleteFriend({
       variables: { input },
+      optimisticResponse: {
+        result: null,
+      },
+
+      update: (cache) => {
+        const variables = { userId };
+        const data = cache.readQuery({ query: userQuery, variables });
+        data.me.friends.edges = [];
+        cache.writeQuery({ query: userQuery, variables, data });
+      },
     });
   };
 
   onAddPress = () => {
     const { userId, addFriend, data: { me } } = this.props;
+    const [ { friendship } = {} ] = me.friends.edges;
     const input = {
       userId: me.id,
       friendId: userId,
     };
 
+    const optimisticFriendship = friendship ? {
+      ...friendship,
+      status: 'ACTIVE',
+    } : {
+      __typename: 'Friendship',
+      id: -1,
+      status: 'PENDING',
+      user: {
+        __typename: 'User',
+        id: me.id,
+      },
+    };
+
     addFriend({
       variables: { input },
+      optimisticResponse: {
+        result: {
+          __typename: 'AddFriendPayload',
+          friendship: optimisticFriendship,
+        },
+      },
+
+      update: (cache, { data: { result } }) => {
+        const variables = { userId };
+        const data = cache.readQuery({ query: userQuery, variables });
+
+        data.me.friends.edges = [{
+          __typename: 'UserFriendEdge',
+          user: {
+            __typename: 'User',
+            id: userId,
+          },
+          friendship: result.friendship,
+        }];
+        cache.writeQuery({ query: userQuery, variables, data });
+      },
     });
   };
 
