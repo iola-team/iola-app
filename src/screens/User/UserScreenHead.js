@@ -54,19 +54,15 @@ export default class UserScreenHead extends PureComponent {
         {({ data: { user }, loading }) => (
           <UserHeading {...props} highlight loading={loading} user={user}>
             <View style={styles.buttons}>
-              {true && (
-                <>
-                  <Button
-                    block
-                    style={styles.button}
-                    onPress={() => navigate(routes.CHANNEL, { userId })}
-                  >
-                    <Text>Chat</Text>
-                  </Button>
+              <Button
+                block
+                style={styles.button}
+                onPress={() => navigate(routes.CHANNEL, { userId })}
+              >
+                <Text>Chat</Text>
+              </Button>
 
-                  <FriendsButton block style={styles.button} userId={userId} />
-                </>
-              )}
+              <FriendsButton block style={styles.button} userId={userId} />
             </View>
           </UserHeading>
         )}
