@@ -13,6 +13,7 @@ const edgeFragment = gql`
     user: node {
       id
     }
+
     friendship {
       id
       status
@@ -37,6 +38,7 @@ export default class FriendsButton extends Component {
 
   static propTypes = {
     edge: fragmentProp(edgeFragment),
+    loading: PropTypes.bool,
     onAcceptPress: PropTypes.func.isRequired,
     onCancelPress: PropTypes.func.isRequired,
     onDeletePress: PropTypes.func.isRequired,
@@ -45,6 +47,7 @@ export default class FriendsButton extends Component {
 
   static defaultProps = {
     edge: null,
+    loading: false,
   };
 
   actionSheet = createRef();
@@ -121,14 +124,24 @@ export default class FriendsButton extends Component {
   }
 
   render() {
-    const { style } = this.props;
+    const { style, block, loading} = this.props;
     const friendshipType = this.getFriendshipType();
     const hasIcon = ['active', 'sent'].includes(friendshipType);
 
     return (
       <Fragment>
-        <Button secondary bordered iconRight={hasIcon} style={style} onPress={this.onPress}>
-          <Text>Friends</Text>
+        <Button 
+          secondary
+          bordered
+          block={block}
+          iconRight={hasIcon}
+          style={style}
+          disabled={loading}
+          onPress={this.onPress}
+        >
+          <Text style={{ opacity: loading ? 0 : 1 }}>
+            Friends
+          </Text>
           {hasIcon && <Icon name='check' />}
         </Button>
         {this.renderActionSheet(friendshipType)}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { isFunction, cloneDeep, range } from 'lodash';
+import { isFunction, cloneDeep, range, identity } from 'lodash';
 import { ApolloProvider } from 'react-apollo';
 import { setContext } from "apollo-link-context";
 import { ApolloLink, Observable, split } from 'apollo-link';
@@ -172,7 +172,7 @@ class Provider extends Component {
   }
 }
 
-export const createConnection = (nodes, args) => {
+export const createConnection = (nodes, args, edgeBuilder = identity) => {
   const connection = connectionFromArray(
     nodes,
     args,
@@ -180,6 +180,7 @@ export const createConnection = (nodes, args) => {
 
   return {
     ...connection,
+    edges: connection.edges.map(edgeBuilder),
     totalCount: nodes.length,
     metaInfo: {
       firstCursor: offsetToCursor(0),

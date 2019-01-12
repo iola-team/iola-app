@@ -1,12 +1,10 @@
 import React from 'react';
-import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
-import { find } from 'lodash';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
-import FriendsButton from './FriendsButton';
+import { createConnection } from 'storybook/decorators/Apollo';
+import FriendsButton from '.';
 
 const stories = storiesOf('Components/FriendsButton', module);
 
@@ -14,7 +12,7 @@ const stories = storiesOf('Components/FriendsButton', module);
 stories.addDecorator(getContentDecorator({ padder: true }));
 
 const dataStore = () => ({
-  edges: [
+  friendships: [
     {
       node: 'User:2',
       friendship: { id: 'Friendship:1', user: 'User:2', friend: 'User:1', status: 'ACTIVE' },
@@ -37,12 +35,18 @@ const typeDefs = gql`
 
   type User {
     id: ID!
+    friends(filter: UserFriendsFilterInput = {}, first: Int): UserFriendsConnection!
   }
 
   enum FriendshipStatus {
     IGNORED
     PENDING
     ACTIVE
+  }
+
+  input UserFriendsFilterInput {
+      friendIdIn: [ID!]
+      friendshipStatusIn: [FriendshipStatus!] = [ACTIVE]
   }
 
   type Friendship {
@@ -57,60 +61,43 @@ const typeDefs = gql`
     friendship: Friendship!
   }
 
+  type UserFriendsConnection {
+    edges: [UserFriendEdge!]!
+    totalCount: Int
+}
+
   type Query {
-    edge(userId: ID!): UserFriendEdge!
+    me: User!
   }
 `;
 
 const resolvers = {
   Query: {
-    edge: (root, { userId }, { dataStore: { edges } }) => find(edges, { node: userId }),
+    me: () => 'User:1',
   },
 
   User: {
     id: (id) => id,
+    friends(userId, { filter, ...args }, { dataStore: { friendships } }) {
+      const { friendIdIn, friendshipStatusIn } = filter;
+      const items = friendships.filter(({ friendship: { friend, user, status } }) => (
+        [friend, user].includes(userId) 
+        && friendshipStatusIn.includes(status)
+        && ( friendIdIn ? friendIdIn.includes(friend) || friendIdIn.includes(user) : true )
+      ));
+
+      return createConnection(items, args, ({ cursor, node: item }) => ({
+        cursor,
+        ...item,
+      }));
+    },
   },
 };
 
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
-const edgesQuery = gql`
-  query FriendshipEdgesQuery($id: ID!) {
-    edge(userId: $id) {
-      ...FriendsButton_edge
-    }
-  }
-  
-  ${FriendsButton.fragments.edge}
-`;
-
 // Stories
-const withData = (id, props = {}) => (
-  <Query query={edgesQuery} variables={{ id }}>
-    {({ data }) => (
-      <FriendsButton 
-        edge={data.edge}
-        onAcceptPress={action('onAcceptPress')}
-        onCancelPress={action('onCancelPress')}
-        onDeletePress={action('onDeletePress')}
-        onAddPress={action('onAddPress')}
-  
-        {...props} 
-      />
-    )}
-  </Query>
-);
-
-stories.add('Not friends', () => (
-  <FriendsButton 
-    friendship={null}
-
-    onDeletePress={action('onDeletePress')}
-    onAcceptPress={action('onAcceptPress')}
-    onCancelPress={action('onCancelPress')}
-    onAddPress={action('onAddPress')}
-  />
-));
-stories.add('Active friendship', () => withData('User:2'));
-stories.add('Received request', () => withData('User:3'));
-stories.add('Sent request', () => withData('User:4'));
+stories.add('Not friends', () => <FriendsButton userId="User:5" />);
+stories.add('Active friendship', () => <FriendsButton userId="User:2" />);
+stories.add('Received request', () => <FriendsButton userId="User:3" />);
+stories.add('Sent request', () => <FriendsButton userId="User:4" />);

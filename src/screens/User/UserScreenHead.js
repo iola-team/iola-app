@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import { Button, Text, View } from 'native-base';
 
 import { withStyleSheet } from 'theme';
-import { UserHeading } from 'components';
+import { UserHeading, FriendsButton } from 'components';
 import * as routes from '../routeNames';
 
 const userQuery = gql`
@@ -25,6 +25,7 @@ const userQuery = gql`
   },
 
   button: {
+    height: 50,
     width: '30%',
     alignSelf: 'center',
     marginHorizontal: 5,
@@ -53,17 +54,19 @@ export default class UserScreenHead extends PureComponent {
         {({ data: { user }, loading }) => (
           <UserHeading {...props} highlight loading={loading} user={user}>
             <View style={styles.buttons}>
-              <Button
-                block
-                style={styles.button}
-                onPress={() => navigate(routes.CHANNEL, { userId })}
-              >
-                <Text>Chat</Text>
-              </Button>
+              {true && (
+                <>
+                  <Button
+                    block
+                    style={styles.button}
+                    onPress={() => navigate(routes.CHANNEL, { userId })}
+                  >
+                    <Text>Chat</Text>
+                  </Button>
 
-              <Button light bordered secondary block style={styles.button}>
-                <Text>Friends</Text>
-              </Button>
+                  <FriendsButton block style={styles.button} userId={userId} />
+                </>
+              )}
             </View>
           </UserHeading>
         )}
