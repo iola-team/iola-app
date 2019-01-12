@@ -1,10 +1,12 @@
 import React from 'react';
 import gql from 'graphql-tag';
 import { storiesOf } from '@storybook/react-native';
+import { find, without, assign } from 'lodash';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
 import FriendsButton from '.';
+
 
 const stories = storiesOf('Components/FriendsButton', module);
 
@@ -64,14 +66,93 @@ const typeDefs = gql`
   type UserFriendsConnection {
     edges: [UserFriendEdge!]!
     totalCount: Int
-}
+  }
+
+  input AddFriendInput {
+    userId: ID!
+    friendId: ID!
+    status: FriendshipStatus
+  }
+
+  input DeleteFriendInput {
+      userId: ID!
+      friendId: ID!
+  }
+
+  type AddFriendPayload {
+      user: User!
+      friend: User!
+      friendship: Friendship!
+  }
+
+  type DeleteFriendPayload {
+      deletedId: ID!
+      user: User!
+      friend: User!
+  }
 
   type Query {
     me: User!
   }
+
+  type Mutation {
+    addFriend(input: AddFriendInput!): AddFriendPayload!
+    deleteFriend(input: DeleteFriendInput!): DeleteFriendPayload!
+  } 
 `;
 
+const findEdge = (ds, userId, friendId) => find(ds.friendships, ({ friendship }) => (
+  (userId === friendship.user && friendId === friendship.friend)
+  || (userId === friendship.friend && friendId === friendship.user)
+));
+
 const resolvers = {
+  Mutation: {
+    addFriend(root, { input }, { dataStore: ds  }) {
+      const { userId, friendId, status } = input;
+      let edge = findEdge(ds, userId, friendId);
+
+      if (edge) {
+        assign(edge.friendship, {
+          status: status || 'ACTIVE',
+        });
+      } else {
+        edge = {
+          node: friendId,
+          friendship: {
+            id: `Friendship:${ds.friendships.length}`,
+            status: status || 'PENDING',
+            user: userId,
+            friend: friendId,
+          },
+        };
+
+        ds.friendships.push(edge);
+      }
+
+      return {
+        user: userId,
+        friend: friendId,
+        friendship: edge.friendship,
+      };
+    },
+
+    deleteFriend(root, { input }, { dataStore: ds }) {
+      const { userId, friendId } = input;
+      const edge = findEdge(ds, userId, friendId);
+
+      assign(ds, {
+        friendships: without(ds.friendships, edge),
+      });
+
+      return {
+        deletedId: edge?.friendship.id,
+        user: userId,
+        friend: friendId,
+      };
+    }
+  },
+
   Query: {
     me: () => 'User:1',
   },

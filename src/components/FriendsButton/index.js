@@ -7,7 +7,7 @@ import FriendsButton from './FriendsButton';
 
 const userQuery = gql`
   query FriendsButtonQuery($userId: ID!) {
-    user: me {
+    me {
       id
       friends(filter: {
         friendIdIn: [$userId]
@@ -23,10 +23,54 @@ const userQuery = gql`
   ${FriendsButton.fragments.edge}
 `;
 
+const addFriendMutation = gql`
+  mutation AddFriendMutation($input: AddFriendInput!) {
+    result: addFriend(input: $input) {
+      friendship {
+        id
+        status
+      }
+    }
+  }
+`;
+
+
+const deleteFriendMutation = gql`
+  mutation DeleteFriendMutation($input: DeleteFriendInput!) {
+    result: deleteFriend(input: $input) {
+      deletedId
+    }
+  }
+`;
+
+const commonMutationOptions = {
+  /**
+   * TODO: Think about this approach one more time. 
+   * This way of refetching data looks good, but we have some magic strings here wich is not super.
+   */
+  refetchQueries: [
+    'FriendsButtonQuery',
+    'UserFriendsQuery',
+    'MyFriendsQuery',
+  ],
+};
+
 @graphql(userQuery, {
   options: ({ userId }) => ({
     variables: { userId },
   }),
+})
+@graphql(addFriendMutation, {
+  name: 'addFriend',
+  options: {
+    ...commonMutationOptions,
+  },
+})
+@graphql(deleteFriendMutation, {
+  name: 'deleteFriend',
+  options: {
+    ...commonMutationOptions,
+  },
 })
 export default class FriendsButtonContainer extends Component {
   static displayName = 'Container(FriendsButton)';
@@ -34,22 +78,41 @@ export default class FriendsButtonContainer extends Component {
     userId: PropTypes.string.isRequired,
   };
 
-  onAcceptPress = () => null;
-  onCancelPress = () => null;
-  onDeletePress = () => null;
-  onAddPress = () => null;
+  onDeletePress = () => {
+    const { userId, deleteFriend, data: { me } } = this.props;
+    const input = {
+      userId: me.id,
+      friendId: userId,
+    };
+
+    deleteFriend({
+      variables: { input },
+    });
+  };
+
+  onAddPress = () => {
+    const { userId, addFriend, data: { me } } = this.props;
+    const input = {
+      userId: me.id,
+      friendId: userId,
+    };
+
+    addFriend({
+      variables: { input },
+    });
+  };
 
   render() {
-    const { data: { user, loading }, ...props } = this.props;
+    const { data: { me, loading }, ...props } = this.props;
 
     return (
       <FriendsButton
-        edge={user?.friends.edges[0]}
+        edge={me?.friends.edges[0]}
         loading={loading}
-        onAcceptPress={this.onAcceptPress}
-        onCancelPress={this.onCancelPress}
-        onDeletePress={this.onDeletePress}
+        onAcceptPress={this.onAddPress}
         onAddPress={this.onAddPress}
+        onCancelPress={this.onDeletePress}
+        onDeletePress={this.onDeletePress}
   
         {...props} 
       />
