@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import update from 'immutability-helper';
 
 import FriendsButton from './FriendsButton';
 
@@ -24,27 +25,41 @@ const userQuery = gql`
 `;
 
 const addFriendMutation = gql`
-  mutation AddFriendMutation($input: AddFriendInput!) {
-    result: addFriend(input: $input) {
-      friendship {
-        id
-        status
-        user {
-          id
-        }
+  mutation AddFriendMutation($userId: ID!, $friendId: ID!) {
+    result: addFriend(input: { userId: $userId, friendId: $friendId }) {
+      edge {
+        ...FriendsButton_edge
       }
     }
   }
+
+  ${FriendsButton.fragments.edge}
 `;
 
 
 const deleteFriendMutation = gql`
-  mutation DeleteFriendMutation($input: DeleteFriendInput!) {
-    result: deleteFriend(input: $input) {
+  mutation DeleteFriendMutation($userId: ID!, $friendId: ID!) {
+    result: deleteFriend(input: { userId: $userId, friendId: $friendId }) {
       deletedId
     }
   }
 `;
+
+const updateCache = (cache, variables, edges = []) => {
+  const data = cache.readQuery({ query: userQuery, variables });
+
+  cache.writeQuery({
+    query: userQuery,
+    variables,
+    data: update(data, {
+      me: {
+        friends: {
+          edges: { $set: edges },
+        },
+      },
+    }),
+  });
+};
 
 const commonMutationOptions = {
   /**
@@ -82,70 +97,45 @@ export default class FriendsButtonContainer extends Component {
 
   onDeletePress = () => {
     const { userId, deleteFriend, data: { me } } = this.props;
-    const input = {
-      userId: me.id,
-      friendId: userId,
-    };
+    const [ edge ] = me.friends.edges;
 
     deleteFriend({
-      variables: { input },
+      variables: {
+        userId: me.id,
+        friendId: userId,
+      },
       optimisticResponse: {
-        result: null,
+        result: {
+          __typename: 'DeleteFriendPayload',
+          deletedId: edge?.friendship.id,
+        },
       },
-
-      update: (cache) => {
-        const variables = { userId };
-        const data = cache.readQuery({ query: userQuery, variables });
-        data.me.friends.edges = [];
-        cache.writeQuery({ query: userQuery, variables, data });
-      },
+      update: cache => updateCache(cache, { userId }, []),
     });
-  };
+  }
 
   onAddPress = () => {
     const { userId, addFriend, data: { me } } = this.props;
-    const [ { friendship } = {} ] = me.friends.edges;
-    const input = {
+    const [ friendship ] = me.friends.edges;
+    const optimisticEdge = FriendsButton.createOptimisticEdge({
       userId: me.id,
       friendId: userId,
-    };
-
-    const optimisticFriendship = friendship ? {
-      ...friendship,
-      status: 'ACTIVE',
-    } : {
-      __typename: 'Friendship',
-      id: -1,
-      status: 'PENDING',
-      user: {
-        __typename: 'User',
-        id: me.id,
-      },
-    };
+      status: friendship && 'ACTIVE',
+      friendshipId: friendship?.id,
+    });
 
     addFriend({
-      variables: { input },
+      variables: {
+        userId: me.id,
+        friendId: userId,
+      },
       optimisticResponse: {
         result: {
           __typename: 'AddFriendPayload',
-          friendship: optimisticFriendship,
+          edge: optimisticEdge,
         },
       },
-
-      update: (cache, { data: { result } }) => {
-        const variables = { userId };
-        const data = cache.readQuery({ query: userQuery, variables });
-
-        data.me.friends.edges = [{
-          __typename: 'UserFriendEdge',
-          user: {
-            __typename: 'User',
-            id: userId,
-          },
-          friendship: result.friendship,
-        }];
-        cache.writeQuery({ query: userQuery, variables, data });
-      },
+      update: (cache, { data }) => updateCache(cache, { userId }, [data.result.edge]),
     });
   };
 

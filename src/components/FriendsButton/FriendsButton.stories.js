@@ -84,6 +84,7 @@ const typeDefs = gql`
       user: User!
       friend: User!
       friendship: Friendship!
+      edge: UserFriendEdge!
   }
 
   type DeleteFriendPayload {
@@ -137,6 +138,7 @@ const resolvers = {
         user: userId,
         friend: friendId,
         friendship: edge.friendship,
+        edge,
       };
     },
 

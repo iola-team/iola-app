@@ -24,6 +24,24 @@ const edgeFragment = gql`
   }
 `;
 
+export const createOptimisticEdge = ({ userId, friendId, status = 'PENDING', friendshipId = -1 }) => ({
+  __typename: 'UserFriendEdge',
+  user: {
+    __typename: 'User',
+    id: friendId,
+  },
+
+  friendship: {
+    __typename: 'Friendship',
+    id: friendshipId,
+    status,
+    user: {
+      __typename: 'User',
+      id: userId,
+    },
+  },
+});
+
 @withStyle('Sparkle.FriendsButton', {
   'NativeBase.Button': {
     'NativeBase.Icon': {
@@ -32,6 +50,7 @@ const edgeFragment = gql`
   },
 })
 export default class FriendsButton extends Component {
+  static createOptimisticEdge = createOptimisticEdge;
   static fragments = {
     edge: edgeFragment,
   };
