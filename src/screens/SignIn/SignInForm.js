@@ -8,7 +8,7 @@ import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import TextInputItem from '../../components/Form/TextInputItem';
+import { TextInput } from 'components';
 
 const InfoBlock = connectToStyleSheet('infoBlock', View);
 const CommonErrorText = connectToStyleSheet('commonErrorText', Text);
@@ -71,7 +71,7 @@ class SignInForm extends Component {
 
           return (
             <Form>
-              <TextInputItem
+              <TextInput
                 name="login"
                 placeholder="Email or login"
                 customStyle={{
@@ -84,7 +84,7 @@ class SignInForm extends Component {
                 {...this.props}
               />
 
-              <TextInputItem
+              <TextInput
                 name="password"
                 placeholder="Password"
                 infoText="At least 4 characters"

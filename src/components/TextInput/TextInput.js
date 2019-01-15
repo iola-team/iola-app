@@ -54,7 +54,7 @@ const ErrorText = connectToStyleSheet('errorText', Text);
     color: '#FF8787',
   },
 })
-export default class TextInputItem extends Component {
+export default class TextInput extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,

@@ -23,6 +23,7 @@ import ChatList from './ChatList';
 import ScreenHeader from './ScreenHeader';
 import BottomTabBar from './BottomTabBar';
 import TouchableOpacity from './TouchableOpacity';
+import TextInput from './TextInput';
 import Shadow from './Shadow';
 import ProfileFieldsView from './ProfileFieldsView';
 import FriendList from './FriendList';
@@ -31,34 +32,35 @@ import createHeadingTabsNavigator from './TabNavigator';
 import NoContent from './NoContent';
 
 export {
-  Root,
-  BackButton,
-  UserAvatar,
-  UserList,
-  UserListItem,
-  SearchBar,
-  UserBriefCard,
-  UserPhotos,
-  UserPhotosCard,
-  UserFriendsCard,
-  UserHeading,
-  DashboardHeading,
   AvatarEdit,
-  PhotoEdit,
+  BackButton,
+  Chat,
+  ChatList,
+  DashboardHeading,
+  FriendList,
   Icon,
-  ImageView,
   ImageComments,
   ImageCommentsConnection,
   ImageCommentsList,
-  ProfileFieldsEdit,
-  Chat,
-  ChatList,
-  TouchableOpacity,
-  Shadow,
-  ProfileFieldsView,
-  FriendList,
-  PhotoList,
+  ImageView,
   NoContent,
+  PhotoEdit,
+  PhotoList,
+  ProfileFieldsEdit,
+  ProfileFieldsView,
+  Root,
+  SearchBar,
+  Shadow,
+  TextInput,
+  TouchableOpacity,
+  UserAvatar,
+  UserBriefCard,
+  UserFriendsCard,
+  UserHeading,
+  UserList,
+  UserListItem,
+  UserPhotos,
+  UserPhotosCard,
 
   // Navigation
   ScreenHeader,
