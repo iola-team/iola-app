@@ -48,7 +48,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
     photo: node(id: $id) {
       ...on Photo {
         id
-        comments(first: 10 after: null) { # params (first: 10 after: $cursor) are used here for cache syncronization
+        comments @connection(key: "comments-totalcount") {
           totalCount
         }
       }
@@ -215,6 +215,7 @@ export default class ImageComments extends Component {
 
   renderTitle() {
     const { totalCount, styleSheet: styles } = this.props;
+    // @TODO: add subscription for totalCount without opened modal?
 
     return (
       <View style={styles.titleRow}>

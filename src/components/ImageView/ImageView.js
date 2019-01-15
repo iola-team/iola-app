@@ -50,7 +50,7 @@ export const photoDetailsQuery = gql`
           name
         }
 
-        comments(first: 10 after: null) { # params (first: 10 after: $cursor) are used here for cache syncronization
+        comments @connection(key: "comments-totalcount") {
           totalCount
         }
       }
@@ -227,17 +227,9 @@ export default class ImageView extends Component {
     const { edges, styleSheet: styles } = this.props;
     const { index } = this.state;
     const { node: { id } } = edges[index];
-    const totalCount = edges.length;
 
     return (
       <View style={styles.controls}>
-        <View style={styles.header}>
-          {totalCount > 1 ? <Text style={styles.indicator}>{`${index} of ${totalCount}`}</Text> : null}
-          <TouchableOpacity onPress={::this.onClose} style={styles.closeButton}>
-            <Icon name="close" style={styles.close} />
-          </TouchableOpacity>
-        </View>
-
         <Query query={photoDetailsQuery} variables={{ id }}>
           {({ loading, data }) => {
             if (loading) return null; // @TODO: add spinner
@@ -248,58 +240,69 @@ export default class ImageView extends Component {
               createdAt,
               user: {
                 name,
-                // isOnline, // @TODO
+                // isOnline, // @TODO: isOnline
               },
               comments: {
                 totalCount,
               },
-              // totalCountLikes, // @TODO
+              // totalCountLikes, // @TODO: Likes
             } = data.photo;
-            const isOnline = false; // @TODO
-            const totalCountLikes = 0; // @TODO
+            const isOnline = false; // @TODO: isOnline
+            // const totalCountLikes = 0; // @TODO: Likes
             const date = moment.duration(moment(createdAt).diff(moment())).humanize();
             const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
 
             return (
-              <View style={styles.footer}>
-                <View>
-                  <NameBlock>
-                    <Name>{name}</Name>
-                    <UserOnlineStatus isOnline={isOnline} />
-                  </NameBlock>
-                  <Caption>{caption}</Caption>
-                  <DateTime>{dateFormatted}</DateTime>
+              <Fragment>
+                <View style={styles.header}>
+                  {totalCount > 1 ? <Text style={styles.indicator}>{`${index} of ${totalCount}`}</Text> : null}
+                  <TouchableOpacity onPress={::this.onClose} style={styles.closeButton}>
+                    <Icon name="close" style={styles.close} />
+                  </TouchableOpacity>
                 </View>
 
-                <ActionsBlock>
-                  <ImageComments photoId={id} totalCount={totalCount}>
-                    {onShowImageComments => (
-                      <TouchableOpacity
-                        onPress={onShowImageComments}
-                        style={[styles.actionButton, styles.buttonComments]}
-                      >
-                        <Icon name="chats-bar" style={styles.actionIcon} />
-                        <Text style={styles.actionText}>Comment</Text>
-                        {!totalCount ? null : (
-                          <Badge style={styles.actionBadge}>
-                            <Text style={styles.actionBadgeText}>{totalCount}</Text>
-                          </Badge>
-                        )}
-                      </TouchableOpacity>
-                    )}
-                  </ImageComments>
+                <View style={styles.footer}>
+                  <View>
+                    <NameBlock>
+                      <Name>{name}</Name>
+                      <UserOnlineStatus isOnline={isOnline} />
+                    </NameBlock>
+                    <Caption>{caption}</Caption>
+                    <DateTime>{dateFormatted}</DateTime>
+                  </View>
 
-                  <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
-                    <Icon name="like" style={styles.actionIcon} />
-                    <ActionText>Like</ActionText>
-                    {totalCountLikes ? (
-                      <ActionBadge>
-                        <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
-                      </ActionBadge>
-                    ) : null}
-                  </TouchableOpacity>
-                </ActionsBlock>
-              </View>
+                  <ActionsBlock>
+                    <ImageComments photoId={id} totalCount={totalCount}>
+                      {onShowImageComments => (
+                        <TouchableOpacity
+                          onPress={onShowImageComments}
+                          style={[styles.actionButton, styles.buttonComments]}
+                        >
+                          <Icon name="chats-bar" style={styles.actionIcon} />
+                          <Text style={styles.actionText}>Comment</Text>
+                          {!totalCount ? null : (
+                            <Badge style={styles.actionBadge}>
+                              <Text style={styles.actionBadgeText}>{totalCount}</Text>
+                            </Badge>
+                          )}
+                        </TouchableOpacity>
+                      )}
+                    </ImageComments>
+
+                    {/* @TODO: Likes
+                    <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
+                      <Icon name="like" style={styles.actionIcon} />
+                      <ActionText>Like</ActionText>
+                      {totalCountLikes ? (
+                        <ActionBadge>
+                          <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
+                        </ActionBadge>
+                      ) : null}
+                    </TouchableOpacity>
+                    */}
+                  </ActionsBlock>
+                </View>
+              </Fragment>
             );
           }}
         </Query>

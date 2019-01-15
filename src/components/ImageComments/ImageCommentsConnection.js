@@ -22,7 +22,7 @@ const photoCommentsQuery = gql`
     photo: node(id: $id) {
       ...on Photo {
         id
-        comments(first: 10 after: $cursor) {
+        comments(first: 10 after: $cursor) @connection(key: "comments-totalcount") { # remove connection??
           totalCount
 
           edges {
@@ -61,20 +61,6 @@ const photoCommentAddSubscription = gql`
   ${ImageCommentsList.fragments.edge}
 `;
 
-const updateCachePhotoCommentsTotalCountQuery = gql`
-  query updateCachePhotoCommentsTotalCountQuery($id: ID!) {
-    photo: node(id: $id) {
-      ...on Photo {
-        id
-
-        comments {
-          totalCount
-        }
-      }
-    }
-  }
-`;
-
 export default class ImageCommentsConnection extends Component {
   static propTypes = {
     photoId: PropTypes.string.isRequired,
@@ -99,29 +85,25 @@ export default class ImageCommentsConnection extends Component {
         cursor: pageInfo.endCursor,
       },
 
-      updateQuery: (previousResult, { fetchMoreResult: { photo } }) => {
+      updateQuery: (prev, { fetchMoreResult: { photo } }) => {
         const { comments } = photo;
 
         if (!comments || !comments.edges.length) {
-          return previousResult;
+          return prev;
         }
 
-        return {
+        return update(prev, {
           photo: {
-            ...previousResult.photo,
             comments: {
-              ...previousResult.photo.comments,
-              edges: [
-                ...previousResult.photo.comments.edges,
-                ...comments.edges
-              ],
-              pageInfo: {
-                ...previousResult.photo.comments.pageInfo,
-                ...comments.pageInfo
+              edges: {
+                $push: comments.edges,
               },
+              pageInfo: {
+                $merge: comments.pageInfo,
+              }
             },
           },
-        };
+        });
       }
     }).then(() => {
       this.fetchMorePromise = null;
@@ -134,7 +116,11 @@ export default class ImageCommentsConnection extends Component {
     return (
       <Query query={meQuery}>
         {({ loading: loadingMeQuery, data: { user } }) => (loadingMeQuery ? null : (
-          <Query query={photoCommentsQuery} variables={{ id: photoId }}>
+          <Query
+            query={photoCommentsQuery}
+            variables={{ id: photoId }}
+            fetchPolicy="cache-and-network"
+          >
             {({ loading, data, fetchMore, networkStatus, subscribeToMore }) => {
               const refreshing = networkStatus === NetworkStatus.refetch;
               const edges = get(data, 'photo.comments.edges', []);
@@ -158,7 +144,6 @@ export default class ImageCommentsConnection extends Component {
                     updateQuery: (prev, { subscriptionData }) => {
                       if (!subscriptionData.data) return prev;
 
-                      const totalCount = get(data, 'photo.comments.totalCount', 0);
                       const { onPhotoCommentAdd: payload } = subscriptionData.data;
 
                       /**
@@ -173,7 +158,7 @@ export default class ImageCommentsConnection extends Component {
                         photo: {
                           comments: {
                             totalCount: {
-                              $set: totalCount + 1,
+                              $set: prev.photo.comments.totalCount + 1,
                             },
                             edges: {
                               $unshift: [payload.edge],
