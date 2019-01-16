@@ -1,26 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Input, Item, Text } from 'native-base';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from 'theme';
 
 import Icon from '../Icon';
-
-const FormItem = connectToStyleSheet('formItem', Item, ({ customStyle, isValid }) => ({
-  ...customStyle,
-  ...(isValid ? {} : {
-    borderColor: 'rgba(255, 135, 135, 0.56)',
-    backgroundColor: '#FFE0E0',
-  }),
-})).withProps({ regular: true });
-const FormInput = connectToStyleSheet('formInput', Input, ({ isValid }) => !isValid && ({
-  color: '#FF8787',
-})).withProps(({ isValid }) => ({
-  placeholderFontSize: 16,
-  placeholderTextColor: isValid ? '#FFFFFF' : '#FF8787',
-}));
-const CheckMark = connectToStyleSheet('checkMark', Icon).withProps({ name: 'check' });
-const InfoText = connectToStyleSheet('infoText', Text);
-const ErrorText = connectToStyleSheet('errorText', Text);
 
 @styleSheet('Sparkle.FormTextInput', {
   formItem: {
@@ -54,7 +37,7 @@ const ErrorText = connectToStyleSheet('errorText', Text);
     color: '#FF8787',
   },
 })
-export default class TextInputItem extends Component {
+export default class TextInput extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
@@ -81,8 +64,17 @@ export default class TextInputItem extends Component {
     infoText: '',
   };
 
+  state = {
+    isPasswordIsShown: false,
+  };
+
+  onShowPassword() {
+    this.setState({ isPasswordIsShown: !this.state.isPasswordIsShown });
+  }
+
   render() {
     const {
+      styleSheet: styles,
       name,
       placeholder,
       values,
@@ -101,18 +93,38 @@ export default class TextInputItem extends Component {
     } = this.props;
     const errorText = touched[name] && errors[name] ? errors[name] : secondaryErrorText;
     const isValid = !error && !errorText;
-    const FieldError = errorText ? <ErrorText>{errorText}</ErrorText> : null;
-    const FieldInfo = touched[name] ? <CheckMark /> : <InfoText>{infoText}</InfoText>;
+    const FieldError = errorText ? <Text style={styles.errorText}>{errorText}</Text> : null;
+    const FieldInfo = touched[name] ? <Icon name="check" style={styles.checkMark} /> : (
+      <Text style={styles.infoText}>{infoText}</Text>
+    );
     const onChange = (text) => {
       setStatus({ ...status, changed: true });
 
-      onChangeText ? onChangeText(text) : setFieldValue(name, text);
+      if (onChangeText) {
+        onChangeText(text);
+      } else {
+        setFieldValue(name, text);
+      }
     };
 
     return (
-      <FormItem customStyle={customStyle} isValid={isValid}>
-        <FormInput
+      <Item
+        style={[
+          styles.formItem,
+          customStyle,
+          isValid ? {} : { borderColor: 'rgba(255, 135, 135, 0.56)', backgroundColor: '#FFE0E0' },
+        ]}
+        pointerEvents="none"
+        regular
+      >
+        <Input
+          style={[
+            styles.formInput,
+            isValid ? {} : { color: '#FF8787' },
+          ]}
           placeholder={placeholder}
+          placeholderFontSize={16}
+          placeholderTextColor={isValid ? '#FFFFFF' : '#FF8787'}
           secureTextEntry={secureTextEntry}
           value={values[name]}
           onChangeText={onChange}
@@ -120,7 +132,16 @@ export default class TextInputItem extends Component {
           isValid={isValid}
         />
         {isValid ? FieldInfo : FieldError}
-      </FormItem>
+        {/* @TODO: if we place it here the TouchableOpacity will not response to clicks on absolute right negative position */}
+        {/*{secureTextEntry && (*/}
+          {/*<TouchableOpacity onPress={::this.onShowPassword} style={styles.showPassword}>*/}
+            {/*<Icon*/}
+              {/*name={isPasswordIsShown ? 'eye' : 'eye-crossed'}*/}
+              {/*style={styles.showPasswordIcon}*/}
+            {/*/>*/}
+          {/*</TouchableOpacity>*/}
+        {/*)}*/}
+      </Item>
     );
   }
 }
