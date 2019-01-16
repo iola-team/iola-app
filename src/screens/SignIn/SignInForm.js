@@ -4,16 +4,11 @@ import { TouchableOpacity } from 'react-native';
 import { Button, Form, Text, View } from 'native-base';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from 'theme';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import TextInputItem from '../../components/Form/TextInputItem';
-
-const InfoBlock = connectToStyleSheet('infoBlock', View);
-const CommonErrorText = connectToStyleSheet('commonErrorText', Text);
-const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
-const SubmitButton = connectToStyleSheet('submitButton', Button);
+import { TextInput, Icon } from 'components';
 
 const readTokenQuery = gql`
   {
@@ -24,22 +19,37 @@ const readTokenQuery = gql`
 `;
 
 @styleSheet('Sparkle.SignInForm', {
+  form: {
+    position: 'relative',
+  },
+
+  showPassword: {
+    position: 'absolute',
+    right: -28,
+    top: 70,
+  },
+
+  showPasswordIcon: {
+    fontSize: 18,
+    color: '#FFFFFF',
+  },
+
   infoBlock: {
     justifyContent: 'space-between',
     flexDirection: 'row-reverse',
   },
 
-  commonErrorText: {
+  commonError: {
     fontSize: 12,
     color: '#FF8787',
   },
 
-  forgotPasswordText: {
+  forgotPassword: {
     fontSize: 12,
     color: '#FFFFFF',
   },
 
-  submitButton: {
+  submit: {
     marginTop: 48,
   },
 })
@@ -54,6 +64,14 @@ class SignInForm extends Component {
     defaultEmail: '',
   };
 
+  state = {
+    isPasswordIsShown: false,
+  };
+
+  onShowPassword() {
+    this.setState({ isPasswordIsShown: !this.state.isPasswordIsShown });
+  }
+
   isAuthIsValid(token) {
     const { isSubmitting, submitCount, status } = this.props;
 
@@ -61,8 +79,17 @@ class SignInForm extends Component {
   }
 
   render() {
-    const { values: { login }, onForgotPassword, handleSubmit, isValid } = this.props;
+    const {
+      styleSheet: styles,
+      values: {
+        login,
+      },
+      onForgotPassword,
+      handleSubmit,
+      isValid,
+    } = this.props;
     const disabled = !(isValid || login);
+    const { isPasswordIsShown } = this.state;
 
     return (
       <Query query={readTokenQuery}>
@@ -71,7 +98,7 @@ class SignInForm extends Component {
 
           return (
             <Form>
-              <TextInputItem
+              <TextInput
                 name="login"
                 placeholder="Email or login"
                 customStyle={{
@@ -84,7 +111,7 @@ class SignInForm extends Component {
                 {...this.props}
               />
 
-              <TextInputItem
+              <TextInput
                 name="password"
                 placeholder="Password"
                 infoText="At least 4 characters"
@@ -93,21 +120,28 @@ class SignInForm extends Component {
                   borderTopRightRadius: 0,
                 }}
                 error={error}
-                secureTextEntry
+                secureTextEntry={!isPasswordIsShown}
                 {...this.props}
               />
 
-              <InfoBlock>
+              <TouchableOpacity onPress={::this.onShowPassword} style={styles.showPassword}>
+                <Icon
+                  name={isPasswordIsShown ? 'eye' : 'eye-crossed'}
+                  style={styles.showPasswordIcon}
+                />
+              </TouchableOpacity>
+
+              <View style={styles.infoBlock}>
                 <TouchableOpacity onPress={() => onForgotPassword(login)}>
-                  <ForgotPasswordText>Forgot password?</ForgotPasswordText>
+                  <Text style={styles.forgotPassword}>Forgot password?</Text>
                 </TouchableOpacity>
 
-                {error ? <CommonErrorText>Wrong login or password</CommonErrorText> : null}
-              </InfoBlock>
+                {error && <Text style={styles.commonError}>Wrong login or password</Text>}
+              </View>
 
-              <SubmitButton block onPress={handleSubmit} disabled={disabled}>
+              <Button onPress={handleSubmit} disabled={disabled} style={styles.submit} block>
                 <Text>Submit</Text>
-              </SubmitButton>
+              </Button>
             </Form>
           );
         }}
