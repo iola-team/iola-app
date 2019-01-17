@@ -113,6 +113,10 @@ export default (variables => ({
           'NativeBase.Text': {
             color: variables.textColor,
           },
+
+          'NativeBase.Icon': {
+            color: variables.textColor,
+          },
         },
 
         '.transparent': {

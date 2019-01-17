@@ -6,7 +6,7 @@ import ActionSheetRN from 'react-native-actionsheet';
 export default class ActionSheet extends Component {
   static propTypes = {
     options: PropTypes.array.isRequired,
-    children: PropTypes.func.isRequired,
+    children: PropTypes.func,
     cancelButtonIndex: PropTypes.number,
     destructiveButtonIndex: PropTypes.number,
     title: PropTypes.string,
@@ -16,6 +16,7 @@ export default class ActionSheet extends Component {
 
   static defaultProps = {
     onPress: noop,
+    children: noop,
   };
 
   onPressCallback = null;

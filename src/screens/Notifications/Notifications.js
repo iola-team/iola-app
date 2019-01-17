@@ -4,7 +4,7 @@ import { Container } from 'native-base';
 // import { graphql } from 'react-apollo';
 
 import { Icon } from 'components';
-// import * as routes from '../roteNames';
+// import * as routes from '../routeNames';
 
 // @graphql(gql`
 //   query {

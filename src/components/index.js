@@ -27,6 +27,7 @@ import TextInput from './TextInput';
 import Shadow from './Shadow';
 import ProfileFieldsView from './ProfileFieldsView';
 import FriendList from './FriendList';
+import FriendsButton from './FriendsButton';
 import PhotoList from './PhotoList';
 import createHeadingTabsNavigator from './TabNavigator';
 import NoContent from './NoContent';
@@ -38,6 +39,7 @@ export {
   ChatList,
   DashboardHeading,
   FriendList,
+  FriendsButton,
   Icon,
   ImageComments,
   ImageCommentsConnection,
