@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { propType as fragmentProp } from 'graphql-anywhere';
+import { noop } from 'lodash';
 
+import { withStyle } from 'theme';
 import UserList from '../UserList';
+import FriendListItem from '../FriendListItem';
 
-const userQuery = gql`
-  query UserFriendsQuery($id: ID!) {
-    user: node(id: $id) {
-      ...on User {
+const edgeFragment = gql`
+  fragment FriendList_edge on UserFriendEdge {
+    ...UserList_edge
+
+    friendship {
+      id
+      status
+      user {
         id
-        friends {
-          edges {
-            ...UserList_edge
-          }
-        }
       }
     }
   }
@@ -22,24 +24,52 @@ const userQuery = gql`
   ${UserList.fragments.edge}
 `;
 
+@withStyle('Sparkle.FriendList')
 export default class FriendList extends Component {
+  static fragments = {
+    edge: edgeFragment,
+  };
+
   static propTypes = {
-    userId: PropTypes.string.isRequired,
+    edges: PropTypes.arrayOf(
+      fragmentProp(edgeFragment).isRequired
+    ).isRequired,
+
+    /**
+     * Handlers
+     */
+    onItemPress: PropTypes.func,
+    onAcceptPress: PropTypes.func,
+    onIgnorePress: PropTypes.func,
+    onCancelPress: PropTypes.func,
+  };
+
+  static defaultProps = {
+    onItemPress: noop,
+    onAcceptPress: noop,
+    onIgnorePress: noop,
+    onCancelPress: noop,
+  };
+
+  renderItem = ({ item }) => {
+    const { onItemPress, onAcceptPress, onIgnorePress, onCancelPress } = this.props;
+    const { node, friendship } = item;
+
+    return (
+      <FriendListItem 
+        user={node} 
+        friendship={friendship}
+        onPress={() => onItemPress(item)}
+        onAcceptPress={() => onAcceptPress(item)}
+        onIgnorePress={() => onIgnorePress(item)}
+        onCancelPress={() => onCancelPress(item)}
+      />
+    );
   };
 
   render() {
-    const { userId: id, ...props } = this.props;
-
-    return (
-      <Query query={userQuery} variables={{ id }}>
-        {({ loading, networkStatus, data: { user } }) => (
-          <UserList
-            {...props}
-            edges={loading ? [] : user.friends.edges}
-            networkStatus={networkStatus} 
-          />
-        )}
-      </Query>
-    );
+    const { ...props } = this.props;
+    
+    return <UserList {...props} renderItem={this.renderItem} />;
   }
 }

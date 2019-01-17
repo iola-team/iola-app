@@ -6,11 +6,10 @@ import Section from '../FieldSection';
 import { ScrollView } from '../TabNavigator';
 
 const defaultSectionRenderer = (section, renderItem) => {
-  const { key, label, items = [], placeholder = false, opacity = 1 } = section;
-  const style = { opacity };
+  const { key, label, items = [], placeholder = false } = section;
 
   return (
-    <Section style={style} key={key} label={label} loading={placeholder}>
+    <Section key={key} label={label} loading={placeholder}>
       {items.map(renderItem)}
     </Section>
   );
@@ -45,7 +44,6 @@ export default class FieldList extends Component {
     return range(3).map(index => ({ 
       key: index.toString(),
       placeholder: true,
-      opacity: 1 - index * 0.3,
     }));
   }
 
