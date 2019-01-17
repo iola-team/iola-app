@@ -148,7 +148,7 @@ export default class TextInput extends Component {
     const isValid = !error && !errorText;
     const FieldError = errorText ? <Text style={styles.errorText}>{errorText}</Text> : null;
     const FieldInfo = isTouched ? (
-      <Icon name="check" style={[styles.checkMark, isFocused && { color: '#BCBFCA' }]} />
+      <Icon style={[styles.checkMark, isFocused && { color: '#BCBFCA' }]} name="check" />
     ) : values[name].length ? null : (
       <Text style={[styles.infoText, isFocused && { color: '#BCBFCA' }]}>
         {infoText}
@@ -183,9 +183,7 @@ export default class TextInput extends Component {
           onBlur={::this.onBlur}
           isValid={isValid}
         />
-        <View
-          style={[styles.infoContent, !secureTextEntry && { position: 'relative', right: 0 }]}
-        >
+        <View style={[styles.infoContent, !secureTextEntry && { position: 'relative', right: 0 }]}>
           {isValid ? FieldInfo : FieldError}
         </View>
         {secureTextEntry && (
@@ -199,12 +197,12 @@ export default class TextInput extends Component {
             />
             <TouchableOpacity onPress={::this.onShowPassword} style={styles.showPassword}>
               <Icon
-                name={isPasswordIsShown ? 'eye' : 'eye-crossed'}
                 style={[
                   styles.showPasswordIcon,
                   isFocused && { color: '#BCBFCA' },
                   !isValid && { color: '#FF8787' },
                 ]}
+                name={isPasswordIsShown ? 'eye' : 'eye-crossed'}
               />
             </TouchableOpacity>
           </Fragment>
