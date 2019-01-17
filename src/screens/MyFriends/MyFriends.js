@@ -28,7 +28,7 @@ export default class MyFriends extends PureComponent {
     return (
       <MyFriendsConnection 
         skip={!isFocused} 
-        ontentContainerStyle={styles.list} 
+        contentContainerStyle={styles.list} 
         onItemPress={this.onItemPress}
       />
     );
