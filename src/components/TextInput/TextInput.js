@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { TouchableOpacity, View } from 'react-native';
 import { Input, Item, Text } from 'native-base';
 import { withStyleSheet as styleSheet } from 'theme';
 
@@ -7,6 +8,7 @@ import Icon from '../Icon';
 
 @styleSheet('Sparkle.FormTextInput', {
   formItem: {
+    positions: 'relative',
     marginBottom: 8,
     paddingLeft: 10,
     paddingRight: 15,
@@ -16,25 +18,55 @@ import Icon from '../Icon';
 
   formInput: {
     fontSize: 16,
+    paddingVertical: 0,
     color: '#FFFFFF',
   },
 
-  checkMark: {
-    paddingRight: 8,
-    fontSize: 11,
+  infoContent: {
+    position: 'absolute',
+    top: 2,
+    right: 48 + 17,
+  },
+
+  verticalLine: {
+    position: 'absolute',
+    right: 48,
+    top: 0,
+    width: 1,
+    height: 50,
+    backgroundColor: 'rgba(255, 255, 255, .6)',
+  },
+
+  showPassword: {
+    position: 'absolute',
+    right: 8,
+    top: 15,
+  },
+
+  showPasswordIcon: {
+    fontSize: 18,
     color: '#FFFFFF',
   },
 
   infoText: {
     fontSize: 12,
     fontWeight: 'normal',
+    lineHeight: 48,
     color: '#FFFFFF',
   },
 
   errorText: {
     fontSize: 12,
     fontWeight: 'normal',
+    lineHeight: 48,
     color: '#FF8787',
+  },
+
+  checkMark: {
+    paddingRight: 3,
+    fontSize: 11,
+    lineHeight: 48,
+    color: '#FFFFFF',
   },
 })
 export default class TextInput extends Component {
@@ -72,6 +104,18 @@ export default class TextInput extends Component {
     this.setState({ isPasswordIsShown: !this.state.isPasswordIsShown });
   }
 
+  onChangeText(text) {
+    const { name, setFieldValue, status, setStatus, onChangeText } = this.props;
+
+    setStatus({ ...status, changed: true });
+
+    if (onChangeText) {
+      onChangeText(text);
+    } else {
+      setFieldValue(name, text);
+    }
+  }
+
   render() {
     const {
       styleSheet: styles,
@@ -84,28 +128,19 @@ export default class TextInput extends Component {
       secondaryErrorText,
       customStyle,
       setFieldTouched,
-      setFieldValue,
-      status,
-      setStatus,
-      onChangeText,
       secureTextEntry,
       infoText,
     } = this.props;
-    const errorText = touched[name] && errors[name] ? errors[name] : secondaryErrorText;
+    const { isPasswordIsShown } = this.state;
+    const isTouched = touched[name];
+    const errorText = isTouched && errors[name] ? errors[name] : secondaryErrorText;
     const isValid = !error && !errorText;
     const FieldError = errorText ? <Text style={styles.errorText}>{errorText}</Text> : null;
-    const FieldInfo = touched[name] ? <Icon name="check" style={styles.checkMark} /> : (
-      <Text style={styles.infoText}>{infoText}</Text>
+    const FieldInfo = isTouched ? (
+      <Icon name="check" style={styles.checkMark} />
+    ): (
+      values[name].length ? null : <Text style={styles.infoText}>{infoText}</Text>
     );
-    const onChange = (text) => {
-      setStatus({ ...status, changed: true });
-
-      if (onChangeText) {
-        onChangeText(text);
-      } else {
-        setFieldValue(name, text);
-      }
-    };
 
     return (
       <Item
@@ -121,26 +156,33 @@ export default class TextInput extends Component {
           style={[
             styles.formInput,
             isValid ? {} : { color: '#FF8787' },
+            secureTextEntry && !isPasswordIsShown ? { paddingRight: isTouched ? 80 : 50 } : {},
           ]}
           placeholder={placeholder}
           placeholderFontSize={16}
           placeholderTextColor={isValid ? '#FFFFFF' : '#FF8787'}
-          secureTextEntry={secureTextEntry}
+          secureTextEntry={secureTextEntry && !isPasswordIsShown}
           value={values[name]}
-          onChangeText={onChange}
+          onChangeText={::this.onChangeText}
           onBlur={() => setFieldTouched(name)}
           isValid={isValid}
         />
-        {isValid ? FieldInfo : FieldError}
-        {/* @TODO: if we place it here the TouchableOpacity will not response to clicks on absolute right negative position */}
-        {/*{secureTextEntry && (*/}
-          {/*<TouchableOpacity onPress={::this.onShowPassword} style={styles.showPassword}>*/}
-            {/*<Icon*/}
-              {/*name={isPasswordIsShown ? 'eye' : 'eye-crossed'}*/}
-              {/*style={styles.showPasswordIcon}*/}
-            {/*/>*/}
-          {/*</TouchableOpacity>*/}
-        {/*)}*/}
+        <View
+          style={[styles.infoContent, secureTextEntry ? {} : { position: 'relative', right: 0 }]}
+        >
+          {isValid ? FieldInfo : FieldError}
+        </View>
+        {secureTextEntry && (
+          <Fragment>
+            <View style={[styles.verticalLine, isValid ? {} : { backgroundColor: '#FF8787' }]} />
+            <TouchableOpacity onPress={::this.onShowPassword} style={styles.showPassword}>
+              <Icon
+                name={isPasswordIsShown ? 'eye' : 'eye-crossed'}
+                style={[styles.showPasswordIcon, isValid ? {} : { color: '#FF8787' }]}
+              />
+            </TouchableOpacity>
+          </Fragment>
+        )}
       </Item>
     );
   }

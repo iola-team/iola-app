@@ -103,8 +103,8 @@ export default async () => {
   const enableBatching = false;
   const debugQuery = debug ? '?XDEBUG_SESSION_START=PHPSTORM' : '';
 
-  const queryUri = `http://192.168.0.100/oxwall/everywhere/api/graphql${debugQuery}`;
-  const subscriptionUri = `http://192.168.0.100/oxwall/everywhere/api/subscriptions${debugQuery}`;
+  const queryUri = `http://192.168.31.74/ox/oxwall-1.8.4.1/everywhere/api/graphql${debugQuery}`;
+  const subscriptionUri = `http://192.168.31.74/ox/oxwall-1.8.4.1/everywhere/api/subscriptions${debugQuery}`;
 
   let httpLink = createUploadLink({
     uri: queryUri,

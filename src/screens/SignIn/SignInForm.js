@@ -8,7 +8,7 @@ import { withStyleSheet as styleSheet } from 'theme';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { TextInput, Icon } from 'components';
+import { TextInput } from 'components';
 
 const readTokenQuery = gql`
   {
@@ -21,17 +21,6 @@ const readTokenQuery = gql`
 @styleSheet('Sparkle.SignInForm', {
   form: {
     position: 'relative',
-  },
-
-  showPassword: {
-    position: 'absolute',
-    right: -28,
-    top: 70,
-  },
-
-  showPasswordIcon: {
-    fontSize: 18,
-    color: '#FFFFFF',
   },
 
   infoBlock: {
@@ -64,14 +53,6 @@ class SignInForm extends Component {
     defaultEmail: '',
   };
 
-  state = {
-    isPasswordIsShown: false,
-  };
-
-  onShowPassword() {
-    this.setState({ isPasswordIsShown: !this.state.isPasswordIsShown });
-  }
-
   isAuthIsValid(token) {
     const { isSubmitting, submitCount, status } = this.props;
 
@@ -89,7 +70,6 @@ class SignInForm extends Component {
       isValid,
     } = this.props;
     const disabled = !(isValid || login);
-    const { isPasswordIsShown } = this.state;
 
     return (
       <Query query={readTokenQuery}>
@@ -120,16 +100,9 @@ class SignInForm extends Component {
                   borderTopRightRadius: 0,
                 }}
                 error={error}
-                secureTextEntry={!isPasswordIsShown}
+                secureTextEntry
                 {...this.props}
               />
-
-              <TouchableOpacity onPress={::this.onShowPassword} style={styles.showPassword}>
-                <Icon
-                  name={isPasswordIsShown ? 'eye' : 'eye-crossed'}
-                  style={styles.showPasswordIcon}
-                />
-              </TouchableOpacity>
 
               <View style={styles.infoBlock}>
                 <TouchableOpacity onPress={() => onForgotPassword(login)}>
