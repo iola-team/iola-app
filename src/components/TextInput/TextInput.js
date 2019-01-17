@@ -97,8 +97,20 @@ export default class TextInput extends Component {
   };
 
   state = {
+    isFocused: false,
     isPasswordIsShown: false,
   };
+
+  onFocus() {
+    this.setState({ isFocused: true });
+  }
+
+  onBlur() {
+    const { name, setFieldTouched } = this.props;
+
+    setFieldTouched(name);
+    this.setState({ isFocused: false });
+  }
 
   onShowPassword() {
     this.setState({ isPasswordIsShown: !this.state.isPasswordIsShown });
@@ -127,19 +139,20 @@ export default class TextInput extends Component {
       errors,
       secondaryErrorText,
       customStyle,
-      setFieldTouched,
       secureTextEntry,
       infoText,
     } = this.props;
-    const { isPasswordIsShown } = this.state;
+    const { isFocused, isPasswordIsShown } = this.state;
     const isTouched = touched[name];
     const errorText = isTouched && errors[name] ? errors[name] : secondaryErrorText;
     const isValid = !error && !errorText;
     const FieldError = errorText ? <Text style={styles.errorText}>{errorText}</Text> : null;
     const FieldInfo = isTouched ? (
-      <Icon name="check" style={styles.checkMark} />
-    ): (
-      values[name].length ? null : <Text style={styles.infoText}>{infoText}</Text>
+      <Icon name="check" style={[styles.checkMark, isFocused && { color: '#BCBFCA' }]} />
+    ) : values[name].length ? null : (
+      <Text style={[styles.infoText, isFocused && { color: '#BCBFCA' }]}>
+        {infoText}
+      </Text>
     );
 
     return (
@@ -147,7 +160,8 @@ export default class TextInput extends Component {
         style={[
           styles.formItem,
           customStyle,
-          isValid ? {} : { borderColor: 'rgba(255, 135, 135, 0.56)', backgroundColor: '#FFE0E0' },
+          !isValid && { borderColor: '#FF8787', backgroundColor: '#FFE0E0' },
+          isFocused && { backgroundColor: '#FFFFFF' },
         ]}
         pointerEvents="none"
         regular
@@ -155,8 +169,9 @@ export default class TextInput extends Component {
         <Input
           style={[
             styles.formInput,
-            isValid ? {} : { color: '#FF8787' },
-            secureTextEntry && !isPasswordIsShown ? { paddingRight: isTouched ? 80 : 50 } : {},
+            secureTextEntry && !isPasswordIsShown && { paddingRight: isTouched ? 80 : 50 },
+            isFocused && { color: '#BCBFCA' },
+            !isValid && { color: '#FF8787' },
           ]}
           placeholder={placeholder}
           placeholderFontSize={16}
@@ -164,21 +179,32 @@ export default class TextInput extends Component {
           secureTextEntry={secureTextEntry && !isPasswordIsShown}
           value={values[name]}
           onChangeText={::this.onChangeText}
-          onBlur={() => setFieldTouched(name)}
+          onFocus={::this.onFocus}
+          onBlur={::this.onBlur}
           isValid={isValid}
         />
         <View
-          style={[styles.infoContent, secureTextEntry ? {} : { position: 'relative', right: 0 }]}
+          style={[styles.infoContent, !secureTextEntry && { position: 'relative', right: 0 }]}
         >
           {isValid ? FieldInfo : FieldError}
         </View>
         {secureTextEntry && (
           <Fragment>
-            <View style={[styles.verticalLine, isValid ? {} : { backgroundColor: '#FF8787' }]} />
+            <View
+              style={[
+                styles.verticalLine,
+                isFocused && { backgroundColor: '#BCBFCA' },
+                !isValid && { backgroundColor: '#FF8787' },
+              ]}
+            />
             <TouchableOpacity onPress={::this.onShowPassword} style={styles.showPassword}>
               <Icon
                 name={isPasswordIsShown ? 'eye' : 'eye-crossed'}
-                style={[styles.showPasswordIcon, isValid ? {} : { color: '#FF8787' }]}
+                style={[
+                  styles.showPasswordIcon,
+                  isFocused && { color: '#BCBFCA' },
+                  !isValid && { color: '#FF8787' },
+                ]}
               />
             </TouchableOpacity>
           </Fragment>
