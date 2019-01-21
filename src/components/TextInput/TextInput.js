@@ -202,7 +202,7 @@ export default class TextInput extends Component {
                   isFocused && { color: '#BCBFCA' },
                   !isValid && { color: '#FF8787' },
                 ]}
-                name={isPasswordIsShown ? 'eye' : 'eye-crossed'}
+                name={isPasswordIsShown ? 'eye-crossed' : 'eye'}
               />
             </TouchableOpacity>
           </Fragment>
