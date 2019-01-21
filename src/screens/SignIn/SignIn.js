@@ -23,8 +23,9 @@ const SignUpButton = connectToStyleSheet('signUpButton', Button);
     flex: 1,
     alignSelf: 'center',
     minWidth: 320,
-    paddingLeft: '5%',
-    paddingRight: '5%',
+    width: '100%',
+    paddingLeft: '10%',
+    paddingRight: '10%',
   },
 
   title: {

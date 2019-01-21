@@ -4,7 +4,7 @@ import { withFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, Form, Text } from 'native-base';
 
-import TextInputItem from '../../components/Form/TextInputItem';
+import { TextInput } from 'components';
 
 class ForgotPasswordForm extends Component {
   static propTypes = {
@@ -25,7 +25,7 @@ class ForgotPasswordForm extends Component {
 
     return (
       <Form>
-        <TextInputItem
+        <TextInput
           name="email"
           placeholder="Email"
           secondaryErrorText={emailDoesNotExist && 'Email does not exist'}
