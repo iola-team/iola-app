@@ -30,8 +30,8 @@ const SignInButton = connectToStyleSheet('signInButton', Button);
     flex: 1,
     alignSelf: 'center',
     minWidth: 320,
-    paddingLeft: '5%',
-    paddingRight: '5%',
+    width: '100%',
+    paddingHorizontal: '10%',
   },
 
   header: {

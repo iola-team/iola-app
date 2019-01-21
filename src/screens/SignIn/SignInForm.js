@@ -4,16 +4,11 @@ import { TouchableOpacity } from 'react-native';
 import { Button, Form, Text, View } from 'native-base';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from 'theme';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { TextInput } from 'components';
-
-const InfoBlock = connectToStyleSheet('infoBlock', View);
-const CommonErrorText = connectToStyleSheet('commonErrorText', Text);
-const ForgotPasswordText = connectToStyleSheet('forgotPasswordText', Text);
-const SubmitButton = connectToStyleSheet('submitButton', Button);
 
 const readTokenQuery = gql`
   {
@@ -24,22 +19,26 @@ const readTokenQuery = gql`
 `;
 
 @styleSheet('Sparkle.SignInForm', {
+  form: {
+    position: 'relative',
+  },
+
   infoBlock: {
     justifyContent: 'space-between',
     flexDirection: 'row-reverse',
   },
 
-  commonErrorText: {
+  commonError: {
     fontSize: 12,
     color: '#FF8787',
   },
 
-  forgotPasswordText: {
+  forgotPassword: {
     fontSize: 12,
     color: '#FFFFFF',
   },
 
-  submitButton: {
+  submit: {
     marginTop: 48,
   },
 })
@@ -61,7 +60,15 @@ class SignInForm extends Component {
   }
 
   render() {
-    const { values: { login }, onForgotPassword, handleSubmit, isValid } = this.props;
+    const {
+      styleSheet: styles,
+      values: {
+        login,
+      },
+      onForgotPassword,
+      handleSubmit,
+      isValid,
+    } = this.props;
     const disabled = !(isValid || login);
 
     return (
@@ -97,17 +104,17 @@ class SignInForm extends Component {
                 {...this.props}
               />
 
-              <InfoBlock>
+              <View style={styles.infoBlock}>
                 <TouchableOpacity onPress={() => onForgotPassword(login)}>
-                  <ForgotPasswordText>Forgot password?</ForgotPasswordText>
+                  <Text style={styles.forgotPassword}>Forgot password?</Text>
                 </TouchableOpacity>
 
-                {error ? <CommonErrorText>Wrong login or password</CommonErrorText> : null}
-              </InfoBlock>
+                {error && <Text style={styles.commonError}>Wrong login or password</Text>}
+              </View>
 
-              <SubmitButton block onPress={handleSubmit} disabled={disabled}>
+              <Button onPress={handleSubmit} disabled={disabled} style={styles.submit} block>
                 <Text>Submit</Text>
-              </SubmitButton>
+              </Button>
             </Form>
           );
         }}
