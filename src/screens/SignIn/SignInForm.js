@@ -19,10 +19,6 @@ const readTokenQuery = gql`
 `;
 
 @styleSheet('Sparkle.SignInForm', {
-  form: {
-    position: 'relative',
-  },
-
   infoBlock: {
     justifyContent: 'space-between',
     flexDirection: 'row-reverse',
