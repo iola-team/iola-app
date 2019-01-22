@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { getStorybookUI, configure } from '@storybook/react-native';
+import { IP } from 'react-native-dotenv';
 import { loadStories } from './storyLoader';
 
 export default class Storybook extends Component {
@@ -13,7 +14,7 @@ export default class Storybook extends Component {
     require('./config');
 
     this.ui = getStorybookUI({
-      host: '192.168.0.100',
+      host: IP,
       port: 7007,
       onDeviceUI: false,
     });

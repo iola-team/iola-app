@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
-import path from 'path';
+import { GRAPHQL_URL } from 'react-native-dotenv';
 
 const fragmentsFile = process.argv[2];
 
@@ -10,14 +10,7 @@ if (!fragmentsFile) {
   process.exit();
 }
 
-const graphqlConfigs = JSON.parse(
-  fs.readFileSync(path.join(__dirname, '..', '.graphqlconfig'), 'utf8'),
-);
-
-const projectName = 'Sparkle';
-const endpoint = graphqlConfigs.projects[projectName].extensions.endpoints.default;
-
-fetch(endpoint, {
+fetch(GRAPHQL_URL, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
