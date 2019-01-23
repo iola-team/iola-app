@@ -22,6 +22,15 @@ export default (variables => ({
       backgroundColor: '#FFFFFF',
     },
 
+    'NativeBase.Fab': {
+      'NativeBase.Icon': {
+        color: '#000000',
+      },
+
+      backgroundColor: '#F8F9FB',
+      elevation: 5,
+    },
+
     'NativeBase.ViewNB': {
       '.padder': {
         padding: variables.contentPadding,
@@ -106,6 +115,10 @@ export default (variables => ({
         backgroundColor: variables.brandLight,
 
         'NativeBase.Text': {
+          color: variables.textColor,
+        },
+
+        'NativeBase.Icon': {
           color: variables.textColor,
         },
 

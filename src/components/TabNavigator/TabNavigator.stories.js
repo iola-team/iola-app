@@ -35,17 +35,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const Header = ({ animatedValue }) => {
-  const animatedStyle = {
-    opacity: animatedValue,
-  };
-
-  return (
-    <Animated.View style={[styles.header, animatedStyle]}>
-      <Text>Header</Text>
-    </Animated.View>
-  );
-};
+const Header = () => (
+  <Animated.View style={styles.header}>
+    <Text>Header</Text>
+  </Animated.View>
+);
 
 const createScrollViewTab = (backgroundColor, count = 100) => class Tab extends PureComponent {
 
@@ -89,8 +83,8 @@ stories.add('Default', () => {
     FlatList: createFlatListTab('#EEEEFF', 100),
     ShortScroll: createScrollViewTab('#FFEEFF', 2),
   }, {
-    headerShrinkHeight: HeaderRN.HEIGHT,
-    renderHeader: props => <Header {...props} />
+    headerHeight,
+    renderHeader: props => <Header {...props} />,
   });
 
   const Story = createAppContainer(TabNavigator);
@@ -104,7 +98,6 @@ stories.add('No items', () => {
     ScrollView: createScrollViewTab('#FEFEFE', 0),
   }, {
     headerHeight,
-    headerShrinkHeight: HeaderRN.HEIGHT,
     renderHeader: props => <Header {...props} />
   });
 

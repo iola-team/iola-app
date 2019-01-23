@@ -1,8 +1,8 @@
 import { assign, find, isPlainObject, isArray } from 'lodash';
 import { AsyncStorage } from 'react-native';
-import { toIdValue, getMainDefinition } from 'apollo-utilities';
+import { getMainDefinition } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
-import { from, split, ApolloLink } from 'apollo-link';
+import { from, split } from 'apollo-link';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { withClientState } from 'apollo-link-state';
 import { CachePersistor } from 'apollo-cache-persist';
@@ -12,6 +12,7 @@ import { createUploadLink } from 'apollo-upload-client';
 import { disableFragmentWarnings } from 'graphql-tag';
 import EventSource from 'react-native-event-source';
 import DeviceInfo from 'react-native-device-info';
+import { GRAPHQL_URL, GRAPHQL_SUBSCRIPTIONS_URL } from 'react-native-dotenv';
 
 import { AuthLink, ErrorLink, SSELink } from './links';
 import resolvers from './resolvers';
@@ -93,21 +94,15 @@ export async function createClient({
 }
 
 export default async () => {
-  const debug = false;
-
   /**
    * TODO: Review the app logic to decide if query batching is needed to be enabled back
    *
    * For now I disabled query batching, since we use manual batching technique such as fragments composition.
    */
   const enableBatching = false;
-  const debugQuery = debug ? '?XDEBUG_SESSION_START=PHPSTORM' : '';
-
-  const queryUri = `http://192.168.31.74/ox/oxwall-1.8.4.1/everywhere/api/graphql${debugQuery}`;
-  const subscriptionUri = `http://192.168.31.74/ox/oxwall-1.8.4.1/everywhere/api/subscriptions${debugQuery}`;
 
   let httpLink = createUploadLink({
-    uri: queryUri,
+    uri: GRAPHQL_URL,
     fetch: (uri, allOptions, ...restArgs) => {
       const {
         uploadProgress,
@@ -126,7 +121,7 @@ export default async () => {
 
   if (enableBatching) {
     const batchHttpLink = new BatchHttpLink({
-      uri: queryUri,
+      uri: GRAPHQL_URL,
     });
 
     const hasFiles = node => isArray(node) || isPlainObject(node)
@@ -149,7 +144,7 @@ export default async () => {
   }
 
   const sseLink = new SSELink({
-    uri: subscriptionUri,
+    uri: GRAPHQL_SUBSCRIPTIONS_URL,
     streamId: DeviceInfo.getUniqueID(),
     EventSourceImpl: EventSource,
   });

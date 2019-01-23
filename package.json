@@ -19,7 +19,7 @@
     "schema:generate-types-introspection": "babel-node $NODE_DEBUG_OPTION ./scripts/generateTypesIntrospection.js ./src/graph/meta/fragmentTypes.json",
     "storybook": "concurrently -p name -n \"stories,server\" \"yarn storybook:watch\" \"yarn storybook:server\"",
     "prestorybook": "yarn storybook:generate",
-    "storybook:server": "storybook start -h 192.168.0.100 -p 7007 -c ./src/storybook",
+    "storybook:server": ". $PWD/.env && storybook start -h $IP -p 7007 -c ./src/storybook",
     "storybook:generate": "rnstl",
     "storybook:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchStories.js",
     "lint": "eslint \"./src/**/*.js\" --quiet; exit 0",
@@ -154,6 +154,7 @@
     "prettier": "^1.14.3",
     "react-dom": "16.6.1",
     "react-native-debugger-open": "^0.3.17",
+    "react-native-dotenv": "^0.2.0",
     "react-native-storybook-loader": "^1.8.0"
   },
   "jest": {

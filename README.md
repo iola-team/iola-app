@@ -2,7 +2,7 @@
 
 ## Install
   - `yarn`
-  - `rnpm link`
+  - `cp .env.sample .env` and modify the `.env` file
 
 ## Development
 1) Run dev server: `yarn start`

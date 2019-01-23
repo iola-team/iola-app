@@ -31,6 +31,8 @@ import FriendsButton from './FriendsButton';
 import PhotoList from './PhotoList';
 import createHeadingTabsNavigator from './TabNavigator';
 import NoContent from './NoContent';
+import ImagePicker from './ImagePicker';
+import ImageProgress from './ImageProgress';
 
 export {
   AvatarEdit,
@@ -63,6 +65,8 @@ export {
   UserListItem,
   UserPhotos,
   UserPhotosCard,
+  ImagePicker,
+  ImageProgress,
 
   // Navigation
   ScreenHeader,

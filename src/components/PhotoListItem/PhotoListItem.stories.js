@@ -63,4 +63,8 @@ stories.add('Default', () => withData('Photo:1', ({ photo }) => (
   <PhotoListItem photo={photo} style={style} />
 )));
 
+stories.add('Progress', () => withData('Photo:1', ({ photo }) => (
+  <PhotoListItem photo={photo} progress={.3} style={style} />
+)));
+
 stories.add('Loading', () => <PhotoListItem photo={null} style={style} />);
