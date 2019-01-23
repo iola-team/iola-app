@@ -93,19 +93,21 @@ export class NoContent extends Component {
 export default class SceneView extends PureComponent {
   static propTypes = {
     isFocused: PropTypes.bool.isRequired,
-    scrollOffset: PropTypes.number,
     route: PropTypes.object.isRequired,
     renderScene: PropTypes.func.isRequired,
-    headerHeight: PropTypes.number.isRequired,
-    tabBarHeight: PropTypes.number.isRequired,
+    tabBarHeight: PropTypes.number,
+    scrollOffset: PropTypes.number,
     headerShrinkHeight: PropTypes.number,
     bottomBarHeight: PropTypes.number,
+    headerHeight: PropTypes.number,
   };
 
   static defaultProps = {
+    tabBarHeight: 0,
     scrollOffset: 0,
     headerShrinkHeight: 0,
     bottomBarHeight: 0,
+    headerHeight: 0,
   };
 
   subscribers = {
