@@ -48,12 +48,15 @@ export default class SignInScreen extends Component {
 
   onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }) => {
     const { authenticate, navigation: { navigate } } = this.props;
+
+    // @TODO: add spinner here (TBD with designer)
+
     const success = await authenticate(login, password);
 
     setStatus({ ...status, success });
     setSubmitting(false);
 
-    if (success) navigate(routes.LAUNCH);
+    if (success) navigate(routes.APPLICATION);
   };
 
   render() {
