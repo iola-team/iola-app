@@ -84,7 +84,7 @@ const createPhoto = ({ id = faker.random.uuid() } = {}) => ({
 
 const dataStore = () => ({
   me: { id: 'User:1' },
-  photos: range(0).map(() => createPhoto()),
+  photos: range(5).map(() => createPhoto()),
 });
 
 const resolvers = {

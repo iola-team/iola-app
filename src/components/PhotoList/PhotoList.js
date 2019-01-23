@@ -31,7 +31,7 @@ const createOptimisticEdge = ({ id, url }) => ({
 
 @withStyleSheet('Sparkle.PhotoList', {
   item: {
-    width: '33.33333333%',
+    width: `${100 / 3}%`,
     padding: 4,
   },
 })
