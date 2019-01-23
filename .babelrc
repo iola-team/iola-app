@@ -1,7 +1,8 @@
 {
   "presets": [
     "module:metro-react-native-babel-preset",
-    "@babel/preset-flow"
+    "@babel/preset-flow",
+    "module:react-native-dotenv"
   ],
   "plugins": [
     "@babel/plugin-proposal-function-bind",
