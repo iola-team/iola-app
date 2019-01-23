@@ -1,24 +1,21 @@
 import { writeFileSync as write } from 'fs';
 import { join } from 'path';
 import { fileLoader, mergeTypes } from 'merge-graphql-schemas';
-import {exec} from 'child-process-promise'
+import { exec } from 'child-process-promise';
 
 const tmpDir = join(__dirname, '..', '.tmp');
 const outputFile = join(tmpDir, 'schema.graphql');
-
-const defaultTypeDefs = [`
-  directive @client on FIELD | FIELD_DEFINITION
-`];
+const defaultTypeDefs = ['directive @client on FIELD | FIELD_DEFINITION'];
 
 const generate = async () => {
   const { typeDefs: clientSchemas } = require('../src/graph/resolvers').default;
-  let fileSchemas = fileLoader(join(tmpDir, 'schemas'));
+  const fileSchemas = fileLoader(join(tmpDir, 'schemas'));
 
   if (!fileSchemas.length) {
     try {
       await exec(`npm run schema:load`);
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error(error);
     }
   }
 
