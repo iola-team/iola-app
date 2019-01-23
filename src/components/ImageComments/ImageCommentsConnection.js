@@ -44,16 +44,14 @@ const photoCommentsQuery = gql`
 const photoCommentAddSubscription = gql`
   subscription PhotoCommentAddSubscription($photoId: ID!) {
     onPhotoCommentAdd(photoId: $photoId) {
-      ...on PhotoCommentCreatePayload {
-        node {
-          id
-          text
-          createdAt
-        }
+      node {
+        id
+        text
+        createdAt
+      }
 
-        edge {
-          ...ImageCommentsList_edge
-        }
+      edge {
+        ...ImageCommentsList_edge
       }
     }
   }
@@ -115,7 +113,7 @@ export default class ImageCommentsConnection extends Component {
 
     return (
       <Query query={meQuery}>
-        {({ loading: loadingMeQuery, data: { user } }) => (loadingMeQuery ? null : (
+        {({ loading: loadingMeQuery, data: { user } }) => loadingMeQuery ? null : (
           <Query
             query={photoCommentsQuery}
             variables={{ id: photoId }}
@@ -172,7 +170,7 @@ export default class ImageCommentsConnection extends Component {
               );
             }}
           </Query>
-        ))}
+        )}
       </Query>
     );
   }

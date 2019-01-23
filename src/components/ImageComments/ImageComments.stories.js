@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Text } from 'native-base';
+import { Button, Text, View } from 'native-base';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
+import { button, withKnobs } from '@storybook/addon-knobs';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { cursorToOffset, offsetToCursor } from 'graphql-relay';
@@ -233,7 +234,7 @@ const resolvers = {
 
   Photo: {
     async comments(photo, args) {
-      return createConnection(photo.comments, args);
+      return createConnection(orderBy(photo.comments, 'createdAt', 'desc'), args);
     },
   },
 
@@ -254,6 +255,7 @@ const onReset = () => {
 };
 
 // Decorators
+stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator({ padder: true }));
 stories.addDecorator(getApolloDecorator({ typeDefs, dataStore, resolvers, onReset }));
 
@@ -307,29 +309,29 @@ stories.add('Fake Comments', () => {
 
 stories.add('Subscription', () => {
   const photoId = 'Photo:1';
-  const onPress = onShowImageComments => {
-    onShowImageComments();
 
-    setTimeout(() => {
-      subscriptions.publish('onPhotoCommentAdd', {
-        userId: 'User:2',
-        photoId: 'Photo:1',
-        text: faker.company.catchPhrase(),
-      });
-    }, 500);
-  };
+  button('Generate comment', () => subscriptions.publish('onPhotoCommentAdd', {
+    photoId,
+    userId: 'User:2',
+    text: faker.company.catchPhrase(),
+  }));
 
   return (
-    <Query query={photoDetailsQuery} variables={{ id: photoId }}>
-      {({ loading, data: { photo } }) => (loading ? null : (console.log('photo', photo),
-        <ImageComments photoId={photoId} totalCount={photo.comments.totalCount}>
-          {onShowImageComments => (
-            <Button onPress={() => onPress(onShowImageComments)}>
-              <Text>Show comments + generate comment</Text>
-            </Button>
-          )}
-        </ImageComments>
-      ))}
-    </Query>
+    <View>
+      <Query query={photoDetailsQuery} variables={{ id: photoId }}>
+        {({ loading, data: { photo } }) => loading ? null : (
+          <ImageComments photoId={photoId} totalCount={photo.comments.totalCount}>
+            {onShowImageComments => (
+              <Button onPress={onShowImageComments}>
+                <Text>Show comments</Text>
+              </Button>
+            )}
+          </ImageComments>
+        )}
+      </Query>
+      <Text>
+        {'\n'}You can generate comments with "Generate comment" button from Storybook Knobs
+      </Text>
+    </View>
   );
 });
