@@ -25,6 +25,7 @@ const readTokenQuery = gql`
   },
 
   commonError: {
+    paddingLeft: 3,
     fontSize: 12,
     color: '#FF8787',
   },
@@ -41,7 +42,7 @@ const readTokenQuery = gql`
 
   spinner: {
     position: 'absolute',
-    right: 20,
+    right: 15,
   },
 })
 class SignInForm extends Component {

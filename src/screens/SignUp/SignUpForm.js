@@ -7,8 +7,8 @@ import { graphql, ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { debounce, get } from 'lodash';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { TextInput } from 'components';
+import { withStyleSheet as styleSheet } from 'theme';
+import { TextInput, Spinner } from 'components';
 
 const validateEmailQuery = gql`
   query validateEmailQuery($email: String = "") {
@@ -32,11 +32,6 @@ const signUpUserMutation = gql`
   }
 `;
 
-const SubmitButton = connectToStyleSheet('submitButton', Button).withProps(({ disabled }) => ({
-  disabled,
-  block: true,
-}));
-
 @graphql(gql`
   mutation($token: String!) {
     storeAuthToken(token: $token) @client
@@ -47,8 +42,14 @@ const SubmitButton = connectToStyleSheet('submitButton', Button).withProps(({ di
   }),
 })
 @styleSheet('Sparkle.SignUpForm', {
-  submitButton: {
+  submit: {
+    posirion: 'relative',
     marginTop: 40,
+  },
+
+  spinner: {
+    position: 'absolute',
+    right: 15,
   },
 })
 class SignUpForm extends Component {
@@ -78,8 +79,10 @@ class SignUpForm extends Component {
   }
 
   async onSubmit(signUpUser) {
-    const { values: { name, email, password }, storeToken, onSubmit } = this.props;
+    const { values: { name, email, password }, storeToken, onSubmit, setSubmitting } = this.props;
     let success = false;
+
+    setSubmitting(true);
 
     try {
       const { data: { result } } = await signUpUser({
@@ -102,7 +105,7 @@ class SignUpForm extends Component {
   }
 
   render() {
-    const { isValid } = this.props;
+    const { styleSheet: styles, isValid, isSubmitting } = this.props;
     const { emailIsDuplicated } = this.state;
 
     return (
@@ -131,9 +134,15 @@ class SignUpForm extends Component {
 
         <Mutation mutation={signUpUserMutation}>
           {signUpUser => (
-            <SubmitButton onPress={() => this.onSubmit(signUpUser)} disabled={!(isValid && !emailIsDuplicated)} block>
+            <Button
+              style={styles.submit}
+              onPress={() => this.onSubmit(signUpUser)}
+              disabled={!(isValid && !emailIsDuplicated)}
+              block
+            >
               <Text>Sign up</Text>
-            </SubmitButton>
+              {isSubmitting && <Spinner style={styles.spinner} />}
+            </Button>
           )}
         </Mutation>
       </Form>

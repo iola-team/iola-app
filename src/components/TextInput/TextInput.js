@@ -143,13 +143,14 @@ export default class TextInput extends Component {
       infoText,
     } = this.props;
     const { isFocused, isPasswordIsShown } = this.state;
+    const value = values[name] || '';
     const isTouched = touched[name];
     const errorText = isTouched && errors[name] ? errors[name] : secondaryErrorText;
     const isValid = !error && !errorText;
     const FieldError = errorText ? <Text style={styles.errorText}>{errorText}</Text> : null;
     const FieldInfo = isTouched ? (
       <Icon style={[styles.checkMark, isFocused && { color: '#BCBFCA' }]} name="check" />
-    ) : values[name].length ? null : (
+    ) : value.length ? null : (
       <Text style={[styles.infoText, isFocused && { color: '#BCBFCA' }]}>
         {infoText}
       </Text>
@@ -177,7 +178,7 @@ export default class TextInput extends Component {
           placeholderFontSize={16}
           placeholderTextColor={isValid ? '#FFFFFF' : '#FF8787'}
           secureTextEntry={secureTextEntry && !isPasswordIsShown}
-          value={values[name]}
+          value={value}
           onChangeText={::this.onChangeText}
           onFocus={::this.onFocus}
           onBlur={::this.onBlur}

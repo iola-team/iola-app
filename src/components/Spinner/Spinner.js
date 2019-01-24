@@ -24,7 +24,7 @@ export default class Spinner extends Component {
   };
 
   static defaultProps = {
-    size: 24,
+    size: 26,
     thickness: 2,
     style: {},
   };
@@ -46,6 +46,7 @@ export default class Spinner extends Component {
           size={size}
           thickness={thickness}
           color={color}
+          direction="clockwise"
           duration={500}
           spinDuration={1500}
           borderWidth={0}

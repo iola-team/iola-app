@@ -68,8 +68,8 @@ export default class SignInScreen extends Component {
           <Content padder contentContainerStyle={styleSheet.content}>
             <Title>Sign in</Title>
 
-            <FacebookButton block onPress={() => alert('Log in via Facebook')}>
-              <Text>Log in via Facebook</Text>
+            <FacebookButton block onPress={() => alert('Sign in via Facebook')}>
+              <Text>Sign in via Facebook</Text>
             </FacebookButton>
 
             <Divider>or</Divider>
