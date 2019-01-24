@@ -45,6 +45,7 @@ function loadStories() {
   require('../components/ProfileFieldView/ProfileFieldView.stories');
   require('../components/ProfileFieldsView/ProfileFieldsView.stories');
   require('../components/Shadow/Shadow.stories');
+  require('../components/Spinner/Spinner.stories');
   require('../components/TabNavigator/TabNavigator.stories');
   require('../components/TextPicker/TextPicker.stories');
   require('../components/UserHeading/UserHeading.stories');
@@ -53,10 +54,10 @@ function loadStories() {
   require('../components/UserPhotos/UserPhotos.stories');
   require('../screens/EmailVerification/EmailVerification.stories');
   require('../screens/ForgotPassword/ForgotPassword.stories');
-  require('../screens/MyPhotos/MyPhotos.stories');
   require('../screens/Launch/Launch.stories');
+  require('../screens/MyPhotos/MyPhotos.stories');
   require('./stories/Button.stories');
-
+  
 }
 
 const stories = [
@@ -100,6 +101,7 @@ const stories = [
   '../components/ProfileFieldView/ProfileFieldView.stories',
   '../components/ProfileFieldsView/ProfileFieldsView.stories',
   '../components/Shadow/Shadow.stories',
+  '../components/Spinner/Spinner.stories',
   '../components/TabNavigator/TabNavigator.stories',
   '../components/TextPicker/TextPicker.stories',
   '../components/UserHeading/UserHeading.stories',
@@ -108,10 +110,10 @@ const stories = [
   '../components/UserPhotos/UserPhotos.stories',
   '../screens/EmailVerification/EmailVerification.stories',
   '../screens/ForgotPassword/ForgotPassword.stories',
-  '../screens/MyPhotos/MyPhotos.stories',
   '../screens/Launch/Launch.stories',
+  '../screens/MyPhotos/MyPhotos.stories',
   './stories/Button.stories',
-
+  
 ];
 
 module.exports = {

@@ -8,7 +8,7 @@ import { withStyleSheet as styleSheet } from 'theme';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { TextInput } from 'components';
+import { TextInput, Spinner } from 'components';
 
 const readTokenQuery = gql`
   {
@@ -35,7 +35,13 @@ const readTokenQuery = gql`
   },
 
   submit: {
+    posirion: 'relative',
     marginTop: 48,
+  },
+
+  spinner: {
+    position: 'absolute',
+    right: 20,
   },
 })
 class SignInForm extends Component {
@@ -64,6 +70,7 @@ class SignInForm extends Component {
       onForgotPassword,
       handleSubmit,
       isValid,
+      isSubmitting,
     } = this.props;
     const disabled = !(isValid || login);
 
@@ -109,7 +116,8 @@ class SignInForm extends Component {
               </View>
 
               <Button onPress={handleSubmit} disabled={disabled} style={styles.submit} block>
-                <Text>Submit</Text>
+                <Text>Sign in</Text>
+                {isSubmitting && <Spinner style={styles.spinner} />}
               </Button>
             </Form>
           );
