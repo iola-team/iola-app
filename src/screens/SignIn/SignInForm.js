@@ -36,7 +36,7 @@ const readTokenQuery = gql`
   },
 
   submit: {
-    posirion: 'relative',
+    position: 'relative',
     marginTop: 48,
   },
 

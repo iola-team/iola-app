@@ -39,6 +39,7 @@ export default class LaunchScreen extends Component {
     const logoTop = screenHeight / 2 - logoHeight;
     const logoTranslateY = screenHeight / 2 - logoHeight / 2 - screenHeight * logoTopFinishScale;
 
+    this.logoSizeFinishScale = 0.7;
     this.logo = {
       width: logoWidth,
       height: logoHeight,
@@ -51,7 +52,9 @@ export default class LaunchScreen extends Component {
       interval: setInterval(::this.handlePulsingAnimation, 900),
     };
     this.form = {
-      marginTop: screenHeight * logoTopFinishScale + (logoHeight * 0.7 / 2) + 85,
+      marginTop: (
+        screenHeight * logoTopFinishScale + (logoHeight * this.logoSizeFinishScale / 2) + 85
+      ),
       opacityAnimatedValue: new Animated.Value(0),
     };
   }
@@ -147,13 +150,13 @@ export default class LaunchScreen extends Component {
                   {
                     scaleX: positionAnimatedValue.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [1, 0.7],
+                      outputRange: [1, this.logoSizeFinishScale],
                     })
                   },
                   {
                     scaleY: positionAnimatedValue.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [1, 0.7],
+                      outputRange: [1, this.logoSizeFinishScale],
                     })
                   }
                 ]

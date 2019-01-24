@@ -43,7 +43,7 @@ const signUpUserMutation = gql`
 })
 @styleSheet('Sparkle.SignUpForm', {
   submit: {
-    posirion: 'relative',
+    position: 'relative',
     marginTop: 40,
   },
 
