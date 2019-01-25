@@ -1,13 +1,11 @@
 import React from 'react';
 import { Button, Text, View } from 'native-base';
-import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { button, withKnobs } from '@storybook/addon-knobs';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { cursorToOffset, offsetToCursor } from 'graphql-relay';
 import { PubSub } from 'graphql-subscriptions';
-import { cloneDeep, find, orderBy, range, random, sample, sampleSize, shuffle } from 'lodash';
+import { find, orderBy, range, sample, sampleSize, shuffle } from 'lodash';
 import delay from 'promise-delay';
 import faker from 'faker';
 import moment from 'moment';
@@ -19,7 +17,7 @@ import ImageComments from './ImageComments';
 import { photoDetailsQuery } from '../ImageView/ImageView';
 
 const stories = storiesOf('Components/ImageComments', module);
-let subscriptions;
+const subscriptions = new PubSub();
 
 const typeDefs = gql`
   scalar Cursor
@@ -176,7 +174,7 @@ const resolvers = {
         };
         const cursor = 'first';
 
-        photo.comments.unshift(node);
+        photo.comments.push(node);
 
         return {
           user,
@@ -195,30 +193,21 @@ const resolvers = {
 
   Mutation: {
     async addPhotoComment(root, args, { dataStore }) {
-      const { input, at, after, before } = args;
+      const { input: { photoId, userId, text } } = args;
       const { users, photos } = dataStore;
-      const user = find(users, { id: input.userId });
-      const photo = find(photos, { id: input.photoId });
+      const user = find(users, { id: userId });
+      const photo = find(photos, { id: photoId });
       const node = {
         id: `Comment:${photo.comments.length + 1}`,
-        text: input.text,
         createdAt: new Date(),
         user,
+        text,
       };
-
-      photo.comments.push(node);
-
-      let cursor = at || offsetToCursor(0);
-
-      if (before) {
-        cursor = offsetToCursor(Math.max(cursorToOffset(before) - 1, 0));
-      }
-
-      if (after) {
-        cursor = offsetToCursor(cursorToOffset(before) + 1);
-      }
+      const cursor = 'first';
 
       await delay(2000);
+
+      photo.comments.push(node);
 
       return {
         user,
@@ -247,17 +236,10 @@ const resolvers = {
   }
 };
 
-const onReset = () => {
-  const freshDataStore = cloneDeep(dataStore);
-
-  Object.assign(dataStore, cloneDeep(freshDataStore));
-  subscriptions = new PubSub();
-};
-
 // Decorators
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator({ padder: true }));
-stories.addDecorator(getApolloDecorator({ typeDefs, dataStore, resolvers, onReset }));
+stories.addDecorator(getApolloDecorator({ typeDefs, dataStore, resolvers }));
 
 // Stories
 
@@ -286,23 +268,15 @@ stories.add('Fake Comments', () => {
 
   return (
     <Query query={photoDetailsQuery} variables={{ id: photoId }}>
-      {({ loading, data: { photo } }) => (loading ? null : (
-        <ImageComments
-          photoId={photoId}
-          totalCount={photo.comments.totalCount}
-          onDismiss={action('onDismiss')}
-          onShow={action('onShow')}
-          onDone={action('onDone')}
-          onCancel={action('onCancel')}
-          onRequestClose={action('onRequestClose')}
-        >
+      {({ loading, data: { photo } }) => loading ? null : (
+        <ImageComments photoId={photoId} totalCount={photo.comments.totalCount}>
           {onShowImageComments => (
             <Button onPress={onShowImageComments}>
               <Text>Show Comments {photo.comments.totalCount}</Text>
             </Button>
           )}
         </ImageComments>
-      ))}
+      )}
     </Query>
   );
 });
