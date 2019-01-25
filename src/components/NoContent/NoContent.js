@@ -18,13 +18,13 @@ const iconMargin = 17;
   'NativeBase.ViewNB': {
     alignItems: 'center',
     justifyContent: 'center',
-    width: 200,
-    height: 200,
+    width: 120,
+    height: 120,
     marginBottom: iconMargin,
-    borderRadius: 100,
+    borderRadius: 60,
 
     'NativeBase.Icon': {
-      fontSize: 120,
+      fontSize: 46,
     },
   },
 
