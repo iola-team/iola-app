@@ -245,12 +245,9 @@ export default class ImageComments extends Component {
             height={getModalHeight()}
             footer={this.renderFooter(user)}
             isVisible={isVisible}
-            onDone={this.action('onDone', this.hide)}
-            onDismiss={this.action('onDismiss')}
-            onShow={this.action('onShow')}
-            onSwipe={this.action('onSwipe', this.hide)}
-            onCancel={this.action('onCancel', this.hide)}
-            onRequestClose={this.action('onRequestClose', this.hide)}
+            onDone={this.hide}
+            onSwipe={this.hide}
+            onRequestClose={this.hide}
             noScrollViewForContent
           >
             <View style={styles.container}>

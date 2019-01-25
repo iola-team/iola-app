@@ -22,7 +22,7 @@ const photoCommentsQuery = gql`
     photo: node(id: $id) {
       ...on Photo {
         id
-        comments(first: 10 after: $cursor) @connection(key: "comments-totalcount") { # remove connection??
+        comments(first: 10 after: $cursor) @connection(key: "comments-totalcount") {
           totalCount
 
           edges {
@@ -119,9 +119,41 @@ export default class ImageCommentsConnection extends Component {
             variables={{ id: photoId }}
             fetchPolicy="cache-and-network"
           >
-            {({ loading, data, fetchMore, networkStatus, subscribeToMore }) => {
+            {({ loading, data, fetchMore, refetch, networkStatus, subscribeToMore }) => {
               const refreshing = networkStatus === NetworkStatus.refetch;
               const edges = get(data, 'photo.comments.edges', []);
+              const onEndReached = () => loading ? null : this.handleLoadMore(data, fetchMore);
+              const subscribeToNewComments = () => subscribeToMore({
+                document: photoCommentAddSubscription,
+                variables: { photoId },
+                shouldResubscribe: true,
+
+                updateQuery: (prev, { subscriptionData }) => {
+                  if (!subscriptionData.data) return prev;
+                  const { onPhotoCommentAdd: payload } = subscriptionData.data;
+
+                  /**
+                   * Skip messages of current user
+                   * @TODO: Case when currently logged in user sends messages from web
+                   */
+                  if (payload.edge.node.user.id === user.id) {
+                    return prev;
+                  }
+
+                  return update(prev, {
+                    photo: {
+                      comments: {
+                        totalCount: {
+                          $set: prev.photo.comments.totalCount + 1,
+                        },
+                        edges: {
+                          $unshift: [payload.edge],
+                        },
+                      },
+                    },
+                  });
+                },
+              });
 
               return (
                 <ImageCommentsList
@@ -130,42 +162,12 @@ export default class ImageCommentsConnection extends Component {
                   loading={loading}
                   refreshing={refreshing}
                   edges={edges}
-                  onRefresh={data.refetch}
+                  onRefresh={refetch}
                   listRef={listRef}
-                  onEndReached={() => loading ? null : this.handleLoadMore(data, fetchMore)}
+                  onEndReached={onEndReached}
                   onEndReachedThreshold={2}
                   inverted={!!edges}
-                  subscribeToNewComments={() => subscribeToMore({
-                    document: photoCommentAddSubscription,
-                    variables: { photoId },
-
-                    updateQuery: (prev, { subscriptionData }) => {
-                      if (!subscriptionData.data) return prev;
-
-                      const { onPhotoCommentAdd: payload } = subscriptionData.data;
-
-                      /**
-                       * Skip messages of current user
-                       * @TODO: Case when currently logged in user sends messages from web
-                       */
-                      if (payload.edge.node.user.id === user.id) {
-                        return prev;
-                      }
-
-                      return update(prev, {
-                        photo: {
-                          comments: {
-                            totalCount: {
-                              $set: prev.photo.comments.totalCount + 1,
-                            },
-                            edges: {
-                              $unshift: [payload.edge],
-                            },
-                          },
-                        },
-                      });
-                    },
-                  })}
+                  subscribeToNewComments={subscribeToNewComments}
                 />
               );
             }}
