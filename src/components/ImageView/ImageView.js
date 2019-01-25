@@ -227,6 +227,7 @@ export default class ImageView extends Component {
     const { edges, styleSheet: styles } = this.props;
     const { index } = this.state;
     const { node: { id } } = edges[index];
+    const totalCountImages = edges.length;
 
     return (
       <View style={styles.controls}>
@@ -255,7 +256,11 @@ export default class ImageView extends Component {
             return (
               <Fragment>
                 <View style={styles.header}>
-                  {totalCount > 1 ? <Text style={styles.indicator}>{`${index} of ${totalCount}`}</Text> : null}
+                  {totalCountImages > 1 && (
+                    <Text style={styles.indicator}>
+                      {`${index + 1} of ${totalCountImages}`}
+                    </Text>
+                  )}
                   <TouchableOpacity onPress={::this.onClose} style={styles.closeButton}>
                     <Icon name="close" style={styles.close} />
                   </TouchableOpacity>

@@ -34,7 +34,7 @@ export default class UserPhotos extends Component {
     return (
       <Query query={userPhotosQuery} variables={{ id: userId }}>
         {({ loading, data }) => {
-          const edges = loading ? [] : data.user.photos.edges;
+          const edges = data?.user?.photos?.edges || [];
 
           return (
             <ImageView edges={edges}>
