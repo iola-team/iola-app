@@ -16,6 +16,7 @@ const myPhotosQuery = gql`
         edges {
           ...PhotoList_edge
         }
+        totalCount
       }
     }
   }

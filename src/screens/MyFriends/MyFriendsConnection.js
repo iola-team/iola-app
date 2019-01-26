@@ -11,7 +11,7 @@ const userFriendsQuery = gql`
     me {
       id
       friends(filter: {
-        friendshipStatusIn: [ACTIVE, PENDING]
+        friendshipPhaseIn: [ REQUEST_RECEIVED, REQUEST_SENT, ACTIVE ]
       }) {
         edges {
           ...FriendList_edge

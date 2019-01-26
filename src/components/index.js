@@ -33,6 +33,7 @@ import createHeadingTabsNavigator from './TabNavigator';
 import NoContent from './NoContent';
 import ImagePicker from './ImagePicker';
 import ImageProgress from './ImageProgress';
+import TabBarLabel from './TabBarLabel';
 
 export {
   AvatarEdit,
@@ -67,6 +68,7 @@ export {
   UserPhotosCard,
   ImagePicker,
   ImageProgress,
+  TabBarLabel,
 
   // Navigation
   ScreenHeader,
