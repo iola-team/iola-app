@@ -6,7 +6,7 @@ import update from 'immutability-helper';
 import { TabBarLabel } from 'components';
 
 const userFragment = gql`
-  fragment MyFriendsTabBarLabel on User {
+  fragment MyFriendsTabBarLabel_user on User {
     id
     activeFriends: friends {
       totalCount
@@ -32,7 +32,7 @@ const createOptimisticUser = (user, { requests = 0, friends = 0 }) => update(use
   query MyFriendsCountQuery {
     me {
       id
-      ...MyFriendsTabBarLabel
+      ...MyFriendsTabBarLabel_user
     }
   }
 

@@ -19,7 +19,7 @@ const userFriendsQuery = gql`
         }
       }
 
-      ...MyFriendsTabBarLabel
+      ...MyFriendsTabBarLabel_user
     }
   }
   
@@ -32,7 +32,7 @@ const addFriendMutation = gql`
     result: addFriend(input: $input) {
       user {
         id
-        ...MyFriendsTabBarLabel
+        ...MyFriendsTabBarLabel_user
       }
       friendship {
         id
@@ -50,7 +50,7 @@ const deleteFriendMutation = gql`
     result: deleteFriend(input: $input) {
       user {
         id
-        ...MyFriendsTabBarLabel
+        ...MyFriendsTabBarLabel_user
       }
       deletedId
     }
