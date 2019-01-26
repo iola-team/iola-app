@@ -63,7 +63,6 @@ export {
   UserHeading,
   UserList,
   UserListItem,
-  UserPhotos,
   UserPhotosCard,
   ImagePicker,
   ImageProgress,
