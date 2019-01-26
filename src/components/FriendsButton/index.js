@@ -69,6 +69,7 @@ const commonMutationOptions = {
   refetchQueries: [
     'UserFriendsQuery',
     'MyFriendsQuery',
+    'MyFriendsCountQuery',
   ],
 };
 

@@ -5,6 +5,7 @@ import { graphql } from 'react-apollo';
 import { get, filter } from 'lodash';
 
 import { FriendList } from 'components';
+import TabBarLabel from './TabBarLabel';
 
 const userFriendsQuery = gql`
   query MyFriendsQuery {
@@ -17,35 +18,51 @@ const userFriendsQuery = gql`
           ...FriendList_edge
         }
       }
+
+      ...MyFriendsTabBarLabel
     }
   }
   
+  ${TabBarLabel.fragments.user}
   ${FriendList.fragments.edge}
 `;
 
 const addFriendMutation = gql`
   mutation AddFriendMutation($input: AddFriendInput!) {
     result: addFriend(input: $input) {
+      user {
+        id
+        ...MyFriendsTabBarLabel
+      }
       friendship {
         id
         status
       }
     }
   }
+
+  ${TabBarLabel.fragments.user}
 `;
 
 
 const deleteFriendMutation = gql`
   mutation DeleteFriendMutation($input: DeleteFriendInput!) {
     result: deleteFriend(input: $input) {
+      user {
+        id
+        ...MyFriendsTabBarLabel
+      }
       deletedId
     }
   }
+
+  ${TabBarLabel.fragments.user}
 `;
 
-const createAddFriendOptimistic = (friendship, status) => ({
+const createAddFriendOptimistic = (user, { friendship, status, friends, requests }) => ({
   result: {
     __typename: 'AddFriendPayload',
+    user: TabBarLabel.createOptimisticUser(user, { friends, requests }),
     friendship: {
       ...friendship,
       status,
@@ -88,29 +105,40 @@ export default class MyFriendsConnection extends Component {
 
   onAcceptPress = async ({ node, friendship }) => {
     const { addFriend, data: { me } } = this.props;
+    const status = 'ACTIVE';
     const input = {
       userId: me.id,
       friendId: node.id,
-      status: 'ACTIVE',
+      status,
     };
 
     addFriend({
       variables: { input },
-      optimisticResponse: createAddFriendOptimistic(friendship, 'ACTIVE'),
+      optimisticResponse: createAddFriendOptimistic(me, {
+        friendship,
+        status,
+        friends: +1,
+        requests: -1,
+      }),
     });
   };
 
   onIgnorePress = async ({ node, friendship }) => {
     const { addFriend, data: { me } } = this.props;
+    const status = 'IGNORED';
     const input = {
       userId: me.id,
       friendId: node.id,
-      status: 'IGNORED',
+      status,
     };
 
     addFriend({
       variables: { input },
-      optimisticResponse: createAddFriendOptimistic(friendship, 'IGNORED'),
+      optimisticResponse: createAddFriendOptimistic(me, {
+        friendship,
+        status,
+        requests: -1,
+      }),
       update: (cache, { data }) => removeFromCache(cache, data.result.friendship.id),
     });
   };
@@ -127,6 +155,7 @@ export default class MyFriendsConnection extends Component {
       optimisticResponse: {
         result: {
           __typename: 'DeleteFriendPayload',
+          user: TabBarLabel.createOptimisticUser(me, { requests: -1 }),
           deletedId: friendship.id,
         },
       },
