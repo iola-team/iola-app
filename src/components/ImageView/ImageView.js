@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Dimensions, StatusBar, Modal, Text, View } from 'react-native';
 import { Badge, Spinner } from 'native-base';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { Query } from 'react-apollo';
+import { graphql, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
@@ -17,7 +17,7 @@ import ActionSheet from '../ActionSheet';
 
 const meQuery = gql`
   query meQuery {
-    user: me {
+    me {
       id
     }
   }
@@ -212,6 +212,7 @@ export const photoDetailsQuery = gql`
     color: '#FFFFFF',
   },
 })
+@graphql(meQuery)
 export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
@@ -256,7 +257,7 @@ export default class ImageView extends Component {
   }
 
   renderControls() {
-    const { edges, styleSheet: styles } = this.props;
+    const { edges, data: { me }, styleSheet: styles } = this.props;
     const { index } = this.state;
     const { node: { id } } = edges[index];
     const totalCountImages = edges.length;
@@ -302,25 +303,23 @@ export default class ImageView extends Component {
                     </Text>
                   )}
 
-                  <Query query={meQuery}>
-                    {({ loading, data: { user } }) => loading ? null : user.id === userId && (
-                      <ActionSheet
-                        options={['Cancel', 'Delete']}
-                        cancelButtonIndex={0}
-                        destructiveButtonIndex={1}
-                        onPress={index => index === 1 && this.onDelete(photoId)}
-                      >
-                        {show => (
-                          <TouchableOpacity
-                            onPress={show}
-                            style={[styles.headerButton, styles.meatballMenu]}
-                          >
-                            <Icon style={styles.headerIcon} name="emoji" /* @TODO: meatball icon */ />
-                          </TouchableOpacity>
-                        )}
-                      </ActionSheet>
-                    )}
-                  </Query>
+                  {me.id === userId && (
+                    <ActionSheet
+                      options={['Cancel', 'Delete']}
+                      cancelButtonIndex={0}
+                      destructiveButtonIndex={1}
+                      onPress={index => index === 1 && this.onDelete(photoId)}
+                    >
+                      {show => (
+                        <TouchableOpacity
+                          onPress={show}
+                          style={[styles.headerButton, styles.meatballMenu]}
+                        >
+                          <Icon style={styles.headerIcon} name="emoji" /* @TODO: meatball icon */ />
+                        </TouchableOpacity>
+                      )}
+                    </ActionSheet>
+                  )}
                 </View>
 
                 <View style={styles.footer}>
