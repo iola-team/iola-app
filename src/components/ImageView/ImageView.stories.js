@@ -1,12 +1,12 @@
 import React from 'react';
 import { Image, View } from 'react-native';
-import { Query } from 'react-apollo';
+import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { storiesOf } from '@storybook/react-native';
 import { withKnobs } from '@storybook/addon-knobs';
 import moment from 'moment';
 import faker from 'faker';
-import { find, orderBy, sample, sampleSize, shuffle } from 'lodash';
+import { find, orderBy, remove, sample, sampleSize, shuffle, without } from 'lodash';
 
 import { getApolloDecorator, getContentDecorator } from 'storybook';
 import { createConnection } from 'storybook/decorators/Apollo';
@@ -94,12 +94,22 @@ const typeDefs = gql`
     createdAt: Date!
     user: User!
   }
+  
+  type Mutation {
+    deleteUserPhoto(id: ID!): UserPhotoDeletePayload!
+  }
+  
+  type UserPhotoDeletePayload {
+    deletedId: ID!
+    user: User!
+  }
 `;
 
-const userPhotosQuery = gql`
-  query UserPhotosQuery {
-    user: me {
+const myPhotosQuery = gql`
+  query myPhotosQuery {
+    me {
       ...on User {
+        id
         photos {
           edges {
             ...PhotoList_edge
@@ -110,6 +120,14 @@ const userPhotosQuery = gql`
   }
 
   ${PhotoList.fragments.edge}
+`;
+
+const deletePhotoMutation = gql`
+  mutation deleteUserPhotoMutation($id: ID!) {
+    result: deleteUserPhoto(id: $id) {
+      deletedId
+    }
+  }
 `;
 
 const dataStore = (() => {
@@ -134,7 +152,7 @@ const dataStore = (() => {
       id: `Photo:${index + 1}`,
       url: photos[index],
       caption: faker.lorem[sampleSize(['words', 'sentence', 'paragraph'], 1)](),
-      user: sample(users),
+      user: users[0],
       createdAt: generateDate(),
       comments: index ? orderBy(
         Array.from({ length: faker.random.number({ min: 30, max: 100 }) }).map(() => ({
@@ -167,6 +185,17 @@ const resolvers = {
       return createConnection(photo.comments, args);
     },
   },
+
+  Mutation: {
+    deleteUserPhoto: async (root, { id }, { dataStore }) => {
+      const photo = find(dataStore.photos, photo => photo.id === id);
+
+      return {
+        deletedId: photo.id,
+        user: photo.user,
+      };
+    },
+  },
 };
 
 // Decorators
@@ -192,28 +221,48 @@ stories.add('Default', () => {
   };
 
   return (
-    <Query query={userPhotosQuery}>
+    <Query query={myPhotosQuery}>
       {({ loading, data }) => {
         if (loading) return null;
 
-        const { user: { photos: { edges } } } = data;
+        const { me: { id, photos: { edges } } } = data;
+        const update = (cache, { data: { result: { deletedId } } }) => {
+          const data = cache.readQuery({ query: myPhotosQuery });
+
+          remove(data.me.photos.edges, edge => edge.node.id === deletedId);
+          cache.writeQuery({ query: myPhotosQuery, data });
+        };
+        const optimisticResponse = photoId => ({
+          result: {
+            __typename: 'UserPhotoDeletePayload',
+            deletedId: photoId,
+            user: {
+              __typename: 'User',
+              id,
+            },
+          },
+        });
 
         return (
-          <ImageView edges={edges}>
-            {onShowImage => (
-              <View style={styles.view}>
-                {edges.map((item, index) => {
-                  const { node: { id, url } } = item;
+          <Mutation mutation={deletePhotoMutation} update={update}>
+            {deletePhoto => (
+              <ImageView edges={edges} deleteMutation={{ mutate: deletePhoto, optimisticResponse }}>
+                {onShowImage => (
+                  <View style={styles.view}>
+                    {edges.map((item, index) => {
+                      const { node: { id, url } } = item;
 
-                  return (
-                    <TouchableOpacity key={id} onPress={() => onShowImage({ item, index })}>
-                      <Image source={{ uri: url }} style={styles.image} />
-                    </TouchableOpacity>
-                  );
-                })}
-              </View>
+                      return (
+                        <TouchableOpacity key={id} onPress={() => onShowImage({ item, index })}>
+                          <Image source={{ uri: url }} style={styles.image} />
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </View>
+                )}
+              </ImageView>
             )}
-          </ImageView>
+          </Mutation>
         );
       }}
     </Query>
