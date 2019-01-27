@@ -21,7 +21,7 @@ import { UserList } from 'components';
   
   ${UserList.fragments.edge}
 `)
-export default class UsersConnection extends Component {
+export default class DashboardAll extends Component {
   static propTypes = {
     search: PropTypes.string,
     onItemPress: PropTypes.func,

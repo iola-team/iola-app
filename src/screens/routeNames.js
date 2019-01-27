@@ -8,16 +8,20 @@ export const EMAIL_VERIFICATION = 'emailVerification';
 export const LAUNCH = 'launch';
 export const USER = 'user';
 
+export const DASHBOARD = 'dashboard';
+export const DASHBOARD_ALL = 'dashboard.all';
+export const DASHBOARD_FRIENDS = 'dashboard.friends';
+export const DASHBOARD_FEATURED = 'dashboard.featured';
+
+export const PROFILE = 'profile';
+export const PROFILE_PHOTOS = 'profile.photos';
+export const PROFILE_INFO = 'profile.info';
+export const PROFILE_FRIENDS = 'profile.friends';
+
 export const USER_PHOTOS = 'user.photos';
 export const USER_INFO = 'user.info';
 export const USER_FRIENDS = 'user.friends';
 
-export const DASHBOARD = 'dashboard';
-export const DASHBOARD_PHOTOS = 'dashboard.photos';
-export const DASHBOARD_INFO = 'dashboard.info';
-export const DASHBOARD_FRIENDS = 'dashboard.friends';
-
-export const USERS = 'users';
 export const CHANNELS = 'channels';
 export const CHANNEL = 'channel';
 export const PROFILE_EDIT = 'profile-edit';

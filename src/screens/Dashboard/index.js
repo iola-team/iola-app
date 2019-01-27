@@ -2,19 +2,17 @@ import React from 'react';
 
 import { Icon, ScreenHeader, createHeadingTabsNavigator } from 'components';
 import DashboardHeading from './DashboardHeading';
-import LogoutButton from './LogoutButton';
 
 export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
   ...config,
   renderHeader: props => <DashboardHeading {...props} />,
-  headerShrinkHeight: ScreenHeader.HEIGHT,
+  headerShrinkHeight: ScreenHeader.HEIGHT + 80,
   headerHeight: DashboardHeading.HEIGHT,
 
   navigationOptions: {
     headerTransparent: true,
-    headerRight: <LogoutButton />,
     tabBarIcon: ({ tintColor: color }) => (
-      <Icon name="user-bar" style={{ color, fontSize: 20 }} />
+      <Icon name="dashboard-bar" style={{ color, fontSize: 25 }} />
     ),
   },
 });

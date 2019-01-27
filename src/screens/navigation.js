@@ -13,41 +13,50 @@ import { ScreenHeader, BottomTabBar } from 'components';
 import * as routes from './routeNames';
 
 // Screens
-import SignIn from './SignIn';
-import SignUp from './SignUp';
-import ForgotPassword from './ForgotPassword';
-import EmailVerification from './EmailVerification';
-import Launch from './Launch';
-import Channels from './Channels';
-import Notifications from './Notifications';
-import Users from './Users';
 import Channel from './Channel';
+import Channels from './Channels';
+import DashboardAll from './DashboardAll';
+// import DashboardFeatured from './DashboardFeatured';
+// import DashboardFriends from './DashboardFriends';
+import EmailVerification from './EmailVerification';
+import ForgotPassword from './ForgotPassword';
+import Launch from './Launch';
+import MyFriends from './MyFriends';
+import MyInfo from './MyInfo';
+import MyPhotos from './MyPhotos';
+import Notifications from './Notifications';
 import ProfileEdit from './PropfileEdit';
 import Settings from './Settings';
-import UserPhotos from './UserPhotos';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 import UserFriends from './UserFriends';
 import UserInfo from './UserInfo';
-import MyPhotos from './MyPhotos';
-import MyInfo from './MyInfo';
-import MyFriends from './MyFriends';
+import UserPhotos from './UserPhotos';
 
 import createUserNavigator from './User';
 import createDashboardNavigator from './Dashboard';
+import createProfileNavigator from './Profile';
 
 // Navigator
 const TabsNavigator = createBottomTabNavigator({
-  [routes.USERS]: Users,
+  [routes.DASHBOARD]: createDashboardNavigator({
+    [routes.DASHBOARD_ALL]: DashboardAll,
+    // [routes.DASHBOARD_FRIENDS]: DashboardFriends,
+    // [routes.DASHBOARD_FEATURED]: DashboardFeatured,
+  }, {
+    bottomBarHeight: BottomTabBar.HEIGHT,
+  }),
   [routes.CHANNELS]: Channels,
   [routes.NOTIFICATIONS]: Notifications,
-  [routes.DASHBOARD]: createDashboardNavigator({
-    [routes.DASHBOARD_PHOTOS]: MyPhotos,
-    [routes.DASHBOARD_INFO]: MyInfo,
-    [routes.DASHBOARD_FRIENDS]: MyFriends,
+  [routes.PROFILE]: createProfileNavigator({
+    [routes.PROFILE_PHOTOS]: MyPhotos,
+    [routes.PROFILE_INFO]: MyInfo,
+    [routes.PROFILE_FRIENDS]: MyFriends,
   }, {
     bottomBarHeight: BottomTabBar.HEIGHT,
   }),
 }, {
-  initialRouteName: routes.USERS,
+  initialRouteName: routes.DASHBOARD,
   tabBarComponent: BottomTabBar,
 });
 

@@ -1,52 +1,39 @@
 import React, { PureComponent } from 'react';
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
-import { Button, Text } from 'native-base';
+import { View, Text } from 'native-base';
 
 import { withStyleSheet } from 'theme';
-import { UserHeading } from 'components';
-import * as routes from '../routeNames';
-
-const userQuery = gql`
-  query DashboardHeadingQuery {
-    user: me {
-      id
-      ...UserHeading_user
-    }
-  }
-
-  ${UserHeading.fragments.user}
-`;
+import { SearchBar } from 'components';
 
 @withStyleSheet('Sparkle.DashboardScreenHead', {
-  button: {
-    width: '30%',
-    alignSelf: 'center',
-  }
+  container: {
+    backgroundColor: '#FFFFFF',
+  },
+
+  title: {
+    textAlign: 'center',
+    fontWeight: '600',
+    fontSize: 16,
+    color: '#585A61',
+  },
 })
 export default class DashboardHeading extends PureComponent {
-  static HEIGHT = UserHeading.HEIGHT;
+  static HEIGHT = 115 + 40;
+
+  state =  {
+    searchPhrase: '',
+  };
+
+  onSearch = searchPhrase => this.setState({ searchPhrase });
 
   render() {
-    const { navigation: { goBack, navigate }, styleSheet: styles, ...props } = this.props;
+    const { styleSheet: styles } = this.props;
+    const { searchPhrase } = this.state;
 
     return (
-      <Query query={userQuery}>
-        {({ data: { user }, loading }) => (
-          <UserHeading {...props} highlight loading={loading} user={user}>
-            <Button
-              light
-              bordered
-              secondary
-              block
-              style={styles.button}
-              onPress={() => navigate(routes.PROFILE_EDIT)}
-            >
-              <Text>Edit Profile</Text>
-            </Button>
-          </UserHeading>
-        )}
-      </Query>
+      <View style={styles.container}>
+        <Text style={styles.title}>Dashboard</Text>
+        <SearchBar onSearch={this.onSearch} />
+      </View>
     );
   }
 }
