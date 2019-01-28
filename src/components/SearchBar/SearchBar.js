@@ -2,10 +2,14 @@ import React, { PureComponent } from 'react';
 import { Text, Item, ListItem, Input, Button } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { debounce } from 'lodash';
 
 import Icon from '../Icon';
 
+@graphql(gql`
+  query searchBarValueQuery {
+    searchBarValue @client
+  }
+`)
 @graphql(gql`
   mutation($value: String!) {
     setSearchBarValue(value: $value) @client
@@ -16,19 +20,8 @@ import Icon from '../Icon';
   }),
 })
 export default class SearchBar extends PureComponent {
-  state = {
-    phrase: '',
-  };
-
-  onSearch = debounce(this.props.setSearchBarValue, 200);
-
-  onChange(phrase) {
-    this.setState({ phrase });
-    this.onSearch(phrase);
-  }
-
   render() {
-    const { phrase } = this.state;
+    const { data: { searchBarValue }, setSearchBarValue } = this.props;
 
     return (
       <ListItem searchBar noBorder>
@@ -37,8 +30,8 @@ export default class SearchBar extends PureComponent {
           <Input
             placeholder="Search for users"
             placeholderTextColor="#BDC0CB"
-            value={phrase}
-            onChangeText={::this.onChange}
+            value={searchBarValue}
+            onChangeText={setSearchBarValue}
           />
         </Item>
         <Button transparent>
