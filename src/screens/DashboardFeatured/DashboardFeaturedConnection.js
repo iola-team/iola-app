@@ -41,7 +41,7 @@ export default class DashboardFeatured extends Component {
       <Query query={searchBarValueQuery}>
         {({ data: { searchBarValue: search } }) => (
           <Query query={usersQuery} variables={{ search }} fetchPolicy="cache-and-network">
-            {({ data }, loading, refetch) => (
+            {({ data, loading, refetch }) => (
               <UserList
                 loading={loading}
                 edges={data.users ? data.users.edges : []}

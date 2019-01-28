@@ -40,8 +40,8 @@ export default class DashboardAll extends Component {
     return (
       <Query query={searchBarValueQuery}>
         {({ data: { searchBarValue: search } }) => (
-          <Query query={usersQuery} variables={{ search }} fetchPolicy="cache-and-network">
-            {({ data }, loading, refetch) => (
+          <Query query={usersQuery} variables={{ search }}>
+            {({ data, loading, refetch }) => (
               <UserList
                 loading={loading}
                 edges={data.users ? data.users.edges : []}
