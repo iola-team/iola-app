@@ -19,13 +19,20 @@ import { SearchBar } from 'components';
 export default class DashboardHeading extends PureComponent {
   static HEIGHT = 115 + 40;
 
+  state =  {
+    searchPhrase: '',
+  };
+
+  onSearch = searchPhrase => this.setState({ searchPhrase });
+
   render() {
     const { styleSheet: styles } = this.props;
+    const { searchPhrase } = this.state;
 
     return (
       <View style={styles.container}>
         <Text style={styles.title}>Dashboard</Text>
-        <SearchBar />
+        <SearchBar onSearch={this.onSearch} />
       </View>
     );
   }

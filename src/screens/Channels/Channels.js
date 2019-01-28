@@ -32,12 +32,16 @@ export default class Channels extends Component {
     });
   };
 
+  onSearch = (searchPhrase) => {
+    console.log('Search', searchPhrase);
+  }
+
   render() {
     const { data: { me, loading } } = this.props;
 
     return (
       <Container>
-        <SearchBar />
+        <SearchBar onSearch={this.onSearch} />
 
         {!loading && (
           <ChatList
