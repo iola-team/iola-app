@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { Query } from 'react-apollo';
 
 import { UserList } from 'components';
 
-@graphql(gql`
-  query allUsers($search: String = "", $cursor: Cursor = null) {
+const searchBarValueQuery = gql`
+  query searchBarValueQuery {
+    searchBarValue @client
+  }
+`;
+
+const allUsersQuery = gql`
+  query allUsersQuery($search: String = "", $cursor: Cursor = null) {
     users(search: $search first: 20 after: $cursor) {
       edges {
         ...UserList_edge
@@ -20,76 +25,33 @@ import { UserList } from 'components';
   }
   
   ${UserList.fragments.edge}
-`)
+`;
+
 export default class DashboardAll extends Component {
   static propTypes = {
-    search: PropTypes.string,
-    onItemPress: PropTypes.func,
+    onItemPress: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    search: "",
-    onItemPress: () => {},
-  };
-
-  shouldComponentUpdate({ data }) {
-    const { users, networkStatus } = data;
-    const prev = this.props.data;
-
-    return prev.users !== users || prev.networkStatus !== networkStatus;
-  }
-
-  refresh = (vars = {}) => {
-    this.props.data.refetch(vars);
-  }
-
-  loadMore = ({ distanceFromEnd }) => {
-    const { fetchMore, users: { pageInfo } } = this.props.data;
-
-    if (!pageInfo.hasNextPage) {
-      return;
-    }
-
-    this.fetchMorePromise = this.fetchMorePromise || fetchMore({
-      variables: {
-        cursor: pageInfo.endCursor,
-      },
-      updateQuery: (prev, { fetchMoreResult: { users } }) => {
-        if (!users || !users.edges.length) {
-          return prev;
-        }
-
-        return {
-          users: {
-            ...prev.users,
-            edges: [
-              ...prev.users.edges,
-              ...users.edges
-            ],
-            pageInfo: {
-              ...prev.users.pageInfo,
-              ...users.pageInfo,
-            }
-          },
-        };
-      }
-    }).then(() => {
-      this.fetchMorePromise = null;
-    });
-  }
+  // @TODO: think about perfomance (shouldComponentUpdate)
 
   render() {
-    const { data: { users, networkStatus, loading }, onItemPress } = this.props;
+    const { onItemPress } = this.props;
 
     return (
-      <UserList
-        loading={loading}
-        edges={users ? users.edges : []}
-        onItemPress={onItemPress}
-        onRefresh={this.refresh}
-        // refreshing={networkStatus === NetworkStatus.refetch}
-        // onEndReached={this.loadMore}
-      />
+      <Query query={searchBarValueQuery}>
+        {({ data: { searchBarValue: search } }) => (
+          <Query query={allUsersQuery} variables={{ search }} fetchPolicy="cache-and-network">
+            {({ data }, loading, refetch) => (
+              <UserList
+                loading={loading}
+                edges={data.users ? data.users.edges : []}
+                onItemPress={onItemPress}
+                onRefresh={refetch}
+              />
+            )}
+          </Query>
+        )}
+      </Query>
     );
   }
 }

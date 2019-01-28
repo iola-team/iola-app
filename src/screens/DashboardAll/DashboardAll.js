@@ -21,6 +21,6 @@ export default class DashboardAll extends PureComponent {
   };
 
   render() {
-    return <DashboardAllConnection search="" onItemPress={this.onItemPress} />;
+    return <DashboardAllConnection onItemPress={this.onItemPress} />;
   }
 }

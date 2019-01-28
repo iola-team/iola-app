@@ -1,26 +1,29 @@
 import React, { PureComponent } from 'react';
-import { debounce } from 'lodash';
-import PropTypes from 'prop-types';
 import { Text, Item, ListItem, Input, Button } from 'native-base';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+import { debounce } from 'lodash';
 
 import Icon from '../Icon';
 
+@graphql(gql`
+  mutation($value: String!) {
+    setSearchBarValue(value: $value) @client
+  }
+`, {
+  props: ({ mutate }) => ({
+    setSearchBarValue: value => mutate({ variables: { value } }),
+  }),
+})
 export default class SearchBar extends PureComponent {
-  static propTypes = {
-    onSearch: PropTypes.func.isRequired,
-  };
-
   state = {
     phrase: '',
   };
 
-  onSearch = debounce(this.props.onSearch, 200);
+  onSearch = debounce(this.props.setSearchBarValue, 200);
 
-  onPhraseChange(phrase) {
-    this.setState({
-      phrase,
-    });
-
+  onChange(phrase) {
+    this.setState({ phrase });
     this.onSearch(phrase);
   }
 
@@ -35,7 +38,7 @@ export default class SearchBar extends PureComponent {
             placeholder="Search for users"
             placeholderTextColor="#BDC0CB"
             value={phrase}
-            onChangeText={::this.onPhraseChange}
+            onChangeText={::this.onChange}
           />
         </Item>
         <Button transparent>
