@@ -92,29 +92,24 @@ export default class ProfileEditScreen extends Component {
   }
 
   render() {
-    const { styleSheet, data: { user }, navigation } = this.props;
+    const { styleSheet, data: { loading, user }, navigation } = this.props;
 
     return (
       <Container>
         <Content>
-          {
-            user ? (
-              <View>
-                <AvatarEdit user={user} />
-                <ProfileFieldsEdit
-                  user={user}
-                  onFormReady={(form) => {
-                    this.form = form;
-                  }}
+          <AvatarEdit user={user} loading={loading} />
+          {!loading && (
+            <ProfileFieldsEdit
+              loading={loading}
+              user={user}
+              onFormReady={(form) => {
+                this.form = form;
+              }}
 
-                  onSaveStart={this.onSaveStart}
-                  onSaveEnd={this.onSaveEnd}
-                />
-              </View>
-            ) : (
-              <Spinner />
-            )
-          }
+              onSaveStart={this.onSaveStart}
+              onSaveEnd={this.onSaveEnd}
+            />
+          )}
         </Content>
       </Container>
     );

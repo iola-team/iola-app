@@ -1,33 +1,27 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import { Image, Alert } from 'react-native';
-import {
-  Text,
-  View,
-  Button as NBButton,
-} from 'native-base';
+import { Text, View, Button } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet } from 'theme';
 import ImagePicker from '../ImagePicker';
+import Placeholder from '../Placeholder';
 
-const Root = connectToStyleSheet('root', View);
-const Button = connectToStyleSheet('button', NBButton).withProps({
-  block: true,
-});
-const AvatarImage = connectToStyleSheet('image', Image);
-const Right = connectToStyleSheet('rightSection', View);
-const Buttons = connectToStyleSheet('buttons', View);
-
-@styleSheet('Sparkle.AvatarInput', {
+@withStyleSheet('Sparkle.AvatarInput', {
   root: {
     flexDirection: 'row',
+  },
+
+  imageHolder: {
+    backgroundColor: '#F0F2F7',
+    borderRadius: 8,
+    overflow: 'hidden',
   },
 
   image: {
     width: 80,
     height: 80,
-    borderRadius: 8,
   },
 
   buttons: {
@@ -97,7 +91,7 @@ export default class AvatarInput extends PureComponent {
   }
 
   renderInput({ pick, reset }) {
-    const { style, value } = this.props;
+    const { style, styleSheet: styles, loading, value } = this.props;
     const { image } = this.state;
 
     /**
@@ -108,37 +102,49 @@ export default class AvatarInput extends PureComponent {
     const avatarUrl = resultImage || defaultAvatarImage;
 
     return (
-      <Root style={style}>
-        <AvatarImage source={{ uri: avatarUrl }} />
-        <Right horizontalPadder>
+      <View style={[styles.root, style]}>
+        <View style={styles.imageHolder}>
+          {loading 
+            ? <Placeholder style={styles.image} /> 
+            : <Image style={styles.image} source={{ uri: avatarUrl }} />
+          }
+        </View>
+        
+        <View style={styles.rightSection} horizontalPadder>
           <Text note>
             Edit profile photo
           </Text>
-          <Buttons>
-            {
-              resultImage ? (
-                <Fragment>
-                  <Button onPress={pick}>
-                    <Text>Change</Text>
-                  </Button>
 
-                  <Button
-                    secondary
-                    bordered
-                    onPress={() => this.onDeletePress(reset)}
-                  >
-                    <Text>Delete</Text>
+          {!loading && (
+            <View style={styles.buttons}>
+              {
+                resultImage ? (
+                  <>
+                    <Button style={styles.button} block onPress={pick}>
+                      <Text>Change</Text>
+                    </Button>
+
+                    <Button
+                      style={styles.button}
+                      block
+                      secondary
+                      bordered
+                      onPress={() => this.onDeletePress(reset)}
+                    >
+                      <Text>Delete</Text>
+                    </Button>
+                  </>
+                ) : (
+                  <Button style={styles.button} block onPress={pick}>
+                    <Text>Add</Text>
                   </Button>
-                </Fragment>
-              ) : (
-                <Button onPress={pick}>
-                  <Text>Add</Text>
-                </Button>
-              )
-            }
-          </Buttons>
-        </Right>
-      </Root>
+                )
+              }
+            </View>
+          )}
+          
+        </View>
+      </View>
     );
   }
 
