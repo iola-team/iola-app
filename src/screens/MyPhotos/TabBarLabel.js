@@ -3,21 +3,22 @@ import { Text } from 'native-base';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
+import { PhotosTabBarLabel } from 'components';
+
 @graphql(gql`
-  query MyPhotosCountQuery {
+  query MyPhotosTabBarLabelQuery {
     me {
       id
-      photos @connection(key: "MyPhotos") {
-        totalCount
-      }
+      ...PhotosTabBarLabel_user
     }
   }
-`)
-export default class TabBarLabel extends Component {
-  render() {
-    const { data } = this.props;
-    const totalCount = data.me?.photos.totalCount;
 
-    return <Text>{ totalCount ? `Photos ${totalCount}` : 'Photos' }</Text>;
+  ${PhotosTabBarLabel.fragments.user}
+`)
+export default class MyPhotosTabBarLabel extends Component {
+  render() {
+    const { data: { me } } = this.props;
+
+    return <PhotosTabBarLabel user={me} />;
   }
 }

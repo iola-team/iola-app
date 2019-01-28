@@ -43,18 +43,20 @@ export default class TabBarLabel extends Component {
   };
 
   render() {
-    const { style, label, count, activeCount } = this.props;
+    const { label, count, activeCount, ...props } = this.props;
+    const sanitizedCount = Math.max(count, 0);
+    const sanitizedTotalCount = Math.max(activeCount, 0);
 
     return (
-      <View style={style}>
+      <View {...props}>
         <Text>{label}</Text>
-        {!!count && (
-          <Text count>{count}</Text>
+        {!!sanitizedCount && (
+          <Text count>{sanitizedCount}</Text>
         )}
         
-        {!!activeCount && (
+        {!!sanitizedTotalCount && (
           <Badge>
-            <Text>{activeCount}</Text>
+            <Text>{sanitizedTotalCount}</Text>
           </Badge>
         )}
       </View>

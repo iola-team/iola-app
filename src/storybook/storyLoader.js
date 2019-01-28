@@ -20,6 +20,7 @@ function loadStories() {
   require('../components/FriendList/FriendList.stories');
   require('../components/FriendListItem/FriendListItem.stories');
   require('../components/FriendsButton/FriendsButton.stories');
+  require('../components/FriendsTabBarLabel/FriendsTabBarLabel.stories');
   require('../components/Icon/Icon.stories');
   require('../components/Image/Image.stories');
   require('../components/ImageComments/ImageComments.stories');
@@ -39,6 +40,7 @@ function loadStories() {
   require('../components/PhotoGrid/PhotoGrid.stories');
   require('../components/PhotoList/PhotoList.stories');
   require('../components/PhotoListItem/PhotoListItem.stories');
+  require('../components/PhotosTabBarLabel/PhotosTabBarLabel.stories');
   require('../components/Placeholder/Placeholder.stories');
   require('../components/ProfileFieldForm/ProfileFieldForm.stories');
   require('../components/ProfileFieldInput/ProfileFieldInput.stories');
@@ -75,6 +77,7 @@ const stories = [
   '../components/FriendList/FriendList.stories',
   '../components/FriendListItem/FriendListItem.stories',
   '../components/FriendsButton/FriendsButton.stories',
+  '../components/FriendsTabBarLabel/FriendsTabBarLabel.stories',
   '../components/Icon/Icon.stories',
   '../components/Image/Image.stories',
   '../components/ImageComments/ImageComments.stories',
@@ -94,6 +97,7 @@ const stories = [
   '../components/PhotoGrid/PhotoGrid.stories',
   '../components/PhotoList/PhotoList.stories',
   '../components/PhotoListItem/PhotoListItem.stories',
+  '../components/PhotosTabBarLabel/PhotosTabBarLabel.stories',
   '../components/Placeholder/Placeholder.stories',
   '../components/ProfileFieldForm/ProfileFieldForm.stories',
   '../components/ProfileFieldInput/ProfileFieldInput.stories',

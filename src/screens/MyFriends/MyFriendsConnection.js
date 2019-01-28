@@ -4,8 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { get, filter } from 'lodash';
 
-import { FriendList } from 'components';
-import TabBarLabel from './TabBarLabel';
+import { FriendList, FriendsTabBarLabel } from 'components';
 
 const userFriendsQuery = gql`
   query MyFriendsQuery {
@@ -19,11 +18,11 @@ const userFriendsQuery = gql`
         }
       }
 
-      ...MyFriendsTabBarLabel_user
+      ...FriendsTabBarLabel_me
     }
   }
   
-  ${TabBarLabel.fragments.user}
+  ${FriendsTabBarLabel.fragments.me}
   ${FriendList.fragments.edge}
 `;
 
@@ -32,7 +31,7 @@ const addFriendMutation = gql`
     result: addFriend(input: $input) {
       user {
         id
-        ...MyFriendsTabBarLabel_user
+        ...FriendsTabBarLabel_me
       }
       friendship {
         id
@@ -41,7 +40,7 @@ const addFriendMutation = gql`
     }
   }
 
-  ${TabBarLabel.fragments.user}
+  ${FriendsTabBarLabel.fragments.me}
 `;
 
 
@@ -50,19 +49,19 @@ const deleteFriendMutation = gql`
     result: deleteFriend(input: $input) {
       user {
         id
-        ...MyFriendsTabBarLabel_user
+        ...FriendsTabBarLabel_me
       }
       deletedId
     }
   }
 
-  ${TabBarLabel.fragments.user}
+  ${FriendsTabBarLabel.fragments.me}
 `;
 
 const createAddFriendOptimistic = (user, { friendship, status, friends, requests }) => ({
   result: {
     __typename: 'AddFriendPayload',
-    user: TabBarLabel.createOptimisticUser(user, { friends, requests }),
+    user: FriendsTabBarLabel.createOptimisticUser(user, { friends, requests }),
     friendship: {
       ...friendship,
       status,
@@ -155,7 +154,7 @@ export default class MyFriendsConnection extends Component {
       optimisticResponse: {
         result: {
           __typename: 'DeleteFriendPayload',
-          user: TabBarLabel.createOptimisticUser(me, { requests: -1 }),
+          user: FriendsTabBarLabel.createOptimisticUser(me, { requests: -1 }),
           deletedId: friendship.id,
         },
       },

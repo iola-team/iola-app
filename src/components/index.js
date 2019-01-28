@@ -34,6 +34,8 @@ import NoContent from './NoContent';
 import ImagePicker from './ImagePicker';
 import ImageProgress from './ImageProgress';
 import TabBarLabel from './TabBarLabel';
+import PhotosTabBarLabel from './PhotosTabBarLabel';
+import FriendsTabBarLabel from './FriendsTabBarLabel';
 
 export {
   AvatarEdit,
@@ -69,6 +71,8 @@ export {
   ImagePicker,
   ImageProgress,
   TabBarLabel,
+  PhotosTabBarLabel,
+  FriendsTabBarLabel,
 
   // Navigation
   ScreenHeader,
