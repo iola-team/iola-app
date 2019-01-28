@@ -16,8 +16,8 @@ import * as routes from './routeNames';
 import Channel from './Channel';
 import Channels from './Channels';
 import DashboardAll from './DashboardAll';
-// import DashboardFeatured from './DashboardFeatured';
-// import DashboardFriends from './DashboardFriends';
+import DashboardFeatured from './DashboardFeatured';
+import DashboardFriends from './DashboardFriends';
 import EmailVerification from './EmailVerification';
 import ForgotPassword from './ForgotPassword';
 import Launch from './Launch';
@@ -41,8 +41,8 @@ import createProfileNavigator from './Profile';
 const TabsNavigator = createBottomTabNavigator({
   [routes.DASHBOARD]: createDashboardNavigator({
     [routes.DASHBOARD_ALL]: DashboardAll,
-    // [routes.DASHBOARD_FRIENDS]: DashboardFriends,
-    // [routes.DASHBOARD_FEATURED]: DashboardFeatured,
+    [routes.DASHBOARD_FRIENDS]: DashboardFriends,
+    [routes.DASHBOARD_FEATURED]: DashboardFeatured,
   }, {
     bottomBarHeight: BottomTabBar.HEIGHT,
   }),

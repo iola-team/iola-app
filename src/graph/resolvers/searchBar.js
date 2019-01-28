@@ -31,7 +31,7 @@ const setSearchBarValue = async (value, { cache }) => {
 const resolvers = {
   Mutation: {
     setSearchBarValue: (root, { value }, context) => setSearchBarValue(value, context),
-    clearSearchBarValue: (root, args, context) => setSearchBarValue(null, context),
+    clearSearchBarValue: (root, args, context) => setSearchBarValue('', context),
   },
 };
 

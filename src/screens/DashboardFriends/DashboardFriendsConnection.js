@@ -27,7 +27,7 @@ const usersQuery = gql`
   ${UserList.fragments.edge}
 `;
 
-export default class DashboardAll extends Component {
+export default class DashboardFriends extends Component {
   static propTypes = {
     onItemPress: PropTypes.func.isRequired,
   };
