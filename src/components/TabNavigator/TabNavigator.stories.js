@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
-import { View, Text, StyleSheet, Animated } from 'react-native';
+import { action } from '@storybook/addon-actions';
+import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
 import { createAppContainer, Header as HeaderRN } from 'react-navigation';
 import { range } from 'lodash';
 
@@ -37,7 +38,9 @@ const styles = StyleSheet.create({
 
 const Header = () => (
   <Animated.View style={styles.header}>
-    <Text>Header</Text>
+    <TouchableOpacity onPress={action('Header button')}>
+      <Text>Header</Text>
+    </TouchableOpacity>
   </Animated.View>
 );
 

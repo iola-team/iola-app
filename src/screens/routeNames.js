@@ -20,5 +20,6 @@ export const DASHBOARD_FRIENDS = 'dashboard.friends';
 export const USERS = 'users';
 export const CHANNELS = 'channels';
 export const CHANNEL = 'channel';
+export const PROFILE = 'profile';
 export const PROFILE_EDIT = 'profile-edit';
 export const SETTINGS = 'settings';

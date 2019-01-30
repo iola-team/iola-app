@@ -28,3 +28,7 @@ stories.add('With explicit value', () => (
 stories.add('With explicit null value', () => (
   <Input value={null} />
 ));
+
+stories.add('Loading', () => (
+  <Input loading />
+));

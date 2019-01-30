@@ -33,6 +33,7 @@ import MyFriends from './MyFriends';
 
 import createUserNavigator from './User';
 import createDashboardNavigator from './Dashboard';
+import createProfileNavigator from './Profile';
 
 // Navigator
 const TabsNavigator = createBottomTabNavigator({
@@ -87,8 +88,10 @@ const RootNavigator = createSwitchNavigator({
     },
 
     [routes.CHANNEL]: Channel,
-    [routes.SETTINGS]: Settings,
-    [routes.PROFILE_EDIT]: ProfileEdit,
+    [routes.PROFILE]: createProfileNavigator({
+      [routes.PROFILE_EDIT]: ProfileEdit,
+      [routes.SETTINGS]: Settings,
+    }),
   }, {
     headerLayoutPreset: 'center',
     headerMode: 'screen',

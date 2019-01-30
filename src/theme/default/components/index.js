@@ -280,7 +280,15 @@ export default (variables => ({
         fontSize: 35,
         color: '#BDC0CB',
         margin: 7,
-      }
+      },
+
+      'Sparkle.TouchableOpacity': {
+        'NativeBase.Text': {
+          color: '#BDC0CB',
+        },
+
+        paddingHorizontal: variables.contentPadding,
+      },
     },
   }),
 }));

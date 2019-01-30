@@ -23,6 +23,7 @@ import Root from './Root';
 import ScreenHeader from './ScreenHeader';
 import SearchBar from './SearchBar';
 import Shadow from './Shadow';
+import SettingList from './SettingList';
 import Spinner from './Spinner';
 import TextInput from './TextInput';
 import TouchableOpacity from './TouchableOpacity';
@@ -70,6 +71,7 @@ export {
   UserList,
   UserListItem,
   UserPhotosCard,
+  SettingList,
   TabBarLabel,
   PhotosTabBarLabel,
   FriendsTabBarLabel,
