@@ -6,7 +6,7 @@ import ForgotPassword from './ForgotPassword';
 const stories = storiesOf('Screens/ForgotPassword', module);
 
 // @TODO: try to do it with decorator in the future: https://github.com/storybooks/storybook/issues/340
-const mockNavigation = {
+const mockedNavigation = {
   goBack: () => alert('Sign in'),
   state: {
     params: {},
@@ -14,4 +14,4 @@ const mockNavigation = {
 };
 
 // Stories
-stories.add('Screen', () => <ForgotPassword navigation={mockNavigation} />);
+stories.add('Screen', () => <ForgotPassword navigation={mockedNavigation} />);

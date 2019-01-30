@@ -3,6 +3,7 @@ import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
 import MyPhotosConnection from './MyPhotosConnection';
+import TabBarLabel from './TabBarLabel';
 
 @withNavigationFocus
 @withStyleSheet('Sparkle.MyPhotosScreen', {
@@ -26,11 +27,11 @@ import MyPhotosConnection from './MyPhotosConnection';
 })
 export default class UserPhotos extends PureComponent {
   static navigationOptions = {
-    title: 'Photos',
+    tabBarLabel: <TabBarLabel />,
   };
 
   render() {
-    const { isFocused, styleSheet: styles } = this.props;
+    const { navigation, isFocused, styleSheet: styles } = this.props;
 
     return (
       <MyPhotosConnection
