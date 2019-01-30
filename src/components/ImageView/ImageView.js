@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, StatusBar, Modal, Text, View } from 'react-native';
-import { Badge, Spinner } from 'native-base';
+import { Badge } from 'native-base';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { graphql, Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -14,6 +14,7 @@ import UserOnlineStatus from '../UserOnlineStatus';
 import TouchableOpacity from '../TouchableOpacity';
 import ImageComments from '../ImageComments';
 import ActionSheet from '../ActionSheet';
+import Spinner from '../Spinner';
 
 const meQuery = gql`
   query meQuery {
