@@ -46,9 +46,10 @@ function loadStories() {
   require('../components/ProfileFieldInput/ProfileFieldInput.stories');
   require('../components/ProfileFieldView/ProfileFieldView.stories');
   require('../components/ProfileFieldsView/ProfileFieldsView.stories');
+  require('../components/SettingList/SettingList.stories');
   require('../components/Shadow/Shadow.stories');
-  require('../components/TabBarLabel/TabBarLabel.stories');
   require('../components/Spinner/Spinner.stories');
+  require('../components/TabBarLabel/TabBarLabel.stories');
   require('../components/TabNavigator/TabNavigator.stories');
   require('../components/TextPicker/TextPicker.stories');
   require('../components/UserHeading/UserHeading.stories');
@@ -61,7 +62,7 @@ function loadStories() {
   require('../screens/SignIn/SignIn.stories');
   require('../screens/SignUp/SignUp.stories');
   require('./stories/Button.stories');
-
+  
 }
 
 const stories = [
@@ -106,9 +107,10 @@ const stories = [
   '../components/ProfileFieldInput/ProfileFieldInput.stories',
   '../components/ProfileFieldView/ProfileFieldView.stories',
   '../components/ProfileFieldsView/ProfileFieldsView.stories',
+  '../components/SettingList/SettingList.stories',
   '../components/Shadow/Shadow.stories',
-  '../components/TabBarLabel/TabBarLabel.stories',
   '../components/Spinner/Spinner.stories',
+  '../components/TabBarLabel/TabBarLabel.stories',
   '../components/TabNavigator/TabNavigator.stories',
   '../components/TextPicker/TextPicker.stories',
   '../components/UserHeading/UserHeading.stories',
@@ -121,7 +123,7 @@ const stories = [
   '../screens/SignIn/SignIn.stories',
   '../screens/SignUp/SignUp.stories',
   './stories/Button.stories',
-
+  
 ];
 
 module.exports = {
