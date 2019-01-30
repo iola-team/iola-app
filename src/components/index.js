@@ -32,8 +32,10 @@ import UserFriendsCard from './UserFriendsCard';
 import UserHeading from './UserHeading';
 import UserList from './UserList';
 import UserListItem from './UserListItem';
-import UserPhotos from './UserPhotos';
 import UserPhotosCard from './UserPhotosCard';
+import TabBarLabel from './TabBarLabel';
+import PhotosTabBarLabel from './PhotosTabBarLabel';
+import FriendsTabBarLabel from './FriendsTabBarLabel';
 
 export {
   AvatarEdit,
@@ -67,8 +69,10 @@ export {
   UserHeading,
   UserList,
   UserListItem,
-  UserPhotos,
   UserPhotosCard,
+  TabBarLabel,
+  PhotosTabBarLabel,
+  FriendsTabBarLabel,
 
   // Navigation
   ScreenHeader,

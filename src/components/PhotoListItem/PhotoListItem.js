@@ -63,8 +63,6 @@ export default class PhotoListItem extends Component {
     const { photo, progress, ...props } = this.props;
     const { loaded } = this.state;
 
-    console.log('render photo', photo);
-
     return progress === null || !photo ? (
       <View {...props}>
         {!loaded && <Placeholder />}

@@ -5,6 +5,7 @@ import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
 import { PhotoList, ImageView } from 'components';
+import TabBarLabel from './TabBarLabel';
 
 const userPhotosQuery = gql`
   query UserPhotosQuery($id: ID!) {
@@ -35,9 +36,9 @@ const userPhotosQuery = gql`
 })
 @withNavigationFocus
 export default class UserPhotos extends PureComponent {
-  static navigationOptions = {
-    title: 'Photos',
-  };
+  static navigationOptions = ({ navigation }) => ({
+    tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
+  });
 
   render() {
     const { navigation, isFocused, styleSheet: styles } = this.props;
