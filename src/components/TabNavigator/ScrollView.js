@@ -46,34 +46,52 @@ export default class ScrollView extends PureComponent {
       return <ScrollViewRN contentContainerStyle={contentStyle} {...restProps} />;
     }
 
-    const { 
-      headerShrinkHeight, 
-      headerHeight, 
+    const {
+      scrollAnimatedValue,
+      headerShrinkHeight,
+      headerHeight,
       contentHeight,
       onScroll: onScrollEvent,
     } = this.context;
 
     const { onScroll, children, ...listProps } = restProps;
-    const marginTop = headerHeight && headerHeight - headerShrinkHeight;
-
     if (onScroll) {
       Animated.forkEvent(onScrollEvent, onScroll);
     }
+
+    const topOffset = headerHeight && headerHeight - headerShrinkHeight;
+
+    /**
+     * Use big number for scroll height to not calculate it and rerender component
+     * But it is ugly
+     * 
+     * TODO: Fix this someday
+     */
+    const scrollHeight = 1000000000;
+    const stickyStyle = {
+      zIndex: 1,
+      transform: [
+        {
+          translateY: scrollAnimatedValue.interpolate({
+            inputRange: [topOffset, scrollHeight + topOffset],
+            outputRange: [0, scrollHeight],
+            extrapolate: 'clamp',
+          })
+        }
+      ],
+    };
 
     return (
       <Animated.ScrollView
         {...listProps}
         ref={this.onRef}
         onScroll={onScrollEvent}
-        stickyHeaderIndices={[0]}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
       >
-        <View style={{ marginTop }}>
-          <View style={{ marginTop: -marginTop }}>
-            <Header />
-          </View>
+        <Animated.View style={stickyStyle}>
+          <Header />
           <TabBar />
-        </View>
+        </Animated.View>
 
         <View style={[contentStyle, { minHeight: contentHeight }]}>
           {children}

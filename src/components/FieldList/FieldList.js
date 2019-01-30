@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { range } from 'lodash';
+import { range, noop } from 'lodash';
 
 import Section from '../FieldSection';
 import { ScrollView } from '../TabNavigator';
@@ -24,11 +24,12 @@ export default class FieldList extends Component {
   static propTypes = {
     loading: PropTypes.bool,
     sections: PropTypes.arrayOf(sectionShape),
-    renderItem: PropTypes.func.isRequired,
+    renderItem: PropTypes.func,
     renderSection: PropTypes.func,
   };
 
   static defaultProps = {
+    renderItem: noop,
     sections: [],
     loading: false,
     renderSection: defaultSectionRenderer,

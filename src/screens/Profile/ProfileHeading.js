@@ -18,8 +18,8 @@ export default class ProfileHeading extends PureComponent {
   static HEIGHT = AvatarEdit.HEIGHT;
 
   render() {
-    const { data: { loading, user }, ...props } = this.props;
+    const { data: { loading, me }, ...props } = this.props;
 
-    return <AvatarEdit {...props} user={user} loading={loading} />;
+    return <AvatarEdit {...props} user={me} loading={loading} />;
   }
 }
