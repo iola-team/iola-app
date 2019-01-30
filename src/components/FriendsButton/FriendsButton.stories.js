@@ -47,9 +47,15 @@ const typeDefs = gql`
     ACTIVE
   }
 
+  enum FriendshipPhase {
+    REQUEST_RECEIVED
+    REQUEST_SENT
+    ACTIVE
+  }
+
   input UserFriendsFilterInput {
       friendIdIn: [ID!]
-      friendshipStatusIn: [FriendshipStatus!] = [ACTIVE]
+      friendshipPhaseIn: [FriendshipPhase!] = [ACTIVE]
   }
 
   type Friendship {
@@ -167,10 +173,10 @@ const resolvers = {
   User: {
     id: (id) => id,
     friends(userId, { filter, ...args }, { dataStore: { friendships } }) {
-      const { friendIdIn, friendshipStatusIn } = filter;
-      const items = friendships.filter(({ friendship: { friend, user, status } }) => (
-        [friend, user].includes(userId) 
-        && friendshipStatusIn.includes(status)
+      const { friendIdIn } = filter;
+
+      const items = friendships.filter(({ friendship: { friend, user } }) => (
+        [friend, user].includes(userId)
         && ( friendIdIn ? friendIdIn.includes(friend) || friendIdIn.includes(user) : true )
       ));
 
