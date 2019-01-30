@@ -204,7 +204,7 @@ stories.addDecorator(getContentDecorator({ padder: true }));
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
 // Stories
-stories.add('With delete', () => {
+stories.add('With delete action + comments', () => {
   const styles = {
     view: {
       flexDirection: 'row',
