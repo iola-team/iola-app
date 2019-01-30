@@ -7,10 +7,11 @@
     android:gravity="center">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="175dp"
-        android:layout_marginTop="24dp"
-        android:src="@mipmap/icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
+        android:src="@mipmap/logo"
     />
 
 </LinearLayout>
