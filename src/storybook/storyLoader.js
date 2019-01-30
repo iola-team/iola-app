@@ -51,7 +51,6 @@ function loadStories() {
   require('../components/UserHeading/UserHeading.stories');
   require('../components/UserList/UserList.stories');
   require('../components/UserListItem/UserListItem.stories');
-  require('../components/UserPhotos/UserPhotos.stories');
   require('../screens/EmailVerification/EmailVerification.stories');
   require('../screens/ForgotPassword/ForgotPassword.stories');
   require('../screens/MyPhotos/MyPhotos.stories');
@@ -106,7 +105,6 @@ const stories = [
   '../components/UserHeading/UserHeading.stories',
   '../components/UserList/UserList.stories',
   '../components/UserListItem/UserListItem.stories',
-  '../components/UserPhotos/UserPhotos.stories',
   '../screens/EmailVerification/EmailVerification.stories',
   '../screens/ForgotPassword/ForgotPassword.stories',
   '../screens/MyPhotos/MyPhotos.stories',

@@ -5,7 +5,6 @@ import UserList from './UserList';
 import UserListItem from './UserListItem';
 import SearchBar from './SearchBar';
 import UserBriefCard from './UserBriefCard';
-import UserPhotos from './UserPhotos';
 import UserPhotosCard from './UserPhotosCard';
 import UserFriendsCard from './UserFriendsCard';
 import UserHeading from './UserHeading';
@@ -64,7 +63,6 @@ export {
   UserHeading,
   UserList,
   UserListItem,
-  UserPhotos,
   UserPhotosCard,
   ImagePicker,
   ImageProgress,
