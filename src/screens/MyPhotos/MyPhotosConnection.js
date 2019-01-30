@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { get, filter, uniqueId, remove } from 'lodash';
 import update from 'immutability-helper';
 
-import { PhotoList, ImagePicker, ImageView, ImageProgress } from 'components';
+import { PhotoList, ImagePicker, ImageView, ImageProgress, PhotosTabBarLabel } from 'components';
 
 const myPhotosQuery = gql`
   query MyPhotosQuery {
@@ -17,15 +17,22 @@ const myPhotosQuery = gql`
           ...PhotoList_edge
         }
       }
+
+      ...PhotosTabBarLabel_user
     }
   }
 
   ${PhotoList.fragments.edge}
+  ${PhotosTabBarLabel.fragments.user}
 `;
 
 const addPhotoMutation = gql`
   mutation addUserPhotoMutation($input: UserPhotoCreateInput!) {
     result: addUserPhoto(input: $input) {
+      user {
+        id
+        ...PhotosTabBarLabel_user
+      }
       edge {
         ...PhotoList_edge
       }
@@ -33,6 +40,7 @@ const addPhotoMutation = gql`
   }
 
   ${PhotoList.fragments.edge}
+  ${PhotosTabBarLabel.fragments.user}
 `;
 
 const deletePhotoMutation = gql`
@@ -84,7 +92,7 @@ export default class MyFriendsConnection extends Component {
 
     const id = uniqueId('OptimisiticPhoto:');
     const edge = PhotoList.createOptimisticEdge({ url: image.path, id });
-    const optimisticResponse = { result: { __typename: 'UserPhotoCreatePayload', edge } };
+    const optimisticResponse = { result: { __typename: 'UserPhotoCreatePayload', edge, user: me } };
 
     this.setPhotoProgress(id, 0);
 

@@ -12,7 +12,7 @@ const userQuery = gql`
       id
       friends(filter: {
         friendIdIn: [$userId]
-        friendshipStatusIn: [ACTIVE, PENDING, IGNORED]
+        friendshipPhaseIn: [ACTIVE, REQUEST_SENT, REQUEST_RECEIVED]
       }) {
         edges {
           ...FriendsButton_edge

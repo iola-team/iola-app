@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { isFunction, cloneDeep, range, identity } from 'lodash';
+import { isFunction, isPlainObject, cloneDeep, range, identity } from 'lodash';
 import { ApolloProvider } from 'react-apollo';
 import { setContext } from "apollo-link-context";
 import { ApolloLink, Observable, split } from 'apollo-link';
 import { SchemaLink } from 'apollo-link-schema';
 import { subscribe } from 'graphql';
-import { toIdValue, getMainDefinition } from 'apollo-utilities';
+import { getMainDefinition } from 'apollo-utilities';
 import MockAsyncStorage from 'mock-async-storage';
 import delay from 'promise-delay';
 import { Buffer } from 'buffer';
@@ -14,7 +14,7 @@ import {
   addMockFunctionsToSchema,
   addResolveFunctionsToSchema,
 } from 'graphql-tools';
-import { connectionFromArray, cursorToOffset, offsetToCursor } from 'graphql-relay';
+import { connectionFromArray, offsetToCursor } from 'graphql-relay';
 
 import { createClient } from 'graph';
 
@@ -67,7 +67,7 @@ function createSchemaLink({ typeDefs, mocks, resolvers, dataStore = {} }) {
   if (mocks) {
     addMockFunctionsToSchema({
       schema,
-      mocks
+      mocks: isPlainObject(mocks) ? mocks : undefined,
     });
   }
 
