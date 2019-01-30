@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, View } from 'react-native';
-import { Mutation, Query } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { storiesOf } from '@storybook/react-native';
 import { withKnobs } from '@storybook/addon-knobs';
@@ -204,7 +204,7 @@ stories.addDecorator(getContentDecorator({ padder: true }));
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers, dataStore }));
 
 // Stories
-stories.add('Default', () => {
+stories.add('With delete', () => {
   const styles = {
     view: {
       flexDirection: 'row',
@@ -220,51 +220,63 @@ stories.add('Default', () => {
     },
   };
 
-  return (
-    <Query query={myPhotosQuery}>
-      {({ loading, data }) => {
-        if (loading) return null;
+  let ComposedComponent = ({ data: { loading, me }, deletePhoto }) => {
+    if (loading) return null;
 
-        const { me: { id, photos: { edges } } } = data;
-        const update = (cache, { data: { result: { deletedId } } }) => {
-          const data = cache.readQuery({ query: myPhotosQuery });
-
-          remove(data.me.photos.edges, edge => edge.node.id === deletedId);
-          cache.writeQuery({ query: myPhotosQuery, data });
-        };
-        const optimisticResponse = photoId => ({
-          result: {
-            __typename: 'UserPhotoDeletePayload',
-            deletedId: photoId,
-            user: {
-              __typename: 'User',
-              id,
-            },
+    const onDeletePhoto = (photoId) => {
+      const optimisticResponse = {
+        result: {
+          __typename: 'UserPhotoDeletePayload',
+          deletedId: photoId,
+          user: {
+            __typename: 'User',
+            id: me.id,
           },
+        },
+      };
+      const update = (cache, { data: { result: { deletedId } } }) => {
+        const data = cache.readQuery({ query: myPhotosQuery });
+
+        remove(me.photos.edges, edge => edge.node.id === deletedId);
+
+        cache.writeQuery({
+          query: myPhotosQuery,
+          data,
         });
+      };
 
-        return (
-          <Mutation mutation={deletePhotoMutation} update={update}>
-            {deletePhoto => (
-              <ImageView edges={edges} deleteMutation={{ mutate: deletePhoto, optimisticResponse }}>
-                {onShowImage => (
-                  <View style={styles.view}>
-                    {edges.map((item, index) => {
-                      const { node: { id, url } } = item;
+      deletePhoto({
+        variables: { id: photoId },
+        optimisticResponse,
+        update,
+      });
+    };
 
-                      return (
-                        <TouchableOpacity key={id} onPress={() => onShowImage({ item, index })}>
-                          <Image source={{ uri: url }} style={styles.image} />
-                        </TouchableOpacity>
-                      );
-                    })}
-                  </View>
-                )}
-              </ImageView>
-            )}
-          </Mutation>
-        );
-      }}
-    </Query>
-  );
+    const { photos: { edges } } = me;
+
+    return (
+      <ImageView edges={edges} deletePhoto={onDeletePhoto}>
+        {onShowImage => (
+          <View style={styles.view}>
+            {edges.map((item, index) => {
+              const { node: { id, url } } = item;
+
+              return (
+                <TouchableOpacity key={id} onPress={() => onShowImage({item, index})}>
+                  <Image source={{ uri: url }} style={styles.image} />
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        )}
+      </ImageView>
+    );
+  };
+
+  ComposedComponent = graphql(myPhotosQuery)(ComposedComponent);
+  ComposedComponent = graphql(deletePhotoMutation, {
+    name: 'deletePhoto',
+  })(ComposedComponent);
+
+  return <ComposedComponent />;
 });

@@ -4,7 +4,7 @@ import { Query } from 'react-apollo';
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { propType as graphqlPropType } from 'graphql-anywhere';
-import { get, range } from 'lodash';
+import { range } from 'lodash';
 
 import ImageCommentsList from '../ImageCommentsList';
 

@@ -219,10 +219,7 @@ export default class ImageView extends Component {
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment).isRequired
     ).isRequired,
-    deleteMutation: PropTypes.shape({
-      mutate: PropTypes.func.isRequired,
-      optimisticResponse: PropTypes.func.isRequired,
-    }).isRequired,
+    deletePhoto: PropTypes.func.isRequired,
   };
 
   state = {
@@ -243,17 +240,24 @@ export default class ImageView extends Component {
   }
 
   onDelete(photoId) {
-    const { edges, deleteMutation: { mutate, optimisticResponse } } = this.props;
+    const { edges, deletePhoto } = this.props;
     const { index } = this.state;
 
-    mutate({ variables: { id: photoId }, optimisticResponse: optimisticResponse(photoId) });
+    deletePhoto(photoId);
 
     if (edges.length === 1) {
       this.setState({ visible: false });
       return;
     }
 
-    if (index) this.setState({ index: index - 1 });
+    if (index === 1) {
+      this.setState({ index: index + 1 });
+      return;
+    }
+
+    if (index) {
+      this.setState({ index: index - 1 });
+    }
   }
 
   renderControls() {

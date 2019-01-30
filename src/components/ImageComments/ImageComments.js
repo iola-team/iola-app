@@ -231,6 +231,11 @@ export default class ImageComments extends Component {
   renderFooter() {
     return (
       <Mutation mutation={addPhotoCommentMutation}>
+        {/*
+          * @TODO: It would be great to have a generic component
+          * eg bottom bar input or form, to not be tied to a particular feature.
+          * This component will be used in both features (Chat and comments).
+          */}
         {mutate => <ChatFooter onSend={text => this.onCommentSend(text, mutate)} />}
       </Mutation>
     );

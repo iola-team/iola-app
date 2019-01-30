@@ -57,6 +57,9 @@ const deletePhotoMutation = gql`
 @graphql(addPhotoMutation, {
   name: 'addPhoto',
 })
+@graphql(deletePhotoMutation, {
+  name: 'deletePhoto',
+})
 export default class MyFriendsConnection extends Component {
   static propTypes = {
     addButtonStyle: PropTypes.object.isRequired,
@@ -79,6 +82,36 @@ export default class MyFriendsConnection extends Component {
       [id]: progress,
     },
   }));
+
+  deletePhoto = (photoId) => {
+    const { deletePhoto, data: { me } } = this.props;
+    const optimisticResponse = {
+      result: {
+        __typename: 'UserPhotoDeletePayload',
+        deletedId: photoId,
+        user: {
+          __typename: 'User',
+          id: me.id,
+        },
+      },
+    };
+    const update = (cache, { data: { result: { deletedId } } }) => {
+      const data = cache.readQuery({ query: myPhotosQuery });
+
+      remove(me.photos.edges, edge => edge.node.id === deletedId);
+
+      cache.writeQuery({
+        query: myPhotosQuery,
+        data,
+      });
+    };
+
+    deletePhoto({
+      variables: { id: photoId },
+      optimisticResponse,
+      update,
+    });
+  };
 
   addPhoto = async (image) => {
     const { addPhoto, data: { me } } = this.props;
@@ -123,54 +156,29 @@ export default class MyFriendsConnection extends Component {
     });
   };
 
-  onChange = (images) => {
-    images.map(this.addPhoto);
-  };
+  onChange = images => images.map(this.addPhoto);
 
   render() {
     const { data: { loading, me }, skip, addButtonStyle, ...props } = this.props;
     const { photoProgress } = this.state;
     const edges = me?.photos.edges || [];
-    const update = (cache, { data: { result: { deletedId } } }) => {
-      const data = cache.readQuery({ query: myPhotosQuery });
-
-      remove(data.me.photos.edges, edge => edge.node.id === deletedId);
-
-      cache.writeQuery({
-        query: myPhotosQuery,
-        data,
-      });
-    };
-    const optimisticResponse = photoId => ({
-      result: {
-        __typename: 'UserPhotoDeletePayload',
-        deletedId: photoId,
-        user: {
-          __typename: 'User',
-          id: me.id,
-        },
-      },
-    });
 
     return (
       <>
-        <Mutation mutation={deletePhotoMutation} update={update}>
-          {deletePhoto => (
-            <ImageView edges={edges} deleteMutation={{ mutate: deletePhoto, optimisticResponse }}>
-              {onShowImage => (
-                <PhotoList
-                  {...props}
-                  renderItem={this.renderItem}
-                  itemsProgress={photoProgress}
-                  onItemPress={onShowImage}
-                  edges={edges}
-                  loading={skip || loading}
-                  noContentText="No photos"
-                />
-              )}
-            </ImageView>
+        <ImageView edges={edges} deletePhoto={this.deletePhoto}>
+          {onShowImage => (
+            <PhotoList
+              {...props}
+              renderItem={this.renderItem}
+              itemsProgress={photoProgress}
+              onItemPress={onShowImage}
+              edges={edges}
+              loading={skip || loading}
+              noContentText="No photos"
+            />
           )}
-        </Mutation>
+        </ImageView>
+
         <ImagePicker multiple onChange={this.onChange}>
           {({ pick }) => (
             <Button block rounded style={addButtonStyle} onPress={pick}>
