@@ -13,7 +13,7 @@ const withData = graphql(gql`
   }
 `, {
   options: {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'no-cache',
   },
 });
 
