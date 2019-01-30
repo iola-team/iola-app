@@ -23,6 +23,8 @@ import logo from './logo.png';
   },
 })
 export default class LaunchScreen extends Component {
+  state = { me: undefined };
+
   constructor() {
     super();
 
@@ -59,28 +61,36 @@ export default class LaunchScreen extends Component {
     };
   }
 
-  componentWillReceiveProps(newProps) {
-    const {
-      navigation: { navigate },
-      data: { loading, me },
-    } = newProps;
+  static getDerivedStateFromProps(props, state) {
+    const { me } = props.data;
 
-    if (loading && !me) return;
+    if (me !== state.me) return { me };
 
-    if (me) {
-      navigate(routes.APPLICATION);
-    } else {
-      Animated.timing(this.logo.positionAnimatedValue, {
-        toValue: 1,
-        duration: 500,
-        easing: Easing.ease,
-      }).start();
+    return state;
+  }
 
-      Animated.timing(this.form.opacityAnimatedValue, {
-        toValue: 1,
-        duration: 800,
-        easing: Easing.ease,
-      }).start();
+  componentDidUpdate(nextProps, prevState) {
+    const { navigation: { navigate } } = this.props;
+    const { me } = this.state;
+
+    if (me !== prevState.me) {
+      if (me) {
+        navigate(routes.APPLICATION);
+      } else {
+        Animated.timing(this.logo.positionAnimatedValue, {
+          toValue: 1,
+          duration: 500,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }).start();
+
+        Animated.timing(this.form.opacityAnimatedValue, {
+          toValue: 1,
+          duration: 800,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }).start();
+      }
     }
   }
 
@@ -92,6 +102,7 @@ export default class LaunchScreen extends Component {
         toValue,
         duration: 800,
         easing: Easing.ease,
+        useNativeDriver: true,
       }).start();
     };
 
