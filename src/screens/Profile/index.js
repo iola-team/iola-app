@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { ScreenHeader, ProfileHeading, createHeadingTabsNavigator } from 'components';
+import { ScreenHeader, createHeadingTabsNavigator } from 'components';
+import ProfileHeading from './ProfileHeading';
 
 export default (routes, config = {}) => {
   const Navigator = createHeadingTabsNavigator(routes, {
