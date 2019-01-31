@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import update from 'immutability-helper';
 
 import { UserList } from 'components';
 
@@ -12,6 +12,7 @@ import { UserList } from 'components';
       edges {
         ...UserList_edge
       }
+
       pageInfo {
         hasNextPage
         endCursor
@@ -28,7 +29,7 @@ export default class DashboardAll extends Component {
   };
 
   static defaultProps = {
-    search: "",
+    search: '',
     onItemPress: () => {},
   };
 
@@ -39,47 +40,45 @@ export default class DashboardAll extends Component {
     return prev.users !== users || prev.networkStatus !== networkStatus;
   }
 
-  refresh = (vars = {}) => {
-    this.props.data.refetch(vars);
-  }
+  refresh = (vars = {}) => this.props.data.refetch(vars);
 
   loadMore = ({ distanceFromEnd }) => {
-    const { fetchMore, users: { pageInfo } } = this.props.data;
+    const { data: { loading, fetchMore, users } } = this.props;
 
-    if (!pageInfo.hasNextPage) {
-      return;
-    }
+    if (loading) return;
+
+    const { pageInfo } = users;
+
+    if (!pageInfo.hasNextPage) return;
 
     this.fetchMorePromise = this.fetchMorePromise || fetchMore({
       variables: {
-        cursor: pageInfo.endCursor,
+        cursor: users.pageInfo.endCursor,
       },
+
       updateQuery: (prev, { fetchMoreResult: { users } }) => {
         if (!users || !users.edges.length) {
           return prev;
         }
 
-        return {
+        return update(prev, {
           users: {
-            ...prev.users,
-            edges: [
-              ...prev.users.edges,
-              ...users.edges
-            ],
+            edges: {
+              $push: users.edges,
+            },
             pageInfo: {
-              ...prev.users.pageInfo,
-              ...users.pageInfo,
-            }
+              $merge: users.pageInfo,
+            },
           },
-        };
+        });
       }
     }).then(() => {
       this.fetchMorePromise = null;
     });
-  }
+  };
 
   render() {
-    const { data: { users, networkStatus, loading }, onItemPress } = this.props;
+    const { data: { users, loading }, onItemPress } = this.props;
 
     return (
       <UserList
@@ -87,8 +86,7 @@ export default class DashboardAll extends Component {
         edges={users ? users.edges : []}
         onItemPress={onItemPress}
         onRefresh={this.refresh}
-        // refreshing={networkStatus === NetworkStatus.refetch}
-        // onEndReached={this.loadMore}
+        onEndReached={this.loadMore}
       />
     );
   }

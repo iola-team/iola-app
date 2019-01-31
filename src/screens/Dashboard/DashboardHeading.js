@@ -10,14 +10,17 @@ import { SearchBar } from 'components';
   },
 
   title: {
+    paddingVertical: 13,
     textAlign: 'center',
+    fontFamily: 'SF Pro Text',
     fontWeight: '600',
-    fontSize: 16,
-    color: '#585A61',
+    fontSize: 17,
+    lineHeight: 20,
+    color: '#35373E',
   },
 })
 export default class DashboardHeading extends PureComponent {
-  static HEIGHT = 115 + 40;
+  static HEIGHT = 115 + 65;
 
   state =  {
     searchPhrase: '',
