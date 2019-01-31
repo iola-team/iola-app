@@ -22,7 +22,7 @@ const photoCommentsQuery = gql`
     photo: node(id: $id) {
       ...on Photo {
         id
-        comments(first: 10 after: $cursor) @connection(key: "comments-totalcount") {
+        comments(first: 10 after: $cursor) @connection(key: "PhotoCommentsConnection") {
           totalCount
 
           edges {

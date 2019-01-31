@@ -48,7 +48,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
     photo: node(id: $id) {
       ...on Photo {
         id
-        comments @connection(key: "comments-totalcount") {
+        comments @connection(key: "PhotoCommentsConnection") {
           totalCount
         }
       }
