@@ -20,6 +20,7 @@ function loadStories() {
   require('../components/FriendList/FriendList.stories');
   require('../components/FriendListItem/FriendListItem.stories');
   require('../components/FriendsButton/FriendsButton.stories');
+  require('../components/FriendsTabBarLabel/FriendsTabBarLabel.stories');
   require('../components/Icon/Icon.stories');
   require('../components/Image/Image.stories');
   require('../components/ImageComments/ImageComments.stories');
@@ -39,21 +40,27 @@ function loadStories() {
   require('../components/PhotoGrid/PhotoGrid.stories');
   require('../components/PhotoList/PhotoList.stories');
   require('../components/PhotoListItem/PhotoListItem.stories');
+  require('../components/PhotosTabBarLabel/PhotosTabBarLabel.stories');
   require('../components/Placeholder/Placeholder.stories');
   require('../components/ProfileFieldForm/ProfileFieldForm.stories');
   require('../components/ProfileFieldInput/ProfileFieldInput.stories');
   require('../components/ProfileFieldView/ProfileFieldView.stories');
   require('../components/ProfileFieldsView/ProfileFieldsView.stories');
+  require('../components/SettingList/SettingList.stories');
   require('../components/Shadow/Shadow.stories');
+  require('../components/Spinner/Spinner.stories');
+  require('../components/TabBarLabel/TabBarLabel.stories');
   require('../components/TabNavigator/TabNavigator.stories');
   require('../components/TextPicker/TextPicker.stories');
   require('../components/UserHeading/UserHeading.stories');
   require('../components/UserList/UserList.stories');
   require('../components/UserListItem/UserListItem.stories');
-  require('../components/UserPhotos/UserPhotos.stories');
   require('../screens/EmailVerification/EmailVerification.stories');
   require('../screens/ForgotPassword/ForgotPassword.stories');
+  require('../screens/Launch/Launch.stories');
   require('../screens/MyPhotos/MyPhotos.stories');
+  require('../screens/SignIn/SignIn.stories');
+  require('../screens/SignUp/SignUp.stories');
   require('./stories/Button.stories');
   
 }
@@ -74,6 +81,7 @@ const stories = [
   '../components/FriendList/FriendList.stories',
   '../components/FriendListItem/FriendListItem.stories',
   '../components/FriendsButton/FriendsButton.stories',
+  '../components/FriendsTabBarLabel/FriendsTabBarLabel.stories',
   '../components/Icon/Icon.stories',
   '../components/Image/Image.stories',
   '../components/ImageComments/ImageComments.stories',
@@ -93,21 +101,27 @@ const stories = [
   '../components/PhotoGrid/PhotoGrid.stories',
   '../components/PhotoList/PhotoList.stories',
   '../components/PhotoListItem/PhotoListItem.stories',
+  '../components/PhotosTabBarLabel/PhotosTabBarLabel.stories',
   '../components/Placeholder/Placeholder.stories',
   '../components/ProfileFieldForm/ProfileFieldForm.stories',
   '../components/ProfileFieldInput/ProfileFieldInput.stories',
   '../components/ProfileFieldView/ProfileFieldView.stories',
   '../components/ProfileFieldsView/ProfileFieldsView.stories',
+  '../components/SettingList/SettingList.stories',
   '../components/Shadow/Shadow.stories',
+  '../components/Spinner/Spinner.stories',
+  '../components/TabBarLabel/TabBarLabel.stories',
   '../components/TabNavigator/TabNavigator.stories',
   '../components/TextPicker/TextPicker.stories',
   '../components/UserHeading/UserHeading.stories',
   '../components/UserList/UserList.stories',
   '../components/UserListItem/UserListItem.stories',
-  '../components/UserPhotos/UserPhotos.stories',
   '../screens/EmailVerification/EmailVerification.stories',
   '../screens/ForgotPassword/ForgotPassword.stories',
+  '../screens/Launch/Launch.stories',
   '../screens/MyPhotos/MyPhotos.stories',
+  '../screens/SignIn/SignIn.stories',
+  '../screens/SignUp/SignUp.stories',
   './stories/Button.stories',
   
 ];

@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigation, NavigationActions } from 'react-navigation';
-import {
-  Text,
-  Button,
-} from 'native-base';
+import { Text } from 'native-base';
 
+import { TouchableOpacity } from 'components';
 import * as routes from '../routeNames';
 
 @graphql(gql`
@@ -28,9 +26,9 @@ export default class LogoutButton extends Component {
 
   render() {
     return (
-      <Button transparent {...this.props} onPress={::this.onPress}>
-        <Text style={{ color: '#BDC0CB' }}>Logout</Text>
-      </Button>
+      <TouchableOpacity {...this.props} onPress={::this.onPress}>
+        <Text>Logout</Text>
+      </TouchableOpacity>
     );
   }
 }

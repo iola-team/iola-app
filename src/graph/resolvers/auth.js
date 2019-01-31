@@ -17,7 +17,7 @@ const typeDefs = gql`
 
 const query = gql`
   query {
-    auth {
+    auth @client {
       token
     }
   }

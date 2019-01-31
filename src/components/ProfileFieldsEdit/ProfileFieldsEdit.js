@@ -59,24 +59,21 @@ const saveMutation = gql`
 @graphql(saveMutation, {
   name: 'saveValuesMutation',
 })
-@styleSheet('Sparkle.ProfileFieldsEdit', {
-  root: {
-
-  }
-})
+@styleSheet('Sparkle.ProfileFieldsEdit')
 export default class ProfileFieldsEdit extends Component {
   static fragments = {
     user: userFragment,
   }
 
   static propTypes = {
-    user: fragmentProp(userFragment).isRequired,
+    user: fragmentProp(userFragment),
     onFormReady: PropTypes.func,
     onSaveStart: PropTypes.func,
     onSaveEnd: PropTypes.func,
   };
 
   static defaultProps = {
+    user: null,
     onFormReady: noop,
     onSaveStart: noop,
     onSaveEnd: noop,
@@ -118,18 +115,17 @@ export default class ProfileFieldsEdit extends Component {
   };
 
   render() {
-    const { style, user: { profile }, styleSheet, onFormReady } = this.props;
+    const { user, onFormReady, ...props } = this.props;
 
     return (
-      <View style={[styleSheet.root, style]}>
-        <ProfileFieldForm
-          fields={profile.accountType.fields}
-          values={profile.values}
-          onSubmit={this.onSubmit}
-          onSubmitError={this.onSubmitError}
-          onFormReady={onFormReady}
-        />
-      </View>
+      <ProfileFieldForm
+        {...props}
+        fields={user?.profile.accountType.fields}
+        values={user?.profile.values}
+        onSubmit={this.onSubmit}
+        onSubmitError={this.onSubmitError}
+        onFormReady={onFormReady}
+      />
     );
   }
 }

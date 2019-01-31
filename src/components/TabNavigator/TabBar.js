@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component, isValidElement } from 'react';
+import { isFunction } from 'lodash';
 import { View as ViewRN } from 'react-native';
 import { Text, View } from 'native-base';
 
@@ -16,19 +17,34 @@ import TouchableOpacity from '../TouchableOpacity';
     alignItems: 'center',
     paddingHorizontal: 15,
 
-    'NativeBase.Text': {
-      lineHeight: 45,
-      borderBottomColor: 'transparent',
-      borderBottomWidth: 2,
-      paddingHorizontal: 5,
+    'NativeBase.ViewNB': {
+      '.label': {
+        height: 45,
+        justifyContent: 'center',
+        borderBottomColor: 'transparent',
+        borderBottomWidth: 2,
+        paddingHorizontal: 5,
+      },
     },
 
     '.primary': {
       'NativeBase.ViewNB': {
-        alignSelf: 'stretch',
-        marginBottom: -1,
-        backgroundColor: '#5259FF',
-        height: 1,
+        '.indicator': {
+          alignSelf: 'stretch',
+          marginBottom: -1,
+          backgroundColor: '#5259FF',
+          height: 1,
+        },
+
+        'NativeBase.Text': {
+          color: '#5259FF',
+        },
+
+        'Sparkle.TabBarLabel': {
+          'NativeBase.Text': {
+            color: '#5259FF',
+          },
+        },
       },
     }
   }
@@ -36,23 +52,35 @@ import TouchableOpacity from '../TouchableOpacity';
 export default class TabBar extends Component {
   static HEIGHT = 60;
 
+  renderTab = (route, index) => {
+    const { onTabPress, getLabelText, navigation: { state } } = this.props;
+    const focused = state.index === index;
+    const labelGetter = getLabelText({ route });
+    const label = isFunction(labelGetter) ? labelGetter({ focused }) : labelGetter;
+    const labelElement = isValidElement(label) ? label : (
+      <Text>{label}</Text>
+    );
+
+    return (
+      <TouchableOpacity
+        key={route.key}
+        primary={focused}
+        onPress={() => onTabPress({ route })}
+      >
+        <View label>
+          {labelElement}
+        </View>
+        <View indicator />
+      </TouchableOpacity>
+    );
+  }
+
   render() {
-    const { style, onTabPress, getLabelText, navigation: { state } } = this.props;
+    const { style, navigation: { state } } = this.props;
 
     return (
       <ViewRN style={style}>
-        {
-          state.routes.map((route, index) => (
-            <TouchableOpacity
-              key={route.key}
-              primary={state.index === index}
-              onPress={() => onTabPress({ route })}
-            >
-              <Text>{getLabelText({ route })}</Text>
-              <View />
-            </TouchableOpacity>
-          ))
-        }
+        {state.routes.map(this.renderTab)}
       </ViewRN>
     );
   }

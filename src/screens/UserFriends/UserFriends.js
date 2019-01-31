@@ -4,7 +4,8 @@ import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
-import { UserList } from 'components';
+import { UserList, FriendsTabBarLabel } from 'components';
+import TabBarLabel from './TabBarLabel';
 
 const userFriendsQuery = gql`
   query UserFriendsQuery($id: ID!) {
@@ -16,10 +17,13 @@ const userFriendsQuery = gql`
             ...UserList_edge
           }
         }
+
+        ...FriendsTabBarLabel_user
       }
     }
   }
   
+  ${FriendsTabBarLabel.fragments.user}
   ${UserList.fragments.edge}
 `;
 
@@ -30,9 +34,9 @@ const userFriendsQuery = gql`
 })
 @withNavigationFocus
 export default class UserFriends extends PureComponent {
-  static navigationOptions = {
-    title: 'Friends',
-  };
+  static navigationOptions = ({ navigation }) => ({
+    tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
+  });
 
   render() {
     const { navigation, isFocused, styleSheet: styles } = this.props;
