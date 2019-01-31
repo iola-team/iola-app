@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { get } from 'lodash';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { View } from 'native-base';
 
@@ -54,13 +55,21 @@ const deleteAvatarMutation = gql`
   }
 })
 export default class AvatarEdit extends PureComponent {
-  static propTypes = {
-    user: fragmentProp(userFragment).isRequired,
-  };
-
+  static HEIGHT = 140;
+  
   static fragments = {
     user: userFragment,
   };
+
+  static propTypes = {
+    user: fragmentProp(userFragment),
+    loading: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    user: null,
+    loading: false,
+  }
 
   onChange = (image) => {
     if (!image) {
@@ -88,7 +97,7 @@ export default class AvatarEdit extends PureComponent {
   };
 
   render() {
-    const { style, styleSheet, user } = this.props;
+    const { style, styleSheet, user, loading } = this.props;
 
     return (
       <View
@@ -98,6 +107,7 @@ export default class AvatarEdit extends PureComponent {
       >
         <AvatarInput
           defaultValue={get(user, 'avatar.url')}
+          loading={loading}
           onChange={this.onChange}
           onDelete={this.onDelete}
         />

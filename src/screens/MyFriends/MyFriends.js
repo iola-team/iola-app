@@ -4,6 +4,7 @@ import { withNavigationFocus } from 'react-navigation';
 import { withStyleSheet } from 'theme';
 import { USER } from '../routeNames';
 import MyFriendsConnection from './MyFriendsConnection';
+import TabBarLabel from './TabBarLabel';
 
 @withStyleSheet('Sparkle.MyFriendsScreen', {
   list: {
@@ -13,7 +14,7 @@ import MyFriendsConnection from './MyFriendsConnection';
 @withNavigationFocus
 export default class MyFriends extends PureComponent {
   static navigationOptions = {
-    title: 'Friends',
+    tabBarLabel: () => <TabBarLabel />,
   };
 
   onItemPress = ({ node: { id } }) => {

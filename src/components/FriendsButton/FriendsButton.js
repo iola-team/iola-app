@@ -24,7 +24,7 @@ const edgeFragment = gql`
   }
 `;
 
-export const createOptimisticEdge = ({ userId, friendId, status = 'PENDING', friendshipId = -1 }) => ({
+const createOptimisticEdge = ({ userId, friendId, status = 'PENDING', friendshipId = -1 }) => ({
   __typename: 'UserFriendEdge',
   user: {
     __typename: 'User',

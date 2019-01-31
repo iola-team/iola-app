@@ -2,32 +2,22 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { noop } from 'lodash';
-import {
-  Container,
-  Content,
-  View,
-  Button,
-  Spinner,
-  Text,
-} from 'native-base';
+import { Button, Text } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
-import { AvatarEdit, ProfileFieldsEdit } from 'components';
+import { withStyleSheet } from 'theme';
+import { ProfileFieldsEdit, TouchableOpacity } from 'components';
 
 @graphql(gql`
   query ProfileEditQuery {
-    user: me {
+    me {
       id
-
-      ...AvatarEdit_user
       ...ProfileFieldsEdit_user
     }
   }
 
-  ${AvatarEdit.fragments.user}
   ${ProfileFieldsEdit.fragments.user}
 `)
-@styleSheet('Sparkle.ProfileEditScreen', {
+@withStyleSheet('Sparkle.ProfileEditScreen', {
   avatar: {
     paddingVertical: 30,
   }
@@ -37,11 +27,11 @@ export default class ProfileEditScreen extends Component {
     const { done = noop, busy = false } = navigation.state.params || {};
 
     return  {
-      title: 'Profile Edit',
+      title: 'Info',
       headerRight: (
-        <Button transparent disabled={busy} onPress={done}>
+        <TouchableOpacity disabled={busy} onPress={done}>
           <Text>Done</Text>
-        </Button>
+        </TouchableOpacity>
       ),
     };
   };
@@ -61,7 +51,7 @@ export default class ProfileEditScreen extends Component {
     const { navigation } = this.props;
 
     if (!this.form || !this.form.isDirty) {
-      navigation.goBack();
+      navigation.goBack(null);
 
       return;
     }
@@ -83,7 +73,7 @@ export default class ProfileEditScreen extends Component {
     this.updateDone(false);
 
     if (!error) {
-      navigation.goBack();
+      navigation.goBack(null);
     }
   };
 
@@ -92,31 +82,19 @@ export default class ProfileEditScreen extends Component {
   }
 
   render() {
-    const { styleSheet, data: { user }, navigation } = this.props;
+    const { data: { loading, me } } = this.props;
 
     return (
-      <Container>
-        <Content>
-          {
-            user ? (
-              <View>
-                <AvatarEdit user={user} />
-                <ProfileFieldsEdit
-                  user={user}
-                  onFormReady={(form) => {
-                    this.form = form;
-                  }}
+      <ProfileFieldsEdit
+        loading={loading}
+        user={me}
+        onFormReady={(form) => {
+          this.form = form;
+        }}
 
-                  onSaveStart={this.onSaveStart}
-                  onSaveEnd={this.onSaveEnd}
-                />
-              </View>
-            ) : (
-              <Spinner />
-            )
-          }
-        </Content>
-      </Container>
+        onSaveStart={this.onSaveStart}
+        onSaveEnd={this.onSaveEnd}
+      />
     );
   }
 }

@@ -58,6 +58,7 @@ export default class FieldDate extends PureComponent {
 
   render() {
     const { field, data, input, ...props } = this.props;
+    const value = input || data && new Date(data.dateValue); // TODO: handle custom scalars on graph layer
 
     return (
       <FieldInput
@@ -66,7 +67,7 @@ export default class FieldDate extends PureComponent {
         type="date"
         placeholder="Not specified"
         label={field.label}
-        value={input || data && data.dateValue}
+        value={value}
         minDate={new Date(field.configs.minDate)} // TODO: handle custom scalars on graph layer
         maxDate={new Date(field.configs.maxDate)} // TODO: handle custom scalars on graph layer
       />

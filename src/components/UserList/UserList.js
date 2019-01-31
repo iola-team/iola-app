@@ -77,7 +77,7 @@ export default class UserList extends Component {
       ...listProps
     } = this.props;
 
-    const data = loading ? this.getPlaceholders() : edges;
+    const data = loading && !edges.length ? this.getPlaceholders() : edges;
 
     return (
       <FlatList

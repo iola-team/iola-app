@@ -1,20 +1,25 @@
 import React from 'react';
 
-import { Icon, ScreenHeader, createHeadingTabsNavigator } from 'components';
-import ProfileHeading from './ProfileHeading';
-import LogoutButton from './LogoutButton';
+import { ScreenHeader, ProfileHeading, createHeadingTabsNavigator } from 'components';
 
-export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
-  ...config,
-  renderHeader: props => <ProfileHeading {...props} />,
-  headerShrinkHeight: ScreenHeader.HEIGHT,
-  headerHeight: ProfileHeading.HEIGHT,
+export default (routes, config = {}) => {
+  const Navigator = createHeadingTabsNavigator(routes, {
+    ...config,
+    renderHeader: props => <ProfileHeading {...props} />,
+    headerHeight: ProfileHeading.HEIGHT,
+    topBarHeight: ScreenHeader.HEIGHT,
 
-  navigationOptions: {
-    headerTransparent: true,
-    headerRight: <LogoutButton />,
-    tabBarIcon: ({ tintColor: color }) => (
-      <Icon name="user-bar" style={{ color, fontSize: 20 }} />
-    ),
-  },
-});
+    navigationOptions: ({ navigation: { state } }) => {
+      const screenOptions = Navigator.router.getScreenOptions({
+        state: state.routes[state.index],
+      });
+
+      return {
+        ...screenOptions,
+        title: 'Profile Edit',
+      };
+    },
+  });
+
+  return Navigator;
+};

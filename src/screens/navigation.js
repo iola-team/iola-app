@@ -96,8 +96,10 @@ const RootNavigator = createSwitchNavigator({
     },
 
     [routes.CHANNEL]: Channel,
-    [routes.SETTINGS]: Settings,
-    [routes.PROFILE_EDIT]: ProfileEdit,
+    [routes.PROFILE]: createProfileNavigator({
+      [routes.PROFILE_EDIT]: ProfileEdit,
+      [routes.SETTINGS]: Settings,
+    }),
   }, {
     headerLayoutPreset: 'center',
     headerMode: 'screen',

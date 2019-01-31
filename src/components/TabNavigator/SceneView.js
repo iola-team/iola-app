@@ -99,6 +99,7 @@ export default class SceneView extends PureComponent {
     scrollOffset: PropTypes.number,
     headerShrinkHeight: PropTypes.number,
     bottomBarHeight: PropTypes.number,
+    topBarHeight: PropTypes.number,
     headerHeight: PropTypes.number,
   };
 
@@ -107,6 +108,7 @@ export default class SceneView extends PureComponent {
     scrollOffset: 0,
     headerShrinkHeight: 0,
     bottomBarHeight: 0,
+    topBarHeight: 0,
     headerHeight: 0,
   };
 
@@ -156,10 +158,16 @@ export default class SceneView extends PureComponent {
 
   createContext() {
     const { 
-      headerShrinkHeight, tabBarHeight, headerHeight, bottomBarHeight, ...restProps 
+      headerShrinkHeight,
+      tabBarHeight,
+      headerHeight,
+      bottomBarHeight,
+      topBarHeight,
+      ...restProps
     } = this.props;
 
-    const screenHeight = Dimensions.get('window').height - getStatusBarHeight() - bottomBarHeight;
+    const windowHeight = Dimensions.get('window').height;
+    const screenHeight = windowHeight - getStatusBarHeight() - bottomBarHeight - topBarHeight;
     const shrinkAnimationHeight = headerHeight ? headerHeight - headerShrinkHeight : 0;
     const shrinkAnimatedValue = this.scrollAnimatedValue.interpolate({
       inputRange: [0, shrinkAnimationHeight],
