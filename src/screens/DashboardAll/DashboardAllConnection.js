@@ -43,7 +43,7 @@ export default class DashboardAll extends Component {
   refresh = (vars = {}) => this.props.data.refetch(vars);
 
   loadMore = ({ distanceFromEnd }) => {
-    const { data: { loading, fetchMore, users } } = this.props;
+    const { loading, fetchMore, users } = this.props.data;
 
     if (loading) return;
 
