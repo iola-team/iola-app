@@ -106,7 +106,7 @@ stories.add('Right and left buttons', withState(({ isVisible, setVisible }) => {
 
         headerLeft={(
           <TouchableOpacity cancel onPress={hide}>
-            <Text>Cancel  dgsdfgdfgfdg</Text>
+            <Text>Cancel</Text>
           </TouchableOpacity>
         )}
 
