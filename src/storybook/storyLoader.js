@@ -7,6 +7,7 @@
 function loadStories() {
   require('../components/ActionSheet/ActionSheet.stories');
   require('../components/AvatarInput/AvatarInput.stories');
+  require('../components/Backdrop/Backdrop.stories');
   require('../components/Chat/Chat.stories');
   require('../components/ChatFooter/ChatFooter.stories');
   require('../components/ChatList/ChatList.stories');
@@ -68,6 +69,7 @@ function loadStories() {
 const stories = [
   '../components/ActionSheet/ActionSheet.stories',
   '../components/AvatarInput/AvatarInput.stories',
+  '../components/Backdrop/Backdrop.stories',
   '../components/Chat/Chat.stories',
   '../components/ChatFooter/ChatFooter.stories',
   '../components/ChatList/ChatList.stories',
