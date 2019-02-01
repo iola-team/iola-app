@@ -1,6 +1,6 @@
 import React, { Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text } from 'native-base';
 
 import { withStyleSheet } from 'theme';
@@ -28,11 +28,15 @@ import TouchableOpacity from '../TouchableOpacity';
   },
 
   right: {
-    marginLeft: 'auto',
+    ...StyleSheet.absoluteFillObject,
+    left: null,
+    justifyContent: 'center',
   },
 
   left: {
-    marginRight: 'auto',
+    ...StyleSheet.absoluteFillObject,
+    right: null,
+    justifyContent: 'center',
   },
 
   'Sparkle.TouchableOpacity': {
