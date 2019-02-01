@@ -18,7 +18,7 @@ stories.addDecorator(getContentDecorator());
 const Section = ({ children }) => (
   <Card transparent>
     <CardItem header padder>
-      <Text>Fields section</Text>
+      <Text>Fields Section</Text>
     </CardItem>
     <CardItem cardBody highlight horizontalPadder>
       {children}

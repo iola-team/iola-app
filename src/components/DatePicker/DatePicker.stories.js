@@ -23,7 +23,7 @@ function dateKnob(name, defaultValue) {
 const renderChildren = (show, date) => (
   <Button transparent onPress={show}>
     <Text>
-      {date ? date.toString() : 'Pick date'}
+      {date ? date.toString() : 'Pick a date'}
     </Text>
   </Button>
 );
