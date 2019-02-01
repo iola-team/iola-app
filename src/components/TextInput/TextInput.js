@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 import { Input, Item, Text } from 'native-base';
+
 import { withStyleSheet as styleSheet } from 'theme';
+import TouchableOpacity from '../TouchableOpacity';
 
 import Icon from '../Icon';
 

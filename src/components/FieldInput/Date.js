@@ -1,14 +1,12 @@
 import React, { PureComponent } from 'react';
 import Moment from 'react-moment';
 import { isUndefined } from 'lodash';
-import { TouchableOpacity } from 'react-native';
-import {
-  Text,
-} from 'native-base';
+import { Text } from 'native-base';
 
 import { withStyleSheet } from 'theme';
 import FieldInput from './FieldInput';
 import DatePicker from '../DatePicker';
+import TouchableOpacity from '../TouchableOpacity';
 
 @withStyleSheet('Sparkle.DateInput', {
   button: {
