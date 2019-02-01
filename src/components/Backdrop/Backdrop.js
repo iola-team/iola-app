@@ -48,7 +48,6 @@ export default class Backdrop extends PureComponent {
     ]).isRequired,
     children: PropTypes.element.isRequired,
     height: PropTypes.number,
-    footer: PropTypes.element,
 
     onDismiss: PropTypes.func,
     onShow: PropTypes.func,
@@ -61,7 +60,6 @@ export default class Backdrop extends PureComponent {
 
   static defaultProps = {
     height: windowHeight * 0.6,
-    footer: null,
     onDismiss: noop,
     onShow: noop,
     onSwipe: noop,
@@ -165,7 +163,6 @@ export default class Backdrop extends PureComponent {
       title,
       children,
       height,
-      footer,
       headerLeft,
       headerRight,
 
@@ -212,8 +209,6 @@ export default class Backdrop extends PureComponent {
             <View style={{ height }}>
               {children}
             </View>
-
-            {footer}
           </Animated.View>
         </View>
       </Modal>
