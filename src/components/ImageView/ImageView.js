@@ -50,7 +50,7 @@ export const photoDetailsQuery = gql`
           name
         }
 
-        comments {
+        comments @connection(key: "PhotoCommentsConnection") {
           totalCount
         }
       }

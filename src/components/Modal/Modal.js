@@ -47,8 +47,11 @@ const maxHeight = Dimensions.get('window').height * 0.6;
     flex: 1,
   },
 
-  cancel: {
+  headerControl: {
     width: 50,
+  },
+
+  cancel: {
     fontSize: 14,
     color: '#BDC0CB',
   },
@@ -58,7 +61,6 @@ const maxHeight = Dimensions.get('window').height * 0.6;
   },
 
   done: {
-    width: 50,
     textAlign: 'right',
     fontSize: 14,
     color: '#5F96F2',
@@ -130,7 +132,7 @@ export default class Modal extends PureComponent {
         backdropOpacity={styles.backdrop.opacity}
         animationOut={getOutAnimation(modalHeight)}
         animationIn={getInAnimation(modalHeight)}
-        swipeDirection="down"
+        // swipeDirection="down" // @TODO: try to do "swipe to close" just with backdrop header
 
         backdropTransitionInTiming={500}
 
@@ -144,11 +146,11 @@ export default class Modal extends PureComponent {
           <View style={styles.header} horizontalPadder>
             <View style={styles.topRectangle} />
             <View style={styles.headerContent}>
-              <TouchableOpacity onPress={onCancel}>
-                <Text style={styles.cancel}>Cancel</Text>
+              <TouchableOpacity style={styles.headerControl} onPress={onCancel}>
+                {onCancel !== noop && <Text style={styles.cancel}>Cancel</Text>}
               </TouchableOpacity>
               {isString(title) ? <Text style={styles.title}>{title}</Text> : title}
-              <TouchableOpacity onPress={onDone}>
+              <TouchableOpacity style={styles.headerControl} onPress={onDone}>
                 <Text style={styles.done}>Done</Text>
               </TouchableOpacity>
             </View>

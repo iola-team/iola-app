@@ -48,7 +48,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
     photo: node(id: $id) {
       ...on Photo {
         id
-        comments {
+        comments @connection(key: "PhotoCommentsConnection") {
           totalCount
         }
       }
@@ -116,7 +116,7 @@ export default class ImageComments extends Component {
     isVisible: false,
   };
 
-  imageCommentsListForwardedRef = React.createRef();
+  listRef = React.createRef();
 
   action = (handler, preHandler = noop) => () => {
     preHandler();
@@ -209,16 +209,14 @@ export default class ImageComments extends Component {
       },
     });
 
-    if (this.imageCommentsListForwardedRef.current) {
-      this.imageCommentsListForwardedRef.current.scrollToIndex({
-        animated: true,
-        index: 0,
-      });
+    if (this.listRef.current && totalCount) {
+      this.listRef.current.scrollToIndex({ animated: true, index: 0 });
     }
   };
 
   renderTitle() {
     const { totalCount, styleSheet: styles } = this.props;
+    // @TODO: add subscription for totalCount without opened modal?
 
     return (
       <View style={styles.titleRow}>
@@ -251,19 +249,13 @@ export default class ImageComments extends Component {
         height={getModalHeight()}
         footer={this.renderFooter()}
         isVisible={isVisible}
-        onDone={this.action('onDone', this.hide)}
-        onDismiss={this.action('onDismiss')}
-        onShow={this.action('onShow')}
-        onSwipe={this.action('onSwipe', this.hide)}
-        onCancel={this.action('onCancel', this.hide)}
-        onRequestClose={this.action('onRequestClose', this.hide)}
+        onDone={this.hide}
+        onSwipe={this.hide}
+        onRequestClose={this.hide}
         noScrollViewForContent
       >
         <View style={styles.container}>
-          <ImageCommentsConnection
-            photoId={photoId}
-            imageCommentsListForwardedRef={this.imageCommentsListForwardedRef}
-          />
+          <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
         </View>
       </Modal>
     );
