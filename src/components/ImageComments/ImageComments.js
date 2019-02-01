@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Dimensions } from 'react-native';
-import { Mutation, Query } from 'react-apollo';
+import { graphql, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
 import uuid from 'uuid/v4';
@@ -22,7 +22,7 @@ const getModalHeight = () => {
 
 const meQuery = gql`
   query meQuery {
-    user: me {
+    me {
       name
       ...UserAvatar_user
     }
@@ -80,6 +80,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
     backgroundColor: '#F8F9FB',
   },
 })
+@graphql(meQuery)
 export default class ImageComments extends Component {
   static propTypes = {
     photoId: PropTypes.string.isRequired,
@@ -136,14 +137,14 @@ export default class ImageComments extends Component {
     this.setState({ isVisible: isUndefined(isVisible) ? true : isVisible });
   };
 
-  onCommentSend = async (text, user, mutate) => {
-    const { photoId, totalCount } = this.props;
+  onCommentSend = async (text, mutate) => {
+    const { photoId, totalCount, data: { me } } = this.props;
     const { queries: { photoCommentsQuery } } = ImageCommentsConnection;
 
     mutate({
       variables: {
         input: {
-          userId: user.id,
+          userId: me.id,
           photoId,
           text,
         },
@@ -159,10 +160,10 @@ export default class ImageComments extends Component {
             text,
             createdAt: new Date().toISOString(),
             user: {
-              ...user,
+              ...me,
               __typename: 'User',
               avatar: {
-                ...user.avatar,
+                ...me.avatar,
                 __typename: 'Avatar',
               },
             },
@@ -180,7 +181,7 @@ export default class ImageComments extends Component {
           __typename: 'CommentEdge',
           node: {
             ...addPhotoComment.node,
-            user,
+            user: me,
           },
           cursor: 'first',
         });
@@ -227,10 +228,15 @@ export default class ImageComments extends Component {
     );
   }
 
-  renderFooter(user) {
+  renderFooter() {
     return (
       <Mutation mutation={addPhotoCommentMutation}>
-        {mutate => <ChatFooter onSend={text => this.onCommentSend(text, user, mutate)} />}
+        {/*
+          * @TODO: It would be great to have a generic component
+          * eg bottom bar input or form, to not be tied to a particular feature.
+          * This component will be used in both features (Chat and comments).
+          */}
+        {mutate => <ChatFooter onSend={text => this.onCommentSend(text, mutate)} />}
       </Mutation>
     );
   }
@@ -240,30 +246,26 @@ export default class ImageComments extends Component {
     const { isVisible } = this.state;
 
     return (
-      <Query query={meQuery}>
-        {({ loading, data: { user } }) => (loading ? null : (
-          <Modal
-            title={this.renderTitle()}
-            height={getModalHeight()}
-            footer={this.renderFooter(user)}
-            isVisible={isVisible}
-            onDone={this.action('onDone', this.hide)}
-            onDismiss={this.action('onDismiss')}
-            onShow={this.action('onShow')}
-            onSwipe={this.action('onSwipe', this.hide)}
-            onCancel={this.action('onCancel', this.hide)}
-            onRequestClose={this.action('onRequestClose', this.hide)}
-            noScrollViewForContent
-          >
-            <View style={styles.container}>
-              <ImageCommentsConnection
-                photoId={photoId}
-                imageCommentsListForwardedRef={this.imageCommentsListForwardedRef}
-              />
-            </View>
-          </Modal>
-        ))}
-      </Query>
+      <Modal
+        title={this.renderTitle()}
+        height={getModalHeight()}
+        footer={this.renderFooter()}
+        isVisible={isVisible}
+        onDone={this.action('onDone', this.hide)}
+        onDismiss={this.action('onDismiss')}
+        onShow={this.action('onShow')}
+        onSwipe={this.action('onSwipe', this.hide)}
+        onCancel={this.action('onCancel', this.hide)}
+        onRequestClose={this.action('onRequestClose', this.hide)}
+        noScrollViewForContent
+      >
+        <View style={styles.container}>
+          <ImageCommentsConnection
+            photoId={photoId}
+            imageCommentsListForwardedRef={this.imageCommentsListForwardedRef}
+          />
+        </View>
+      </Modal>
     );
   }
 
