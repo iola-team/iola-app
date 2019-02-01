@@ -21,29 +21,29 @@ import TouchableOpacity from '../TouchableOpacity';
   },
 
   header: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
 
+  right: {
+    marginLeft: 'auto',
+  },
+
+  left: {
+    marginRight: 'auto',
+  },
+
   'Sparkle.TouchableOpacity': {
-    '.cancelButton': {
+    '.cancel': {
       'NativeBase.Text': {
         color: '#BDC0CB',
       },
-
-      marginRight: 'auto',
-    },
-
-    '.doneButton': {
-      'NativeBase.Text': {
-        color: '#5F96F2',
-      },
-
-      marginLeft: 'auto',
     },
 
     'NativeBase.Text': {
+      color: '#5F96F2',
       fontSize: 14,
     },
 
@@ -54,36 +54,29 @@ export default class BackdropHeader extends Component {
   static propTypes = {
     title: PropTypes.oneOfType([
       PropTypes.string,
-      PropTypes.object,
+      PropTypes.element,
     ]).isRequired,
 
-    onDone: PropTypes.func,
-    onCancel: PropTypes.func,
+    rightElement: PropTypes.element,
+    leftElement: PropTypes.element,
   };
 
   static defaultProps = {
     dragging: false,
-    onDone: () => null,
-    onCancel: () => null,
+    rightElement: null,
+    leftElement: null,
   };
 
   render() {
-    const { style, title, styleSheet: styles, onCancel, onDone } = this.props;
-    const titleElement = isValidElement(title) ? title : <Text style={styles.title}>{title}</Text>;
+    const { style, title, styleSheet: styles, rightElement, leftElement } = this.props;
 
     return (
       <View style={[styles.root, style]}>
         <View style={styles.dragHandle} />
         <View style={styles.header}>
-          <TouchableOpacity cancelButton onPress={onCancel}>
-            <Text>Cancel</Text>
-          </TouchableOpacity>
-
-          {titleElement}
-
-          <TouchableOpacity doneButton onPress={onDone}>
-            <Text>Done</Text>
-          </TouchableOpacity>
+          {leftElement && <View style={styles.left}>{leftElement}</View>}
+          {isValidElement(title) ? title : <Text style={styles.title}>{title}</Text>}
+          {rightElement && <View style={styles.right}>{rightElement}</View>}
         </View>
       </View>
     );

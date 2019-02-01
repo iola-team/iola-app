@@ -1,23 +1,14 @@
 import React, { Component } from 'react';
-import { includes, filter, isFunction, isUndefined, range, memoize, constant, noop, last } from 'lodash';
+import { isFunction, isUndefined, range, noop, last } from 'lodash';
 import PropTypes from 'prop-types';
 import { WheelPicker } from 'react-native-wheel-picker-android';
 import moment from 'moment';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-  PixelRatio,
-  ScrollView,
-} from 'react-native';
-import {
-  View,
-  Text,
-  Button,
-} from 'native-base';
+import { PixelRatio } from 'react-native';
+import { View, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import Modal from '../Modal';
+import Backdrop from '../Backdrop';
+import TouchableOpacity from '../TouchableOpacity';
 
 const getDays = date => range(1, moment(date).daysInMonth() + 1);
 
@@ -84,7 +75,7 @@ export default class DatePicker extends Component {
     const value = props.value || props.maxDate;
 
     return {
-      value,
+      value: state.isVisible ? state.value : value,
       isVisible: isUndefined(props.isVisible) ? state.isVisible : props.isVisible,
       wheels: {
         year: range(props.minDate.getFullYear(), props.maxDate.getFullYear() + 1),
@@ -95,20 +86,11 @@ export default class DatePicker extends Component {
   }
 
   show = () => {
-    const { value, isVisible, maxDate } = this.props;
-
-    this.setState({
-      value: value || maxDate,
-      isVisible: isUndefined(isVisible) ? true : isVisible,
-    });
+    this.setState({ isVisible: true });
   };
 
   hide = () => {
-    const { isVisible } = this.props;
-
-    this.setState({
-      isVisible: isUndefined(isVisible) ? false : isVisible,
-    });
+    this.setState({ isVisible: false });
   };
 
   action = (handler, preHandler = noop) => () => {
@@ -149,12 +131,7 @@ export default class DatePicker extends Component {
 
   renderModal() {
     const { isVisible, wheels, value: stateValue } = this.state;
-    const {
-      styleSheet: styles,
-      label,
-      onHide,
-      onShow,
-    } = this.props;
+    const { styleSheet: styles, label } = this.props;
 
     const value = stateValue;
     const wheelProps = {
@@ -170,22 +147,29 @@ export default class DatePicker extends Component {
     };
 
     return (
-      <Modal
+      <Backdrop
         height={styles.wheel.height}
         isVisible={isVisible}
         title={label}
-        onDone={this.action('onDone', this.hide)}
+
         onDismiss={this.action('onDismiss')}
         onShow={this.action('onShow')}
         onSwipe={this.action('onSwipe', this.hide)}
-        onCancel={this.action('onCancel', this.hide)}
         onRequestClose={this.action('onRequestClose', this.hide)}
+
+        headerLeft={(
+          <TouchableOpacity cancel onPress={this.action('onCancel', this.hide)}>
+            <Text>Cancel</Text>
+          </TouchableOpacity>
+        )}
+
+        headerRight={(
+          <TouchableOpacity onPress={this.action('onDone', this.hide)}>
+            <Text>Done</Text>
+          </TouchableOpacity>
+        )}
       >
-        <View
-          style={styles.wheels}
-          onStartShouldSetResponder={() => true}
-          padderHorizontal
-        >
+        <View style={styles.wheels} padderHorizontal>
           <WheelPicker
             {...wheelProps}
             onItemSelected={this.onChange('month')}
@@ -207,7 +191,7 @@ export default class DatePicker extends Component {
             selectedItemPosition={wheels.year.indexOf(value.getFullYear())}
           />
         </View>
-      </Modal>
+      </Backdrop>
     );
   }
 

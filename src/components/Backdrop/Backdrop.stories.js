@@ -7,6 +7,7 @@ import { View, Text } from 'native-base';
 
 import { getContentDecorator } from 'storybook/index';
 import Backdrop from './Backdrop';
+import TouchableOpacity from '../TouchableOpacity';
 
 const stories = storiesOf('Components/Backdrop', module);
 
@@ -42,16 +43,14 @@ stories.add('Default', () => {
 
   return (
     <View>
-      <Text>Change `isVisible` knob to show/hide the modal</Text>
+      <Text>Change `isVisible` knob to show/hide backdrop</Text>
 
       <Backdrop
         isVisible={isVisible}
         title="Backdrop title"
         height={height}
-        onCancel={action('onCancel')}
         onSwipe={action('onSwipe')}
         onDismiss={action('onDismiss')}
-        onDone={action('onDone')}
         onRequestClose={action('onRequestClose')}
         onShow={action('onShow')}
       >
@@ -69,18 +68,53 @@ stories.add('Dismiss on swipe', withState(({ isVisible, setVisible }) => {
 
   return (
     <View>
-      <Text>Change `isVisible` knob to show/hide the modal</Text>
+      <Text>Press `show/hide` knobs to show/hide backdrop</Text>
 
       <Backdrop
         isVisible={isVisible}
         title="Backdrop title"
         height={height}
-        onCancel={action('onCancel')}
         onSwipe={hide}
         onDismiss={action('onDismiss')}
-        onDone={action('onDone')}
         onRequestClose={action('onRequestClose')}
         onShow={action('onShow')}
+      >
+        <Content />
+      </Backdrop>
+    </View>
+  );
+}));
+
+stories.add('Right and left buttons', withState(({ isVisible, setVisible }) => {
+  const height = number('Height', 400);
+  const hide = () => setVisible(false);
+  button('Show', () => setVisible(true));
+  button('Hide', hide);
+
+  return (
+    <View>
+      <Text>Press `show/hide` knobs to show/hide backdrop</Text>
+
+      <Backdrop
+        isVisible={isVisible}
+        title="Backdrop title"
+        height={height}
+        onSwipe={hide}
+        onDismiss={action('onDismiss')}
+        onRequestClose={action('onRequestClose')}
+        onShow={action('onShow')}
+
+        headerLeft={(
+          <TouchableOpacity cancel onPress={hide}>
+            <Text>Cancel</Text>
+          </TouchableOpacity>
+        )}
+
+        headerRight={(
+          <TouchableOpacity onPress={hide}>
+            <Text>Done</Text>
+          </TouchableOpacity>
+        )}
       >
         <Content />
       </Backdrop>

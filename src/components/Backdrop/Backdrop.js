@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import PropTypes from 'prop-types';
 import { noop } from 'lodash';
-import { StyleSheet, Dimensions, Modal, Animated, PanResponder } from 'react-native';
+import { StyleSheet, Dimensions, Modal, Animated, PanResponder, Easing } from 'react-native';
 import { View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
@@ -20,7 +20,7 @@ const windowHeight = Dimensions.get('window').height;
   },
 
   header: {
-    height: 76,
+    height: 70,
   },
 
   backdrop: {
@@ -53,9 +53,10 @@ export default class Backdrop extends PureComponent {
     onDismiss: PropTypes.func,
     onShow: PropTypes.func,
     onSwipe: PropTypes.func,
-    onDone: PropTypes.func,
-    onCancel: PropTypes.func,
     onRequestClose: PropTypes.func,
+
+    headerRight: PropTypes.element,
+    headerLeft: PropTypes.element,
   };
 
   static defaultProps = {
@@ -64,9 +65,10 @@ export default class Backdrop extends PureComponent {
     onDismiss: noop,
     onShow: noop,
     onSwipe: noop,
-    onDone: noop,
-    onCancel: noop,
     onRequestClose: noop,
+
+    headerRight: null,
+    headerLeft: null,
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -132,7 +134,7 @@ export default class Backdrop extends PureComponent {
   hide = () => {
     const { onDismiss } = this.props;
 
-    this.animateTo(this.getHeight(), onDismiss);
+    this.animateTo(this.getHeight(), () => this.setState({ active: false }, onDismiss));
   };
 
   show = () => {
@@ -164,8 +166,9 @@ export default class Backdrop extends PureComponent {
       children,
       height,
       footer,
-      onDone,
-      onCancel,
+      headerLeft,
+      headerRight,
+
       onRequestClose,
     } = this.props;
 
@@ -202,8 +205,8 @@ export default class Backdrop extends PureComponent {
             <BackdropHeader
               style={styles.header}
               title={title}
-              onCancel={onCancel}
-              onDone={onDone}
+              leftElement={headerLeft}
+              rightElement={headerRight}
             />
 
             <View style={{ height }}>
