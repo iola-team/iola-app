@@ -1,28 +1,28 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Dimensions, StatusBar, Modal, Text, View } from 'react-native';
-import { Badge, Spinner } from 'native-base';
+import { Badge } from 'native-base';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { Query } from 'react-apollo';
+import { graphql, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from 'theme';
 import Icon from '../Icon';
 import UserOnlineStatus from '../UserOnlineStatus';
 import TouchableOpacity from '../TouchableOpacity';
 import ImageComments from '../ImageComments';
+import ActionSheet from '../ActionSheet';
+import Spinner from '../Spinner';
 
-const SpinnerContainer = connectToStyleSheet('spinnerContainer', View);
-const NameBlock = connectToStyleSheet('nameBlock', View);
-const Name = connectToStyleSheet('name', Text);
-const Caption = connectToStyleSheet('caption', Text);
-const DateTime = connectToStyleSheet('dateTime', Text);
-const ActionsBlock = connectToStyleSheet('actionsBlock', View);
-const ActionText = connectToStyleSheet('actionText', Text);
-const ActionBadge = connectToStyleSheet('actionBadge', Badge);
-const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
+const meQuery = gql`
+  query meQuery {
+    me {
+      id
+    }
+  }
+`;
 
 const edgeFragment = gql`
   fragment ImageView_edge on PhotoEdge {
@@ -94,6 +94,31 @@ export const photoDetailsQuery = gql`
     zIndex: 999,
   },
 
+  headerButton: {
+    position: 'relative',
+    padding: 15,
+    zIndex: 1,
+  },
+
+  headerIcon: {
+    fontSize: 14,
+    color: '#BDC0CB',
+  },
+
+  backButton: {
+    position: 'relative',
+    marginRight: 'auto',
+    padding: 15,
+    zIndex: 1,
+  },
+
+  meatballMenu: {
+    position: 'relative',
+    marginLeft: 'auto',
+    padding: 15,
+    zIndex: 1,
+  },
+
   indicator: {
     width: '100%',
     position: 'absolute',
@@ -105,22 +130,12 @@ export const photoDetailsQuery = gql`
     color: '#BDC0CB',
   },
 
-  closeButton: {
-    marginLeft: 'auto',
-  },
-
-  close: {
-    margin: 14,
-    fontSize: 14,
-    color: '#BDC0CB',
-  },
-
   footer: {
     paddingTop: 25,
     paddingHorizontal: 17,
     justifyContent: 'space-between',
     backgroundColor: 'rgba(46, 48, 55, 0.3)',
-    pointerEvents: 'none', // @TODO: it doesn't help
+    pointerEvents: 'none', // @TODO: it doesn't work
   },
 
   nameBlock: {
@@ -198,12 +213,14 @@ export const photoDetailsQuery = gql`
     color: '#FFFFFF',
   },
 })
+@graphql(meQuery)
 export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment).isRequired
     ).isRequired,
+    deletePhoto: PropTypes.func.isRequired,
   };
 
   state = {
@@ -223,8 +240,29 @@ export default class ImageView extends Component {
     this.setState({ visible: false });
   }
 
+  onDelete(photoId) {
+    const { edges, deletePhoto } = this.props;
+    const { index } = this.state;
+
+    deletePhoto(photoId);
+
+    if (edges.length === 1) {
+      this.setState({ visible: false });
+      return;
+    }
+
+    if (index === 1) {
+      this.setState({ index: index + 1 });
+      return;
+    }
+
+    if (index) {
+      this.setState({ index: index - 1 });
+    }
+  }
+
   renderControls() {
-    const { edges, styleSheet: styles } = this.props;
+    const { edges, data: { me }, styleSheet: styles } = this.props;
     const { index } = this.state;
     const { node: { id } } = edges[index];
     const totalCountImages = edges.length;
@@ -236,10 +274,11 @@ export default class ImageView extends Component {
             if (loading) return null; // @TODO: add spinner
 
             const {
-              id,
+              id: photoId,
               caption,
               createdAt,
               user: {
+                id: userId,
                 name,
                 // isOnline, // @TODO: isOnline
               },
@@ -254,30 +293,52 @@ export default class ImageView extends Component {
             const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
 
             return (
-              <Fragment>
+              <>
                 <View style={styles.header}>
+                  <TouchableOpacity
+                    onPress={::this.onClose}
+                    style={[styles.headerButton, styles.backButton]}
+                  >
+                    <Icon style={styles.headerIcon} name="back" />
+                  </TouchableOpacity>
+
                   {totalCountImages > 1 && (
                     <Text style={styles.indicator}>
                       {`${index + 1} of ${totalCountImages}`}
                     </Text>
                   )}
-                  <TouchableOpacity onPress={::this.onClose} style={styles.closeButton}>
-                    <Icon name="close" style={styles.close} />
-                  </TouchableOpacity>
+
+                  {me.id === userId && (
+                    <ActionSheet
+                      options={['Cancel', 'Delete']}
+                      cancelButtonIndex={0}
+                      destructiveButtonIndex={1}
+                      onPress={index => index === 1 && this.onDelete(photoId)}
+                    >
+                      {show => (
+                        <TouchableOpacity
+                          onPress={show}
+                          style={[styles.headerButton, styles.meatballMenu]}
+                        >
+                          <Icon style={styles.headerIcon} name="emoji" /* @TODO: meatball icon */ />
+                        </TouchableOpacity>
+                      )}
+                    </ActionSheet>
+                  )}
                 </View>
 
                 <View style={styles.footer}>
                   <View>
-                    <NameBlock>
-                      <Name>{name}</Name>
+                    <View style={styles.nameBlock}>
+                      <Text style={styles.name}>{name}</Text>
                       <UserOnlineStatus isOnline={isOnline} />
-                    </NameBlock>
-                    <Caption>{caption}</Caption>
-                    <DateTime>{dateFormatted}</DateTime>
+                    </View>
+                    <Text style={styles.caption}>{caption}</Text>
+                    <Text style={styles.dateTime}>{dateFormatted}</Text>
                   </View>
 
-                  <ActionsBlock>
-                    <ImageComments photoId={id} totalCount={totalCount}>
+                  <View style={styles.actionsBlock}>
+                    <ImageComments photoId={photoId} totalCount={totalCount}>
                       {onShowImageComments => (
                         <TouchableOpacity
                           onPress={onShowImageComments}
@@ -305,9 +366,9 @@ export default class ImageView extends Component {
                       ) : null}
                     </TouchableOpacity>
                     */}
-                  </ActionsBlock>
+                  </View>
                 </View>
-              </Fragment>
+              </>
             );
           }}
         </Query>
@@ -321,7 +382,7 @@ export default class ImageView extends Component {
     const imageUrls = edges.map(({ node: { url } }) => ({ url }));
 
     return (
-      <Fragment>
+      <>
         {children(::this.onShowImage)}
 
         <Modal
@@ -338,7 +399,7 @@ export default class ImageView extends Component {
               onSwipeDown={::this.onClose}
               renderIndicator={() => null}
               failImageSource={{ uri: 'https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif' /* @TODO */ }}
-              loadingRender={() => <SpinnerContainer><Spinner /></SpinnerContainer>}
+              loadingRender={() => <View style={styles.spinnerContainer}><Spinner /></View>}
               footerContainerStyle={{ width: '100%' }}
               backgroundColor="rgba(46, 48, 55, 0.95)"
             />
@@ -346,7 +407,7 @@ export default class ImageView extends Component {
             {visible && this.renderControls()}
           </View>
         </Modal>
-      </Fragment>
+      </>
     );
   }
 }

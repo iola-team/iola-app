@@ -121,8 +121,8 @@ const userQuery = gql`
 stories.add('Default', () => (
   <Query query={userQuery} variables={{ id: 'User:2' }}>
     {({ loading, data: { user } }) => (
-      <PhotoList 
-        edges={loading ? [] : user.photos.edges} 
+      <PhotoList
+        edges={loading ? [] : user.photos.edges}
         loading={loading}
       />
     )}
@@ -132,8 +132,8 @@ stories.add('Default', () => (
 stories.add('Full flow', () => (
   <Query query={userQuery} variables={{ id: 'User:1' }}>
     {({ loading, data: { user } }) => (
-      <PhotoList 
-        edges={loading ? [] : user.photos.edges} 
+      <PhotoList
+        edges={loading ? [] : user.photos.edges}
         loading={loading}
       />
     )}
@@ -142,8 +142,8 @@ stories.add('Full flow', () => (
 
 stories.add('Initial Load', () => <PhotoList loading edges={[]} />);
 stories.add('No items', () => (
-  <PhotoList 
-    edges={[]} 
-    noContentText="No photos"
+  <PhotoList
+    edges={[]}
+    noContentText="No Photos"
   />
 ));

@@ -12,7 +12,7 @@ stories.addDecorator(getContentDecorator({ padder: true }));
 
 stories.add('With button', () => (
   <Button style={{ position: 'relative' }} block>
-    <Text>Sign in</Text>
+    <Text>Sign In</Text>
     <Spinner style={{ position: 'absolute', right: 20 }} />
   </Button>
 ));
