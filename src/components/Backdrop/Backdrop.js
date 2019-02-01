@@ -138,6 +138,7 @@ export default class Backdrop extends PureComponent {
   show = () => {
     const { onShow } = this.props;
 
+    this.animatedValue.setValue(this.getHeight());
     this.animateTo(0, onShow);
   };
 
