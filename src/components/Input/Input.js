@@ -103,7 +103,7 @@ export default class Input extends PureComponent {
     Toast.show({
       text: error,
       duration: 5000,
-      buttonText: 'Ok',
+      buttonText: 'OK',
       type: 'danger',
       onClose: () => {
         this.setState({ isToastVisible: false });
