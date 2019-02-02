@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
@@ -7,14 +6,16 @@ import { has } from 'lodash';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import UserOnlineStatus from '../UserOnlineStatus';
-import UserAvatar from '../UserAvatar';
 import Placeholder from '../Placeholder';
+import UserAvatar from '../UserAvatar';
+import UserOnlineStatus from '../UserOnlineStatus';
+import Image from '../Image';
 
 const imageCommentsItemFragment = gql`
   fragment ImageCommentsItemFragment on Comment {
     id
     text
+    image
     createdAt
     user {
       id
@@ -42,15 +43,6 @@ const imageCommentsItemFragment = gql`
     paddingHorizontal: 15,
     borderRadius: 8,
     backgroundColor: '#FFFFFF',
-    // @TODO: box-shadow
-    shadowColor: '#E1E6ED',
-    shadowRadius: 4,
-    shadowOpacity: 0.5,
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    elevation: 1,
   },
 
   nameRow: {
@@ -73,6 +65,14 @@ const imageCommentsItemFragment = gql`
     fontSize: 14,
     lineHeight: 17,
     color: '#45474F',
+  },
+
+  image: {
+    height: 170,
+    resizeMode: 'contain',
+    marginTop: 6,
+    marginBottom: 13,
+    backgroundColor: 'red',
   },
 
   createdAt: {
@@ -132,7 +132,7 @@ export default class ImageCommentsItem extends Component {
   render() {
     if (!this.props.comment) return this.renderPlaceholder();
 
-    const { styleSheet: styles, comment: { id, text, createdAt, user } } = this.props;
+    const { styleSheet: styles, comment: { id, text, image, createdAt, user } } = this.props;
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
     const isOnline = true; // @TODO
@@ -145,7 +145,8 @@ export default class ImageCommentsItem extends Component {
             <Text style={styles.name}>{user.name}</Text>
             <UserOnlineStatus isOnline={isOnline} />
           </View>
-          <Text style={styles.text}>{text}</Text>
+          {!!text && <Text style={styles.text}>{text}</Text>}
+          {image && <Image style={styles.image} source={{ uri: image }} />}
           <Text style={styles.createdAt}>{dateFormatted}</Text>
         </View>
       </View>
