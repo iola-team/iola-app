@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { has } from 'lodash';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import Placeholder from '../Placeholder';
 import UserAvatar from '../UserAvatar';
 import UserOnlineStatus from '../UserOnlineStatus';
-import Image from '../Image';
+import ImageFit from '../ImageFit';
 
 const imageCommentsItemFragment = gql`
   fragment ImageCommentsItemFragment on Comment {
@@ -68,11 +67,8 @@ const imageCommentsItemFragment = gql`
   },
 
   image: {
-    height: 170,
-    resizeMode: 'contain',
     marginTop: 6,
     marginBottom: 13,
-    backgroundColor: 'red',
   },
 
   createdAt: {
@@ -146,7 +142,7 @@ export default class ImageCommentsItem extends Component {
             <UserOnlineStatus isOnline={isOnline} />
           </View>
           {!!text && <Text style={styles.text}>{text}</Text>}
-          {image && <Image style={styles.image} source={{ uri: image }} />}
+          {image && <ImageFit style={styles.image} url={image} maxHeight={170} maxWidth={200} />}
           <Text style={styles.createdAt}>{dateFormatted}</Text>
         </View>
       </View>
