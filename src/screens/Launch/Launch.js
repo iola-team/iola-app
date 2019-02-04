@@ -23,8 +23,6 @@ import logo from './logo.png';
   },
 })
 export default class LaunchScreen extends Component {
-  state = { me: undefined };
-
   constructor() {
     super();
 
@@ -61,36 +59,23 @@ export default class LaunchScreen extends Component {
     };
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const { me } = props.data;
-
-    if (me !== state.me) return { me };
-
-    return state;
-  }
-
   componentDidUpdate(nextProps, prevState) {
-    const { navigation: { navigate } } = this.props;
-    const { me } = this.state;
+    const { data: { loading } } = this.props;
 
-    if (me !== prevState.me) {
-      if (me) {
-        navigate(routes.APPLICATION);
-      } else {
-        Animated.timing(this.logo.positionAnimatedValue, {
-          toValue: 1,
-          duration: 500,
-          easing: Easing.ease,
-          useNativeDriver: true,
-        }).start();
+    if (loading !== nextProps.data.loading) {
+      Animated.timing(this.logo.positionAnimatedValue, {
+        toValue: 1,
+        duration: 500,
+        easing: Easing.ease,
+        useNativeDriver: true,
+      }).start();
 
-        Animated.timing(this.form.opacityAnimatedValue, {
-          toValue: 1,
-          duration: 800,
-          easing: Easing.ease,
-          useNativeDriver: true,
-        }).start();
-      }
+      Animated.timing(this.form.opacityAnimatedValue, {
+        toValue: 1,
+        duration: 800,
+        easing: Easing.ease,
+        useNativeDriver: true,
+      }).start();
     }
   }
 
