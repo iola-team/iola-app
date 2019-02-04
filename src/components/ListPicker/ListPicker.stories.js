@@ -2,7 +2,7 @@ import React from 'react';
 import { withKnobs, boolean, array } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
-import { compose, withStateHandlers } from 'recompose';
+import { withStateHandlers } from 'recompose';
 import { Button, Text } from 'native-base';
 
 import { getContentDecorator } from 'storybook';
@@ -27,13 +27,15 @@ const options = [
   { label: 'Avocados 2', value: '10' },
 ];
 
-const Select = compose(
-  withStateHandlers({
-    value: [],
-  }, {
-    onChange: ({ value: values }) => value => ({ value }),
-  }),
-)(ListPicker);
+const Select = withStateHandlers({
+  value: [],
+}, {
+  onChange: () => value => {
+    action('onChange', value);
+
+    return { value };
+  },
+})(ListPicker);
 
 const renderChildren = (show, selectedOptions) => (
   <Button transparent onPress={show}>
