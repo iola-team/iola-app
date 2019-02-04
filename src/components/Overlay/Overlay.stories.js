@@ -19,7 +19,7 @@ const style = {
 };
 
 stories.add('Default', () => (
-  <Overlay style={style} isVisible={boolean('Is visible')}>
+  <Overlay style={style} visible={boolean('Is visible')}>
     <Text>Overlay content</Text>
   </Overlay>
 ));

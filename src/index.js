@@ -60,7 +60,9 @@ class StorybookRoot extends Component {
   render() {
     return (
       <Theme>
-        <Storybook />
+        <Root>
+          <Storybook />
+        </Root>
       </Theme>
     );
   }

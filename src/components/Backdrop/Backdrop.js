@@ -1,20 +1,17 @@
 import React, { PureComponent } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import PropTypes from 'prop-types';
-import { noop } from 'lodash';
-import { StyleSheet, Dimensions, Modal, Animated, PanResponder, Easing } from 'react-native';
-import { View } from 'native-base';
+import { noop, clamp } from 'lodash';
+import { View, StyleSheet, Dimensions, Animated, BackHandler } from 'react-native';
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import BackdropHeader from './BackdropHeader';
+import Overlay from '../Overlay';
 
 const windowHeight = Dimensions.get('window').height;
 
 @styleSheet('Sparkle.Backdrop', {
-  root: {
-    flex: 1,
-  },
-
   body: {
     marginTop: 'auto',
   },
@@ -83,69 +80,86 @@ export default class Backdrop extends PureComponent {
   constructor(...args) {
     super(...args);
 
-    const modalHeight = this.getHeight();
-    const modalTop = windowHeight - getStatusBarHeight() - modalHeight;
+    const [, maxY] = this.getScreenBounds();
+    this.dragY = new Animated.Value(0);
+    this.offsetY = new Animated.Value(maxY);
+    this.translateY = Animated.add(this.offsetY, this.dragY);
 
-    this.animatedValue = new Animated.Value(modalHeight);
-    const animatedEvent = Animated.event([null, { dy: this.animatedValue }]);
-
-    this.panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: ({ nativeEvent: { pageY } }) => (
-        (pageY - modalTop) < this.props.styleSheet.header.height
-      ),
-      onPanResponderGrant: () => {
-        this.animatedValue.setOffset(0);
-        this.animatedValue.setValue(0);
-      },
-      onPanResponderMove: (event, gestureState) => {
-        if (modalTop + gestureState.dy > 0) {
-          animatedEvent(event, gestureState);
-        }
-      },
-      onPanResponderRelease: (event, { dy }) => {
-        const { onSwipe } = this.props;
-        this.animatedValue.flattenOffset();
-
-        if (dy > this.getHeight() * 0.3) {
-          onSwipe();
-        }
-
-        requestAnimationFrame(this.afterResponderRelease);
-      },
-    });
+    this.onGestureEvent = Animated.event(
+      [{ nativeEvent: { translationY: this.dragY } }],
+      { useNativeDriver: true }
+    );
   }
 
-  afterResponderRelease = () => {
-    const { isVisible } = this.props;
+  onHandlerStateChange = ({ nativeEvent }) => {
+    const { onSwipe } = this.props;
+    const { translationY, velocityY } = nativeEvent;
+    const offsetY = clamp(translationY, ...this.getScreenBounds());
+    const velocity = velocityY / 1000;
 
-    if (isVisible) {
-      this.animateTo(0);
+    if (nativeEvent.oldState === State.ACTIVE) { // On release
+      this.dragY.setValue(0);
+      this.offsetY.setValue(offsetY);
+
+      if (offsetY > this.getHeight() * 0.3) {
+        onSwipe();
+      }
+
+      requestAnimationFrame(() => {
+        const { isVisible } = this.props;
+
+        if (isVisible) {
+          this.rollbackSwipe(velocity);
+        }
+      });
     }
   };
 
-  animateTo = (toValue, onDone) => Animated.timing(this.animatedValue, {
+  rollbackSwipe = (velocity) =>  Animated.spring(this.offsetY, {
+    velocity,
+    toValue: 0,
+    bounciness: 0,
+    useNativeDriver: true,
+  }).start();
+
+  onDismiss = () => {
+    const { onDismiss } = this.props;
+
+    this.offsetY.setValue(this.getHeight());
+    this.setState({ active: false }, onDismiss);
+  };
+
+  animateTo = (toValue, onDone) => Animated.timing(this.offsetY, {
     toValue,
     duration: 300,
     useNativeDriver: true,
   }).start(onDone);
 
-  hide = () => {
-    const { onDismiss } = this.props;
+  hide = () => this.animateTo(this.getHeight(), this.onDismiss);
+  show = () => this.animateTo(0, this.props.onShow);
+  onBackButtonClick = () => {
+    const { onRequestClose } = this.props;
+    const { active } = this.state;
 
-    this.animateTo(this.getHeight(), () => this.setState({ active: false }, onDismiss));
-  };
+    onRequestClose();
 
-  show = () => {
-    const { onShow } = this.props;
-
-    this.animatedValue.setValue(this.getHeight());
-    this.animateTo(0, onShow);
+    return active;
   };
 
   getHeight() {
     const { styleSheet, height } = this.props;
 
     return height + styleSheet.header.height;
+  }
+
+  getScreenBounds() {
+    const modalHeight = this.getHeight();
+    const statusBarHeight = getStatusBarHeight();
+
+    return [
+      modalHeight - windowHeight + statusBarHeight,
+      modalHeight,
+    ];
   }
 
   componentDidUpdate({ isVisible }) {
@@ -158,6 +172,14 @@ export default class Backdrop extends PureComponent {
     }
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackButtonClick);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackButtonClick);
+  }
+
   render() {
     const {
       styleSheet: styles,
@@ -166,53 +188,56 @@ export default class Backdrop extends PureComponent {
       height,
       headerLeft,
       headerRight,
-
-      onRequestClose,
     } = this.props;
 
     const { active } = this.state;
     const modalHeight = this.getHeight();
     const backdropStyle = {
-      opacity: this.animatedValue.interpolate({
+      opacity: this.translateY.interpolate({
         inputRange: [0, modalHeight],
         outputRange: [styles.backdrop.opacity, 0],
         extrapolate: 'clamp',
       }),
     };
 
-    const rootStyle = {
+    const screenBounds = this.getScreenBounds();
+    const bodyStyle = {
       transform: [
         {
-          translateY: this.animatedValue,
-        },
+          translateY: this.translateY.interpolate({
+            inputRange: screenBounds,
+            outputRange: screenBounds,
+            extrapolate: 'clamp',
+          }),
+        }
       ],
     };
 
     return (
-      <Modal
-        transparent
-        visible={active}
-        onRequestClose={onRequestClose}
-      >
+      <Overlay visible={active}>
         <Animated.View style={[styles.backdrop, backdropStyle]} />
+        <Animated.View style={[styles.body, bodyStyle]}>
+          <View style={styles.bodyBackground} />
 
-        <View style={styles.root} {...this.panResponder.panHandlers}>
-          <Animated.View style={[styles.body, rootStyle]}>
-            <Animated.View style={styles.bodyBackground} />
+          <PanGestureHandler
+            onGestureEvent={this.onGestureEvent} 
+            onHandlerStateChange={this.onHandlerStateChange}
+          >
+            <Animated.View>
+              <BackdropHeader
+                style={styles.header}
+                title={title}
+                leftElement={headerLeft}
+                rightElement={headerRight}
+              />
+            </Animated.View>
+          </PanGestureHandler>
 
-            <BackdropHeader
-              style={styles.header}
-              title={title}
-              leftElement={headerLeft}
-              rightElement={headerRight}
-            />
-
-            <View style={{ height }}>
-              {children}
-            </View>
-          </Animated.View>
-        </View>
-      </Modal>
+          <View style={{ height }}>
+            {children}
+          </View>
+        </Animated.View>
+      </Overlay>
     );
   }
 }

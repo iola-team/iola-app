@@ -1,10 +1,8 @@
 import React, { Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
-import { View, StyleSheet } from 'react-native';
-import { Text } from 'native-base';
+import { View, Text, StyleSheet } from 'react-native';
 
 import { withStyleSheet } from 'theme';
-import TouchableOpacity from '../TouchableOpacity';
 
 @withStyleSheet('Sparkle.BackdropHeader', {
   root: {

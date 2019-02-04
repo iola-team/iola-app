@@ -37,6 +37,7 @@ function loadStories() {
   require('../components/MessageStateIndicator/MessageStateIndicator.stories');
   require('../components/Modal/Modal.stories');
   require('../components/NoContent/NoContent.stories');
+  require('../components/Overlay/Overlay.stories');
   require('../components/PhotoEdit/PhotoEdit.stories');
   require('../components/PhotoGrid/PhotoGrid.stories');
   require('../components/PhotoList/PhotoList.stories');
@@ -99,6 +100,7 @@ const stories = [
   '../components/MessageStateIndicator/MessageStateIndicator.stories',
   '../components/Modal/Modal.stories',
   '../components/NoContent/NoContent.stories',
+  '../components/Overlay/Overlay.stories',
   '../components/PhotoEdit/PhotoEdit.stories',
   '../components/PhotoGrid/PhotoGrid.stories',
   '../components/PhotoList/PhotoList.stories',

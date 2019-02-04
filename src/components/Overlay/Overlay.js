@@ -10,17 +10,17 @@ import { withStyle } from 'theme';
 })
 export default class Overlay extends Component {
   static propTypes = {
-    isVisible: PropTypes.bool,
+    visible: PropTypes.bool,
   };
 
   static defaultProps = {
-    isVisible: false,
+    visible: false,
   };
 
   render() {
-    const { isVisible, ...props } = this.props;
+    const { visible, ...props } = this.props;
 
-    return isVisible && (
+    return visible && (
       <Gateway into="root">
         <View {...props} />
       </Gateway>

@@ -1,4 +1,5 @@
 import { AppRegistry, NativeModules, Platform, YellowBox } from 'react-native';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import Application from './src';
 
@@ -7,7 +8,7 @@ if (Platform.OS === 'android') {
   NativeModules.UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-AppRegistry.registerComponent('ApolloMessenger', () => Application);
+AppRegistry.registerComponent('ApolloMessenger', () => gestureHandlerRootHOC(Application));
 
 /**
  * TODO: Remove when it will be possible
