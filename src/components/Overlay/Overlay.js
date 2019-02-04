@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Gateway } from 'react-gateway';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, BackHandler } from 'react-native';
 
 import { withStyle } from 'theme';
 
@@ -10,12 +10,29 @@ import { withStyle } from 'theme';
 })
 export default class Overlay extends Component {
   static propTypes = {
-    visible: PropTypes.bool,
+    visible: PropTypes.bool.isRequired,
+    onRequestClose: PropTypes.func.isRequired,
   };
 
-  static defaultProps = {
-    visible: false,
-  };
+  onBackButtonClick = () => {
+    const { onRequestClose, visible } = this.props;
+
+    if (!visible) {
+      return false;
+    }
+
+    onRequestClose();
+
+    return true;
+  }
+
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.onBackButtonClick);
+  }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.onBackButtonClick);
+  }
 
   render() {
     const { visible, ...props } = this.props;

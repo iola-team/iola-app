@@ -1,5 +1,6 @@
 import React from 'react';
 import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { Text } from 'native-base';
 
@@ -19,7 +20,11 @@ const style = {
 };
 
 stories.add('Default', () => (
-  <Overlay style={style} visible={boolean('Is visible')}>
+  <Overlay
+    style={style}
+    visible={boolean('Is visible', false)}
+    onRequestClose={action('onRequestClose')}
+  >
     <Text>Overlay content</Text>
   </Overlay>
 ));

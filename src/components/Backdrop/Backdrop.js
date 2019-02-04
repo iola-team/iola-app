@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import PropTypes from 'prop-types';
 import { noop, clamp } from 'lodash';
-import { View, StyleSheet, Dimensions, Animated, BackHandler } from 'react-native';
+import { View, StyleSheet, Dimensions, Animated } from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
 import { withStyleSheet as styleSheet } from 'theme';
@@ -137,14 +137,6 @@ export default class Backdrop extends PureComponent {
 
   hide = () => this.animateTo(this.getHeight(), this.onDismiss);
   show = () => this.animateTo(0, this.props.onShow);
-  onBackButtonClick = () => {
-    const { onRequestClose } = this.props;
-    const { active } = this.state;
-
-    onRequestClose();
-
-    return active;
-  };
 
   getHeight() {
     const { styleSheet, height } = this.props;
@@ -172,14 +164,6 @@ export default class Backdrop extends PureComponent {
     }
   }
 
-  componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.onBackButtonClick);
-  }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.onBackButtonClick);
-  }
-
   render() {
     const {
       styleSheet: styles,
@@ -188,6 +172,8 @@ export default class Backdrop extends PureComponent {
       height,
       headerLeft,
       headerRight,
+
+      onRequestClose,
     } = this.props;
 
     const { active } = this.state;
@@ -214,7 +200,7 @@ export default class Backdrop extends PureComponent {
     };
 
     return (
-      <Overlay visible={active}>
+      <Overlay visible={active} onRequestClose={onRequestClose}>
         <Animated.View style={[styles.backdrop, backdropStyle]} />
         <Animated.View style={[styles.body, bodyStyle]}>
           <View style={styles.bodyBackground} />
