@@ -14,6 +14,6 @@ stories.addDecorator(getContainerDecorator());
 // Stories
 const icons = ['photos-empty-state', 'chats-empty-state', 'comments-empty-state'];
 const getIcon = () => select('Icon', icons, icons[0]);
-const getText = () => text('Text', 'No content');
+const getText = () => text('Text', 'No Content');
 
 stories.add('Default', () => <NoContent icon={getIcon()} text={getText()} />);

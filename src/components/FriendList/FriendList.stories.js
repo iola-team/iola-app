@@ -157,9 +157,9 @@ const friendsQuery = gql`
 stories.add('Full flow', () => (
   <Query query={friendsQuery}>
     {({ loading, data }) => (
-      <FriendList 
-        edges={loading ? [] : data.user.friends.edges} 
-        loading={loading} 
+      <FriendList
+        edges={loading ? [] : data.user.friends.edges}
+        loading={loading}
 
         onItemPress={action('onItemPress')}
         onAcceptPress={action('onAcceptPress')}
@@ -172,8 +172,8 @@ stories.add('Full flow', () => (
 
 stories.add('Initial Load', () => <FriendList edges={[]} loading />);
 stories.add('No items', () => (
-  <FriendList 
-    edges={[]} 
-    noContentText="No friends"
+  <FriendList
+    edges={[]}
+    noContentText="You have no Friends"
   />
 ));

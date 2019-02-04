@@ -109,7 +109,7 @@ export default class ProfileFieldsEdit extends Component {
     Toast.show({
       text: 'Please, fill the form properly',
       duration: 5000,
-      buttonText: 'Ok',
+      buttonText: 'OK',
       type: "danger",
     });
   };

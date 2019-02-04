@@ -73,7 +73,7 @@ const createFlatListTab = (backgroundColor, count = 100) => class Tab extends Pu
       <FlatList
         data={data}
         renderItem={this.renderItem}
-        ListEmptyComponent={<NoContent icon="comments-empty-state" text="No users" />}
+        ListEmptyComponent={<NoContent icon="comments-empty-state" text="No Users" />}
       />
     );
   }
