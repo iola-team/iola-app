@@ -24,6 +24,11 @@
     - run: `react-devtools`
 3) `yarn postinstall` // @TODO: remove when Apollo fix this: https://github.com/apollographql/apollo-client/issues/3236
 
+### Release
+1) Build the app: 
+2) Change the app icon:
+  - [Online Android Asset Studio](http://romannurik.github.io/AndroidAssetStudio/icons-launcher.html#foreground.type=clipart&foreground.clipart=android&foreground.space.trim=1&foreground.space.pad=0.25&foreColor=rgba(96%2C%20125%2C%20139%2C%200)&backColor=rgb(68%2C%20138%2C%20255)&crop=0&backgroundShape=square&effects=none&name=ic_launcher)
+
 ### Code style
   - [Airbnb Code Style](https://github.com/airbnb/javascript)
   - Destructuring: in one line if length < 100 but in multiple lines if has default values
