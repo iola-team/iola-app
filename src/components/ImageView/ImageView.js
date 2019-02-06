@@ -48,6 +48,7 @@ export const photoDetailsQuery = gql`
         user {
           id
           name
+          ...UserOnlineStatus_user
         }
 
         comments @connection(key: "PhotoCommentsConnection") {
@@ -56,6 +57,8 @@ export const photoDetailsQuery = gql`
       }
     }
   }
+  
+  ${UserOnlineStatus.fragments.user}
 `;
 
 @styleSheet('Sparkle.ImageView', {
@@ -273,21 +276,7 @@ export default class ImageView extends Component {
           {({ loading, data }) => {
             if (loading) return null; // @TODO: add spinner
 
-            const {
-              id: photoId,
-              caption,
-              createdAt,
-              user: {
-                id: userId,
-                name,
-                // isOnline, // @TODO: isOnline
-              },
-              comments: {
-                totalCount,
-              },
-              // totalCountLikes, // @TODO: Likes
-            } = data.photo;
-            const isOnline = false; // @TODO: isOnline
+            const { id: photoId, caption, createdAt, user, comments: { totalCount } } = data.photo;
             // const totalCountLikes = 0; // @TODO: Likes
             const date = moment.duration(moment(createdAt).diff(moment())).humanize();
             const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
@@ -308,7 +297,7 @@ export default class ImageView extends Component {
                     </Text>
                   )}
 
-                  {me.id === userId && (
+                  {me.id === user.id && (
                     <ActionSheet
                       options={['Cancel', 'Delete']}
                       cancelButtonIndex={0}
@@ -330,8 +319,8 @@ export default class ImageView extends Component {
                 <View style={styles.footer}>
                   <View>
                     <View style={styles.nameBlock}>
-                      <Text style={styles.name}>{name}</Text>
-                      <UserOnlineStatus isOnline={isOnline} />
+                      <Text style={styles.name}>{user.name}</Text>
+                      <UserOnlineStatus user={user} />
                     </View>
                     <Text style={styles.caption}>{caption}</Text>
                     <Text style={styles.dateTime}>{dateFormatted}</Text>

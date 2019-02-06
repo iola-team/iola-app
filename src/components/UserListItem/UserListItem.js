@@ -1,32 +1,34 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Moment from 'react-moment';
+import { StyleSheet } from 'react-native';
+import { ListItem, Left, Body, Text, Right, View } from 'native-base';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { ListItem, Left, Body, Text, Right, View } from 'native-base';
 
 
 import { withStyle } from 'theme';
 import UserAvatar from '../UserAvatar';
+import UserOnlineStatus from '../UserOnlineStatus';
 import Placeholder from '../Placeholder';
 
 const userFragment = gql`
   fragment UserListItem_user on User {
     id
     name
-    activityTime
-
+    ...UserOnlineStatus_user
     ...UserAvatar_user
   }
 
+  ${UserOnlineStatus.fragments.user}
   ${UserAvatar.fragments.user}
 `;
 
 @withStyle('Sparkle.UserListItem', {
   'NativeBase.ListItem': {
     'NativeBase.Body': {
+      flexDirection: 'row',
+      alignItems: 'center',
       height: 68,
-      justifyContent: 'center',
     },
     'NativeBase.Right': {
       justifyContent: 'center',
@@ -56,6 +58,11 @@ const userFragment = gql`
         justifyContent: 'center',
       },
     },
+  },
+
+  onlineStatus: {
+    marginLeft: -3,
+    marginBottom: -2,
   },
 })
 export default class UserListItem extends Component {
@@ -94,6 +101,7 @@ export default class UserListItem extends Component {
 
   render() {
     const { user, onPress, style, children } = this.props;
+    const { onlineStatus } = StyleSheet.flatten(style);
 
     if (!user) {
       return this.renderPlaceholder();
@@ -111,6 +119,7 @@ export default class UserListItem extends Component {
         </Left>
         <Body>
           <Text>{user.name}</Text>
+          <UserOnlineStatus style={onlineStatus} user={user} />
         </Body>
         {children && (
           <Right>{children}</Right>

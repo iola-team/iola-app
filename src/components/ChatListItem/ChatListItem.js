@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
+import { Badge, Body, Left, ListItem, Right, Text, View } from 'native-base';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { filter } from 'lodash';
 import Moment from 'react-moment';
-import { Text, ListItem, Left, Body, Right, Badge } from 'native-base';
 
 import { withStyle } from 'theme';
 import UserAvatar from '../UserAvatar';
+import UserOnlineStatus from '../UserOnlineStatus';
 import MessageStateIndicator from '../MessageStateIndicator';
 
 const chatFragment = gql`
@@ -16,6 +18,7 @@ const chatFragment = gql`
     participants {
       id
       name
+      ...UserOnlineStatus_user
       ...UserAvatar_user
     }
     messages(first: 1) {
@@ -35,16 +38,29 @@ const chatFragment = gql`
     }
   }
   
+  ${UserOnlineStatus.fragments.user}
   ${UserAvatar.fragments.user}
 `;
 
 @withStyle('Sparkle.ChatListItem', {
   'NativeBase.ListItem': {
+    'NativeBase.Body': {
+      'NativeBase.ViewNB': {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+    },
+
     'NativeBase.Right': {
       'Sparkle.MessageStateIndicator': {
         marginTop: 3,
       },
     },
+  },
+
+  onlineStatus: {
+    marginLeft: 8,
+    marginBottom: -1,
   },
 })
 export default class ChatListItem extends Component {
@@ -83,12 +99,12 @@ export default class ChatListItem extends Component {
   render() {
     const {
       style,
-      styleSheet: styles,
       chat,
       currentUserId,
       unreadMessagesCount,
       onPress,
     } = this.props;
+    const { onlineStatus } = StyleSheet.flatten(style);
     const { messages, participants } = chat;
 
     const recipient = filter(participants, ({ id }) => id !== currentUserId)[0];
@@ -105,7 +121,10 @@ export default class ChatListItem extends Component {
           <UserAvatar user={recipient} />
         </Left>
         <Body>
-          <Text headline>{recipient.name}</Text>
+          <View>
+            <Text headline>{recipient.name}</Text>
+            <UserOnlineStatus style={onlineStatus} user={recipient} />
+          </View>
           <Text note numberOfLines={1}>{lastMessage.content.text}</Text>
         </Body>
         <Right>
