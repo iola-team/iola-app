@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, Easing, Dimensions, Image } from 'react-native';
+import { Animated, AsyncStorage, Easing, Dimensions, Image } from 'react-native';
 import { Container, View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
@@ -59,8 +59,16 @@ export default class LaunchScreen extends Component {
     };
   }
 
-  componentDidUpdate(nextProps, prevState) {
-    const { data: { loading } } = this.props;
+  async componentDidUpdate(nextProps, prevState) {
+    const { data: { loading }, navigation: { navigate } } = this.props;
+
+    try {
+      const platformURL = await AsyncStorage.getItem('platformURL');
+
+      if (platformURL !== null) navigate(routes.AUTHENTICATION);
+    } catch (error) {
+      // @TODO: display Error message?
+    }
 
     if (loading !== nextProps.data.loading) {
       Animated.timing(this.logo.positionAnimatedValue, {
@@ -102,11 +110,14 @@ export default class LaunchScreen extends Component {
     this.logo.pulsingAnimationValue = pulsingAnimationValue === 0.3 ? 1 : 0.3;
   }
 
-  onSubmit({ url }) {
+  async onSubmit({ url }) {
     const { navigation: { navigate } } = this.props;
 
-    // @TODO: save it in the store
-    // alert(url);
+    try {
+      await AsyncStorage.setItem('platformURL', url);
+    } catch (error) {
+      // @TODO: display Error message?
+    }
 
     navigate(routes.AUTHENTICATION);
   }

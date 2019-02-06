@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground } from 'react-native';
+import { AsyncStorage, ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
@@ -56,6 +56,18 @@ export default class SignInScreen extends Component {
     if (success) navigate(routes.APPLICATION);
   };
 
+  onChangeURL = async () => {
+    const { navigation: { navigate } } = this.props;
+
+    try {
+      await AsyncStorage.removeItem('platformURL');
+    } catch (error) {
+      // @TODO: display Error message?
+    }
+
+    navigate(routes.LAUNCH);
+  };
+
   render() {
     const { navigation: { navigate }, styleSheet } = this.props;
 
@@ -85,6 +97,10 @@ export default class SignInScreen extends Component {
 
             <SignUpButton block bordered light onPress={() => navigate(routes.SIGN_UP)}>
               <Text>Sign up</Text>
+            </SignUpButton>
+
+            <SignUpButton block bordered light onPress={this.onChangeURL}>
+              <Text>Change Website URL</Text>
             </SignUpButton>
           </Content>
         </Background>

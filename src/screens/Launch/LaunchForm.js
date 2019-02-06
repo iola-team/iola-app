@@ -29,7 +29,7 @@ class LaunchForm extends Component {
       <Form>
         <TextInput
           name="url"
-          placeholder="Enter website URL"
+          placeholder="Enter Website URL"
           customStyle={{ marginBottom: 0 }}
           {...this.props}
         />
@@ -43,7 +43,7 @@ class LaunchForm extends Component {
 }
 
 const validationSchema = yup.object().shape({
-  url: yup.string().required('URL address is required').url('Must be a valid URL address'),
+  url: yup.string().required('Is required').url('Must be a valid URL address'),
 });
 
 export default withFormik({
