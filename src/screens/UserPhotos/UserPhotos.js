@@ -98,8 +98,9 @@ export default class UserPhotos extends PureComponent {
   };
 
   render() {
-    const { isFocused, data: { loading, user }, styleSheet: styles } = this.props;
-    const edges = user?.photos.edges || [];
+    const { isFocused, data, styleSheet: styles } = this.props;
+    const edges = data?.user?.photos.edges || [];
+    const loading = data?.loading || false;
 
     return (
       <ImageView edges={edges} deletePhoto={this.deletePhoto}>
