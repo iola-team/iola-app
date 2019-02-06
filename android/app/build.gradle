@@ -100,7 +100,7 @@ android {
     flavorDimensions "app"
 
     productFlavors {
-        main {
+        application {
             dimension "app"
         }
         storybook {
@@ -115,7 +115,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "1.0" 
         vectorDrawables.useSupportLibrary = true
     }
     splits {
@@ -148,14 +148,14 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-vector-icons')
-    compile project(':react-native-gesture-handler')
-    compile project(':react-native-device-info')
-    compile project(':react-native-wheel-picker-android')
-    compile project(':rn-fetch-blob')
-    compile project(':react-native-image-crop-picker')
-    compile project(':react-native-linear-gradient')
-    compile project(':react-native-splash-screen')
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-gesture-handler')
+    implementation project(':react-native-device-info')
+    implementation project(':react-native-wheel-picker-android')
+    implementation project(':rn-fetch-blob')
+    implementation project(':react-native-image-crop-picker')
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-splash-screen')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"
