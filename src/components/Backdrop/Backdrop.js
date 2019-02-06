@@ -16,10 +16,6 @@ const windowHeight = Dimensions.get('window').height;
     marginTop: 'auto',
   },
 
-  header: {
-    height: 70,
-  },
-
   backdrop: {
     ...StyleSheet.absoluteFillObject,
 
@@ -72,6 +68,8 @@ export default class Backdrop extends PureComponent {
       active: state.active || props.isVisible,
     };
   }
+
+  static HEIGHT = 70;
 
   state = {
     active: false,
@@ -139,9 +137,9 @@ export default class Backdrop extends PureComponent {
   show = () => this.animateTo(0, this.props.onShow);
 
   getHeight() {
-    const { styleSheet, height } = this.props;
+    const { height } = this.props;
 
-    return height + styleSheet.header.height;
+    return height + Backdrop.HEIGHT;
   }
 
   getScreenBounds() {
@@ -206,12 +204,12 @@ export default class Backdrop extends PureComponent {
           <View style={styles.bodyBackground} />
 
           <PanGestureHandler
-            onGestureEvent={this.onGestureEvent} 
+            onGestureEvent={this.onGestureEvent}
             onHandlerStateChange={this.onHandlerStateChange}
           >
             <Animated.View>
               <BackdropHeader
-                style={styles.header}
+                style={{ height: Backdrop.HEIGHT }}
                 title={title}
                 leftElement={headerLeft}
                 rightElement={headerRight}
