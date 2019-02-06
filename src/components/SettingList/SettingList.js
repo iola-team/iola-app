@@ -20,11 +20,11 @@ export default class SettingList extends Component {
       <ScrollView {...props}>
         <List>
           <ListItem button first onPress={this.openUrl(policyUrl)}>
-            <Text>Privacy policy</Text>
+            <Text>Privacy Policy</Text>
           </ListItem>
 
           <ListItem button last onPress={this.openUrl(termsUrl)}>
-            <Text>Terms of use</Text>
+            <Text>Terms of Use</Text>
           </ListItem>
         </List>
       </ScrollView>
