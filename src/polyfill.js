@@ -1,3 +1,8 @@
+/**
+ * TODO: Check if the symbol polyfill is still needed
+ * Related storybook issue: https://github.com/storybooks/storybook/issues/5291
+ */
+import 'es6-symbol/implement';
 import RNFetchBlob from 'rn-fetch-blob';
 
 const { Blob, File, FileReader, XMLHttpRequest, Fetch } = RNFetchBlob.polyfill;
