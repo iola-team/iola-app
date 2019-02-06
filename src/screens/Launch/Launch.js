@@ -59,27 +59,22 @@ export default class LaunchScreen extends Component {
     };
   }
 
-  componentWillReceiveProps(newProps) {
-    const {
-      navigation: { navigate },
-      data: { loading, me },
-    } = newProps;
+  componentDidUpdate(nextProps, prevState) {
+    const { data: { loading } } = this.props;
 
-    if (loading && !me) return;
-
-    if (me) {
-      navigate(routes.APPLICATION);
-    } else {
+    if (loading !== nextProps.data.loading) {
       Animated.timing(this.logo.positionAnimatedValue, {
         toValue: 1,
         duration: 500,
         easing: Easing.ease,
+        useNativeDriver: true,
       }).start();
 
       Animated.timing(this.form.opacityAnimatedValue, {
         toValue: 1,
         duration: 800,
         easing: Easing.ease,
+        useNativeDriver: true,
       }).start();
     }
   }
@@ -92,6 +87,7 @@ export default class LaunchScreen extends Component {
         toValue,
         duration: 800,
         easing: Easing.ease,
+        useNativeDriver: true,
       }).start();
     };
 
