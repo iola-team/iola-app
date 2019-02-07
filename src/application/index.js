@@ -10,7 +10,7 @@ import { ROOT_QUERY } from 'graph';
 
 Moment.globalElement = Text;
 
-const AppContext = React.createContext({ hello: 'world' }); // @TODO: clear it
+const AppContext = React.createContext();
 
 export const AppContextConsumer = AppContext.Consumer;
 
@@ -43,8 +43,10 @@ export default class Application extends Component {
   }
 
   render() {
+    const { onReset } =  this.props;
+
     return (
-      <AppContext.Provider onReset={this.props.onReset}>
+      <AppContext.Provider value={{ onReset }}>
         <Navigator />
       </AppContext.Provider>
     );

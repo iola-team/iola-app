@@ -50,7 +50,6 @@ class ApplicationRoot extends Component {
 
   async onApplicationReset() {
     try {
-alert('aha!');
       await AsyncStorage.removeItem('platformURL');
       this.setState({ isReady: false });
     } catch (error) {

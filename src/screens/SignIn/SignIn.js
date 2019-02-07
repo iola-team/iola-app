@@ -89,8 +89,8 @@ export default class SignInScreen extends Component {
             </SignUpButton>
 
             <AppContextConsumer>
-              {context => (console.log('>>>>>>>>>>>>context',context), /* @TODO: clear it */
-                <SignUpButton block bordered light onPress={()=> null}>
+              {({ onReset }) => (
+                <SignUpButton block bordered light onPress={onReset}>
                   <Text>Change Website URL</Text>
                 </SignUpButton>
               )}

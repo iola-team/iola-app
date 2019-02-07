@@ -45,8 +45,11 @@ export default class LaunchScreen extends Component {
       positionAnimatedValue: new Animated.Value(0),
       opacityAnimatedValue: new Animated.Value(1),
       pulsingAnimationValue: 1,
-      interval: setInterval(::this.handlePulsingAnimation, 900), // @TODO: Replace interval with Animation tools
     };
+  }
+
+  componentDidMount() {
+    this.runPulsingAnimation();
   }
 
   componentDidUpdate(nextProps, prevState) {
@@ -57,23 +60,25 @@ export default class LaunchScreen extends Component {
     }
   }
 
-  componentWillUnmount() {
-    clearInterval(this.logo.interval); // @TODO: Replace interval with Animation tools
+  runPulsingAnimation() {
+    const { opacityAnimatedValue, pulsingAnimationValue } = this.logo;
+
+    Animated.timing(opacityAnimatedValue, {
+      toValue: pulsingAnimationValue,
+      duration: 700,
+      easing: Easing.easeInEaseOut,
+      useNativeDriver: true,
+    }).start(::this.runPulsingAnimation)
+
+    this.logo.pulsingAnimationValue = pulsingAnimationValue === 0.3 ? 1 : 0.3;
   }
 
-  handlePulsingAnimation() {
-    const { opacityAnimatedValue, pulsingAnimationValue } = this.logo;
-    const animate = toValue => {
-      Animated.timing(opacityAnimatedValue, {
-        toValue,
-        duration: 800,
-        easing: Easing.ease,
-        useNativeDriver: true,
-      }).start();
-    };
-
-    animate(pulsingAnimationValue);
-    this.logo.pulsingAnimationValue = pulsingAnimationValue === 0.3 ? 1 : 0.3;
+  runAnimation() {
+    this.animatedValue.setValue(300);
+    Animated.timing(this.animatedValue, {
+      toValue: -100,
+      duration: 3000,
+    }).start(() => this.runAnimation());
   }
 
   render() {

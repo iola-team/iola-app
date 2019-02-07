@@ -11,7 +11,8 @@ import { TextInput } from 'components';
   submit: {
     marginTop: 17,
     borderWidth: 1,
-    borderColor: '#FFFFFF',
+    borderRadius: 8,
+    borderColor: 'rgba(255, 255, 255, 0.5)',
   },
 })
 class WebsiteURLForm extends Component {
@@ -34,8 +35,8 @@ class WebsiteURLForm extends Component {
           {...this.props}
         />
 
-        <Button style={styles.submit} onPress={handleSubmit} block>
-          <Text>Continue</Text>
+        <Button style={styles.submit} onPress={handleSubmit} block bordered light>
+          <Text uppercase={false}>Continue</Text>
         </Button>
       </Form>
     );
