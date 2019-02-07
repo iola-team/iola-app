@@ -114,7 +114,7 @@ export default class ImageComments extends Component {
   getModalHeight = () => {
     const { height } = Dimensions.get('window');
 
-    return height * 0.75 - Backdrop.HEIGHT;
+    return height * 0.75;
   };
 
   action = (handler, preHandler = noop) => () => {
@@ -251,7 +251,7 @@ export default class ImageComments extends Component {
         )}
       >
         <>
-          <View style={{ height: this.getModalHeight() - ChatFooter.HEIGHT }}>
+          <View style={{ flex: 1 }}>
             <View style={styles.container}>
               <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
             </View>

@@ -16,6 +16,10 @@ const windowHeight = Dimensions.get('window').height;
     marginTop: 'auto',
   },
 
+  header: {
+    height: 70,
+  },
+
   backdrop: {
     ...StyleSheet.absoluteFillObject,
 
@@ -68,8 +72,6 @@ export default class Backdrop extends PureComponent {
       active: state.active || props.isVisible,
     };
   }
-
-  static HEIGHT = 70;
 
   state = {
     active: false,
@@ -137,9 +139,9 @@ export default class Backdrop extends PureComponent {
   show = () => this.animateTo(0, this.props.onShow);
 
   getHeight() {
-    const { height } = this.props;
+    const { styleSheet, height } = this.props;
 
-    return height + Backdrop.HEIGHT;
+    return height + styleSheet.header.height;
   }
 
   getScreenBounds() {
@@ -209,7 +211,7 @@ export default class Backdrop extends PureComponent {
           >
             <Animated.View>
               <BackdropHeader
-                style={{ height: Backdrop.HEIGHT }}
+                style={styles.header}
                 title={title}
                 leftElement={headerLeft}
                 rightElement={headerRight}

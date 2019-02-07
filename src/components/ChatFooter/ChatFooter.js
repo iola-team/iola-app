@@ -36,8 +36,6 @@ export default class ChatFooter extends Component {
     onSend: PropTypes.func,
   };
 
-  static HEIGHT = 67;
-
   state = {
     text: '',
   };
