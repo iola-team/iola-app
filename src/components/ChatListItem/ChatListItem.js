@@ -48,6 +48,11 @@ const chatFragment = gql`
       'NativeBase.ViewNB': {
         flexDirection: 'row',
         alignItems: 'center',
+
+        'Sparkle.UserOnlineStatus': {
+          marginLeft: 8,
+          marginBottom: -1,
+        },
       },
     },
 
@@ -56,11 +61,6 @@ const chatFragment = gql`
         marginTop: 3,
       },
     },
-  },
-
-  onlineStatus: {
-    marginLeft: 8,
-    marginBottom: -1,
   },
 })
 export default class ChatListItem extends Component {
@@ -97,33 +97,21 @@ export default class ChatListItem extends Component {
   }
 
   render() {
-    const {
-      style,
-      chat,
-      currentUserId,
-      unreadMessagesCount,
-      onPress,
-    } = this.props;
-    const { onlineStatus } = StyleSheet.flatten(style);
+    const { style, chat, currentUserId, unreadMessagesCount, onPress } = this.props;
     const { messages, participants } = chat;
 
     const recipient = filter(participants, ({ id }) => id !== currentUserId)[0];
     const lastMessage = messages.edges[0].node;
 
     return (
-      <ListItem
-        style={style}
-        button
-        avatar
-        onPress={onPress}
-      >
+      <ListItem style={style} button avatar onPress={onPress}>
         <Left>
           <UserAvatar user={recipient} />
         </Left>
         <Body>
           <View>
             <Text headline>{recipient.name}</Text>
-            <UserOnlineStatus style={onlineStatus} user={recipient} />
+            <UserOnlineStatus user={recipient} />
           </View>
           <Text note numberOfLines={1}>{lastMessage.content.text}</Text>
         </Body>
