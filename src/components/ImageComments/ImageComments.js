@@ -114,7 +114,7 @@ export default class ImageComments extends Component {
   getModalHeight = () => {
     const { height } = Dimensions.get('window');
 
-    return height * 0.75;
+    return height * 0.6;
   };
 
   action = (handler, preHandler = noop) => () => {
