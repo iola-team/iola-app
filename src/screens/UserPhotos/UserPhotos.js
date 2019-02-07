@@ -48,8 +48,8 @@ const deletePhotoMutation = gql`
   }
 })
 @graphql(userPhotosQuery, {
-  skip: props => !props.isFocused,
   options: ({ navigation }) => ({
+    skip: props => !props.isFocused,
     variables: {
       id: navigation.state.params.id,
     },
