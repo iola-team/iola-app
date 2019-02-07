@@ -23,15 +23,13 @@ const userFragment = gql`
 `;
 
 @withStyle('Sparkle.UserAvatar', {
-  backgroundColor: '#F8F9FB',
-  borderRadius: 8,
+  'Sparkle.Placeholder': {
+    backgroundColor: '#F8F9FB',
+    borderRadius: 8,
 
-  '.small': {
-    borderRadius: 6,
-  },
-
-  'NativeBase.Thumbnail': {
-    opacity: 0,
+    'NativeBase.Thumbnail': {
+      opacity: 0,
+    },
   },
 })
 export default class UserAvatar extends Component {
