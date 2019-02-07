@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { AsyncStorage, ImageBackground } from 'react-native';
+import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import * as routes from '../routeNames';
 import SignInForm from './SignInForm';
 import Divider from './Divider';
+import * as routes from '../routeNames';
+import { AppContextConsumer } from '../../application';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
   source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
@@ -56,18 +57,6 @@ export default class SignInScreen extends Component {
     if (success) navigate(routes.APPLICATION);
   };
 
-  onChangeURL = async () => {
-    const { navigation: { navigate } } = this.props;
-
-    try {
-      await AsyncStorage.removeItem('platformURL');
-    } catch (error) {
-      // @TODO: display Error message?
-    }
-
-    navigate(routes.LAUNCH);
-  };
-
   render() {
     const { navigation: { navigate }, styleSheet } = this.props;
 
@@ -99,9 +88,13 @@ export default class SignInScreen extends Component {
               <Text>Sign up</Text>
             </SignUpButton>
 
-            <SignUpButton block bordered light onPress={this.onChangeURL}>
-              <Text>Change Website URL</Text>
-            </SignUpButton>
+            <AppContextConsumer>
+              {context => (console.log('>>>>>>>>>>>>context',context), /* @TODO: clear it */
+                <SignUpButton block bordered light onPress={()=> null}>
+                  <Text>Change Website URL</Text>
+                </SignUpButton>
+              )}
+            </AppContextConsumer>
           </Content>
         </Background>
       </Container>

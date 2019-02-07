@@ -10,6 +10,10 @@ import { ROOT_QUERY } from 'graph';
 
 Moment.globalElement = Text;
 
+const AppContext = React.createContext({ hello: 'world' }); // @TODO: clear it
+
+export const AppContextConsumer = AppContext.Consumer;
+
 @graphql(gql`
   query {
     auth @client {
@@ -30,11 +34,8 @@ Moment.globalElement = Text;
 })
 export default class Application extends Component {
   static propTypes = {
-    onReady: PropTypes.func,
-  };
-
-  static defaultProps = {
-    onReady: () => {},
+    onReady: PropTypes.func.isRequired,
+    onReset: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -43,7 +44,9 @@ export default class Application extends Component {
 
   render() {
     return (
-      <Navigator />
+      <AppContext.Provider onReset={this.props.onReset}>
+        <Navigator />
+      </AppContext.Provider>
     );
   }
 }

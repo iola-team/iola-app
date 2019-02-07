@@ -7,14 +7,14 @@ import { withFormik } from 'formik';
 import { withStyleSheet as styleSheet } from 'theme';
 import { TextInput } from 'components';
 
-@styleSheet('Sparkle.LaunchForm', {
+@styleSheet('Sparkle.WebsiteURLForm', {
   submit: {
     marginTop: 17,
     borderWidth: 1,
     borderColor: '#FFFFFF',
   },
 })
-class LaunchForm extends Component {
+class WebsiteURLForm extends Component {
   static propTypes = {
     onSubmit: propTypes.func.isRequired,
   };
@@ -50,4 +50,4 @@ export default withFormik({
   mapPropsToValues: () => ({ url: 'https://iola.app' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
-})(LaunchForm);
+})(WebsiteURLForm);
