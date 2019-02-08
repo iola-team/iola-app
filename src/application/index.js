@@ -46,7 +46,7 @@ export default class Application extends Component {
     const { onReset } =  this.props;
 
     return (
-      <AppContext.Provider value={{ onReset }}>
+      <AppContext.Provider value={{ onApplicationReset: onReset }}>
         <Navigator />
       </AppContext.Provider>
     );
