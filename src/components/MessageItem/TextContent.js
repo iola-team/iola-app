@@ -10,6 +10,7 @@ import { withStyle } from 'theme';
 const contentFragment = gql`
   fragment MessageTextContent_content on MessageContent {
     text
+    image
   }
 `;
 
@@ -21,10 +22,16 @@ const contentFragment = gql`
   flexDirection: 'row',
   flexWrap: 'wrap',
 
-  'Sparkle.MessageStatus': {
-    paddingLeft: 10,
-    marginLeft: 'auto',
+  'NativeBase.Text': {
+    fontFamily: 'SF Pro Text',
+    fontSize: 16,
+    lineHeight: 19,
   },
+
+  // 'Sparkle.MessageStatus': {
+  //   paddingLeft: 10,
+  //   marginLeft: 'auto',
+  // },
 
   '.inverse': {
     backgroundColor: '#5F96F2',
@@ -33,18 +40,18 @@ const contentFragment = gql`
       color: '#FFFFFF',
     },
 
-    'Sparkle.MessageStatus': {
-      color: '#A3C5FF',
-    },
+    // 'Sparkle.MessageStatus': {
+    //   color: '#A3C5FF',
+    // },
   },
 })
 export default class TextContent extends Component {
   static fragments = {
     content: contentFragment,
-  }
+  };
 
   static propTypes = {
-    statusComponent: PropTypes.element.isRequired,
+    // statusComponent: PropTypes.element.isRequired,
     content: fragmentProp(contentFragment).isRequired,
   };
 
@@ -54,7 +61,7 @@ export default class TextContent extends Component {
     return (
       <View style={style}>
         <Text>{content.text}</Text>
-        {statusComponent}
+        {/*{statusComponent}*/}
       </View>
     );
   }

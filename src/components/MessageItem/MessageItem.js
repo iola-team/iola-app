@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { View as ViewRN, StyleSheet } from 'react-native';
-import { Text } from 'native-base';
+import { View as ViewRN } from 'react-native';
 
 import { withStyle } from 'theme';
-import Status from './MessageStatus';
 import Content from './MessageContent';
 import Avatar from '../UserAvatar';
 
@@ -65,7 +63,7 @@ const messageFragment = gql`
 export default class MessageItem extends Component {
   static fragments = {
     message: messageFragment,
-  }
+  };
 
   static propTypes = {
     message: fragmentProp(messageFragment).isRequired,
@@ -77,7 +75,11 @@ export default class MessageItem extends Component {
   };
 
   static defaultProps = {
-
+    left: false,
+    right: false,
+    last: false,
+    first: false,
+    hasAvatar: false,
   };
 
   render() {
@@ -87,11 +89,7 @@ export default class MessageItem extends Component {
     return (
       <ViewRN style={style}>
         {showAvatar && <Avatar user={message.user} />}
-        <Content
-          message={message}
-          first={first}
-          {...props}
-        />
+        <Content message={message} first={first} {...props} />
       </ViewRN>
     );
   }
