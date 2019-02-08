@@ -45,7 +45,7 @@ export default class MessageList extends Component {
 
       return [
         createdAt.getFullYear(),
-        createdAt.getMonth(),
+        createdAt.getMonth() + 1,
         createdAt.getDate(),
       ].join('/');
     });
