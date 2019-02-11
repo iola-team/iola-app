@@ -11,7 +11,7 @@ import ImageCommentsList from '../ImageCommentsList';
 
 const meQuery = gql`
   query meQuery {
-    user: me {
+    me {
       id
     }
   }
@@ -113,7 +113,7 @@ export default class ImageCommentsConnection extends Component {
 
     return (
       <Query query={meQuery}>
-        {({ loading: loadingMeQuery, data: { user } }) => loadingMeQuery ? null : (
+        {({ loading: loadingMeQuery, data: { me } }) => loadingMeQuery ? null : (
           <Query
             query={photoCommentsQuery}
             variables={{ id: photoId }}
@@ -136,7 +136,7 @@ export default class ImageCommentsConnection extends Component {
                    * Skip messages of current user
                    * @TODO: Case when currently logged in user sends messages from web
                    */
-                  if (payload.edge.node.user.id === user.id) {
+                  if (payload.edge.node.user.id === me.id) {
                     return prev;
                   }
 

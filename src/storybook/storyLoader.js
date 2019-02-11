@@ -36,7 +36,6 @@ function loadStories() {
   require('../components/MessageItem/MessageItem.stories');
   require('../components/MessageList/MessageList.stories');
   require('../components/MessageStateIndicator/MessageStateIndicator.stories');
-  require('../components/Modal/Modal.stories');
   require('../components/NoContent/NoContent.stories');
   require('../components/Overlay/Overlay.stories');
   require('../components/PhotoEdit/PhotoEdit.stories');
@@ -100,7 +99,6 @@ const stories = [
   '../components/MessageItem/MessageItem.stories',
   '../components/MessageList/MessageList.stories',
   '../components/MessageStateIndicator/MessageStateIndicator.stories',
-  '../components/Modal/Modal.stories',
   '../components/NoContent/NoContent.stories',
   '../components/Overlay/Overlay.stories',
   '../components/PhotoEdit/PhotoEdit.stories',
