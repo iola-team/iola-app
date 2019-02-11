@@ -2,18 +2,10 @@ import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from 'theme';
 import SignInForm from './SignInForm';
 import Divider from './Divider';
 import * as routes from '../routeNames';
-import { AppContextConsumer } from '../../application';
-
-const Background = connectToStyleSheet('background', ImageBackground).withProps({
-  source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
-});
-const Title = connectToStyleSheet('title', H1);
-const FacebookButton = connectToStyleSheet('facebookButton', Button);
-const SignUpButton = connectToStyleSheet('signUpButton', Button);
 
 @styleSheet('Sparkle.SignInScreen', {
   background: {
@@ -40,7 +32,7 @@ const SignUpButton = connectToStyleSheet('signUpButton', Button);
     backgroundColor: '#6D83CC',
   },
 
-  signUpButton: {
+  button: {
     marginTop: 8,
   },
 })
@@ -58,17 +50,26 @@ export default class SignInScreen extends Component {
   };
 
   render() {
-    const { navigation: { navigate }, styleSheet } = this.props;
+    const {
+      navigation: { navigate },
+      screenProps: { onApplicationReset },
+      styleSheet: styles,
+    } = this.props;
+    const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
 
     return (
       <Container>
-        <Background>
-          <Content padder contentContainerStyle={styleSheet.content}>
-            <Title>Sign in</Title>
+        <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
+          <Content padder contentContainerStyle={styles.content}>
+            <H1 style={styles.title}>Sign in</H1>
 
-            <FacebookButton block onPress={() => alert('Sign in via Facebook')}>
+            <Button
+              style={styles.facebookButton}
+              onPress={() => alert('Sign in via Facebook')}
+              block
+            >
               <Text>Sign in via Facebook</Text>
-            </FacebookButton>
+            </Button>
 
             <Divider>or</Divider>
 
@@ -84,19 +85,21 @@ export default class SignInScreen extends Component {
               })}
             />
 
-            <SignUpButton block bordered light onPress={() => navigate(routes.SIGN_UP)}>
+            <Button
+              style={styles.button}
+              onPress={() => navigate(routes.SIGN_UP)}
+              block
+              bordered
+              light
+            >
               <Text>Sign up</Text>
-            </SignUpButton>
+            </Button>
 
-            <AppContextConsumer>
-              {({ onApplicationReset }) => (
-                <SignUpButton block bordered light onPress={onApplicationReset}>
-                  <Text>Change Website URL</Text>
-                </SignUpButton>
-              )}
-            </AppContextConsumer>
+            <Button style={styles.button} onPress={onApplicationReset} block bordered light>
+              <Text>Change Website URL</Text>
+            </Button>
           </Content>
-        </Background>
+        </ImageBackground>
       </Container>
     );
   }

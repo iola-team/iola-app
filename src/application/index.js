@@ -10,10 +10,6 @@ import { ROOT_QUERY } from 'graph';
 
 Moment.globalElement = Text;
 
-const AppContext = React.createContext();
-
-export const AppContextConsumer = AppContext.Consumer;
-
 @graphql(gql`
   query {
     auth @client {
@@ -43,12 +39,6 @@ export default class Application extends Component {
   }
 
   render() {
-    const { onReset } =  this.props;
-
-    return (
-      <AppContext.Provider value={{ onApplicationReset: onReset }}>
-        <Navigator />
-      </AppContext.Provider>
-    );
+    return <Navigator screenProps={{ onApplicationReset: this.props.onReset }} />;
   }
 }
