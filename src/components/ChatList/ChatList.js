@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import { range } from 'lodash';
 import gql from 'graphql-tag';
 import { FlatList } from 'react-native';
 
@@ -14,80 +15,77 @@ const userFragment = gql`
   }
 `;
 
-const nodeFragment = gql`
-  fragment ChatList_node on Chat {
-    id
-    messages(first: 1) {
-      edges {
-        node {
-          id
-          createdAt
-        }
-      }
+const edgeFragment = gql`
+  fragment ChatList_edge on ChatEdge {
+    node {
+      id
+      ...ChatListItem_chat
     }
-
-    ...ChatListItem_chat
   }
   
   ${ChatListItem.fragments.chat}
 `;
 
-@styleSheet('Sparkle.ChatList', {
-
-})
+@styleSheet('Sparkle.ChatList')
 export default class ChatList extends Component {
   static fragments = {
     user: userFragment,
-    node: nodeFragment,
+    edge: edgeFragment,
   };
 
   static propTypes = {
-    user: fragmentProp(userFragment).isRequired,
-    data: PropTypes.arrayOf(
-      PropTypes.shape({
-        unreadCount: PropTypes.number,
-        node: fragmentProp(nodeFragment).isRequired,
-      }),
+    user: fragmentProp(userFragment),
+    edges: PropTypes.arrayOf(
+      fragmentProp(edgeFragment).isRequired
     ),
+    unreadCounts: PropTypes.arrayOf(PropTypes.number),
+    loading: PropTypes.bool,
     onItemPress: PropTypes.func,
   };
 
   static defaultProps = {
+    user: null,
+    edges: [],
+    loading: false,
     onItemPress: () => {},
-    unreadCounts: {},
+    unreadCounts: [],
   };
 
-  renderItem({ item }) {
-    const { onItemPress, user } = this.props;
+  renderItem = ({ item, index }) => {
+    const { onItemPress, user, unreadCounts } = this.props;
+    const { node } = item;
 
     return (
       <ChatListItem
-        unreadMessagesCount={item.unreadCount}
-        currentUserId={user.id}
-        chat={item.node}
+        unreadMessagesCount={unreadCounts[index]}
+        currentUserId={user?.id}
+        chat={node}
         onPress={() => onItemPress(item)}
       />
     );
   }
 
-  extractItemKey({ node }) {
-    return node.id;
-  }
+  getPlaceholders = () => range(3).map(index => ({
+    key: index.toString(),
+  }));
+
+  extractItemKey = ({ node, key }) => key || node.id;
 
   render() {
-    const { data, user, ...listProps } = this.props;
+    const { edges, loading, user, ...listProps } = this.props;
+    const listData = loading && !edges.length ? this.getPlaceholders() : edges;
 
     return (
-      <Fragment>
+      <>
         <FlatList
           {...listProps}
-          data={data}
-          keyExtractor={::this.extractItemKey}
-          renderItem={::this.renderItem}
+          data={listData}
+          keyExtractor={this.extractItemKey}
+          renderItem={this.renderItem}
         />
 
-        <MessageUpdateSubscription userId={user.id} />
-      </Fragment>
+        {user && <MessageUpdateSubscription userId={user.id} />}
+      </>
     );
   }
 }
