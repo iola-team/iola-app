@@ -17,9 +17,9 @@ const userFieldsQuery = gql`
 `;
 
 @graphql(userFieldsQuery, {
-  options: props => ({
+  options: ({ navigation }) => ({
     variables: {
-      id: props.navigation.state.params.id,
+      id: navigation.state.params.id,
     },
   }),
 })

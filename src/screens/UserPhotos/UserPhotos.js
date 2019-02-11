@@ -36,7 +36,6 @@ const deletePhotoMutation = gql`
   }
 `;
 
-@withNavigationFocus
 @withStyleSheet('Sparkle.UserPhotosScreen', {
   list: {
     paddingTop: 20,
@@ -57,6 +56,7 @@ const deletePhotoMutation = gql`
 @graphql(deletePhotoMutation, {
   name: 'deletePhoto',
 })
+@withNavigationFocus
 export default class UserPhotos extends Component {
   static navigationOptions = ({ navigation }) => ({
     tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
