@@ -1,8 +1,10 @@
 # iola messenger
 
+
 ## Install
   - `yarn`
   - `cp .env.sample .env` and modify the `.env` file
+
 
 ## Development
 1) Run dev server: `yarn start`
@@ -24,19 +26,30 @@
     - run: `react-devtools`
 3) `yarn postinstall` // @TODO: remove when Apollo fix this: https://github.com/apollographql/apollo-client/issues/3236
 
-### Release
-1) Build the app: 
-2) Change the app icon:
-  - [Online Android Asset Studio](http://romannurik.github.io/AndroidAssetStudio/icons-launcher.html#foreground.type=clipart&foreground.clipart=android&foreground.space.trim=1&foreground.space.pad=0.25&foreColor=rgba(96%2C%20125%2C%20139%2C%200)&backColor=rgb(68%2C%20138%2C%20255)&crop=0&backgroundShape=square&effects=none&name=ic_launcher)
+### Tests
+Investigate this: https://reactnativetesting.io/
+@TODO: Fill this section
+
+### Troubleshooting
+1. How to debug the subscriptions
+   - Start the subscription on the app
+   - Run in Postman (via GET): `*GRAPHQL_SUBSCRIPTIONS_URL from your .env file*/*streamId value from the subscriptions table (ow_esapi_subscription)*` (for example: http://192.168.31.74/ox/oxwall-1.8.4.1/everywhere/api/subscriptions/5f1e34db2cf318ae)
+   - Run mutation that triggers the subscription (for example from GraphiQL interface)
+2. "Metro Bundler can't listen on port 8081" error (or "Error: listen EADDRINUSE :::7007")
+   - `sudo lsof -i :8081`
+   - `kill -9 PID_FROM_RESULTS_OF_THE_PREVIOUS_COMMAND`
 
 ### Code style
   - [Airbnb Code Style](https://github.com/airbnb/javascript)
   - Destructuring: in one line if length < 100 but in multiple lines if has default values
 
-### Troubleshooting
-  - "Metro Bundler can't listen on port 8081" error (or "Error: listen EADDRINUSE :::7007")
-    - `sudo lsof -i :8081`
-    - `kill -9 PID_FROM_RESULTS_OF_THE_PREVIOUS_COMMAND`
 
-### Global TODOs
+## Release
+1) Build the app:
+  - @TODO: Add commands for Android/iOS here
+2) Change the app icon:
+  - [Online Android Asset Studio](http://romannurik.github.io/AndroidAssetStudio/icons-launcher.html#foreground.type=clipart&foreground.clipart=android&foreground.space.trim=1&foreground.space.pad=0.25&foreColor=rgba(96%2C%20125%2C%20139%2C%200)&backColor=rgb(68%2C%20138%2C%20255)&crop=0&backgroundShape=square&effects=none&name=ic_launcher)
+
+
+## Global TODOs
   - After going live add the `lint:fix` action to pre-commit hook (via Husky)
