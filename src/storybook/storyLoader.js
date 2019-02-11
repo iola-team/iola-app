@@ -26,6 +26,7 @@ function loadStories() {
   require('../components/Image/Image.stories');
   require('../components/ImageComments/ImageComments.stories');
   require('../components/ImageCommentsItem/ImageCommentsItem.stories');
+  require('../components/ImageFit/ImageFit.stories');
   require('../components/ImagePicker/ImagePicker.stories');
   require('../components/ImagePickerActionSheet/ImagePickerActionSheet.stories');
   require('../components/ImageProgress/ImageProgress.stories');
@@ -89,6 +90,7 @@ const stories = [
   '../components/Image/Image.stories',
   '../components/ImageComments/ImageComments.stories',
   '../components/ImageCommentsItem/ImageCommentsItem.stories',
+  '../components/ImageFit/ImageFit.stories',
   '../components/ImagePicker/ImagePicker.stories',
   '../components/ImagePickerActionSheet/ImagePickerActionSheet.stories',
   '../components/ImageProgress/ImageProgress.stories',

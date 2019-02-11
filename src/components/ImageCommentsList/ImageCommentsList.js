@@ -77,6 +77,7 @@ export default class ImageCommentsList extends Component {
         ListEmptyComponent={(
           <NoContent icon="comments-empty-state" text={emptyStateText} inverted />
         )}
+        removeClippedSubviews // "Sometimes image doesn't show (only Android)" issue: https://github.com/facebook/react-native/issues/17096
       />
     );
   }
