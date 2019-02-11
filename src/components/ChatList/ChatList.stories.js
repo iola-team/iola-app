@@ -468,7 +468,6 @@ stories.addDecorator(getApolloDecorator({
    */
   dataStore: () => dataStore,
   onReset() {
-    console.log('onReset');
     Object.assign(dataStore, cloneDeep(freshDataStore));
     subscriptions = new PubSub();
   },

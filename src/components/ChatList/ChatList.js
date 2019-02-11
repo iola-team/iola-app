@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { range } from 'lodash';
 import gql from 'graphql-tag';
-import { FlatList } from 'react-native';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import ChatListItem from '../ChatListItem';
 import MessageUpdateSubscription from '../MessageUpdateSubscription';
+import { FlatList, NoContent } from '../TabNavigator';
 
 const userFragment = gql`
   fragment ChatList_user on User {
@@ -82,6 +82,7 @@ export default class ChatList extends Component {
           data={listData}
           keyExtractor={this.extractItemKey}
           renderItem={this.renderItem}
+          ListEmptyComponent={<NoContent text="You have no chats" icon="chats-empty-state" />}
         />
 
         {user && <MessageUpdateSubscription userId={user.id} />}
