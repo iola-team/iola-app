@@ -65,7 +65,7 @@ export default class PhotoListItem extends Component {
 
     return progress === null || !photo ? (
       <View {...props}>
-        {!loaded && <Placeholder />}
+        {!loaded && <Placeholder isActive={!photo} />}
         {photo && <Image source={{ uri: photo.url }} onLoadEnd={this.onLoad} />}
       </View>
     ) : (

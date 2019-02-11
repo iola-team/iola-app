@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
@@ -12,7 +12,7 @@ import TabBarLabel from './TabBarLabel';
   },
 })
 @withNavigationFocus
-export default class MyFriends extends PureComponent {
+export default class MyFriends extends Component {
   static navigationOptions = {
     tabBarLabel: () => <TabBarLabel />,
   };
@@ -23,12 +23,15 @@ export default class MyFriends extends PureComponent {
     navigation.navigate(USER, { id });
   };
 
+  shouldComponentUpdate({ isFocused }) {
+    return isFocused;
+  }
+
   render() {
-    const { isFocused, styleSheet: styles } = this.props;
+    const { styleSheet: styles } = this.props;
 
     return (
       <MyFriendsConnection 
-        skip={!isFocused} 
         contentContainerStyle={styles.list} 
         onItemPress={this.onItemPress}
       />

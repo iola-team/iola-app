@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'native-base';
 import { graphql, Mutation } from 'react-apollo';
@@ -60,7 +60,7 @@ const deletePhotoMutation = gql`
 @graphql(deletePhotoMutation, {
   name: 'deletePhoto',
 })
-export default class MyFriendsConnection extends Component {
+export default class MyFriendsConnection extends PureComponent {
   static propTypes = {
     addButtonStyle: PropTypes.object.isRequired,
     data: PropTypes.object,

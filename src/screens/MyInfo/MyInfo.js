@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { Query } from 'react-apollo';
+import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
@@ -7,7 +7,7 @@ import { ProfileFieldsView } from 'components';
 
 const userFieldsQuery = gql`
   query MyInfoQuery {
-    user: me {
+    me {
       id
       ...ProfileFieldsView_user
     }
@@ -16,21 +16,20 @@ const userFieldsQuery = gql`
   ${ProfileFieldsView.fragments.user}
 `;
 
+@graphql(userFieldsQuery)
 @withNavigationFocus
-export default class UserInfo extends PureComponent {
+export default class UserInfo extends Component {
   static navigationOptions = {
     title: 'Info',
   };
 
-  render() {
-    const { isFocused } = this.props;
+  shouldComponentUpdate({ isFocused }) {
+    return isFocused;
+  }
 
-    return (
-      <Query skip={!isFocused} query={userFieldsQuery}>
-        {({ data = {}, loading }) => (
-          <ProfileFieldsView loading={loading || !isFocused} user={data.user} />
-        )}
-      </Query>
-    );
+  render() {
+    const { data: { loading, me } } = this.props;
+
+    return <ProfileFieldsView loading={loading} user={me} />;
   }
 }

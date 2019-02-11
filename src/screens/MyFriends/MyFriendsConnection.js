@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
@@ -91,7 +91,7 @@ const removeFromCache = (cache, toDeleteId) => {
 @graphql(deleteFriendMutation, {
   name: 'deleteFriend',
 })
-export default class MyFriendsConnection extends Component {
+export default class MyFriendsConnection extends PureComponent {
   static propTypes = {
     data: PropTypes.object,
     skip: PropTypes.bool,
