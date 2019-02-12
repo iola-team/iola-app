@@ -30,11 +30,8 @@ Moment.globalElement = Text;
 })
 export default class Application extends Component {
   static propTypes = {
-    onReady: PropTypes.func,
-  };
-
-  static defaultProps = {
-    onReady: () => {},
+    onReady: PropTypes.func.isRequired,
+    onReset: PropTypes.func.isRequired,
   };
 
   componentDidMount() {
@@ -42,8 +39,6 @@ export default class Application extends Component {
   }
 
   render() {
-    return (
-      <Navigator />
-    );
+    return <Navigator screenProps={{ onApplicationReset: this.props.onReset }} />;
   }
 }

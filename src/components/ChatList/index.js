@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import PropTypes from 'prop-types';
 import update from 'immutability-helper';
 import { filter } from 'lodash';
-import { propType as fragmentProp } from 'graphql-anywhere';
 
 import ChatList from './ChatList';
 
@@ -21,16 +21,19 @@ const chatsQuery = gql`
               }) {
                 totalCount
               }
-
-              ...ChatList_node
             }
+
+            ...ChatList_edge
           }
         }
       }
+
+      ...ChatList_user
     }
   }
-  
-  ${ChatList.fragments.node}
+
+  ${ChatList.fragments.user}
+  ${ChatList.fragments.edge}
 `;
 
 const subscriptionQuery = gql`
@@ -44,49 +47,53 @@ const subscriptionQuery = gql`
           }) {
             totalCount
           }
-
-          ...ChatList_node
         }
+
+        ...ChatList_edge
       }
     }
   }
-  
-  ${ChatList.fragments.node}
+
+  ${ChatList.fragments.edge}
 `;
 
 @graphql(chatsQuery, {
-  options: ({ user }) => ({
+  options: ({ userId }) => ({
     variables: {
-      userId: user.id,
+      userId,
     },
   }),
+  skip: props => !props.userId,
 })
 export default class ChatListContainer extends Component {
   static displayName = 'Container(ChatList)';
-  static fragments = {
-    user: ChatList.fragments.user,
-  };
-
   static propTypes = {
-    user: fragmentProp(ChatList.fragments.user).isRequired,
+    userId: PropTypes.string,
   };
 
-  componentDidMount() {
-    const { data, user } = this.props;
+  static defaultProps = {
+    userId: null,
+  };
 
-    data.subscribeToMore({
+  unsubscribe = () => null;
+
+  startSubscriptions() {
+    const { data, userId } = this.props;
+
+    if (!data) {
+      return;
+    }
+
+    this.unsubscribe();
+    this.unsubscribe = data.subscribeToMore({
       document: subscriptionQuery,
-      variables: {
-        userId: user.id,
-      },
-
+      variables: { userId },
       updateQuery(prev, { subscriptionData }) {
         if (!subscriptionData.data) {
           return prev;
         }
 
         const { chatEdge } = subscriptionData.data.onMessageAdd;
-
         return update(prev, {
           user: {
             chats: {
@@ -103,26 +110,31 @@ export default class ChatListContainer extends Component {
     });
   }
 
-  render() {
-    const { data, user, ...restProps } = this.props;
+  componentDidUpdate(prevProps) {
+    const { userId } = this.props;
 
-    /**
-     * TODO: show pre-loader
-     */
-    if (data.loading) {
-      return null;
+    if (prevProps.userId !== userId) {
+      this.startSubscriptions();
     }
+  }
 
-    const listData = data.user.chats.edges.map(({ node }) => ({
-      node,
-      unreadCount: node.unreadMessages.totalCount,
-    }));
+  componentDidMount() {
+    this.startSubscriptions();
+  }
+
+  render() {
+    const { data, ...restProps } = this.props;
+    const loading = !data || data.loading;
+    const edges = data?.user?.chats.edges || [];
+    const unreadCounts = edges.map(edge => edge.node.unreadMessages.totalCount);
 
     return (
       <ChatList
         {...restProps}
-        user={user}
-        data={listData}
+        loading={loading}
+        user={data?.user}
+        unreadCounts={unreadCounts}
+        edges={data?.user?.chats.edges}
       />
     );
   }
