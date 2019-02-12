@@ -1,11 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from 'theme';
 import MyPhotosConnection from './MyPhotosConnection';
 import TabBarLabel from './TabBarLabel';
 
-@withNavigationFocus
 @withStyleSheet('Sparkle.MyPhotosScreen', {
   list: {
     paddingTop: 20,
@@ -25,17 +24,21 @@ import TabBarLabel from './TabBarLabel';
     marginTop: -12, // TODO: Aligning `No photos` to `No friends` - need to find a better way
   }
 })
-export default class UserPhotos extends PureComponent {
+@withNavigationFocus
+export default class UserPhotos extends Component {
   static navigationOptions = {
     tabBarLabel: <TabBarLabel />,
   };
 
+  shouldComponentUpdate({ isFocused }) {
+    return isFocused;
+  }
+
   render() {
-    const { navigation, isFocused, styleSheet: styles } = this.props;
+    const { navigation, styleSheet: styles } = this.props;
 
     return (
       <MyPhotosConnection
-        skip={!isFocused} 
         addButtonStyle={styles.add}
         contentContainerStyle={styles.list}
         noContentStyle={styles.noContent}

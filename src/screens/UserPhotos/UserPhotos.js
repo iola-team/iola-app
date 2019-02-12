@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { withNavigationFocus } from 'react-navigation';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -36,7 +36,6 @@ const deletePhotoMutation = gql`
   }
 `;
 
-@withNavigationFocus
 @withStyleSheet('Sparkle.UserPhotosScreen', {
   list: {
     paddingTop: 20,
@@ -49,7 +48,6 @@ const deletePhotoMutation = gql`
 })
 @graphql(userPhotosQuery, {
   options: ({ navigation }) => ({
-    skip: props => !props.isFocused,
     variables: {
       id: navigation.state.params.id,
     },
@@ -58,7 +56,8 @@ const deletePhotoMutation = gql`
 @graphql(deletePhotoMutation, {
   name: 'deletePhoto',
 })
-export default class UserPhotos extends PureComponent {
+@withNavigationFocus
+export default class UserPhotos extends Component {
   static navigationOptions = ({ navigation }) => ({
     tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
   });
@@ -97,10 +96,13 @@ export default class UserPhotos extends PureComponent {
     });
   };
 
+  shouldComponentUpdate({ isFocused }) {
+    return isFocused;
+  }
+
   render() {
-    const { isFocused, data, styleSheet: styles } = this.props;
-    const edges = data?.user?.photos.edges || [];
-    const loading = data?.loading || false;
+    const { data: { user, loading }, styleSheet: styles } = this.props;
+    const edges = user?.photos.edges || [];
 
     return (
       <ImageView edges={edges} deletePhoto={this.deletePhoto}>
@@ -108,7 +110,7 @@ export default class UserPhotos extends PureComponent {
           <PhotoList
             contentContainerStyle={styles.list}
             edges={edges}
-            loading={loading || !isFocused}
+            loading={loading}
             onItemPress={onShowImage}
             noContentText="No photos"
             noContentStyle={styles.noContent}

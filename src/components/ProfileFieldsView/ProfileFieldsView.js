@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
@@ -31,7 +31,7 @@ const userFragment = gql`
   ${ProfileFieldList.fragments.field}
 `;
 
-export default class ProfileFieldsView extends Component {
+export default class ProfileFieldsView extends PureComponent {
   static fragments = {
     user: userFragment,
   }
