@@ -8,19 +8,22 @@ import { Animated, StyleSheet } from 'react-native';
 import { withStyleSheet } from 'theme';
 import ScreenHeader from '../ScreenHeader';
 import UserAvatar from '../UserAvatar';
+import UserOnlineStatus from '../UserOnlineStatus';
 import Placeholder from '../Placeholder';
 
 const userFragment = gql`
   fragment UserHeading_user on User {
     id
     name
+    ...UserOnlineStatus_user
+    ...UserAvatar_user
+
     info {
       headline
     }
-    
-    ...UserAvatar_user
   }
   
+  ${UserOnlineStatus.fragments.user}
   ${UserAvatar.fragments.user}
 `;
 
@@ -43,7 +46,9 @@ const headerHeight = 350 + ScreenHeader.HEIGHT;
   },
 
   infoLine: {
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: 5,
   },
 
@@ -54,6 +59,10 @@ const headerHeight = 350 + ScreenHeader.HEIGHT;
   placeholder: {
     borderRadius: 4,
     backgroundColor: '#F0F2F7',
+  },
+
+  onlineStatus: {
+    marginLeft: 8,
   },
 
   namePlaceholder: {
@@ -103,7 +112,7 @@ export default class UserHeading extends PureComponent {
 
     user: fragmentProp(userFragment),
     loading: PropTypes.bool,
-  }
+  };
 
   static defaultProps = {
     user: null,
@@ -111,15 +120,15 @@ export default class UserHeading extends PureComponent {
   };
 
   render() {
-    const { 
-      style, 
-      styleSheet: styles, 
-      user, 
-      loading, 
+    const {
+      style,
+      styleSheet: styles,
+      user,
+      loading,
       children,
       shrinkAnimatedValue,
       shrinkAnimationHeight,
-      ...props 
+      ...props
     } = this.props;
 
     const navBarStyle = {
@@ -150,6 +159,7 @@ export default class UserHeading extends PureComponent {
                 {loading ? ' ' : user.name}
               </H2>
             </Placeholder>
+            <UserOnlineStatus style={styles.onlineStatus} user={loading ? null : user} />
           </View>
 
           <View style={styles.infoLine}>

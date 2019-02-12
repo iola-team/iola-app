@@ -1,30 +1,36 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { View } from 'react-native';
+import { View } from 'native-base';
+import gql from 'graphql-tag';
+import { propType as fragmentProp } from 'graphql-anywhere';
+import moment from 'moment';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyle } from 'theme';
+import OnlineStatus from './OnlineStatus';
 
-const Status = connectToStyleSheet('status', View).withProps(({ isOnline }) => ({
-  backgroundColor: isOnline ? '#3BC486' : '#BDC0CB',
-}));
+const userFragment = gql`
+  fragment UserOnlineStatus_user on User {
+    activityTime
+  }
+`;
 
-@styleSheet('Sparkle.UserOnlineStatus', {
-  status: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-})
+@withStyle('Sparkle.UserOnlineStatus')
 export default class UserOnlineStatus extends Component {
   static propTypes = {
-    isOnline: PropTypes.bool, // @TODO: make it isRequired after user data will be ready
+    user: fragmentProp(userFragment),
   };
 
-  static defaultProps = {
-    isOnline: false,
+  static fragments = {
+    user: userFragment,
   };
 
   render() {
-    return <Status isOnline={this.props.isOnline} />;
+    const { user, style } = this.props;
+    const online = moment().diff(user?.activityTime, 'minutes') <= 5;
+
+    return user && (
+      <View style={style}>
+        <OnlineStatus online={online} />
+      </View>
+    );
   }
 }

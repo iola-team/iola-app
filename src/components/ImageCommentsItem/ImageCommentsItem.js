@@ -19,10 +19,12 @@ const imageCommentsItemFragment = gql`
     user {
       id
       name
+      ...UserOnlineStatus_user
       ...UserAvatar_user
     }
   }
 
+  ${UserOnlineStatus.fragments.user}
   ${UserAvatar.fragments.user}
 `;
 
@@ -131,7 +133,6 @@ export default class ImageCommentsItem extends Component {
     const { styleSheet: styles, comment: { id, text, image, createdAt, user } } = this.props;
     const date = moment.duration(moment(createdAt).diff(moment())).humanize();
     const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
-    const isOnline = true; // @TODO
 
     return (
       <View style={styles.container} key={id}>
@@ -139,7 +140,7 @@ export default class ImageCommentsItem extends Component {
         <View style={styles.content}>
           <View style={styles.nameRow}>
             <Text style={styles.name}>{user.name}</Text>
-            <UserOnlineStatus isOnline={isOnline} />
+            <UserOnlineStatus user={user} />
           </View>
           {!!text && <Text style={styles.text}>{text}</Text>}
           {image && <ImageFit style={styles.image} url={image} maxHeight={170} maxWidth={200} />}
