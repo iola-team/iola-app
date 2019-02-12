@@ -206,7 +206,7 @@ export default class Backdrop extends PureComponent {
           <View style={styles.bodyBackground} />
 
           <PanGestureHandler
-            onGestureEvent={this.onGestureEvent} 
+            onGestureEvent={this.onGestureEvent}
             onHandlerStateChange={this.onHandlerStateChange}
           >
             <Animated.View>

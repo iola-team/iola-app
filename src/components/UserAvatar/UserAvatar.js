@@ -9,7 +9,7 @@ import { withStyle } from 'theme';
 import TouchableOpacity from '../TouchableOpacity';
 import Placeholder from '../Placeholder';
 
-const userFragment = gql`    
+const userFragment = gql`
   fragment UserAvatar_user on User {
     id
     avatar {
@@ -26,10 +26,6 @@ const userFragment = gql`
   'Sparkle.Placeholder': {
     backgroundColor: '#F8F9FB',
     borderRadius: 8,
-
-    '.small': {
-      borderRadius: 4,
-    },
 
     'NativeBase.Thumbnail': {
       opacity: 0,
