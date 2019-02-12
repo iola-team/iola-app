@@ -267,3 +267,5 @@ stories.add('Default', () => {
     </Query>
   );
 });
+
+stories.add('Placeholder', () => <ChatListItem />);
