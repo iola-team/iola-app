@@ -2,11 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ModalRN from 'react-native-modal';
 import { noop, isString } from 'lodash';
-import { TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { ScrollView, Dimensions } from 'react-native';
 import { View, Text } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme/index';
+import { withStyleSheet as styleSheet } from 'theme';
 import { getInAnimation, getOutAnimation } from './animations';
+import TouchableOpacity from '../TouchableOpacity';
 
 const maxHeight = Dimensions.get('window').height * 0.6;
 

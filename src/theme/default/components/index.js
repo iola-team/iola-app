@@ -56,8 +56,12 @@ export default (variables => ({
     },
 
     'NativeBase.Thumbnail': {
+      width: 40,
+      height: 40,
+      borderRadius: 8,
+
       '.small': {
-        borderRadius: 4,
+        borderRadius: 6,
       },
 
       '.large': {
@@ -65,10 +69,6 @@ export default (variables => ({
         height: 168,
         width: 168,
       },
-
-      width: 40,
-      height: 40,
-      borderRadius: 8,
     },
 
     'NativeBase.Button': {

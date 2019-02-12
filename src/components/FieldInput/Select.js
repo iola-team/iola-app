@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { find, isUndefined } from 'lodash';
-import { TouchableOpacity } from 'react-native';
 import { Text } from 'native-base';
 
 import { withStyleSheet } from 'theme';
 import FieldInput from './FieldInput';
 import ListPicker from '../ListPicker';
+import TouchableOpacity from '../TouchableOpacity';
 
 @withStyleSheet('Sparkle.SelectInput', {
   button: {

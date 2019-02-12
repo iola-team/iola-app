@@ -41,7 +41,7 @@ const userFragment = gql`
         'NativeBase.ViewNB': {
           height: 40,
           width: 40,
-          borderRadius: 4,
+          borderRadius: 6,
           backgroundColor: '#F8F9FB',
         },
       },
