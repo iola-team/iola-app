@@ -106,12 +106,7 @@ export default class UserListItem extends Component {
     }
 
     return (
-      <ListItem
-        style={style}
-        button
-        avatar
-        onPress={() => onPress(user)}
-      >
+      <ListItem style={style} onPress={() => onPress(user)} button avatar>
         <Left>
           <UserAvatar user={user} />
         </Left>
@@ -119,9 +114,7 @@ export default class UserListItem extends Component {
           <Text>{user.name}</Text>
           <UserOnlineStatus user={user} />
         </Body>
-        {children && (
-          <Right>{children}</Right>
-        )}
+        {children && <Right>{children}</Right>}
       </ListItem>
     );
   }

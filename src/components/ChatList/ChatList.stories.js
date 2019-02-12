@@ -1,6 +1,5 @@
 import React from 'react';
 import { find, filter, range, orderBy, cloneDeep } from 'lodash';
-import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { button, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
@@ -43,6 +42,7 @@ const createRandomUser = (id = faker.random.uuid()) => {
   const user = {
     id,
     name: faker.name.findName(),
+    activityTime: faker.date.recent(),
     avatar: {
       id: faker.random.uuid(),
       url: faker.image.avatar(),
@@ -83,6 +83,7 @@ dataStore.users = [
   {
     id: 'User:1',
     name: 'Roman Banan',
+    activityTime: faker.date.recent(),
     avatar: {
       id: 'Avatar:1',
       url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
@@ -92,6 +93,7 @@ dataStore.users = [
   {
     id: 'User:2',
     name: 'Grey Rabbit',
+    activityTime: faker.date.recent(),
     avatar: {
       id: 'Avatar:2',
       url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
@@ -102,6 +104,7 @@ dataStore.users = [
   {
     id: 'User:3',
     name: 'Jk KK',
+    activityTime: faker.date.recent(),
     avatar: {
       id: 'Avatar:3',
       url: 'https://avatarfiles.alphacoders.com/458/45801.jpg',
@@ -111,6 +114,7 @@ dataStore.users = [
   {
     id: 'User:4',
     name: 'Brad Pitt',
+    activityTime: faker.date.recent(),
     avatar: {
       id: 'Avatar:4',
       url: 'https://pbs.twimg.com/profile_images/631273849435230208/LSWD16F9_400x400.jpg',
@@ -224,6 +228,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     avatar: Avatar
+    activityTime: Date!
     chats(filter: UserChatsFilterInput, first: Int, after: Cursor, last: Int, before: Cursor): UserChatsConnection!
   }
 

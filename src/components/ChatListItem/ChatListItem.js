@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
 import { Text, ListItem, Left, Body, Right, Badge, View } from 'native-base';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -53,6 +52,15 @@ const chatFragment = gql`
         'Sparkle.UserOnlineStatus': {
           marginLeft: 8,
           marginBottom: -1,
+        },
+      },
+
+      'NativeBase.Text': {
+        '.note': {
+          fontFamily: 'SF Pro Text',
+          fontSize: 14,
+          lineHeight: 17,
+          color: '#AFB2BF',
         },
       },
     },
@@ -177,7 +185,6 @@ export default class ChatListItem extends Component {
         </Body>
         <Right>
           <Moment headline time note element={Text} format="HH:mm">{lastMessage.createdAt}</Moment>
-
           {this.renderStatus(lastMessage, unreadMessagesCount)}
         </Right>
       </ListItem>

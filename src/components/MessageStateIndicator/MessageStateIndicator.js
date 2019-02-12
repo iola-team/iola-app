@@ -12,7 +12,7 @@ import Icon from '../Icon';
 
   'NativeBase.Icon': {
     width: 18,
-    fontSize: 18,
+    fontSize: 12,
     color: '#BDC0CB',
   },
 
