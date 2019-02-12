@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Moment from 'react-moment';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { ListItem, Left, Body, Text, Right, View } from 'native-base';
@@ -39,7 +38,7 @@ const userFragment = gql`
         'NativeBase.ViewNB': {
           height: 40,
           width: 40,
-          borderRadius: 4,
+          borderRadius: 6,
           backgroundColor: '#F8F9FB',
         },
       },
