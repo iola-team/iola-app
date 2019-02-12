@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
 import { ListItem, Left, Body, Text, Right, View } from 'native-base';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-
 
 import { withStyle } from 'theme';
 import UserAvatar from '../UserAvatar';
@@ -29,7 +27,13 @@ const userFragment = gql`
       flexDirection: 'row',
       alignItems: 'center',
       height: 68,
+
+      'Sparkle.UserOnlineStatus': {
+        marginLeft: -3,
+        marginBottom: -2,
+      },
     },
+
     'NativeBase.Right': {
       justifyContent: 'center',
     },
@@ -58,11 +62,6 @@ const userFragment = gql`
         justifyContent: 'center',
       },
     },
-  },
-
-  onlineStatus: {
-    marginLeft: -3,
-    marginBottom: -2,
   },
 })
 export default class UserListItem extends Component {
@@ -101,7 +100,6 @@ export default class UserListItem extends Component {
 
   render() {
     const { user, onPress, style, children } = this.props;
-    const { onlineStatus } = StyleSheet.flatten(style);
 
     if (!user) {
       return this.renderPlaceholder();
@@ -119,7 +117,7 @@ export default class UserListItem extends Component {
         </Left>
         <Body>
           <Text>{user.name}</Text>
-          <UserOnlineStatus style={onlineStatus} user={user} />
+          <UserOnlineStatus user={user} />
         </Body>
         {children && (
           <Right>{children}</Right>
