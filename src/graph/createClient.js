@@ -12,7 +12,6 @@ import { createUploadLink } from 'apollo-upload-client';
 import { disableFragmentWarnings } from 'graphql-tag';
 import EventSource from 'react-native-event-source';
 import DeviceInfo from 'react-native-device-info';
-import { GRAPHQL_URL, GRAPHQL_SUBSCRIPTIONS_URL } from 'react-native-dotenv';
 
 import { AuthLink, ErrorLink, SSELink } from './links';
 import resolvers from './resolvers';
@@ -93,7 +92,7 @@ export async function createClient({
   return client;
 }
 
-export default async () => {
+export default async (apiURL, subscriptionsURL) => {
   /**
    * TODO: Review the app logic to decide if query batching is needed to be enabled back
    *
@@ -102,7 +101,7 @@ export default async () => {
   const enableBatching = false;
 
   let httpLink = createUploadLink({
-    uri: GRAPHQL_URL,
+    uri: apiURL,
     fetch: (uri, allOptions, ...restArgs) => {
       const {
         uploadProgress,
@@ -121,7 +120,7 @@ export default async () => {
 
   if (enableBatching) {
     const batchHttpLink = new BatchHttpLink({
-      uri: GRAPHQL_URL,
+      uri: apiURL,
     });
 
     const hasFiles = node => isArray(node) || isPlainObject(node)
@@ -144,7 +143,7 @@ export default async () => {
   }
 
   const sseLink = new SSELink({
-    uri: GRAPHQL_SUBSCRIPTIONS_URL,
+    uri: subscriptionsURL,
     streamId: DeviceInfo.getUniqueID(),
     EventSourceImpl: EventSource,
   });
