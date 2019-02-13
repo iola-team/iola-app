@@ -17,15 +17,13 @@ import Channel from './Channel';
 import Channels from './Channels';
 import DashboardAll from './DashboardAll';
 import DashboardFeatured from './DashboardFeatured';
-import DashboardFriends from './DashboardFriends';
 import EmailVerification from './EmailVerification';
 import ForgotPassword from './ForgotPassword';
 import Launch from './Launch';
 import MyFriends from './MyFriends';
 import MyInfo from './MyInfo';
 import MyPhotos from './MyPhotos';
-import Notifications from './Notifications';
-import ProfileEdit from './PropfileEdit';
+import ProfileEditInfo from './ProfileEditInfo';
 import Settings from './Settings';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -36,6 +34,7 @@ import UserPhotos from './UserPhotos';
 import createUserNavigator from './User';
 import createDashboardNavigator from './Dashboard';
 import createProfileNavigator from './Profile';
+import createProfileEditNavigator from './ProfileEdit';
 
 // Navigator
 const TabsNavigator = createBottomTabNavigator({
@@ -47,7 +46,6 @@ const TabsNavigator = createBottomTabNavigator({
     bottomBarHeight: BottomTabBar.HEIGHT,
   }),
   [routes.CHANNELS]: Channels,
-  [routes.NOTIFICATIONS]: Notifications,
   [routes.PROFILE]: createProfileNavigator({
     [routes.PROFILE_PHOTOS]: MyPhotos,
     [routes.PROFILE_INFO]: MyInfo,
@@ -94,10 +92,9 @@ const RootNavigator = createSwitchNavigator({
         [routes.USER_FRIENDS]: UserFriends,
       }),
     },
-
     [routes.CHANNEL]: Channel,
-    [routes.PROFILE]: createProfileNavigator({
-      [routes.PROFILE_EDIT]: ProfileEdit,
+    [routes.PROFILE_EDIT]: createProfileEditNavigator({
+      [routes.PROFILE_EDIT_INFO]: ProfileEditInfo,
       [routes.SETTINGS]: Settings,
     }),
   }, {

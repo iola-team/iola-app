@@ -14,10 +14,11 @@ export const DASHBOARD_FRIENDS = 'dashboard.friends';
 export const DASHBOARD_FEATURED = 'dashboard.featured';
 
 export const PROFILE = 'profile';
-export const PROFILE_EDIT = 'profile-edit';
 export const PROFILE_PHOTOS = 'profile.photos';
 export const PROFILE_INFO = 'profile.info';
 export const PROFILE_FRIENDS = 'profile.friends';
+export const PROFILE_EDIT = 'profileEdit';
+export const PROFILE_EDIT_INFO = 'profileEdit.info';
 
 export const USER_PHOTOS = 'user.photos';
 export const USER_INFO = 'user.info';
