@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { Query } from 'react-apollo';
+import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
@@ -32,27 +32,34 @@ const userFriendsQuery = gql`
     paddingTop: 8,
   },
 })
+@graphql(userFriendsQuery, {
+  options: props => ({
+    variables: {
+      id: props.navigation.state.params.id,
+    },
+  }),
+})
 @withNavigationFocus
-export default class UserFriends extends PureComponent {
+export default class UserFriends extends Component {
   static navigationOptions = ({ navigation }) => ({
     tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
   });
 
+  shouldComponentUpdate({ isFocused }) {
+    return isFocused;
+  }
+
   render() {
-    const { navigation, isFocused, styleSheet: styles } = this.props;
-    const id = navigation.state.params.id;
+    const { data: { user, loading }, styleSheet: styles } = this.props;
+    const edges = user?.friends.edges || [];
 
     return (
-      <Query skip={!isFocused} query={userFriendsQuery} variables={{ id }}>
-        {({ loading, data }) => (
-          <UserList
-            contentContainerStyle={styles.list}
-            edges={loading || !isFocused ? [] : data.user.friends.edges}
-            loading={loading || !isFocused}
-            noContentText="No friends"
-          />
-        )}
-      </Query>
+      <UserList
+        contentContainerStyle={styles.list}
+        edges={edges}
+        loading={loading}
+        noContentText="No friends"
+      />
     );
   }
 }

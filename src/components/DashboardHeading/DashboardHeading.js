@@ -113,7 +113,7 @@ export default class DashboardHeading extends PureComponent {
 
           <View style={styleSheet.buttons}>
             <Button block bordered transparent style={styleSheet.button} onPress={onEditPress}>
-              <Text style={styleSheet.buttonText}>Edit profile</Text>
+              <Text style={styleSheet.buttonText}>Edit Profile</Text>
             </Button>
 
             <Button block bordered transparent style={styleSheet.button} onPress={onSettingsPress}>

@@ -1,21 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { find, isUndefined } from 'lodash';
-import {
-  View,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  Text,
-  Button,
-  ListItem,
-  Right,
-  Body,
-  Left,
-} from 'native-base';
+import { Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import Input from './Input';
 import ListPicker from '../ListPicker';
+import TouchableOpacity from '../TouchableOpacity';
 
 @styleSheet('Sparkle.SelectInput', {
   button: {

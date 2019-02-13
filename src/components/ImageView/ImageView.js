@@ -1,28 +1,29 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dimensions, StatusBar, Modal, Text, View } from 'react-native';
-import { Badge, Spinner } from 'native-base';
+import { Dimensions, StatusBar, Text, View } from 'react-native';
+import { Badge } from 'native-base';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { Query } from 'react-apollo';
+import { graphql, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import Icon from '../Icon';
-import UserOnlineStatus from '../UserOnlineStatus';
+import { withStyleSheet as styleSheet } from 'theme';
+import Overlay from '../Overlay';
 import TouchableOpacity from '../TouchableOpacity';
+import ActionSheet from '../ActionSheet';
 import ImageComments from '../ImageComments';
+import UserOnlineStatus from '../UserOnlineStatus';
+import Icon from '../Icon';
+import Spinner from '../Spinner';
 
-const SpinnerContainer = connectToStyleSheet('spinnerContainer', View);
-const NameBlock = connectToStyleSheet('nameBlock', View);
-const Name = connectToStyleSheet('name', Text);
-const Caption = connectToStyleSheet('caption', Text);
-const DateTime = connectToStyleSheet('dateTime', Text);
-const ActionsBlock = connectToStyleSheet('actionsBlock', View);
-const ActionText = connectToStyleSheet('actionText', Text);
-const ActionBadge = connectToStyleSheet('actionBadge', Badge);
-const ActionBadgeText = connectToStyleSheet('actionBadgeText', Text);
+const meQuery = gql`
+  query meQuery {
+    me {
+      id
+    }
+  }
+`;
 
 const edgeFragment = gql`
   fragment ImageView_edge on PhotoEdge {
@@ -48,14 +49,17 @@ export const photoDetailsQuery = gql`
         user {
           id
           name
+          ...UserOnlineStatus_user
         }
 
-        comments {
+        comments @connection(key: "PhotoCommentsConnection") {
           totalCount
         }
       }
     }
   }
+  
+  ${UserOnlineStatus.fragments.user}
 `;
 
 @styleSheet('Sparkle.ImageView', {
@@ -94,6 +98,31 @@ export const photoDetailsQuery = gql`
     zIndex: 999,
   },
 
+  headerButton: {
+    position: 'relative',
+    padding: 15,
+    zIndex: 1,
+  },
+
+  headerIcon: {
+    fontSize: 14,
+    color: '#BDC0CB',
+  },
+
+  backButton: {
+    position: 'relative',
+    marginRight: 'auto',
+    padding: 15,
+    zIndex: 1,
+  },
+
+  meatballMenu: {
+    position: 'relative',
+    marginLeft: 'auto',
+    padding: 15,
+    zIndex: 1,
+  },
+
   indicator: {
     width: '100%',
     position: 'absolute',
@@ -105,22 +134,12 @@ export const photoDetailsQuery = gql`
     color: '#BDC0CB',
   },
 
-  closeButton: {
-    marginLeft: 'auto',
-  },
-
-  close: {
-    margin: 14,
-    fontSize: 14,
-    color: '#BDC0CB',
-  },
-
   footer: {
     paddingTop: 25,
     paddingHorizontal: 17,
     justifyContent: 'space-between',
     backgroundColor: 'rgba(46, 48, 55, 0.3)',
-    pointerEvents: 'none', // @TODO: it doesn't help
+    pointerEvents: 'none', // @TODO: it doesn't work
   },
 
   nameBlock: {
@@ -198,21 +217,23 @@ export const photoDetailsQuery = gql`
     color: '#FFFFFF',
   },
 })
+@graphql(meQuery)
 export default class ImageView extends Component {
   static propTypes = {
     children: PropTypes.func.isRequired,
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment).isRequired
     ).isRequired,
+    deletePhoto: PropTypes.func.isRequired,
   };
 
   state = {
     index: 0,
-    visible: false,
+    isVisible: false,
   };
 
   onShowImage({ item, index }) {
-    this.setState({ index, visible: true });
+    this.setState({ index, isVisible: true });
   }
 
   onChange(index) {
@@ -220,86 +241,124 @@ export default class ImageView extends Component {
   }
 
   onClose() {
-    this.setState({ visible: false });
+    this.setState({ isVisible: false });
+  }
+
+  onDelete(photoId) {
+    const { edges, deletePhoto } = this.props;
+    const { index } = this.state;
+
+    deletePhoto(photoId);
+
+    if (edges.length === 1) {
+      this.setState({ isVisible: false });
+      return;
+    }
+
+    if (index === 1) {
+      this.setState({ index: index + 1 });
+      return;
+    }
+
+    if (index) {
+      this.setState({ index: index - 1 });
+    }
   }
 
   renderControls() {
-    const { edges, styleSheet: styles } = this.props;
+    const { edges, data: { me }, styleSheet: styles } = this.props;
     const { index } = this.state;
     const { node: { id } } = edges[index];
-    const totalCount = edges.length;
+    const totalCountImages = edges.length;
 
     return (
       <View style={styles.controls}>
-        <View style={styles.header}>
-          {totalCount > 1 ? <Text style={styles.indicator}>{`${index} of ${totalCount}`}</Text> : null}
-          <TouchableOpacity onPress={::this.onClose} style={styles.closeButton}>
-            <Icon name="close" style={styles.close} />
-          </TouchableOpacity>
-        </View>
-
         <Query query={photoDetailsQuery} variables={{ id }}>
           {({ loading, data }) => {
             if (loading) return null; // @TODO: add spinner
 
-            const {
-              id,
-              caption,
-              createdAt,
-              user: {
-                name,
-                // isOnline, // @TODO
-              },
-              comments: {
-                totalCount,
-              },
-              // totalCountLikes, // @TODO
-            } = data.photo;
-            const isOnline = false; // @TODO
-            const totalCountLikes = 0; // @TODO
+            const { id: photoId, caption, createdAt, user, comments: { totalCount } } = data.photo;
+            // const totalCountLikes = 0; // @TODO: Likes
             const date = moment.duration(moment(createdAt).diff(moment())).humanize();
             const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
 
             return (
-              <View style={styles.footer}>
-                <View>
-                  <NameBlock>
-                    <Name>{name}</Name>
-                    <UserOnlineStatus isOnline={isOnline} />
-                  </NameBlock>
-                  <Caption>{caption}</Caption>
-                  <DateTime>{dateFormatted}</DateTime>
+              <>
+                <View style={styles.header}>
+                  <TouchableOpacity
+                    onPress={::this.onClose}
+                    style={[styles.headerButton, styles.backButton]}
+                  >
+                    <Icon style={styles.headerIcon} name="back" />
+                  </TouchableOpacity>
+
+                  {totalCountImages > 1 && (
+                    <Text style={styles.indicator}>
+                      {`${index + 1} of ${totalCountImages}`}
+                    </Text>
+                  )}
+
+                  {me.id === user.id && (
+                    <ActionSheet
+                      options={['Cancel', 'Delete']}
+                      cancelButtonIndex={0}
+                      destructiveButtonIndex={1}
+                      onPress={index => index === 1 && this.onDelete(photoId)}
+                    >
+                      {show => (
+                        <TouchableOpacity
+                          onPress={show}
+                          style={[styles.headerButton, styles.meatballMenu]}
+                        >
+                          <Icon style={styles.headerIcon} name="emoji" /* @TODO: meatball icon */ />
+                        </TouchableOpacity>
+                      )}
+                    </ActionSheet>
+                  )}
                 </View>
 
-                <ActionsBlock>
-                  <ImageComments photoId={id} totalCount={totalCount}>
-                    {onShowImageComments => (
-                      <TouchableOpacity
-                        onPress={onShowImageComments}
-                        style={[styles.actionButton, styles.buttonComments]}
-                      >
-                        <Icon name="chats-bar" style={styles.actionIcon} />
-                        <Text style={styles.actionText}>Comment</Text>
-                        {!totalCount ? null : (
-                          <Badge style={styles.actionBadge}>
-                            <Text style={styles.actionBadgeText}>{totalCount}</Text>
-                          </Badge>
-                        )}
-                      </TouchableOpacity>
-                    )}
-                  </ImageComments>
+                <View style={styles.footer}>
+                  <View>
+                    <View style={styles.nameBlock}>
+                      <Text style={styles.name}>{user.name}</Text>
+                      <UserOnlineStatus user={user} />
+                    </View>
+                    <Text style={styles.caption}>{caption}</Text>
+                    <Text style={styles.dateTime}>{dateFormatted}</Text>
+                  </View>
 
-                  <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
-                    <Icon name="like" style={styles.actionIcon} />
-                    <ActionText>Like</ActionText>
-                    {totalCountLikes ? (
-                      <ActionBadge>
-                        <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
-                      </ActionBadge>
-                    ) : null}
-                  </TouchableOpacity>
-                </ActionsBlock>
-              </View>
+                  <View style={styles.actionsBlock}>
+                    <ImageComments photoId={photoId} totalCount={totalCount}>
+                      {onShowImageComments => (
+                        <TouchableOpacity
+                          onPress={onShowImageComments}
+                          style={[styles.actionButton, styles.buttonComments]}
+                        >
+                          <Icon name="chats-bar" style={styles.actionIcon} />
+                          <Text style={styles.actionText}>Comment</Text>
+                          {!totalCount ? null : (
+                            <Badge style={styles.actionBadge}>
+                              <Text style={styles.actionBadgeText}>{totalCount}</Text>
+                            </Badge>
+                          )}
+                        </TouchableOpacity>
+                      )}
+                    </ImageComments>
+
+                    {/* @TODO: Likes
+                    <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
+                      <Icon name="like" style={styles.actionIcon} />
+                      <ActionText>Like</ActionText>
+                      {totalCountLikes ? (
+                        <ActionBadge>
+                          <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
+                        </ActionBadge>
+                      ) : null}
+                    </TouchableOpacity>
+                    */}
+                  </View>
+                </View>
+              </>
             );
           }}
         </Query>
@@ -309,19 +368,14 @@ export default class ImageView extends Component {
 
   render() {
     const { edges, styleSheet: styles, children } = this.props;
-    const { index, visible } = this.state;
+    const { index, isVisible } = this.state;
     const imageUrls = edges.map(({ node: { url } }) => ({ url }));
 
     return (
-      <Fragment>
+      <>
         {children(::this.onShowImage)}
 
-        <Modal
-          visible={visible}
-          animationType="fade"
-          onRequestClose={::this.onClose}
-          transparent
-        >
+        <Overlay visible={isVisible} onRequestClose={::this.onClose}>
           <View style={styles.content}>
             <ImageViewer
               imageUrls={imageUrls}
@@ -330,15 +384,15 @@ export default class ImageView extends Component {
               onSwipeDown={::this.onClose}
               renderIndicator={() => null}
               failImageSource={{ uri: 'https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif' /* @TODO */ }}
-              loadingRender={() => <SpinnerContainer><Spinner /></SpinnerContainer>}
+              loadingRender={() => <View style={styles.spinnerContainer}><Spinner /></View>}
               footerContainerStyle={{ width: '100%' }}
               backgroundColor="rgba(46, 48, 55, 0.95)"
             />
 
-            {visible && this.renderControls()}
+            {isVisible && this.renderControls()}
           </View>
-        </Modal>
-      </Fragment>
+        </Overlay>
+      </>
     );
   }
 }

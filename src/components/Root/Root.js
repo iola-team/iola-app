@@ -1,13 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
-import { View } from 'react-native';
 import { Root as RootNB } from 'native-base';
 
-/**
- * TODO: remove when fixed
- * https://github.com/cloudflare/react-gateway/issues/40
- */
-const GatewayComponent = props => <View {...props} />;
+const GatewayComponent = props => <Fragment {...props} />;
 
 export default class Root extends Component {
   render() {

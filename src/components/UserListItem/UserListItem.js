@@ -1,33 +1,39 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Moment from 'react-moment';
+import { ListItem, Left, Body, Text, Right, View } from 'native-base';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { ListItem, Left, Body, Text, Right, View } from 'native-base';
-
 
 import { withStyle } from 'theme';
 import UserAvatar from '../UserAvatar';
+import UserOnlineStatus from '../UserOnlineStatus';
 import Placeholder from '../Placeholder';
 
 const userFragment = gql`
   fragment UserListItem_user on User {
     id
     name
-    activityTime
-
+    ...UserOnlineStatus_user
     ...UserAvatar_user
   }
 
+  ${UserOnlineStatus.fragments.user}
   ${UserAvatar.fragments.user}
 `;
 
 @withStyle('Sparkle.UserListItem', {
   'NativeBase.ListItem': {
     'NativeBase.Body': {
+      flexDirection: 'row',
+      alignItems: 'center',
       height: 68,
-      justifyContent: 'center',
+
+      'Sparkle.UserOnlineStatus': {
+        marginLeft: -3,
+        marginBottom: -2,
+      },
     },
+
     'NativeBase.Right': {
       justifyContent: 'center',
     },
@@ -39,7 +45,7 @@ const userFragment = gql`
         'NativeBase.ViewNB': {
           height: 40,
           width: 40,
-          borderRadius: 4,
+          borderRadius: 6,
           backgroundColor: '#F8F9FB',
         },
       },
@@ -100,21 +106,15 @@ export default class UserListItem extends Component {
     }
 
     return (
-      <ListItem
-        style={style}
-        button
-        avatar
-        onPress={() => onPress(user)}
-      >
+      <ListItem style={style} onPress={() => onPress(user)} button avatar>
         <Left>
           <UserAvatar user={user} />
         </Left>
         <Body>
           <Text>{user.name}</Text>
+          <UserOnlineStatus user={user} />
         </Body>
-        {children && (
-          <Right>{children}</Right>
-        )}
+        {children && <Right>{children}</Right>}
       </ListItem>
     );
   }

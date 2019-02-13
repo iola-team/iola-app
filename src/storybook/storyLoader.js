@@ -7,6 +7,7 @@
 function loadStories() {
   require('../components/ActionSheet/ActionSheet.stories');
   require('../components/AvatarInput/AvatarInput.stories');
+  require('../components/Backdrop/Backdrop.stories');
   require('../components/Chat/Chat.stories');
   require('../components/ChatFooter/ChatFooter.stories');
   require('../components/ChatList/ChatList.stories');
@@ -25,6 +26,7 @@ function loadStories() {
   require('../components/Image/Image.stories');
   require('../components/ImageComments/ImageComments.stories');
   require('../components/ImageCommentsItem/ImageCommentsItem.stories');
+  require('../components/ImageFit/ImageFit.stories');
   require('../components/ImagePicker/ImagePicker.stories');
   require('../components/ImagePickerActionSheet/ImagePickerActionSheet.stories');
   require('../components/ImageProgress/ImageProgress.stories');
@@ -34,8 +36,8 @@ function loadStories() {
   require('../components/MessageItem/MessageItem.stories');
   require('../components/MessageList/MessageList.stories');
   require('../components/MessageStateIndicator/MessageStateIndicator.stories');
-  require('../components/Modal/Modal.stories');
   require('../components/NoContent/NoContent.stories');
+  require('../components/Overlay/Overlay.stories');
   require('../components/PhotoEdit/PhotoEdit.stories');
   require('../components/PhotoGrid/PhotoGrid.stories');
   require('../components/PhotoList/PhotoList.stories');
@@ -68,6 +70,7 @@ function loadStories() {
 const stories = [
   '../components/ActionSheet/ActionSheet.stories',
   '../components/AvatarInput/AvatarInput.stories',
+  '../components/Backdrop/Backdrop.stories',
   '../components/Chat/Chat.stories',
   '../components/ChatFooter/ChatFooter.stories',
   '../components/ChatList/ChatList.stories',
@@ -86,6 +89,7 @@ const stories = [
   '../components/Image/Image.stories',
   '../components/ImageComments/ImageComments.stories',
   '../components/ImageCommentsItem/ImageCommentsItem.stories',
+  '../components/ImageFit/ImageFit.stories',
   '../components/ImagePicker/ImagePicker.stories',
   '../components/ImagePickerActionSheet/ImagePickerActionSheet.stories',
   '../components/ImageProgress/ImageProgress.stories',
@@ -95,8 +99,8 @@ const stories = [
   '../components/MessageItem/MessageItem.stories',
   '../components/MessageList/MessageList.stories',
   '../components/MessageStateIndicator/MessageStateIndicator.stories',
-  '../components/Modal/Modal.stories',
   '../components/NoContent/NoContent.stories',
+  '../components/Overlay/Overlay.stories',
   '../components/PhotoEdit/PhotoEdit.stories',
   '../components/PhotoGrid/PhotoGrid.stories',
   '../components/PhotoList/PhotoList.stories',

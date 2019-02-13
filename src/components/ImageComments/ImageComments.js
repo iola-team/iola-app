@@ -1,28 +1,21 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Dimensions } from 'react-native';
-import { Mutation, Query } from 'react-apollo';
+import { graphql, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
 import uuid from 'uuid/v4';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import Avatar from '../UserAvatar';
-import Modal from '../Modal';
-import ChatFooter from '../ChatFooter';
 import ImageCommentsConnection from './ImageCommentsConnection';
-
-const getModalHeight = () => {
-  const { height } = Dimensions.get('window');
-  const headerHeight = 62;
-  const footerHeight = 40;
-
-  return height * 0.75 - headerHeight - footerHeight;
-};
+import Avatar from '../UserAvatar';
+import Backdrop from '../Backdrop';
+import TouchableOpacity from '../TouchableOpacity';
+import ChatFooter from '../ChatFooter';
 
 const meQuery = gql`
   query meQuery {
-    user: me {
+    me {
       name
       ...UserAvatar_user
     }
@@ -48,7 +41,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
     photo: node(id: $id) {
       ...on Photo {
         id
-        comments {
+        comments @connection(key: "PhotoCommentsConnection") {
           totalCount
         }
       }
@@ -80,6 +73,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
     backgroundColor: '#F8F9FB',
   },
 })
+@graphql(meQuery)
 export default class ImageComments extends Component {
   static propTypes = {
     photoId: PropTypes.string.isRequired,
@@ -115,7 +109,13 @@ export default class ImageComments extends Component {
     isVisible: false,
   };
 
-  imageCommentsListForwardedRef = React.createRef();
+  listRef = React.createRef();
+
+  getModalHeight = () => {
+    const { height } = Dimensions.get('window');
+
+    return height * 0.6;
+  };
 
   action = (handler, preHandler = noop) => () => {
     preHandler();
@@ -136,14 +136,14 @@ export default class ImageComments extends Component {
     this.setState({ isVisible: isUndefined(isVisible) ? true : isVisible });
   };
 
-  onCommentSend = async (text, user, mutate) => {
-    const { photoId, totalCount } = this.props;
+  onCommentSend = async (text, mutate) => {
+    const { photoId, totalCount, data: { me } } = this.props;
     const { queries: { photoCommentsQuery } } = ImageCommentsConnection;
 
     mutate({
       variables: {
         input: {
-          userId: user.id,
+          userId: me.id,
           photoId,
           text,
         },
@@ -159,10 +159,10 @@ export default class ImageComments extends Component {
             text,
             createdAt: new Date().toISOString(),
             user: {
-              ...user,
+              ...me,
               __typename: 'User',
               avatar: {
-                ...user.avatar,
+                ...me.avatar,
                 __typename: 'Avatar',
               },
             },
@@ -180,7 +180,7 @@ export default class ImageComments extends Component {
           __typename: 'CommentEdge',
           node: {
             ...addPhotoComment.node,
-            user,
+            user: me,
           },
           cursor: 'first',
         });
@@ -208,16 +208,14 @@ export default class ImageComments extends Component {
       },
     });
 
-    if (this.imageCommentsListForwardedRef.current) {
-      this.imageCommentsListForwardedRef.current.scrollToIndex({
-        animated: true,
-        index: 0,
-      });
+    if (this.listRef.current && totalCount) {
+      this.listRef.current.scrollToIndex({ animated: true, index: 0 });
     }
   };
 
   renderTitle() {
     const { totalCount, styleSheet: styles } = this.props;
+    // @TODO: add subscription for totalCount without opened modal?
 
     return (
       <View style={styles.titleRow}>
@@ -227,10 +225,10 @@ export default class ImageComments extends Component {
     );
   }
 
-  renderFooter(user) {
+  renderFooter() {
     return (
       <Mutation mutation={addPhotoCommentMutation}>
-        {mutate => <ChatFooter onSend={text => this.onCommentSend(text, user, mutate)} />}
+        {mutate => <ChatFooter onSend={text => this.onCommentSend(text, mutate)} />}
       </Mutation>
     );
   }
@@ -240,30 +238,27 @@ export default class ImageComments extends Component {
     const { isVisible } = this.state;
 
     return (
-      <Query query={meQuery}>
-        {({ loading, data: { user } }) => (loading ? null : (
-          <Modal
-            title={this.renderTitle()}
-            height={getModalHeight()}
-            footer={this.renderFooter(user)}
-            isVisible={isVisible}
-            onDone={this.action('onDone', this.hide)}
-            onDismiss={this.action('onDismiss')}
-            onShow={this.action('onShow')}
-            onSwipe={this.action('onSwipe', this.hide)}
-            onCancel={this.action('onCancel', this.hide)}
-            onRequestClose={this.action('onRequestClose', this.hide)}
-            noScrollViewForContent
-          >
+      <Backdrop
+        height={this.getModalHeight()}
+        title={this.renderTitle()}
+        isVisible={isVisible}
+        onSwipe={this.hide}
+        onRequestClose={this.hide}
+        headerRight={(
+          <TouchableOpacity onPress={this.hide}>
+            <Text>Done</Text>
+          </TouchableOpacity>
+        )}
+      >
+        <>
+          <View style={{ flex: 1 }}>
             <View style={styles.container}>
-              <ImageCommentsConnection
-                photoId={photoId}
-                imageCommentsListForwardedRef={this.imageCommentsListForwardedRef}
-              />
+              <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
             </View>
-          </Modal>
-        ))}
-      </Query>
+          </View>
+          {this.renderFooter()}
+        </>
+      </Backdrop>
     );
   }
 

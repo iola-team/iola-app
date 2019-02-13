@@ -2,19 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import { includes, filter, isFunction, isUndefined, without, noop } from 'lodash';
-import {
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-  Keyboard,
-} from 'react-native';
-import {
-  View,
-  Text,
-  Textarea,
-} from 'native-base';
+import { StyleSheet, Dimensions, Keyboard } from 'react-native';
+import { View, Text, Textarea } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme/index';
+import { withStyleSheet as styleSheet } from 'theme';
+import TouchableOpacity from '../TouchableOpacity';
 
 const valueShape = PropTypes.oneOfType([
   PropTypes.string,

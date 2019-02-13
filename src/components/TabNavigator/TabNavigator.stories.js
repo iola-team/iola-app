@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import { action } from '@storybook/addon-actions';
-import { View, Text, StyleSheet, Animated, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Animated } from 'react-native';
 import { createAppContainer, Header as HeaderRN } from 'react-navigation';
 import { range } from 'lodash';
 
@@ -11,6 +11,7 @@ import createTabNavigator from '.';
 import ScrollView from './ScrollView';
 import FlatList from './FlatList';
 import { NoContent } from './SceneView';
+import TouchableOpacity from '../TouchableOpacity';
 
 const stories = storiesOf('Components/TabNavigator', module);
 
@@ -73,7 +74,7 @@ const createFlatListTab = (backgroundColor, count = 100) => class Tab extends Pu
       <FlatList
         data={data}
         renderItem={this.renderItem}
-        ListEmptyComponent={<NoContent icon="comments-empty-state" text="No users" />}
+        ListEmptyComponent={<NoContent icon="comments-empty-state" text="No Users" />}
       />
     );
   }

@@ -151,10 +151,13 @@ class Provider extends Component {
   };
 
   componentDidMount() {
+    const { onReset, ...props } = this.props;    
+
+    onReset();
     createClient({
       restoreCache: false,
       persistorStorage: new MockAsyncStorage(),
-      terminatingLink: createTerminatingLink(this.props),
+      terminatingLink: createTerminatingLink(props),
     }).then(client => this.setState({
       client,
     }));
@@ -194,21 +197,18 @@ export default ({
   resolvers,
   dataStore = {},
   onReset = () => {},
-}) => story => {
-  onReset();
-
-  return (
-    <Provider
-      typeDefs={typeDefs}
-      mocks={mocks}
-      resolvers={resolvers}
-      dataStore={
-        isFunction(dataStore)
-          ? dataStore()
-          : cloneDeep(dataStore)
-      }
-    >
-      {story()}
-    </Provider>
-  );
-};
+}) => story => (
+  <Provider
+    onReset={onReset}
+    typeDefs={typeDefs}
+    mocks={mocks}
+    resolvers={resolvers}
+    dataStore={
+      isFunction(dataStore)
+        ? dataStore()
+        : cloneDeep(dataStore)
+    }
+  >
+    {story()}
+  </Provider>
+);

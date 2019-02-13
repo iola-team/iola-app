@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
-import { get, filter, uniqueId } from 'lodash';
-import update from 'immutability-helper';
 import { Button, Icon } from 'native-base';
+import { graphql, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
+import { get, filter, uniqueId, remove } from 'lodash';
+import update from 'immutability-helper';
 
-import { PhotoList, ImagePicker, ImageProgress, PhotosTabBarLabel } from 'components';
+import { PhotoList, ImagePicker, ImageView, ImageProgress, PhotosTabBarLabel } from 'components';
 
 const myPhotosQuery = gql`
   query MyPhotosQuery {
@@ -43,13 +43,24 @@ const addPhotoMutation = gql`
   ${PhotosTabBarLabel.fragments.user}
 `;
 
+const deletePhotoMutation = gql`
+  mutation deleteUserPhotoMutation($id: ID!) {
+    result: deleteUserPhoto(id: $id) {
+      deletedId
+    }
+  }
+`;
+
 @graphql(myPhotosQuery, {
   skip: props => !!props.skip,
 })
 @graphql(addPhotoMutation, {
   name: 'addPhoto',
 })
-export default class MyFriendsConnection extends Component {
+@graphql(deletePhotoMutation, {
+  name: 'deletePhoto',
+})
+export default class MyFriendsConnection extends PureComponent {
   static propTypes = {
     addButtonStyle: PropTypes.object.isRequired,
     data: PropTypes.object,
@@ -71,6 +82,36 @@ export default class MyFriendsConnection extends Component {
       [id]: progress,
     },
   }));
+
+  deletePhoto = (photoId) => {
+    const { deletePhoto, data: { me } } = this.props;
+    const optimisticResponse = {
+      result: {
+        __typename: 'UserPhotoDeletePayload',
+        deletedId: photoId,
+        user: {
+          __typename: 'User',
+          id: me.id,
+        },
+      },
+    };
+    const update = (cache, { data: { result: { deletedId } } }) => {
+      const data = cache.readQuery({ query: myPhotosQuery });
+
+      remove(me.photos.edges, edge => edge.node.id === deletedId);
+
+      cache.writeQuery({
+        query: myPhotosQuery,
+        data,
+      });
+    };
+
+    deletePhoto({
+      variables: { id: photoId },
+      optimisticResponse,
+      update,
+    });
+  };
 
   addPhoto = async (image) => {
     const { addPhoto, data: { me } } = this.props;
@@ -113,11 +154,9 @@ export default class MyFriendsConnection extends Component {
         });
       },
     });
-  }
-
-  onChange = (images) => {
-    images.map(this.addPhoto);
   };
+
+  onChange = images => images.map(this.addPhoto);
 
   render() {
     const { data: { loading, me }, skip, addButtonStyle, ...props } = this.props;
@@ -126,14 +165,20 @@ export default class MyFriendsConnection extends Component {
 
     return (
       <>
-        <PhotoList
-          {...props}
-          renderItem={this.renderItem}
-          itemsProgress={photoProgress}
-          edges={edges}
-          loading={skip || loading}
-          noContentText="No photos"
-        />
+        <ImageView edges={edges} deletePhoto={this.deletePhoto}>
+          {onShowImage => (
+            <PhotoList
+              {...props}
+              renderItem={this.renderItem}
+              itemsProgress={photoProgress}
+              onItemPress={onShowImage}
+              edges={edges}
+              loading={skip || loading}
+              noContentText="No photos"
+            />
+          )}
+        </ImageView>
+
         <ImagePicker multiple onChange={this.onChange}>
           {({ pick }) => (
             <Button block rounded style={addButtonStyle} onPress={pick}>

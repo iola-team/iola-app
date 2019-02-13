@@ -112,4 +112,4 @@ stories.add('Full flow', () => (
 ));
 
 stories.add('Initial Load', () => <UserList edges={[]} loading />);
-stories.add('No items', () => <UserList edges={[]} noContentText="No users" />);
+stories.add('No Items', () => <UserList edges={[]} noContentText="No Users" />);

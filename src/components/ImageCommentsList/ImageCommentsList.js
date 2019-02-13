@@ -26,7 +26,8 @@ export default class ImageCommentsList extends Component {
       fragmentProp(edgeFragment).isRequired,
     ),
     loading: PropTypes.bool.isRequired,
-    imageCommentsListForwardedRef: PropTypes.object.isRequired,
+    subscribeToNewComments: PropTypes.func.isRequired,
+    listRef: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -36,6 +37,10 @@ export default class ImageCommentsList extends Component {
   static fragments = {
     edge: edgeFragment,
   };
+
+  componentDidMount() {
+    this.props.subscribeToNewComments();
+  }
 
   shouldComponentUpdate(nextProps) {
     const { edges, loading } = this.props;
@@ -57,24 +62,22 @@ export default class ImageCommentsList extends Component {
   }
 
   render() {
-    const { edges, loading, imageCommentsListForwardedRef, ...listProps } = this.props;
+    const { edges, loading, listRef, ...listProps } = this.props;
     const data = loading && !edges.length ? this.getPlaceholders() : edges;
+    const emptyStateText = 'No comments yet\nBe the first to comment';
 
     return (
       <FlatList
         {...listProps}
-        ref={imageCommentsListForwardedRef}
+        ref={listRef}
         data={data}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         contentContainerStyle={{ flexGrow: 1 }}
         ListEmptyComponent={(
-          <NoContent
-            icon="chatbubbles"
-            text={'No comments yet\nBe the first to comment'/* ' - don't replace with " */}
-            inverted
-          />
+          <NoContent icon="comments-empty-state" text={emptyStateText} inverted />
         )}
+        removeClippedSubviews // "Sometimes image doesn't show (only Android)" issue: https://github.com/facebook/react-native/issues/17096
       />
     );
   }

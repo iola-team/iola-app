@@ -31,10 +31,10 @@ stories.add('Picker', () => {
               <Text>Pick</Text>
             </Button>
             <Button onPress={fromGallery} style={{ marginRight: 8 }}>
-              <Text>Pick from gallery</Text>
+              <Text>Pick from Gallery</Text>
             </Button>
             <Button onPress={fromCamera} style={{ marginRight: 8 }}>
-              <Text>Pick camera</Text>
+              <Text>Pick Camera</Text>
             </Button>
           </View>
           <Button block warning onPress={clear} style={{ marginBottom: 20 }}>

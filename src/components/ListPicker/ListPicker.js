@@ -5,8 +5,9 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { View, Text, List, ListItem, Body } from 'native-base';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import Modal from '../Modal';
+import Backdrop from '../Backdrop';
 import Icon from '../Icon';
+import TouchableOpacity from '../TouchableOpacity';
 
 const maxHeight = Dimensions.get('window').height * 0.6;
 const valueShape = PropTypes.oneOfType([
@@ -86,7 +87,7 @@ export default class ListPicker extends PureComponent {
 
   static getDerivedStateFromProps(props, state) {
     return {
-      value: props.value,
+      value: state.isVisible ? state.value : props.value,
       isVisible: isUndefined(props.isVisible) ? state.isVisible : props.isVisible,
     };
   }
@@ -97,20 +98,11 @@ export default class ListPicker extends PureComponent {
   };
 
   show = () => {
-    const { value, isVisible } = this.props;
-
-    this.setState({
-      value,
-      isVisible: isUndefined(isVisible) ? true : isVisible,
-    });
+    this.setState({ isVisible: true });
   };
 
   hide = () => {
-    const { isVisible } = this.props;
-
-    this.setState({
-      isVisible: isUndefined(isVisible) ? false : isVisible,
-    });
+    this.setState({ isVisible: false });
   };
 
   action = (handler, preHandler = noop) => () => {
@@ -170,19 +162,30 @@ export default class ListPicker extends PureComponent {
     const listHeight = Math.min(options.length * 53, maxHeight);
 
     return (
-      <Modal
+      <Backdrop
         height={listHeight}
         isVisible={isVisible}
         title={label}
-        onDone={this.action('onDone', this.hide)}
+
         onDismiss={this.action('onDismiss')}
         onShow={this.action('onShow')}
         onSwipe={this.action('onSwipe', this.hide)}
-        onCancel={this.action('onCancel', this.hide)}
         onRequestClose={this.action('onRequestClose', this.hide)}
+
+        headerLeft={(
+          <TouchableOpacity cancel onPress={this.action('onCancel', this.hide)}>
+            <Text>Cancel</Text>
+          </TouchableOpacity>
+        )}
+
+        headerRight={(
+          <TouchableOpacity onPress={this.action('onDone', this.hide)}>
+            <Text>Done</Text>
+          </TouchableOpacity>
+        )}
       >
         <List dataArray={items} renderRow={this.renderRow} />
-      </Modal>
+      </Backdrop>
     );
   }
 

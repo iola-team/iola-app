@@ -1,14 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import { TouchableOpacity } from 'react-native';
 import { isUndefined } from 'lodash';
-import {
-  Input,
-  Text,
-} from 'native-base';
+import { Input, Text } from 'native-base';
 
+import { withStyleSheet as styleSheet } from 'theme';
 import InputItem from './Input';
 import TextPicker from '../TextPicker';
-import { withStyleSheet as styleSheet } from '../../theme';
+import TouchableOpacity from '../TouchableOpacity';
 
 @styleSheet('Sparkle.TextInput', {
   button: {
