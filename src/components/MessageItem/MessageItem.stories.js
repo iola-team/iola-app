@@ -36,7 +36,7 @@ const messages = [
   {
     id: 'Message:2',
     content: {
-      text: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning?',
+      text: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning? 12345',
       image: null,
     },
     status: null,
@@ -127,7 +127,7 @@ const messages = [
     id: 'Message:7',
     content: {
       text: null,
-      image: 'https://www.treebo.com/blog/wp-content/uploads/2017/12/Beaches-in-India_1.jpg',
+      image: 'https://images.pexels.com/photos/531767/pexels-photo-531767.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
     },
     status: 'READ',
     createdAt: new Date(),
@@ -241,7 +241,7 @@ stories.add('Long text', () => {
     'DELIVERED': 'Message:4',
     'READ': 'Message:6',
   }, 'Message:2');
-  const side = select('Side', { 'Left': 'left', 'Right': 'right' }, 'right');
+  const side = select('Side', { 'Left': 'left', 'Right': 'right' }, 'left');
 
   return getMessage(id, side);
 });

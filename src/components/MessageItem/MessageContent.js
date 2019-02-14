@@ -6,19 +6,21 @@ import { View } from 'react-native';
 
 import { withStyle } from 'theme';
 import MessageStatus from './MessageStatus';
-import TextContent from './TextContent';
-import ImageFit from '../ImageFit';
+import MessageContentText from './MessageContentText';
+import MessageContentImage from './MessageContentImage';
 
 const messageFragment = gql`
   fragment MessageContent_message on Message {
     id
     createdAt
     content {
-      ...MessageTextContent_content
+      ...MessageContentText_content
+      ...MessageContentImage_content
     }
   }
   
-  ${TextContent.fragments.content}
+  ${MessageContentText.fragments.content}
+  ${MessageContentImage.fragments.content}
 `;
 
 @withStyle('Sparkle.MessageContent', {
@@ -32,12 +34,13 @@ const messageFragment = gql`
   },
 
   'Sparkle.MessageStatus': {
-    position: 'absolute'
-  },
+    position: 'absolute',
+    bottom: 10,
+    right: 15,
+    color: '#AFB2BF',
 
-  '.inverse': {
-    'Sparkle.MessageStatus': {
-      color: '#A3C5FF',
+    '.inverse': {
+      color: '#9B9EF4',
     },
   },
 
@@ -100,15 +103,17 @@ export default class MessageContent extends PureComponent {
       <View style={style}>
         <View>
           {content.image ? (
-            <ImageFit url={content.image} maxHeight={170} maxWidth={200} />
+            <MessageContentImage content={content} />
           ) : (
-            <TextContent
-              content={content}
-              // inverse={right}
-              // statusComponent={<MessageStatus status={status} time={createdAt} hasStatus={right} />}
-            />
+            <MessageContentText content={content} inverse={right} />
           )}
-          <MessageStatus status={status} time={createdAt} hasStatus={right} />
+          <MessageStatus
+            status={status}
+            time={createdAt}
+            hasStatus={right}
+            inverse={right}
+            isImage={!!content.image}
+          />
         </View>
       </View>
     );

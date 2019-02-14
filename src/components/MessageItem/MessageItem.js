@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { View as ViewRN } from 'react-native';
 
 import { withStyle } from 'theme';
-import Content from './MessageContent';
+import MessageContent from './MessageContent';
 import Avatar from '../UserAvatar';
 
 const messageFragment = gql`
@@ -19,7 +19,7 @@ const messageFragment = gql`
     ...MessageContent_message
   }
   
-  ${Content.fragments.message}
+  ${MessageContent.fragments.message}
   ${Avatar.fragments.user}
 `;
 
@@ -89,7 +89,7 @@ export default class MessageItem extends Component {
     return (
       <ViewRN style={style}>
         {showAvatar && <Avatar user={message.user} />}
-        <Content message={message} first={first} {...props} />
+        <MessageContent message={message} first={first} {...props} />
       </ViewRN>
     );
   }

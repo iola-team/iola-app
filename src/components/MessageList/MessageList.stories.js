@@ -209,7 +209,6 @@ stories.add('Fake messages', () => {
   return (
     <Query query={chatQuery} variables={variables}>
       {({ data, loading }) => !loading && (
-
         <MessageList
           style={{
             paddingHorizontal: 10,
@@ -223,7 +222,6 @@ stories.add('Fake messages', () => {
           onRefresh={action('onRefresh')}
           onEndReached={action('onEndReached')}
         />
-
       )}
     </Query>
   );
@@ -243,7 +241,6 @@ stories.add('Num messages', () => {
   return (
     <Query query={chatQuery} variables={variables}>
       {({ data, loading }) => !loading && (
-
         <MessageList
           edges={data.chat.messages.edges}
           getItemSide={({ user }) => user.id === 'User:1' ? 'left' : 'right'}
@@ -254,7 +251,6 @@ stories.add('Num messages', () => {
           onRefresh={action('onRefresh')}
           onEndReached={action('onEndReached')}
         />
-
       )}
     </Query>
   );

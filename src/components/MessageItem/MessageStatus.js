@@ -13,15 +13,25 @@ import MessageStateIndicator from '../MessageStateIndicator';
   height: 20,
   marginBottom: -2,
 
-  'Sparkle.MessageStateIndicator': {
-    color: '#BDC0CB',
-    marginLeft: 5,
-  },
-
   'NativeBase.Text': {
     color: '#BDC0CB',
     fontSize: 10,
     lineHeight: 12,
+  },
+
+  '.inverse': {
+    'NativeBase.Text': {
+      color: '#9B9EF4',
+    },
+  },
+
+  '.isImage': {
+    color: '#FFFFFF',
+  },
+
+  'Sparkle.MessageStateIndicator': {
+    color: '#BDC0CB',
+    marginLeft: 5,
   },
 })
 export default class MessageStatus extends PureComponent {
