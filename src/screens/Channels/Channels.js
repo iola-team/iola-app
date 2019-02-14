@@ -7,14 +7,11 @@ import { ChatList, Icon, SearchBar } from 'components';
 import * as routes from '../routeNames';
 
 @graphql(gql`
-  query {
+  query ChannelsQuery {
     me {
       id
-      ...ChatList_user
     }
   }
-  
-  ${ChatList.fragments.user}
 `)
 export default class Channels extends Component {
   static navigationOptions = {
@@ -37,18 +34,12 @@ export default class Channels extends Component {
   }
 
   render() {
-    const { data: { me, loading } } = this.props;
+    const { data: { me } } = this.props;
 
     return (
       <Container>
         <SearchBar onSearch={this.onSearch} />
-
-        {!loading && (
-          <ChatList
-            user={me}
-            onItemPress={this.onItemPress}
-          />
-        )}
+        <ChatList userId={me?.id} onItemPress={this.onItemPress} />
       </Container>
     );
   }

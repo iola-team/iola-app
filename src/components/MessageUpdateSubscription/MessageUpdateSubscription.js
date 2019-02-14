@@ -28,19 +28,14 @@ const messageUpdateSubscription = gql`
 export default class MessageUpdateSubscription extends PureComponent {
   static propTypes = {
     userId: PropTypes.string.isRequired,
-    children: PropTypes.func,
-  };
-
-  static defaultProps = {
-    children: () => null,
   };
 
   render() {
-    const { userId, children } = this.props;
+    const { userId, ...props } = this.props;
 
     return (
       <Subscription
-        children={children}
+        {...props}
         subscription={messageUpdateSubscription}
         variables={{
           userId,

@@ -7,14 +7,15 @@ import { withFormik } from 'formik';
 import { withStyleSheet as styleSheet } from 'theme';
 import { TextInput } from 'components';
 
-@styleSheet('Sparkle.LaunchForm', {
+@styleSheet('Sparkle.WebsiteURLForm', {
   submit: {
     marginTop: 17,
     borderWidth: 1,
-    borderColor: '#FFFFFF',
+    borderRadius: 8,
+    borderColor: 'rgba(255, 255, 255, 0.5)',
   },
 })
-class LaunchForm extends Component {
+class WebsiteURLForm extends Component {
   static propTypes = {
     onSubmit: propTypes.func.isRequired,
   };
@@ -29,13 +30,13 @@ class LaunchForm extends Component {
       <Form>
         <TextInput
           name="url"
-          placeholder="Enter website URL"
+          placeholder="Enter Website URL"
           customStyle={{ marginBottom: 0 }}
           {...this.props}
         />
 
-        <Button style={styles.submit} onPress={handleSubmit} block>
-          <Text>Continue</Text>
+        <Button style={styles.submit} onPress={handleSubmit} block bordered light>
+          <Text uppercase={false}>Continue</Text>
         </Button>
       </Form>
     );
@@ -43,11 +44,11 @@ class LaunchForm extends Component {
 }
 
 const validationSchema = yup.object().shape({
-  url: yup.string().required('URL address is required').url('Must be a valid URL address'),
+  url: yup.string().required('Is required').url('Must be a valid URL address'),
 });
 
 export default withFormik({
   mapPropsToValues: () => ({ url: 'https://iola.app' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
-})(LaunchForm);
+})(WebsiteURLForm);

@@ -7,27 +7,23 @@ import { isFunction, isUndefined, noop } from 'lodash';
 import uuid from 'uuid/v4';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import Avatar from '../UserAvatar';
-import Modal from '../Modal';
-import ChatFooter from '../ChatFooter';
 import ImageCommentsConnection from './ImageCommentsConnection';
-
-const getModalHeight = () => {
-  const { height } = Dimensions.get('window');
-  const headerHeight = 62;
-  const footerHeight = 40;
-
-  return height * 0.75 - headerHeight - footerHeight;
-};
+import Avatar from '../UserAvatar';
+import UserOnlineStatus from '../UserOnlineStatus';
+import Backdrop from '../Backdrop';
+import TouchableOpacity from '../TouchableOpacity';
+import ChatFooter from '../ChatFooter';
 
 const meQuery = gql`
   query meQuery {
     me {
       name
+      ...UserOnlineStatus_user
       ...UserAvatar_user
     }
   }
 
+  ${UserOnlineStatus.fragments.user}
   ${Avatar.fragments.user}
 `;
 
@@ -37,6 +33,7 @@ const addPhotoCommentMutation = gql`
       node {
         id
         text
+        image
         createdAt
       }
     }
@@ -118,6 +115,12 @@ export default class ImageComments extends Component {
 
   listRef = React.createRef();
 
+  getModalHeight = () => {
+    const { height } = Dimensions.get('window');
+
+    return height * 0.6;
+  };
+
   action = (handler, preHandler = noop) => () => {
     preHandler();
     this.props[handler](this.state.value);
@@ -158,6 +161,7 @@ export default class ImageComments extends Component {
             __typename: 'Comment',
             id: uuid(),
             text,
+            image: null, // @TODO: Add photo upload ability
             createdAt: new Date().toISOString(),
             user: {
               ...me,
@@ -229,11 +233,6 @@ export default class ImageComments extends Component {
   renderFooter() {
     return (
       <Mutation mutation={addPhotoCommentMutation}>
-        {/*
-          * @TODO: It would be great to have a generic component
-          * eg bottom bar input or form, to not be tied to a particular feature.
-          * This component will be used in both features (Chat and comments).
-          */}
         {mutate => <ChatFooter onSend={text => this.onCommentSend(text, mutate)} />}
       </Mutation>
     );
@@ -244,20 +243,27 @@ export default class ImageComments extends Component {
     const { isVisible } = this.state;
 
     return (
-      <Modal
+      <Backdrop
+        height={this.getModalHeight()}
         title={this.renderTitle()}
-        height={getModalHeight()}
-        footer={this.renderFooter()}
         isVisible={isVisible}
-        onDone={this.hide}
         onSwipe={this.hide}
         onRequestClose={this.hide}
-        noScrollViewForContent
+        headerRight={(
+          <TouchableOpacity onPress={this.hide}>
+            <Text>Done</Text>
+          </TouchableOpacity>
+        )}
       >
-        <View style={styles.container}>
-          <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
-        </View>
-      </Modal>
+        <>
+          <View style={{ flex: 1 }}>
+            <View style={styles.container}>
+              <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
+            </View>
+          </View>
+          {this.renderFooter()}
+        </>
+      </Backdrop>
     );
   }
 

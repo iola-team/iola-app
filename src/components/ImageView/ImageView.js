@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dimensions, StatusBar, Modal, Text, View } from 'react-native';
+import { Dimensions, StatusBar, Text, View } from 'react-native';
 import { Badge } from 'native-base';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { graphql, Query } from 'react-apollo';
@@ -9,11 +9,12 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import Icon from '../Icon';
-import UserOnlineStatus from '../UserOnlineStatus';
+import Overlay from '../Overlay';
 import TouchableOpacity from '../TouchableOpacity';
-import ImageComments from '../ImageComments';
 import ActionSheet from '../ActionSheet';
+import ImageComments from '../ImageComments';
+import UserOnlineStatus from '../UserOnlineStatus';
+import Icon from '../Icon';
 import Spinner from '../Spinner';
 
 const meQuery = gql`
@@ -48,6 +49,7 @@ export const photoDetailsQuery = gql`
         user {
           id
           name
+          ...UserOnlineStatus_user
         }
 
         comments @connection(key: "PhotoCommentsConnection") {
@@ -56,6 +58,8 @@ export const photoDetailsQuery = gql`
       }
     }
   }
+  
+  ${UserOnlineStatus.fragments.user}
 `;
 
 @styleSheet('Sparkle.ImageView', {
@@ -225,11 +229,11 @@ export default class ImageView extends Component {
 
   state = {
     index: 0,
-    visible: false,
+    isVisible: false,
   };
 
   onShowImage({ item, index }) {
-    this.setState({ index, visible: true });
+    this.setState({ index, isVisible: true });
   }
 
   onChange(index) {
@@ -237,7 +241,7 @@ export default class ImageView extends Component {
   }
 
   onClose() {
-    this.setState({ visible: false });
+    this.setState({ isVisible: false });
   }
 
   onDelete(photoId) {
@@ -247,7 +251,7 @@ export default class ImageView extends Component {
     deletePhoto(photoId);
 
     if (edges.length === 1) {
-      this.setState({ visible: false });
+      this.setState({ isVisible: false });
       return;
     }
 
@@ -273,21 +277,7 @@ export default class ImageView extends Component {
           {({ loading, data }) => {
             if (loading) return null; // @TODO: add spinner
 
-            const {
-              id: photoId,
-              caption,
-              createdAt,
-              user: {
-                id: userId,
-                name,
-                // isOnline, // @TODO: isOnline
-              },
-              comments: {
-                totalCount,
-              },
-              // totalCountLikes, // @TODO: Likes
-            } = data.photo;
-            const isOnline = false; // @TODO: isOnline
+            const { id: photoId, caption, createdAt, user, comments: { totalCount } } = data.photo;
             // const totalCountLikes = 0; // @TODO: Likes
             const date = moment.duration(moment(createdAt).diff(moment())).humanize();
             const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
@@ -308,7 +298,7 @@ export default class ImageView extends Component {
                     </Text>
                   )}
 
-                  {me.id === userId && (
+                  {me.id === user.id && (
                     <ActionSheet
                       options={['Cancel', 'Delete']}
                       cancelButtonIndex={0}
@@ -330,8 +320,8 @@ export default class ImageView extends Component {
                 <View style={styles.footer}>
                   <View>
                     <View style={styles.nameBlock}>
-                      <Text style={styles.name}>{name}</Text>
-                      <UserOnlineStatus isOnline={isOnline} />
+                      <Text style={styles.name}>{user.name}</Text>
+                      <UserOnlineStatus user={user} />
                     </View>
                     <Text style={styles.caption}>{caption}</Text>
                     <Text style={styles.dateTime}>{dateFormatted}</Text>
@@ -378,19 +368,14 @@ export default class ImageView extends Component {
 
   render() {
     const { edges, styleSheet: styles, children } = this.props;
-    const { index, visible } = this.state;
+    const { index, isVisible } = this.state;
     const imageUrls = edges.map(({ node: { url } }) => ({ url }));
 
     return (
       <>
         {children(::this.onShowImage)}
 
-        <Modal
-          visible={visible}
-          animationType="fade"
-          onRequestClose={::this.onClose}
-          transparent
-        >
+        <Overlay visible={isVisible} onRequestClose={::this.onClose}>
           <View style={styles.content}>
             <ImageViewer
               imageUrls={imageUrls}
@@ -404,9 +389,9 @@ export default class ImageView extends Component {
               backgroundColor="rgba(46, 48, 55, 0.95)"
             />
 
-            {visible && this.renderControls()}
+            {isVisible && this.renderControls()}
           </View>
-        </Modal>
+        </Overlay>
       </>
     );
   }
