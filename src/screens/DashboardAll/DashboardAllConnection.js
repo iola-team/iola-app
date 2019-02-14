@@ -7,8 +7,8 @@ import update from 'immutability-helper';
 import { UserList } from 'components';
 
 @graphql(gql`
-  query users($search: String = "", $cursor: Cursor = null) {
-    users(search: $search first: 20 after: $cursor) {
+  query users($cursor: Cursor = null) {
+    users(first: 20 after: $cursor) {
       edges {
         ...UserList_edge
       }
