@@ -24,13 +24,12 @@ const messageFragment = gql`
 `;
 
 @withStyle('Sparkle.MessageContent', {
-  borderRadius: 8,
+  marginBottom: 5,
+  borderRadius: 4,
   overflow: 'hidden',
-  elevation: 0.5,
 
   'Sparkle.ImageFit': {
-    marginTop: 6,
-    marginBottom: 13,
+    marginTop: 5,
   },
 
   'Sparkle.MessageStatus': {
@@ -44,36 +43,14 @@ const messageFragment = gql`
     },
   },
 
-  '.left': {
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
-  },
-
-  '.right': {
-    borderTopRightRadius: 4,
-    borderBottomRightRadius: 4,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
-  },
-
   '.first': {
-    '.left': {
-      borderTopLeftRadius: 8,
-    },
-
-    '.right': {
-      borderTopRightRadius: 8,
-    },
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
 
   '.last': {
-    '.left': {
-      borderBottomLeftRadius: 8,
-    },
-
-    '.right': {
-      borderBottomRightRadius: 8,
-    },
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
   },
 })
 export default class MessageContent extends PureComponent {

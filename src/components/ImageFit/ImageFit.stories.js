@@ -20,12 +20,6 @@ stories.add('Broken Image', () => {
   return <ImageFit url={url} maxHeight={maxHeight} maxWidth={maxWidth} />;
 });
 
-stories.add('Big Image (Spinner)', () => {
-  const url = 'https://upload.wikimedia.org/wikipedia/commons/6/6f/2013_09_10_Tomate.jpg';
-
-  return <ImageFit url={url} maxHeight={300} maxWidth={300} />;
-});
-
 stories.add('Horizontal Image', () => {
   const url = 'https://ironcodestudio.com/wp-content/uploads/2015/03/css-remove-horizontal-scrollbar.jpg';
 

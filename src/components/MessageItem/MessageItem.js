@@ -25,39 +25,24 @@ const messageFragment = gql`
 
 @withStyle('Sparkle.MessageItem', {
   flexDirection: 'row',
-  justifyContent: 'flex-start',
-  marginBottom: 5,
-  width: '90%',
-  marginHorizontal: 10,
 
-  'NativeBase.Thumbnail': {
-    position: 'absolute',
-    left: 0,
-    top: 0,
+  'Sparkle.UserAvatar': {
+    marginLeft: -(32 + 8),
+  },
+
+  '.hasAvatar': {
+    paddingLeft: 48 + 8 - 16,
+    paddingRight: 34 - 16,
+  },
+
+  '.right': {
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+    paddingLeft: (48 + 8 - 16) + (34 - 16),
   },
 
   '.last': {
     marginBottom: 15,
-  },
-
-  '.hasAvatar': {
-    paddingLeft: 50,
-  },
-
-  '.right': {
-    width: '80%',
-    justifyContent: 'flex-end',
-    alignSelf: 'flex-end',
-
-    '.hasAvatar': {
-      paddingRight: 50,
-      paddingLeft: 0,
-    },
-
-    'NativeBase.Thumbnail': {
-      left: null,
-      right: 0,
-    },
   },
 })
 export default class MessageItem extends Component {

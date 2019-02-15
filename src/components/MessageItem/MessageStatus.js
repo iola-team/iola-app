@@ -41,10 +41,12 @@ export default class MessageStatus extends PureComponent {
       PropTypes.instanceOf(Date),
     ]).isRequired,
     hasStatus: PropTypes.bool,
+    status: PropTypes.string,
   };
 
   static defaultProps = {
     hasStatus: false,
+    status: null,
   };
 
   render() {

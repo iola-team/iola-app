@@ -45,12 +45,15 @@ export default class MessageContentText extends Component {
 
   render() {
     const { content: { text }, style } = this.props;
+    const spaceForDateAndMessageStatus= (
+      <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+    );
 
     return (
       <View style={style}>
         <Text>
           {text}
-          <Text>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Text>
+          {spaceForDateAndMessageStatus}
         </Text>
       </View>
     );

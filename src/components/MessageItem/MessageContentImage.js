@@ -28,13 +28,9 @@ export default class MessageContentImage extends Component {
 
     return (
       <View style={style}>
-        <ImageFit url={image} maxHeight={170} maxWidth={200} />
+        <ImageFit url={image} maxHeight={230} maxWidth={230} />
         <Shadow
-          style={{
-            width: '100%',
-            shadowSpread: 60,
-            shadowColors: ['rgba(0, 0, 0, 0.4)', 'rgba(0, 0, 0, 0)'],
-          }}
+          style={{ shadowSpread: 88, shadowColors: ['rgba(0, 0, 0, 0.43)', 'rgba(0, 0, 0, 0)'] }}
           bottom={false}
           top
         />
