@@ -27,18 +27,18 @@ const messageFragment = gql`
   flexDirection: 'row',
 
   'Sparkle.UserAvatar': {
-    marginLeft: -(32 + 8),
+    marginLeft: -40,
   },
 
   '.hasAvatar': {
-    paddingLeft: 48 + 8 - 16,
-    paddingRight: 34 - 16,
+    paddingLeft: 56,
+    paddingRight: 34,
   },
 
   '.right': {
     justifyContent: 'flex-end',
     alignSelf: 'flex-end',
-    paddingLeft: (48 + 8 - 16) + (34 - 16),
+    paddingLeft: 56 + 34, // paddingLeft and paddingRight of .hasAvatar
   },
 
   '.last': {

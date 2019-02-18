@@ -22,7 +22,7 @@ const edgeFragment = gql`
 `;
 
 @withStyle('Sparkle.MessageList', {
-  marginHorizontal: 16,
+  paddingHorizontal: 16,
 })
 export default class MessageList extends Component {
   static fragments = {
