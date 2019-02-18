@@ -82,9 +82,7 @@ class StorybookRoot extends Component {
   render() {
     return (
       <Theme>
-        <Root>
-          <Storybook />
-        </Root>
+        <Storybook />
       </Theme>
     );
   }
