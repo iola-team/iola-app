@@ -44,9 +44,19 @@ Investigate this: https://reactnativetesting.io/
   - Destructuring: in one line if length < 100 but in multiple lines if has default values
 
 
-## Release
+## Production
+0) Setup the production environment:
+  - Android:
+    1) `cp android/.gradle/gradle.properties.sample android/.gradle/gradle.properties` and fill it
+  - iOS:
+    1) @TODO
 1) Build the app:
-  - @TODO: Add commands for Android/iOS here
+  - Android:
+    1) Run the React Native Packager: `yarn server:prod`
+    1) Copy the bunlde to assets: `curl "localhost:8081/index.android.bundle?platform=android&dev=false&minify=true" -o "android/app/src/main/assets/index.android.bundle"`
+    2) Build the prod APK version: `yarn prod:android`
+  - iOS:
+      1) @TODO
 2) Change the app icon:
   - [Online Android Asset Studio](http://romannurik.github.io/AndroidAssetStudio/icons-launcher.html#foreground.type=clipart&foreground.clipart=android&foreground.space.trim=1&foreground.space.pad=0.25&foreColor=rgba(96%2C%20125%2C%20139%2C%200)&backColor=rgb(68%2C%20138%2C%20255)&crop=0&backgroundShape=square&effects=none&name=ic_launcher)
 

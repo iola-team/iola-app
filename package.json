@@ -26,7 +26,9 @@
     "lint:statistics": "echo \"================\nESLint Statstics\n================\n\"; eslint -c .eslintrc ./src/**/*.js --format ./node_modules/eslint-stats/byErrorAndWarning.js; exit 0",
     "lint:fix": "eslint --fix \"./src/**/*.js\"; exit 0",
     "tools:generate-component": "generact ./src/components/ComponentTemplate/index.js --root ./src/components/",
-    "postinstall": "sh ./scripts/postinstall.sh"
+    "postinstall": "sh ./scripts/postinstall.sh",
+    "server:prod": "react-native start --reset-cache",
+    "build:android": "cd android && ./gradlew assembleRelease --stacktrace"
   },
   "scripts-info": {
     "info": "Displays information about the scripts",
@@ -39,7 +41,9 @@
     "run:android-storybook": "Build the Storybook app for Android",
     "lint": "Display ESLint errors (without warnings)",
     "lint:statistics": "Display general ESLint Statistics",
-    "lint:fix": "Automatically fix ESLint errors"
+    "lint:fix": "Automatically fix ESLint errors",
+    "server:prod": "Run the React Native Packager",
+    "prod:android": "Build the prod APK version"
   },
   "config": {
     "react-native-storybook-loader": {

@@ -2,7 +2,6 @@
 .DS_Store
 
 # Xcode
-build/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -21,10 +20,14 @@ DerivedData
 project.xcworkspace
 
 # Android/IntelliJ
-build/
-.idea
-.gradle
+android/build/
+android/app/build/*
+!android/app/build/build.gradle
+android/app/src/main/assets/index.android.bundle
+android/.gradle/*
+!android/.gradle/gradle.properties.sample
 local.properties
+.idea
 *.iml
 
 # node.js
@@ -35,7 +38,6 @@ yarn-error.log
 # BUCK
 buck-out/
 \.buckd/
-*.keystore
 
 # Fastlane
 # It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
