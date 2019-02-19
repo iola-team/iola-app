@@ -17,12 +17,12 @@ import { ProfileFieldsEdit, TouchableOpacity } from 'components';
 
   ${ProfileFieldsEdit.fragments.user}
 `)
-@withStyleSheet('Sparkle.ProfileEditScreen', {
+@withStyleSheet('Sparkle.ProfileEditInfoScreen', {
   avatar: {
     paddingVertical: 30,
   }
 })
-export default class ProfileEditScreen extends Component {
+export default class ProfileEditInfoScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const { done = noop, busy = false } = navigation.state.params || {};
 

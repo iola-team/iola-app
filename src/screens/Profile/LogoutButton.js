@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
-import { withNavigation, NavigationActions } from 'react-navigation';
+import { withNavigation } from 'react-navigation';
 import { Text } from 'native-base';
 
 import { TouchableOpacity } from 'components';
