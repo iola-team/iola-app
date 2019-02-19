@@ -2,59 +2,55 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { View as ViewRN } from 'react-native';
+import { View } from 'react-native';
 
 import { withStyle } from 'theme';
-import Status from './MessageStatus';
-import TextContent from './TextContent';
+import MessageStatus from './MessageStatus';
+import MessageContentText from './MessageContentText';
+import MessageContentImage from './MessageContentImage';
 
 const messageFragment = gql`
   fragment MessageContent_message on Message {
     id
     createdAt
     content {
-      ...MessageTextContent_content
+      ...MessageContentText_content
+      ...MessageContentImage_content
     }
   }
   
-  ${TextContent.fragments.content}
+  ${MessageContentText.fragments.content}
+  ${MessageContentImage.fragments.content}
 `;
 
 @withStyle('Sparkle.MessageContent', {
-  borderRadius: 8,
+  marginBottom: 5,
+  borderRadius: 4,
   overflow: 'hidden',
-  elevation: 0.5,
 
-  '.left': {
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
+  'Sparkle.ImageFit': {
+    marginTop: 5,
   },
 
-  '.right': {
-    borderTopRightRadius: 4,
-    borderBottomRightRadius: 4,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
+  'Sparkle.MessageStatus': {
+    position: 'absolute',
+    bottom: 10,
+    right: 15,
+    color: '#AFB2BF',
+
+    '.inverse': {
+      color: '#9B9EF4',
+    },
   },
 
   '.first': {
-    '.left': {
-      borderTopLeftRadius: 8,
-    },
-
-    '.right': {
-      borderTopRightRadius: 8,
-    },
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
 
   '.last': {
-    '.left': {
-      borderBottomLeftRadius: 8,
-    },
-
-    '.right': {
-      borderBottomRightRadius: 8,
-    },
+    borderBottomLeftRadius: 8,
+    borderBottomRightRadius: 8,
   },
 })
 export default class MessageContent extends PureComponent {
@@ -71,34 +67,32 @@ export default class MessageContent extends PureComponent {
   };
 
   static defaultProps = {
-
+    left: false,
+    right: false,
+    last: false,
+    first: false,
   };
 
-  /**
-   * Returns message content component, detected from props
-   *
-   * @returns Component
-   */
-  getContentComponent() {
-    return TextContent;
-  }
-
   render() {
-    const { message, style, right } = this.props;
-    const contentProps = {
-      content: message.content,
-      inverse: right,
-      statusComponent: (
-        <Status status={message.status} time={message.createdAt} hasStatus={right} />
-      ),
-    };
-
-    const Content = this.getContentComponent();
+    const { message: { content, createdAt, status }, style, right } = this.props;
 
     return (
-      <ViewRN style={style}>
-        <Content {...contentProps} />
-      </ViewRN>
+      <View style={style}>
+        <View>
+          {content.image ? (
+            <MessageContentImage content={content} />
+          ) : (
+            <MessageContentText content={content} inverse={right} />
+          )}
+          <MessageStatus
+            status={status}
+            time={createdAt}
+            hasStatus={right}
+            inverse={right}
+            isImage={!!content.image}
+          />
+        </View>
+      </View>
     );
   }
 }
