@@ -45,7 +45,7 @@ export default class MessageContentText extends Component {
 
   render() {
     const { content: { text }, style } = this.props;
-    const spaceForDateAndMessageStatus = <Text>           </Text>; // eslint-disable-line
+    const spaceForDateAndMessageStatus = <Text>{'           '}</Text>;
 
     return (
       <View style={style}>
