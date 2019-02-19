@@ -50,14 +50,27 @@ Investigate this: https://reactnativetesting.io/
     1) `cp android/.gradle/gradle.properties.sample android/.gradle/gradle.properties` and fill it
   - iOS:
     1) @TODO
-1) Build the app:
-  - Android:
-    1) Run the React Native Packager: `yarn server:prod`
-    1) Copy the bunlde to assets: `curl "localhost:8081/index.android.bundle?platform=android&dev=false&minify=true" -o "android/app/src/main/assets/index.android.bundle"`
-    2) Build the prod APK version: `yarn prod:android`
+1) Build the release app version:
+  - Android: `yarn release:build:android`
+android/app/build/outputs/apk/application/release/app-application-release.apk
   - iOS:
-      1) @TODO
-2) Change the app icon:
+      1) @TODO: https://medium.com/@andr3wjack/versioning-react-native-apps-407469707661
+      
+  @TODO: node_modules/react-native-splash-screen/android/build.gradle
+  
+  @TODO: Fastline setup: https://medium.com/@tgpski/android-react-native-fastlane-working-with-multiple-build-types-a9a6641c5704:
+    //compileSdkVersion 26
+    //buildToolsVersion "26.0.3"
+    compileSdkVersion = 28
+    buildToolsVersion = "28.0.2"
+
+2) Test the release build:
+  - Android:
+    1) Uninstall the previous version of the app you already have installed
+    2) Install it on the device: `yarn release:test:android`
+
+## For future customizations
+  - Change the app icon:
   - [Online Android Asset Studio](http://romannurik.github.io/AndroidAssetStudio/icons-launcher.html#foreground.type=clipart&foreground.clipart=android&foreground.space.trim=1&foreground.space.pad=0.25&foreColor=rgba(96%2C%20125%2C%20139%2C%200)&backColor=rgb(68%2C%20138%2C%20255)&crop=0&backgroundShape=square&effects=none&name=ic_launcher)
 
 

@@ -20,12 +20,12 @@ DerivedData
 project.xcworkspace
 
 # Android/IntelliJ
-android/build/
+android/gradle.properties
+android/.gradle/
 android/app/build/*
 !android/app/build/build.gradle
 android/app/src/main/assets/index.android.bundle
-android/.gradle/*
-!android/.gradle/gradle.properties.sample
+android/build/
 local.properties
 .idea
 *.iml
