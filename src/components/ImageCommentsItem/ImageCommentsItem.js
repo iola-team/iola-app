@@ -143,7 +143,7 @@ export default class ImageCommentsItem extends Component {
             <UserOnlineStatus user={user} />
           </View>
           {!!text && <Text style={styles.text}>{text}</Text>}
-          {image && <ImageFit style={styles.image} url={image} maxHeight={170} maxWidth={200} />}
+          {image && <ImageFit style={styles.image} url={image} maxHeight={192} maxWidth={192} />}
           <Text style={styles.createdAt}>{dateFormatted}</Text>
         </View>
       </View>

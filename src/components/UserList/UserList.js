@@ -49,7 +49,7 @@ export default class UserList extends Component {
     const { node } = item;
 
     return (
-      <UserListItem 
+      <UserListItem
         user={node}
         onPress={() => onItemPress(item)}
       />
@@ -62,7 +62,7 @@ export default class UserList extends Component {
     index,
   });
 
-  getPlaceholders = () => range(3).map(index => ({ 
+  getPlaceholders = () => range(3).map(index => ({
     key: index.toString(),
   }));
 

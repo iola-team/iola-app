@@ -1,5 +1,5 @@
 import React from 'react';
-import { find, filter, uniqueId, range, orderBy } from 'lodash';
+import { find, filter, uniqueId, random, range, sample, orderBy } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { number, boolean, withKnobs } from '@storybook/addon-knobs';
@@ -17,7 +17,7 @@ const stories = storiesOf('Components/MessageList', module);
 // Decorators
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator({
-  backgroundColor: '#F8F9FB'
+  backgroundColor: '#F8F9FB',
 }));
 
 const users = [
@@ -60,10 +60,13 @@ const chats = [
   },
 ];
 
+const images = ['https://images.pexels.com/photos/531767/pexels-photo-531767.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 'https://2.bp.blogspot.com/-THqzUlWepv8/UeFZbv7l7AI/AAAAAAAAQvA/BJ60SUXVefY/s1600/funny+smileys+hd87.jpg', 'https://static1.squarespace.com/static/55aa89d0e4b0ee6ed81f6331/t/5b5635bb2b6a28e234472a55/1532376521063/25749667758_da70c7c9a5_o.jpg', 'https://www.foundshit.com/images/tall-bike-03.jpg', 'https://www.bbcgoodfood.com/sites/default/files/guide/guide-image/2014/02/steak-main.jpg', 'https://sweetandsavorymeals.com/wp-content/uploads/2018/07/How-To-Cook-Frozen-Chicken-Breasts-In-The-Instant-Pot-4.jpg', 'http://d2814mmsvlryp1.cloudfront.net/wp-content/uploads/2016/10/Edna-Valley-Risotto-Prep-3.jpg', 'https://cook.fnr.sndimg.com/content/dam/images/cook/fullset/2012/8/8/0/71761_steak_s4x3.jpg.rend.hgtvcom.966.725.suffix/1393360583825.jpeg', 'https://www.outdoorlife.com/sites/outdoorlife.com/files/styles/2000_1x_/public/images/2018/04/best-ways-to-cook-venison.jpg?itok=jxryzJfD&fc=50,50'];
+
 const unOrderedFakeMessages = range(100).map((index) => ({
   id: `Message:${index + 1}`,
   content: {
     text: faker.hacker.phrase(),
+    image: random(3) === 0 ? sample(images) : null,
   },
   status: faker.random.arrayElement(['READ', 'DELIVERED']),
   createdAt: faker.date.recent(),
@@ -75,6 +78,7 @@ const orderedNumMessages = range(100).map((index) => ({
   id: `Message:${unOrderedFakeMessages.length + index}`,
   content: {
     text: (index + 1).toString(),
+    image: null,
   },
   status: faker.random.arrayElement(['READ', 'DELIVERED']),
   createdAt: moment().add(index, 'h').toDate(),
@@ -126,6 +130,7 @@ const typeDefs = gql`
 
   type MessageContent {
     text: String
+    image: String
   }
 
   enum MessageStatus {
@@ -209,11 +214,7 @@ stories.add('Fake messages', () => {
   return (
     <Query query={chatQuery} variables={variables}>
       {({ data, loading }) => !loading && (
-
         <MessageList
-          style={{
-            paddingHorizontal: 10,
-          }}
           edges={data.chat.messages.edges}
           getItemSide={({ user }) => user.id === 'User:1' ? 'left' : 'right'}
           loadingMore={isLoadingMore}
@@ -223,14 +224,13 @@ stories.add('Fake messages', () => {
           onRefresh={action('onRefresh')}
           onEndReached={action('onEndReached')}
         />
-
       )}
     </Query>
   );
 });
 
 // Stories
-stories.add('Num messages', () => {
+stories.add('Numbered messages', () => {
   const variables = {
     id: 'Chat:2',
     last: number('Count', 50),
@@ -243,7 +243,6 @@ stories.add('Num messages', () => {
   return (
     <Query query={chatQuery} variables={variables}>
       {({ data, loading }) => !loading && (
-
         <MessageList
           edges={data.chat.messages.edges}
           getItemSide={({ user }) => user.id === 'User:1' ? 'left' : 'right'}
@@ -254,7 +253,6 @@ stories.add('Num messages', () => {
           onRefresh={action('onRefresh')}
           onEndReached={action('onEndReached')}
         />
-
       )}
     </Query>
   );

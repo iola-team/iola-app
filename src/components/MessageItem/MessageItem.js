@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { View as ViewRN, StyleSheet } from 'react-native';
-import { Text } from 'native-base';
+import { View as ViewRN } from 'react-native';
 
 import { withStyle } from 'theme';
-import Status from './MessageStatus';
-import Content from './MessageContent';
+import MessageContent from './MessageContent';
 import Avatar from '../UserAvatar';
 
 const messageFragment = gql`
@@ -21,51 +19,36 @@ const messageFragment = gql`
     ...MessageContent_message
   }
   
-  ${Content.fragments.message}
+  ${MessageContent.fragments.message}
   ${Avatar.fragments.user}
 `;
 
 @withStyle('Sparkle.MessageItem', {
   flexDirection: 'row',
-  justifyContent: 'flex-start',
-  marginBottom: 5,
-  width: '90%',
-  marginHorizontal: 10,
 
-  'NativeBase.Thumbnail': {
-    position: 'absolute',
-    left: 0,
-    top: 0,
+  'Sparkle.UserAvatar': {
+    marginLeft: -40,
+  },
+
+  '.hasAvatar': {
+    paddingLeft: 56,
+    paddingRight: 34,
+  },
+
+  '.right': {
+    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
+    paddingLeft: 56 + 34, // paddingLeft and paddingRight of .hasAvatar
   },
 
   '.last': {
     marginBottom: 15,
   },
-
-  '.hasAvatar': {
-    paddingLeft: 50,
-  },
-
-  '.right': {
-    width: '80%',
-    justifyContent: 'flex-end',
-    alignSelf: 'flex-end',
-
-    '.hasAvatar': {
-      paddingRight: 50,
-      paddingLeft: 0,
-    },
-
-    'NativeBase.Thumbnail': {
-      left: null,
-      right: 0,
-    },
-  },
 })
 export default class MessageItem extends Component {
   static fragments = {
     message: messageFragment,
-  }
+  };
 
   static propTypes = {
     message: fragmentProp(messageFragment).isRequired,
@@ -77,7 +60,11 @@ export default class MessageItem extends Component {
   };
 
   static defaultProps = {
-
+    left: false,
+    right: false,
+    last: false,
+    first: false,
+    hasAvatar: false,
   };
 
   render() {
@@ -87,11 +74,7 @@ export default class MessageItem extends Component {
     return (
       <ViewRN style={style}>
         {showAvatar && <Avatar user={message.user} />}
-        <Content
-          message={message}
-          first={first}
-          {...props}
-        />
+        <MessageContent message={message} first={first} {...props} />
       </ViewRN>
     );
   }

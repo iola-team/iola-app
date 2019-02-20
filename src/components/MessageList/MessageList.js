@@ -21,11 +21,13 @@ const edgeFragment = gql`
   ${MessageItem.fragments.message}
 `;
 
-@withStyle('Sparkle.MessageList')
+@withStyle('Sparkle.MessageList', {
+  paddingHorizontal: 16,
+})
 export default class MessageList extends Component {
   static fragments = {
     edge: edgeFragment,
-  }
+  };
 
   static propTypes = {
     edges: PropTypes.arrayOf(fragmentProp(edgeFragment).isRequired).isRequired,
@@ -93,7 +95,7 @@ export default class MessageList extends Component {
         hasAvatar={side === 'left'}
       />
     );
-  }
+  };
 
   renderSectionHeader = ({ section }) => (
     <SectionHeader time={section.time} />
