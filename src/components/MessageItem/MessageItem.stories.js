@@ -3,28 +3,23 @@ import { find } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { select, boolean, withKnobs } from '@storybook/addon-knobs';
-import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
-import faker from 'faker';
 
 import { getContentDecorator, getApolloDecorator } from 'storybook';
 import MessageItem from './MessageItem';
-import Chat from '../Chat/Chat';
 
 const stories = storiesOf('Components/MessageItem', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({
-  padder: true,
-  backgroundColor: '#F8F9FB',
-}));
+stories.addDecorator(getContentDecorator({ padder: true, backgroundColor: '#F8F9FB' }));
 
 const messages = [
   {
-    id: `Message:1`,
+    id: 'Message:1',
     content: {
       text: 'Hi how are you?',
+      image: null,
     },
     status: null,
     createdAt: new Date(),
@@ -39,9 +34,10 @@ const messages = [
   },
 
   {
-    id: `Message:2`,
+    id: 'Message:2',
     content: {
-      text: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning?',
+      text: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning? 12345',
+      image: null,
     },
     status: null,
     createdAt: new Date(),
@@ -56,9 +52,10 @@ const messages = [
   },
 
   {
-    id: `Message:3`,
+    id: 'Message:3',
     content: {
       text: 'Hi how are you?',
+      image: null,
     },
     createdAt: new Date(),
     status: 'DELIVERED',
@@ -73,9 +70,10 @@ const messages = [
   },
 
   {
-    id: `Message:4`,
+    id: 'Message:4',
     content: {
       text: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning?',
+      image: null,
     },
     status: 'DELIVERED',
     createdAt: new Date(),
@@ -90,9 +88,10 @@ const messages = [
   },
 
   {
-    id: `Message:5`,
+    id: 'Message:5',
     content: {
       text: 'Hi how are you?',
+      image: null,
     },
     createdAt: new Date(),
     status: 'READ',
@@ -107,9 +106,28 @@ const messages = [
   },
 
   {
-    id: `Message:6`,
+    id: 'Message:6',
     content: {
       text: 'I’m fine, still working on project. I would like to meet you tomorrow, how about morning?',
+      image: null,
+    },
+    status: 'READ',
+    createdAt: new Date(),
+    user: {
+      id: 'User:1',
+      name: 'Roman Banan',
+      avatar: {
+        id: 'Avatar:1',
+        url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
+      },
+    },
+  },
+
+  {
+    id: 'Message:7',
+    content: {
+      text: null,
+      image: 'https://images.pexels.com/photos/531767/pexels-photo-531767.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
     },
     status: 'READ',
     createdAt: new Date(),
@@ -145,6 +163,7 @@ const typeDefs = gql`
 
   type MessageContent {
     text: String
+    image: String
   }
 
   enum MessageStatus {
@@ -183,66 +202,53 @@ const messageQuery = gql`
   ${MessageItem.fragments.message}
 `;
 
+const getMessage = (id, side) => {
+  const first = boolean('First', true);
+  const last = boolean('Last', false);
+  const hasAvatar = boolean('Has Avatar', true);
+
+  return (
+    <Query query={messageQuery} variables={{ id }}>
+      {({ data, loading }) => !loading && (
+        <MessageItem
+          message={data.message}
+          left={side === 'left'}
+          right={side === 'right'}
+          last={last}
+          first={first}
+          hasAvatar={hasAvatar}
+        />
+      )}
+    </Query>
+  );
+};
+
 // Stories
 stories.add('Short text', () => {
-  const side = select('Side', {
-    'Left': 'left',
-    'Right': 'right',
-  }, 'left');
-
-  const messageId = select('Status', {
+  const id = select('Status', {
     'Null': 'Message:1',
     'DELIVERED': 'Message:3',
     'READ': 'Message:5',
   }, 'Message:1');
+  const side = select('Side', { 'Left': 'left', 'Right': 'right' }, 'left');
 
-  const first = boolean('First', true);
-  const last = boolean('Last', false);
-  const hasAvatar = boolean('Has Avatar', true);
-
-  return (
-    <Query query={messageQuery} variables={{ id: messageId }}>
-      {({ data, loading }) => !loading && (
-
-        <MessageItem
-          message={data.message}
-          left={side === 'left'}
-          right={side === 'right'}
-          last={last}
-          first={first}
-          hasAvatar={hasAvatar}
-        />
-
-      )}
-    </Query>
-  );
+  return getMessage(id, side);
 });
 
-
 stories.add('Long text', () => {
-  const side = select('Side', {
-    'Left': 'left',
-    'Right': 'right',
-  }, 'left');
+  const id = select('Status', {
+    'Null': 'Message:2',
+    'DELIVERED': 'Message:4',
+    'READ': 'Message:6',
+  }, 'Message:2');
+  const side = select('Side', { 'Left': 'left', 'Right': 'right' }, 'left');
 
-  const first = boolean('First', true);
-  const last = boolean('Last', false);
-  const hasAvatar = boolean('Has Avatar', true);
+  return getMessage(id, side);
+});
 
-  return (
-    <Query query={messageQuery} variables={{ id: 'Message:2' }}>
-      {({ data, loading }) => !loading && (
+stories.add('Photo', () => {
+  const id = 'Message:7';
+  const side = select('Side', { 'Left': 'left', 'Right': 'right' }, 'left');
 
-        <MessageItem
-          message={data.message}
-          left={side === 'left'}
-          right={side === 'right'}
-          last={last}
-          first={first}
-          hasAvatar={hasAvatar}
-        />
-
-      )}
-    </Query>
-  );
+  return getMessage(id, side);
 });

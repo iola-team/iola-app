@@ -1,25 +1,52 @@
 import React, { PureComponent } from 'react';
 import gql from 'graphql-tag';
-import { graphql } from 'react-apollo';
+import { Query } from 'react-apollo';
+import { Button, Text } from 'native-base';
 
-import { AvatarEdit } from 'components';
+import { withStyleSheet } from 'theme';
+import { UserHeading } from 'components';
+import * as routes from '../routeNames';
 
-@graphql(gql`
+const userQuery = gql`
   query ProfileHeadingQuery {
-    me {
+    user: me {
       id
-      ...AvatarEdit_user
+      ...UserHeading_user
     }
   }
 
-  ${AvatarEdit.fragments.user}
-`)
+  ${UserHeading.fragments.user}
+`;
+
+@withStyleSheet('Sparkle.ProfileScreenHead', {
+  button: {
+    width: '30%',
+    alignSelf: 'center',
+  }
+})
 export default class ProfileHeading extends PureComponent {
-  static HEIGHT = AvatarEdit.HEIGHT;
+  static HEIGHT = UserHeading.HEIGHT;
 
   render() {
-    const { data: { loading, me }, ...props } = this.props;
+    const { navigation: { goBack, navigate }, styleSheet: styles, ...props } = this.props;
 
-    return <AvatarEdit {...props} user={me} loading={loading} />;
+    return (
+      <Query query={userQuery}>
+        {({ data: { user }, loading }) => (
+          <UserHeading {...props} highlight loading={loading} user={user}>
+            <Button
+              light
+              bordered
+              secondary
+              block
+              style={styles.button}
+              onPress={() => navigate(routes.PROFILE_EDIT)}
+            >
+              <Text>Edit Profile</Text>
+            </Button>
+          </UserHeading>
+        )}
+      </Query>
+    );
   }
 }

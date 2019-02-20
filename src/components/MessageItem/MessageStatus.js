@@ -11,15 +11,27 @@ import MessageStateIndicator from '../MessageStateIndicator';
   flexDirection: 'row',
   alignItems: 'center',
   height: 20,
+  marginBottom: -2,
+
+  'NativeBase.Text': {
+    color: '#BDC0CB',
+    fontSize: 10,
+    lineHeight: 12,
+  },
+
+  '.inverse': {
+    'NativeBase.Text': {
+      color: '#9B9EF4',
+    },
+  },
+
+  '.isImage': {
+    color: '#FFFFFF',
+  },
 
   'Sparkle.MessageStateIndicator': {
     color: '#BDC0CB',
     marginLeft: 5,
-  },
-
-  'NativeBase.Text': {
-    color: '#BDC0CB',
-    fontSize: 12,
   },
 })
 export default class MessageStatus extends PureComponent {
@@ -29,10 +41,12 @@ export default class MessageStatus extends PureComponent {
       PropTypes.instanceOf(Date),
     ]).isRequired,
     hasStatus: PropTypes.bool,
+    status: PropTypes.string,
   };
 
   static defaultProps = {
     hasStatus: false,
+    status: null,
   };
 
   render() {
@@ -43,9 +57,7 @@ export default class MessageStatus extends PureComponent {
     return (
       <View style={flatStyle}>
         <Moment style={colorStyle} element={Text} format="HH:mm">{time}</Moment>
-        {hasStatus && (
-          <MessageStateIndicator style={colorStyle} done={status === 'READ'} />
-        )}
+        {hasStatus && <MessageStateIndicator style={colorStyle} done={status === 'READ'} />}
       </View>
     );
   }

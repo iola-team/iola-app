@@ -21,6 +21,7 @@ const users = [
   {
     id: 'User:1',
     name: 'Roman Banan',
+    activityTime: faker.date.recent(),
     avatar: {
       id: 'Avatar:1',
       url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
@@ -30,6 +31,7 @@ const users = [
   {
     id: 'User:2',
     name: 'Grey Rabbit',
+    activityTime: faker.date.recent(),
     avatar: {
       id: 'Avatar:2',
       url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
@@ -163,6 +165,7 @@ const typeDefs = gql`
   type User {
     id: ID!
     name: String!
+    activityTime: Date!
     avatar: Avatar
   }
 

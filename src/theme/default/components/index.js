@@ -61,6 +61,8 @@ export default (variables => ({
       borderRadius: 8,
 
       '.small': {
+        width: 32,
+        height: 32,
         borderRadius: 6,
       },
 

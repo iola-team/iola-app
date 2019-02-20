@@ -8,53 +8,51 @@ import gql from 'graphql-tag';
 import { withStyle } from 'theme';
 
 const contentFragment = gql`
-  fragment MessageTextContent_content on MessageContent {
+  fragment MessageContentText_content on MessageContent {
     text
+    image
   }
 `;
 
-@withStyle('Sparkle.MessageTextContent', {
-  backgroundColor: '#FFFFFF',
+@withStyle('Sparkle.MessageContentText', {
   paddingHorizontal: 15,
   paddingVertical: 10,
-  alignItems: 'center',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
+  backgroundColor: '#FFFFFF',
 
-  'Sparkle.MessageStatus': {
-    paddingLeft: 10,
-    marginLeft: 'auto',
+  'NativeBase.Text': {
+    fontFamily: 'SF Pro Text',
+    fontSize: 16,
+    lineHeight: 19,
   },
 
   '.inverse': {
-    backgroundColor: '#5F96F2',
+    backgroundColor: '#5259FF',
 
     'NativeBase.Text': {
       color: '#FFFFFF',
     },
-
-    'Sparkle.MessageStatus': {
-      color: '#A3C5FF',
-    },
   },
 })
-export default class TextContent extends Component {
+export default class MessageContentText extends Component {
   static fragments = {
     content: contentFragment,
-  }
+  };
 
   static propTypes = {
-    statusComponent: PropTypes.element.isRequired,
+    inverse: PropTypes.bool.isRequired,
     content: fragmentProp(contentFragment).isRequired,
   };
 
   render() {
-    const { content, style, statusComponent } = this.props;
+    const { content: { text }, style } = this.props;
+    const spaceForDateAndMessageStatus = <Text>{'           '}</Text>;
 
     return (
       <View style={style}>
-        <Text>{content.text}</Text>
-        {statusComponent}
+        <Text>
+          {text}
+          {spaceForDateAndMessageStatus}
+        </Text>
       </View>
     );
   }

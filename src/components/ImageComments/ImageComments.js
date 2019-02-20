@@ -9,6 +9,7 @@ import uuid from 'uuid/v4';
 import { withStyleSheet as styleSheet } from 'theme';
 import ImageCommentsConnection from './ImageCommentsConnection';
 import Avatar from '../UserAvatar';
+import UserOnlineStatus from '../UserOnlineStatus';
 import Backdrop from '../Backdrop';
 import TouchableOpacity from '../TouchableOpacity';
 import ChatFooter from '../ChatFooter';
@@ -17,10 +18,12 @@ const meQuery = gql`
   query meQuery {
     me {
       name
+      ...UserOnlineStatus_user
       ...UserAvatar_user
     }
   }
 
+  ${UserOnlineStatus.fragments.user}
   ${Avatar.fragments.user}
 `;
 
@@ -30,6 +33,7 @@ const addPhotoCommentMutation = gql`
       node {
         id
         text
+        image
         createdAt
       }
     }
@@ -157,6 +161,7 @@ export default class ImageComments extends Component {
             __typename: 'Comment',
             id: uuid(),
             text,
+            image: null, // @TODO: Add photo upload ability
             createdAt: new Date().toISOString(),
             user: {
               ...me,

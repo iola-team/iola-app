@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
@@ -68,7 +68,7 @@ export default class FriendListItem extends Component {
   };
 
   render() {
-    const { 
+    const {
       user,
       friendship,
       onAcceptPress,
@@ -81,7 +81,7 @@ export default class FriendListItem extends Component {
       <UserListItem {...props} user={user}>
         {friendship && friendship.status === 'PENDING' && (
             friendship.user.id === user.id ? (
-              <Fragment>
+              <>
                 <Button onPress={onAcceptPress}>
                   <Text>Accept</Text>
                 </Button>
@@ -89,7 +89,7 @@ export default class FriendListItem extends Component {
                 <Button secondary onPress={onIgnorePress}>
                   <Text>Ignore</Text>
                 </Button>
-              </Fragment>
+              </>
             ) : (
               <Button secondary onPress={onCancelPress}>
                 <Text>Cancel</Text>

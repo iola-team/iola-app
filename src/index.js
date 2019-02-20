@@ -1,3 +1,4 @@
+/* global __DEV__ */
 /* eslint-disable import/first */
 import './polyfill';
 
@@ -24,9 +25,8 @@ class ApplicationRoot extends Component {
   apiClient = null;
 
   async init(platformURL) {
-    const devMode = true; // @TODO: Add devMode to the app
-    const apiURL = devMode ? GRAPHQL_URL : platformURL; // @TODO: Do some preparations and checks for platformURL
-    const subscriptionsURL = (devMode)
+    const apiURL = __DEV__ ? GRAPHQL_URL : platformURL; // @TODO: Do some preparations and checks for platformURL
+    const subscriptionsURL = (__DEV__)
       ? GRAPHQL_SUBSCRIPTIONS_URL
       : apiURL.replace('api/graphql', 'api/subscriptions'); // @TODO: Maybe we can export it to .env file :thinking_face:
 
