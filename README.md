@@ -46,28 +46,19 @@ Investigate this: https://reactnativetesting.io/
 
 ## Production
 0) Setup the production environment:
+  - @TODO: Fastline setup: https://medium.com/@tgpski/android-react-native-fastlane-working-with-multiple-build-types-a9a6641c5704:
   - Android:
-    1) `cp android/.gradle/gradle.properties.sample android/.gradle/gradle.properties` and fill it
+    1) `cp android/gradle.properties.sample android/gradle.properties` and fill it
   - iOS:
     1) @TODO
-1) Build the release app version:
-  - Android: `yarn release:build:android`
-android/app/build/outputs/apk/application/release/app-application-release.apk
-  - iOS:
-      1) @TODO: https://medium.com/@andr3wjack/versioning-react-native-apps-407469707661
-      
-  @TODO: node_modules/react-native-splash-screen/android/build.gradle
-  
-  @TODO: Fastline setup: https://medium.com/@tgpski/android-react-native-fastlane-working-with-multiple-build-types-a9a6641c5704:
-    //compileSdkVersion 26
-    //buildToolsVersion "26.0.3"
-    compileSdkVersion = 28
-    buildToolsVersion = "28.0.2"
-
-2) Test the release build:
+1) Test the release app version (build the apk file + install it on emulator/device):
   - Android:
     1) Uninstall the previous version of the app you already have installed
     2) Install it on the device: `yarn release:test:android`
+  - iOS: @TODO
+2) Build the release app version (build the apk file):
+  - Android: `yarn release:build:android`
+  - iOS: @TODO: https://medium.com/@andr3wjack/versioning-react-native-apps-407469707661
 
 ## For future customizations
   - Change the app icon:
