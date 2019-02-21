@@ -3,7 +3,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import PropTypes from 'prop-types';
 import { View, StyleSheet, Animated } from 'react-native';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 const Gradient = Animated.createAnimatedComponent(LinearGradient);
 const animatedValue = new Animated.Value(0);
@@ -68,7 +68,7 @@ export default class Placeholder extends Component {
 
     const animationStyle = layout && {
       transform: [
-        { 
+        {
           translateX: animatedValue.interpolate({
             inputRange: [0.5, 1],
             outputRange: [-layout.width, layout.width],
@@ -78,9 +78,9 @@ export default class Placeholder extends Component {
     };
 
     return (
-      <View 
+      <View
         {...props}
-        style={[style, { overflow: 'hidden' }]} 
+        style={[style, { overflow: 'hidden' }]}
         onLayout={this.onLayout}
       >
         {children}
@@ -88,10 +88,10 @@ export default class Placeholder extends Component {
         {layout && isActive && (
           <Gradient
             style={[StyleSheet.absoluteFill, animationStyle]}
-            start={{x: 0, y: 0}} 
+            start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
             colors={[
-              'rgba(255, 255, 255, 0)', 
+              'rgba(255, 255, 255, 0)',
               'rgba(255, 255, 255, 0.8)',
               'rgba(255, 255, 255, 0)',
             ]}

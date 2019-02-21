@@ -3,7 +3,7 @@ import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import { View } from 'native-base';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import MessageStateIndicator from './MessageStateIndicator';
 
 const stories = storiesOf('Components/MessageStateIndicator', module);

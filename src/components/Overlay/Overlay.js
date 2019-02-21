@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Gateway } from 'react-gateway';
 import { View, StyleSheet, BackHandler } from 'react-native';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 @withStyle('Sparkle.Overlay', {
   ...StyleSheet.absoluteFillObject,

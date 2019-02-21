@@ -5,7 +5,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import { Image, ScrollView } from 'react-native';
 import { Card, CardItem, Text } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 
 const userFragment = gql`

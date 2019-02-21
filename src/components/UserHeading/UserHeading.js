@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { View, Text, H2 } from 'native-base';
 import { Animated, StyleSheet } from 'react-native';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 import ScreenHeader from '../ScreenHeader';
 import UserAvatar from '../UserAvatar';
 import UserOnlineStatus from '../UserOnlineStatus';

@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { range } from 'lodash';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 import { FlatList, NoContent } from '../TabNavigator';
 import UserListItem from '../UserListItem';
 

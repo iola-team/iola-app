@@ -7,7 +7,7 @@ import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import delay from 'promise-delay';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import ProfileFieldInput from './ProfileFieldInput';
 
 const stories = storiesOf('Components/ProfileFieldInput', module);

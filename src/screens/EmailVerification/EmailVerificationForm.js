@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Form, Text, Toast } from 'native-base';
 import CodeInput from 'react-native-confirmation-code-input';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 
 const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode, onFulfill }) => ({
   compareWithCode,

@@ -16,7 +16,7 @@ import {
 } from 'graphql-tools';
 import { connectionFromArray, offsetToCursor } from 'graphql-relay';
 
-import { createClient } from 'graph';
+import { createClient } from '~graph';
 
 /**
  * Set buffer polyfill, required by `graphql-relay`
@@ -151,7 +151,7 @@ class Provider extends Component {
   };
 
   componentDidMount() {
-    const { onReset, ...props } = this.props;    
+    const { onReset, ...props } = this.props;
 
     onReset();
     createClient({

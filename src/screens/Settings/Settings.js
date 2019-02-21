@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
-import { withStyleSheet } from 'theme';
-import { SettingList } from 'components';
+import { withStyleSheet } from '~theme';
+import { SettingList } from '~components';
 
 @withStyleSheet('Sparkle.SettingsScreen')
 export default class SettingsScreen extends Component {

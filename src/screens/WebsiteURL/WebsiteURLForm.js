@@ -4,8 +4,8 @@ import { Button, Form, Text } from 'native-base';
 import * as yup from 'yup';
 import { withFormik } from 'formik';
 
-import { withStyleSheet as styleSheet } from 'theme';
-import { TextInput } from 'components';
+import { withStyleSheet as styleSheet } from '~theme';
+import { TextInput } from '~components';
 
 @styleSheet('Sparkle.WebsiteURLForm', {
   submit: {

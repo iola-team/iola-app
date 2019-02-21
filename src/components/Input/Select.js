@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { find, isUndefined } from 'lodash';
 import { Text } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import Input from './Input';
 import ListPicker from '../ListPicker';
 import TouchableOpacity from '../TouchableOpacity';

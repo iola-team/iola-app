@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 
 @styleSheet('Sparkle.OnlineStatus', {
   status: {

@@ -6,15 +6,14 @@ import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import SplashScreen from 'react-native-splash-screen';
 import { GRAPHQL_URL, GRAPHQL_SUBSCRIPTIONS_URL } from 'react-native-dotenv';
-
-import createApiClient from 'graph';
-import Theme from 'theme';
-import Application from 'application';
-import Storybook from 'storybook/UI';
-import { Root } from 'components';
 import { AsyncStorage } from 'react-native';
 
-import WebsiteURLScreen from './screens/WebsiteURL/WebsiteURL';
+import createApiClient from '~graph';
+import Theme from '~theme';
+import Application from '~application';
+import { Root } from '~components';
+import Storybook from '~storybook/UI';
+import WebsiteURLScreen from '~screens/WebsiteURL/WebsiteURL';
 /* eslint-enable */
 
 class ApplicationRoot extends Component {

@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { select, text, withKnobs } from '@storybook/addon-knobs';
 
-import { getContainerDecorator } from 'storybook';
+import { getContainerDecorator } from '~storybook';
 import NoContent from './NoContent';
 
 const stories = storiesOf('Components/NoContent', module);

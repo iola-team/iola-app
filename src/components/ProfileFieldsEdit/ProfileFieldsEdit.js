@@ -6,7 +6,7 @@ import { graphql } from 'react-apollo';
 import { noop } from 'lodash';
 import { View, Text, Toast } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import ProfileFieldForm from '../ProfileFieldForm';
 
 const userFragment = gql`

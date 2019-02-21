@@ -9,7 +9,7 @@ import faker from 'faker';
 import moment from 'moment';
 import { connectionFromArray } from 'graphql-relay';
 
-import { getContainerDecorator, getApolloDecorator } from 'storybook/index';
+import { getContainerDecorator, getApolloDecorator } from '~storybook';
 import MessageList from './MessageList';
 
 const stories = storiesOf('Components/MessageList', module);

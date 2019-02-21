@@ -4,8 +4,8 @@ import { storiesOf } from '@storybook/react-native';
 import { find, without, assign } from 'lodash';
 import delay from 'promise-delay';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
-import { createConnection } from 'storybook/decorators/Apollo';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
+import { createConnection } from '~storybook/decorators/Apollo';
 import FriendsButton from '.';
 
 
@@ -150,7 +150,7 @@ const resolvers = {
 
     async deleteFriend(root, { input }, { dataStore: ds }) {
       await delay(1000);
-      
+
       const { userId, friendId } = input;
       const edge = findEdge(ds, userId, friendId);
 
