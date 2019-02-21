@@ -38,10 +38,16 @@ class ApplicationRoot extends Component {
     try {
       const platformURL = await AsyncStorage.getItem('platformURL');
 
-      if (platformURL !== null) this.init(platformURL);
+      if (platformURL !== null) {
+        this.init(platformURL);
+
+        return;
+      }
     } catch (error) {
       // @TODO: display Error message?
     }
+
+    SplashScreen.hide();
   }
 
   onApplicationReady() {
