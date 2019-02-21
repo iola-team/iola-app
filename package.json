@@ -43,8 +43,8 @@
     "lint": "Display ESLint errors (without warnings)",
     "lint:statistics": "Display general ESLint Statistics",
     "lint:fix": "Automatically fix ESLint errors",
-    "server:prod": "Run the React Native Packager",
-    "prod:android": "Build the prod APK version"
+    "release:build:android": "Build the prod APK version",
+    "release:test:android": "Build the prod APK version and install it on emulator/device"
   },
   "config": {
     "react-native-storybook-loader": {
