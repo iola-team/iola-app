@@ -5,7 +5,12 @@ import './polyfill';
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import SplashScreen from 'react-native-splash-screen';
-import { GRAPHQL_URL, GRAPHQL_SUBSCRIPTIONS_URL } from 'react-native-dotenv';
+import {
+  DEV_GRAPHQL_URL,
+  DEV_GRAPHQL_SUBSCRIPTIONS_URL,
+  INTEGRATION_GRAPHQL_ADDRESS,
+  INTEGRATION_GRAPHQL_SUBSCRIPTIONS_ADDRESS,
+} from 'react-native-dotenv';
 
 import createApiClient from 'graph';
 import Theme from 'theme';
@@ -25,10 +30,10 @@ class ApplicationRoot extends Component {
   apiClient = null;
 
   async init(platformURL) {
-    const apiURL = __DEV__ ? GRAPHQL_URL : platformURL; // @TODO: Do some preparations and checks for platformURL
+    const apiURL = __DEV__ ? DEV_GRAPHQL_URL : `${platformURL}/${INTEGRATION_GRAPHQL_ADDRESS}`;
     const subscriptionsURL = (__DEV__)
-      ? GRAPHQL_SUBSCRIPTIONS_URL
-      : apiURL.replace('api/graphql', 'api/subscriptions'); // @TODO: Maybe we can export it to .env file :thinking_face:
+      ? DEV_GRAPHQL_SUBSCRIPTIONS_URL
+      : `${platformURL}/${INTEGRATION_GRAPHQL_SUBSCRIPTIONS_ADDRESS}`;
 
     this.apiClient = await createApiClient(apiURL, subscriptionsURL);
     this.setState({ isReady: true });

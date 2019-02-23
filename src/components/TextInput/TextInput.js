@@ -122,12 +122,9 @@ export default class TextInput extends Component {
     const { name, setFieldValue, status, setStatus, onChangeText } = this.props;
 
     setStatus({ ...status, changed: true });
+    setFieldValue(name, text);
 
-    if (onChangeText) {
-      onChangeText(text);
-    } else {
-      setFieldValue(name, text);
-    }
+    if (onChangeText) onChangeText(text);
   }
 
   render() {

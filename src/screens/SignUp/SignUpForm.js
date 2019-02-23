@@ -74,7 +74,6 @@ class SignUpForm extends Component {
   }
 
   onChangeEmail(text, client) {
-    this.props.setFieldValue('email', text);
     this.validateEmail(text, client);
   }
 
