@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Header } from 'react-navigation';
 import { constant } from 'lodash';
+import { StyleSheet } from 'react-native';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import Icon from '../Icon';
@@ -9,7 +10,15 @@ import Icon from '../Icon';
 @styleSheet('Sparkle.ScreenHeader', {
   header: {
     elevation: 0,
-    borderBottomWidth: 0,
+  },
+
+  opaqueHeader: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#A7A7AA',
+  },
+
+  transparentHeader: {
+    
   },
 
   icon: {
@@ -48,7 +57,11 @@ export default class ScreenHeader extends PureComponent {
       headerBackImage: <Icon name="back" style={styles.icon} />,
       headerLeft: renderLeft(scene),
       headerRight: renderRight(scene),
-      headerStyle: [styles.header, options.headerStyle],
+      headerStyle: [
+        styles.header,
+        options.headerTransparent ? styles.transparentHeader : styles.opaqueHeader,
+        options.headerStyle
+      ],
       headerTitleStyle: [styles.title, options.headerTitleStyle],
     };
   }

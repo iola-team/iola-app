@@ -1,21 +1,24 @@
 import React, { Component, isValidElement } from 'react';
 import { isFunction } from 'lodash';
-import { View as ViewRN } from 'react-native';
+import { View as ViewRN, StyleSheet } from 'react-native';
 import { Text, View } from 'native-base';
 
 import { withStyle } from 'theme';
 import TouchableOpacity from '../TouchableOpacity';
 
 @withStyle('Sparkle.TabBar', {
-  backgroundColor: '#F8F9FB',
+  backgroundColor: '#FFFFFF',
   flexDirection: 'row',
-  height: 60,
+  height: 50,
   alignItems: 'flex-end',
   justifyContent: 'center',
-
+  paddingHorizontal: 50,
+  borderBottomWidth: StyleSheet.hairlineWidth,
+  borderBottomColor: '#A7A7AA',
+  
   'Sparkle.TouchableOpacity': {
+    flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 15,
 
     'NativeBase.ViewNB': {
       '.label': {
@@ -50,7 +53,7 @@ import TouchableOpacity from '../TouchableOpacity';
   }
 })
 export default class TabBar extends Component {
-  static HEIGHT = 60;
+  static HEIGHT = 50;
 
   renderTab = (route, index) => {
     const { onTabPress, getLabelText, navigation: { state } } = this.props;
