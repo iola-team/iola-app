@@ -4,6 +4,8 @@ import { View, TextInput, Animated } from 'react-native';
 
 import { withStyleSheet } from 'theme';
 import Icon from '../Icon';
+import Spinner from '../Spinner';
+import TouchableOpacity from '../TouchableOpacity';
 
 @withStyleSheet('Sparkle.SearchBar', {
   root: {
@@ -12,7 +14,7 @@ import Icon from '../Icon';
   },
 
   input: {
-    
+    flex: 1,
   },
 
   inputWrap: {
@@ -31,10 +33,31 @@ import Icon from '../Icon';
     fontSize: 18,
     marginRight: 5,
   },
+
+  spinner: {
+    color: '#AFB2BF',
+    unfilledColor: '#F8F9FB',
+    marginTop: -1,
+    marginLeft: -1.5,
+    marginRight: 5.5,
+  },
+
+  clearButton: {
+    height: 40,
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  clearIcon: {
+    fontSize: 20,
+    color: '#AFB2BF',
+  },
 })
 export default class SearchBar extends PureComponent {
   static propTypes = {
     placeholder: PropTypes.string.isRequired,
+    searching: PropTypes.bool,
     value: PropTypes.string,
     autoFocus: PropTypes.bool,
     onChangeText: PropTypes.func,
@@ -42,11 +65,13 @@ export default class SearchBar extends PureComponent {
 
   static defaultProps = {
     value: '',
+    searching: false,
     autoFocus: false,
     cancelAnimatedValue: new Animated.Value(0),
     onChangeText: () => null,
-    onCancelPress: () => null,
   };
+
+  onClearPress = () => this.props.onChangeText('');
 
   render() {
     const {
@@ -54,6 +79,7 @@ export default class SearchBar extends PureComponent {
       style,
       placeholder,
       value,
+      searching,
       autoFocus,
       onChangeText,
       
@@ -63,7 +89,12 @@ export default class SearchBar extends PureComponent {
     return (
       <View {...props} style={[style, styles.root]}>
         <View style={styles.inputWrap}>
-          <Icon style={styles.icon} name="search" />
+          {searching ? (
+            <Spinner size={20} thickness={1.5} style={styles.spinner} />
+          ) : (
+            <Icon style={styles.icon} name="search" />
+          )}
+
           <TextInput
             style={styles.input}
             autoFocus={autoFocus}
@@ -72,6 +103,12 @@ export default class SearchBar extends PureComponent {
             value={value}
             onChangeText={onChangeText}
           />
+
+          {!!value && (
+            <TouchableOpacity style={styles.clearButton} onPress={this.onClearPress}>
+              <Icon style={styles.clearIcon} name="cancel" />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     );

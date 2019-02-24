@@ -48,6 +48,7 @@ function loadStories() {
   require('../components/ProfileFieldInput/ProfileFieldInput.stories');
   require('../components/ProfileFieldView/ProfileFieldView.stories');
   require('../components/ProfileFieldsView/ProfileFieldsView.stories');
+  require('../components/SearchBar/SearchBar.stories');
   require('../components/SettingList/SettingList.stories');
   require('../components/Shadow/Shadow.stories');
   require('../components/Spinner/Spinner.stories');
@@ -111,6 +112,7 @@ const stories = [
   '../components/ProfileFieldInput/ProfileFieldInput.stories',
   '../components/ProfileFieldView/ProfileFieldView.stories',
   '../components/ProfileFieldsView/ProfileFieldsView.stories',
+  '../components/SearchBar/SearchBar.stories',
   '../components/SettingList/SettingList.stories',
   '../components/Shadow/Shadow.stories',
   '../components/Spinner/Spinner.stories',

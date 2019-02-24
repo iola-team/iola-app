@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Circle, CircleSnail } from 'react-native-progress';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 
 import { withStyleSheet as styleSheet } from 'theme';
 
@@ -31,7 +31,8 @@ export default class Spinner extends Component {
 
   render() {
     const { styleSheet: styles, size, thickness, style } = this.props;
-    const { position, color, unfilledColor } = styles.circle;
+    const { position } = styles.circle;
+    const { color, unfilledColor } = StyleSheet.flatten([styles.circle, style]);
 
     return (
       <View style={[styles.container, style]}>
