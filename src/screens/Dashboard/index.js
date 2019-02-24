@@ -1,18 +1,25 @@
 import React from 'react';
 
-import { Icon, ScreenHeader, createHeadingTabsNavigator } from 'components';
-import DashboardHeading from './DashboardHeading';
+import { Icon, ScreenHeader, createHeadingTabsNavigator, TouchableOpacity } from 'components';
+import { USER_SEARCH } from '../routeNames';
 
 export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
   ...config,
-  renderHeader: props => <DashboardHeading {...props} />,
-  headerShrinkHeight: ScreenHeader.HEIGHT + 80,
-  headerHeight: DashboardHeading.HEIGHT,
+  topBarHeight: ScreenHeader.HEIGHT,
+  
+  navigationOptions: ({ navigation }) => ({
+    title: 'Users',
+    headerStyle: {
+      borderBottomWidth: 0,
+    },
 
-  navigationOptions: {
-    headerTransparent: true,
+    headerRight: (
+      <TouchableOpacity style={{ padding: 10 }} onPress={() => navigation.navigate(USER_SEARCH)}>
+        <Icon name="search" style={{ fontSize: 20 }} />
+      </TouchableOpacity>
+    ),
     tabBarIcon: ({ tintColor: color }) => (
       <Icon name="dashboard-bar" style={{ color, fontSize: 25 }} />
     ),
-  },
+  }),
 });

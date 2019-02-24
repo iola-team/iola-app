@@ -27,3 +27,5 @@ export const CHANNEL = 'channel';
 export const PROFILE_EDIT = 'profileEdit';
 export const PROFILE_EDIT_INFO = 'profileEdit.info';
 export const SETTINGS = 'settings';
+export const USER_SEARCH = 'userSearch';
+export const CHAT_SEARCH = 'chatSearch';
