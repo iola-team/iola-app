@@ -1,15 +1,56 @@
 /* global __DEV__ */
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
-import { Button, Form, Text } from 'native-base';
+import { Button, Form, Text, View } from 'native-base';
 import * as yup from 'yup';
 import { withFormik } from 'formik';
 import { DEV_URL_PROTOCOL } from 'react-native-dotenv';
 
 import { withStyleSheet as styleSheet } from 'theme';
-import { TextInput } from 'components';
+import { FormTextInput } from 'components';
 
 @styleSheet('Sparkle.WebsiteURLForm', {
+  row: {
+    flexDirection: 'row',
+  },
+
+  left: {
+    flexShrink: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 72,
+    height: 40,
+    paddingLeft: 5,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
+    backgroundColor: '#ECECEC',
+  },
+
+  text: {
+    fontFamily: 'SF Pro Text',
+    fontSize: 14,
+    color: '#AFB2BF',
+  },
+
+  url: {
+    flex: 1,
+    height: 40,
+    margin: 0,
+    paddingLeft: 3,
+    paddingRight: 5,
+    paddingVertical: 0,
+    fontFamily: 'SF Pro Text',
+    fontSize: 14,
+    lineHeight: 40,
+    borderLeftWidth: 0,
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 0,
+  },
+
+  urlInput: {
+
+  },
+
   submit: {
     marginTop: 17,
     borderWidth: 1,
@@ -45,7 +86,7 @@ class WebsiteURLForm extends Component {
   }
 
   onSubmit() {
-    const { setFieldValue, handleSubmit, onSubmit, values: { url } } = this.props;
+    const { handleSubmit, onSubmit, values: { url } } = this.props;
 
     if (url.length === 0) {
       handleSubmit();
@@ -57,7 +98,6 @@ class WebsiteURLForm extends Component {
 
     const platformURL = (__DEV__) ? DEV_URL_PROTOCOL : `https://${this.sanitizeURL(url)}`;
 
-    setFieldValue('url', platformURL);
     onSubmit({ url: platformURL });
   }
 
@@ -67,14 +107,19 @@ class WebsiteURLForm extends Component {
 
     return (
       <Form>
-        <TextInput
-          name="url"
-          placeholder="Enter Website URL address"
-          customStyle={{ marginBottom: 0 }}
-          error={!isValidURL}
-          onChangeText={::this.onChangeText}
-          {...this.props}
-        />
+        <View style={styles.row}>
+          <View style={styles.left}>
+            <Text style={styles.text}>https://</Text>
+          </View>
+          <FormTextInput
+            name="url"
+            placeholder="Enter Website URL address"
+            error={!isValidURL}
+            onChangeText={::this.onChangeText}
+            customStyle={styles.url}
+            {...this.props}
+          />
+        </View>
 
         {!isValidURL && <Text>Please enter a valid URL address</Text>}
 
