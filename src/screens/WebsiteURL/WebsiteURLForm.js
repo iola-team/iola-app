@@ -4,7 +4,6 @@ import propTypes from 'prop-types';
 import { Button, Form, Text, View } from 'native-base';
 import * as yup from 'yup';
 import { withFormik } from 'formik';
-import { DEV_URL_PROTOCOL } from 'react-native-dotenv';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import { FormTextInput } from 'components';
@@ -47,10 +46,6 @@ import { FormTextInput } from 'components';
     borderBottomLeftRadius: 0,
   },
 
-  urlInput: {
-
-  },
-
   submit: {
     marginTop: 17,
     borderWidth: 1,
@@ -87,6 +82,7 @@ class WebsiteURLForm extends Component {
 
   onSubmit() {
     const { handleSubmit, onSubmit, values: { url } } = this.props;
+    const platformURL = `https://${this.sanitizeURL(url)}`;
 
     if (url.length === 0) {
       handleSubmit();
@@ -95,8 +91,6 @@ class WebsiteURLForm extends Component {
     }
 
     if (!this.state.isValidURL) return;
-
-    const platformURL = (__DEV__) ? DEV_URL_PROTOCOL : `https://${this.sanitizeURL(url)}`;
 
     onSubmit({ url: platformURL });
   }
