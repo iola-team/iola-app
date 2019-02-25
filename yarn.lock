@@ -10063,10 +10063,10 @@ nanomatch@^1.2.9:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-native-base-shoutem-theme@0.2.2, "native-base-shoutem-theme@github:greyexpert/theme#master":
+native-base-shoutem-theme@0.2.2:
   version "0.2.2"
-  uid e568409db51b01dd3e09db21eb49fd176cee908b
   resolved "https://codeload.github.com/greyexpert/theme/tar.gz/e568409db51b01dd3e09db21eb49fd176cee908b"
+  integrity sha1-WCMxBFX+ORrfciNkacA5/UT1aiA=
   dependencies:
     hoist-non-react-statics "^1.0.5"
     lodash "^4.10.1"

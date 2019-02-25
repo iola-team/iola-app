@@ -1,17 +1,27 @@
 import React, { Component } from 'react';
 import { getStorybookUI, configure } from '@storybook/react-native';
 import { IP } from 'react-native-dotenv';
+
 import { loadStories } from './storyLoader';
 
 export default class Storybook extends Component {
   constructor(...args) {
     super(...args);
 
-    // Load stories
+    /**
+     * Load configuration
+     */
+    require('./config');
+
+    /**
+     * Load stories
+     */
     configure(loadStories, module);
 
-    // Load configuration
-    require('./config');
+    /**
+     * Enable console output in stories
+     */
+    require('@storybook/addon-console');
 
     this.ui = getStorybookUI({
       host: IP,

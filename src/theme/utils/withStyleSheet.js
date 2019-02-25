@@ -109,7 +109,7 @@ const withHotReload = componentName => (WrappedComponent) => {
 };
 
 export default (name, defaultStyle) => compose(
-  module.hot ? withHotReload(name) : identity,
+  // module.hot ? withHotReload(name) : identity,
 
   connectStyle(name, defaultStyle, mapPropsToStyleNames),
   wrapToStyleSheet(),

@@ -37,7 +37,7 @@ export default class Overlay extends Component {
   render() {
     const { visible, ...props } = this.props;
 
-    return visible && (
+    return !!visible && (
       <Gateway into="root">
         <View {...props} />
       </Gateway>
