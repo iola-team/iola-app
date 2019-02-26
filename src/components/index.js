@@ -37,6 +37,7 @@ import UserPhotosCard from './UserPhotosCard';
 import TabBarLabel from './TabBarLabel';
 import PhotosTabBarLabel from './PhotosTabBarLabel';
 import FriendsTabBarLabel from './FriendsTabBarLabel';
+import SearchResult from './SearchResult';
 
 export {
   AvatarEdit,
@@ -75,6 +76,7 @@ export {
   TabBarLabel,
   PhotosTabBarLabel,
   FriendsTabBarLabel,
+  SearchResult,
 
   // Navigation
   ScreenHeader,

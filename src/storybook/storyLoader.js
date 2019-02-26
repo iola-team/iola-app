@@ -64,6 +64,7 @@ function loadStories() {
   require('../screens/MyPhotos/MyPhotos.stories');
   require('../screens/SignIn/SignIn.stories');
   require('../screens/SignUp/SignUp.stories');
+  require('../screens/UserSearch/UserSearch.stories');
   require('./stories/Button.stories');
   
 }
@@ -128,6 +129,7 @@ const stories = [
   '../screens/MyPhotos/MyPhotos.stories',
   '../screens/SignIn/SignIn.stories',
   '../screens/SignUp/SignUp.stories',
+  '../screens/UserSearch/UserSearch.stories',
   './stories/Button.stories',
   
 ];
