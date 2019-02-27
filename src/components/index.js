@@ -38,6 +38,9 @@ import TabBarLabel from './TabBarLabel';
 import PhotosTabBarLabel from './PhotosTabBarLabel';
 import FriendsTabBarLabel from './FriendsTabBarLabel';
 import SearchResult from './SearchResult';
+import UsersRow from './UsersRow';
+import UsersRowItem from './UsersRowItem';
+import SearchBlank from './SearchBlank';
 
 export {
   AvatarEdit,
@@ -77,6 +80,9 @@ export {
   PhotosTabBarLabel,
   FriendsTabBarLabel,
   SearchResult,
+  UsersRow,
+  UsersRowItem,
+  SearchBlank,
 
   // Navigation
   ScreenHeader,

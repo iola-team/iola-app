@@ -88,9 +88,11 @@ stories.addDecorator(getApolloDecorator({
   resolvers: {
     Query: {
       async users(root, args, { dataStore }) {
-        const users = dataStore.users.filter(({ name }) => {
-          return name.toLowerCase().indexOf(args.filter.search.toLowerCase()) === 0;
-        });
+        const users = args.filter.length 
+          ? dataStore.users.filter(({ name }) => {
+              return name.toLowerCase().indexOf(args.filter.search.toLowerCase()) === 0;
+            })
+          : dataStore.users;
 
         await delay(1000);
 
