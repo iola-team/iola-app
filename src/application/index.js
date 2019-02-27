@@ -5,8 +5,8 @@ import gql from 'graphql-tag';
 import Moment from 'react-moment';
 import { Text } from 'native-base';
 
-import Navigator from 'screens';
-import { ROOT_QUERY } from 'graph';
+import Navigator from '~screens';
+import { ROOT_QUERY } from '~graph';
 
 Moment.globalElement = Text;
 

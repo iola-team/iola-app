@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 import { Image } from 'react-native';
 import { Button, Text } from 'native-base';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 
 import Item from './PhotoGridItem';
 import PhotoGrid from './PhotoGrid';

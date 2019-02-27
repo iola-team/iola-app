@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { noop } from 'lodash';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import UserList from '../UserList';
 import FriendListItem from '../FriendListItem';
 
@@ -56,8 +56,8 @@ export default class FriendList extends Component {
     const { node, friendship } = item;
 
     return (
-      <FriendListItem 
-        user={node} 
+      <FriendListItem
+        user={node}
         friendship={friendship}
         onPress={() => onItemPress(item)}
         onAcceptPress={() => onAcceptPress(item)}
@@ -69,7 +69,7 @@ export default class FriendList extends Component {
 
   render() {
     const { ...props } = this.props;
-    
+
     return <UserList {...props} renderItem={this.renderItem} />;
   }
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import LinearGradient from 'react-native-linear-gradient';
 import { View, StyleSheet } from 'react-native';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 @withStyle('Sparkle.Shadow', {
   shadowColors: ['rgba(211, 213, 222, 0.1)', 'rgba(211, 213, 222, 0)'],

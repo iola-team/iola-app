@@ -10,8 +10,8 @@ import uuid from 'uuid/v4';
 import moment from 'moment';
 import { PubSub } from 'graphql-subscriptions';
 
-import { getContainerDecorator, getApolloDecorator } from 'storybook';
-import { createConnection } from 'storybook/decorators/Apollo';
+import { getContainerDecorator, getApolloDecorator } from '~storybook';
+import { createConnection } from '~storybook/decorators/Apollo';
 import Chat from './index';
 
 const stories = storiesOf('Components/Chat', module);

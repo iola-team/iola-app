@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Text, View } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 
 const Root = connectToStyleSheet('root', View);
 const Line = connectToStyleSheet('line', View);

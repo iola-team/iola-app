@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import gql from 'graphql-tag';
 
-import { getApolloDecorator } from 'storybook';
+import { getApolloDecorator } from '~storybook';
 import SignUp from './SignUp';
 
 const stories = storiesOf('Screens/SignUp', module);

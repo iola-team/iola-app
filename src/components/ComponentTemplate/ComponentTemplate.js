@@ -4,7 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { View, Text, Button } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 
 /**
  * Component fragment sample

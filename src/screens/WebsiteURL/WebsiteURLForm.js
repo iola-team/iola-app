@@ -5,8 +5,8 @@ import { Button, Form, Text, View } from 'native-base';
 import * as yup from 'yup';
 import { withFormik } from 'formik';
 
-import { withStyleSheet as styleSheet } from 'theme';
-import { FormTextInput } from 'components';
+import { withStyleSheet as styleSheet } from '~theme';
+import { FormTextInput } from '~components';
 
 @styleSheet('Sparkle.WebsiteURLForm', {
   row: {

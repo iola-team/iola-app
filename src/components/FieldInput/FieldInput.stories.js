@@ -3,7 +3,7 @@ import { text, boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import FieldSection from '../FieldSection';
 import Input from '.';
 

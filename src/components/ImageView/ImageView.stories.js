@@ -8,8 +8,8 @@ import moment from 'moment';
 import faker from 'faker';
 import { find, orderBy, random, range, remove, sample, sampleSize, shuffle, without } from 'lodash';
 
-import { getApolloDecorator, getContentDecorator } from 'storybook';
-import { createConnection } from 'storybook/decorators/Apollo';
+import { getApolloDecorator, getContentDecorator } from '~storybook';
+import { createConnection } from '~storybook/decorators/Apollo';
 import ImageView from './ImageView';
 import TouchableOpacity from '../TouchableOpacity';
 import PhotoList from '../PhotoList';

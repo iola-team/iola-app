@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ImageBackground, TouchableOpacity } from 'react-native';
 import { Container, Text, View } from 'native-base';
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { LAUNCH } from '../routeNames';
 import SignUpForm from './SignUpForm';
 

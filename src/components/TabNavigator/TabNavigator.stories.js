@@ -6,7 +6,7 @@ import { View, Text, StyleSheet, Animated } from 'react-native';
 import { createAppContainer, Header as HeaderRN } from 'react-navigation';
 import { range } from 'lodash';
 
-import { getContainerDecorator } from 'storybook';
+import { getContainerDecorator } from '~storybook';
 import createTabNavigator from '.';
 import ScrollView from './ScrollView';
 import FlatList from './FlatList';

@@ -3,7 +3,7 @@ import Moment from 'react-moment';
 import { isUndefined } from 'lodash';
 import { Text } from 'native-base';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 import FieldInput from './FieldInput';
 import DatePicker from '../DatePicker';
 import TouchableOpacity from '../TouchableOpacity';

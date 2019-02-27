@@ -4,7 +4,7 @@ import { includes, filter, isFunction, isUndefined, without, noop } from 'lodash
 import { StyleSheet, Dimensions } from 'react-native';
 import { View, Text, List, ListItem, Body } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import Backdrop from '../Backdrop';
 import Icon from '../Icon';
 import TouchableOpacity from '../TouchableOpacity';

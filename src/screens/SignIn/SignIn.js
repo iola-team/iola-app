@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import SignInForm from './SignInForm';
 import Divider from './Divider';
 import * as routes from '../routeNames';

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import { PhotosTabBarLabel } from 'components';
+import { PhotosTabBarLabel } from '~components';
 
 @graphql(gql`
   query UserPhotosTabBarLabelQuery($userId: ID!) {

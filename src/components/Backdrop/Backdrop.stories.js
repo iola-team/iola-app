@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 import { withStateHandlers, toRenderProps } from 'recompose';
 import { View, Text } from 'native-base';
 
-import { getContentDecorator } from 'storybook/index';
+import { getContentDecorator } from '~storybook';
 import Backdrop from './Backdrop';
 import TouchableOpacity from '../TouchableOpacity';
 

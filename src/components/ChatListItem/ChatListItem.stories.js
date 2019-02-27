@@ -6,8 +6,8 @@ import { number, select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
-import { createConnection } from 'storybook/decorators/Apollo';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
+import { createConnection } from '~storybook/decorators/Apollo';
 import ChatListItem from './ChatListItem';
 
 const stories = storiesOf('Components/ChatListItem', module);

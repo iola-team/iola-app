@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import OnlineStatus from './OnlineStatus';
 
 const userFragment = gql`

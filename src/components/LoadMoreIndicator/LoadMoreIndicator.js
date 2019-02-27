@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Text } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 @withStyle('Sparkle.LoadMoreIndicator', {
   height: 50,

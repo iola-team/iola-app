@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { filter } from 'lodash';
 import Moment from 'react-moment';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import UserAvatar from '../UserAvatar';
 import UserOnlineStatus from '../UserOnlineStatus';
 import MessageStateIndicator from '../MessageStateIndicator';

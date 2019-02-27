@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon, ScreenHeader, createHeadingTabsNavigator } from 'components';
+import { Icon, ScreenHeader, createHeadingTabsNavigator } from '~components';
 import DashboardHeading from './DashboardHeading';
 
 export default (routes, config = {}) => createHeadingTabsNavigator(routes, {

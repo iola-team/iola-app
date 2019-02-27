@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import { FriendsTabBarLabel } from 'components';
+import { FriendsTabBarLabel } from '~components';
 
 @graphql(gql`
   query MyFriendsTabBarLabelQuery {

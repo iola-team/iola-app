@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import FriendsTabBarLabel from './FriendsTabBarLabel';
 
 const stories = storiesOf('Components/FriendsTabBarLabel', module);

@@ -7,7 +7,7 @@ import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import delay from 'promise-delay';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import FriendListItem from './FriendListItem';
 
 const stories = storiesOf('Components/FriendListItem', module);
@@ -94,7 +94,7 @@ const userQuery = gql`
 const withData = (userId, friendshipId, render) => (
   <Query query={userQuery} variables={{ userId, friendshipId }}>
     {({ data, loading }) => render({
-      loading, 
+      loading,
       user: loading ? null : data.user,
       friendship: loading ? null : data.friendship,
     })}
@@ -102,10 +102,10 @@ const withData = (userId, friendshipId, render) => (
 );
 
 stories.add('Default', () => withData('User:1', 'Friendship:1', ({ user, friendship }) => (
-  <FriendListItem 
+  <FriendListItem
     user={user}
     friendship={friendship}
-    
+
     onPress={action('onPress')}
     onAcceptPress={action('onAcceptPress')}
     onIgnorePress={action('onIgnorePress')}

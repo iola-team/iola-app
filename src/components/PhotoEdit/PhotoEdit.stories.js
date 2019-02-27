@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/react-native';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import PhotoEdit from './PhotoEdit';
 
 const stories = storiesOf('Components/PhotoEdit', module);

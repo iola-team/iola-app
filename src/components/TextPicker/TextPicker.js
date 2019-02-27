@@ -5,7 +5,7 @@ import { includes, filter, isFunction, isUndefined, without, noop } from 'lodash
 import { StyleSheet, Dimensions, Keyboard } from 'react-native';
 import { View, Text, Textarea } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 
 const valueShape = PropTypes.oneOfType([
