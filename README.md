@@ -37,7 +37,7 @@ Investigate this: https://reactnativetesting.io/
    - Run mutation that triggers the subscription (for example from GraphiQL interface)
 2. "Metro Bundler can't listen on port 8081" error (or "Error: listen EADDRINUSE :::7007")
    - `sudo lsof -i :8081`
-   - `kill -9 PID_FROM_RESULTS_OF_THE_PREVIOUS_COMMAND`
+   - `kill -9 *PID from the previous command results*`
 
 ### Code style
   - [Airbnb Code Style](https://github.com/airbnb/javascript)

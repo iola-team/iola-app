@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { get, filter } from 'lodash';
 
-import { FriendList, FriendsTabBarLabel } from 'components';
+import { FriendList, FriendsTabBarLabel } from '~components';
 
 const userFriendsQuery = gql`
   query MyFriendsQuery {

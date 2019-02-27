@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { get, filter, uniqueId, remove } from 'lodash';
 import update from 'immutability-helper';
 
-import { PhotoList, ImagePicker, ImageView, ImageProgress, PhotosTabBarLabel } from 'components';
+import { PhotoList, ImagePicker, ImageView, ImageProgress, PhotosTabBarLabel } from '~components';
 
 const myPhotosQuery = gql`
   query MyPhotosQuery {

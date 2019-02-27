@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import { AvatarEdit } from 'components';
+import { AvatarEdit } from '~components';
 
 @graphql(gql`
   query ProfileHeadingQuery {

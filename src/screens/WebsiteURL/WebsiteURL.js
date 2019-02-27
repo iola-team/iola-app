@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Animated, AsyncStorage, Easing, Dimensions, Image } from 'react-native';
 import { Container, View } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import WebsiteURLForm from './WebsiteURLForm';
 import logo from '../Launch/logo.png';
 

@@ -8,7 +8,7 @@ import faker from 'faker';
 import delay from 'promise-delay';
 import { connectionFromArray } from 'graphql-relay';
 
-import { getContainerDecorator, getApolloDecorator } from 'storybook';
+import { getContainerDecorator, getApolloDecorator } from '~storybook';
 import UserList from './UserList';
 
 const stories = storiesOf('Components/UserList', module);

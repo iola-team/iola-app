@@ -3,7 +3,7 @@ import { Container } from 'native-base';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import { ChatList, Icon, SearchBar } from 'components';
+import { ChatList, Icon, SearchBar } from '~components';
 import * as routes from '../routeNames';
 
 @graphql(gql`

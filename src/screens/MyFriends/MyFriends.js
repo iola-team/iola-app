@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withNavigationFocus } from 'react-navigation';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 import { USER } from '../routeNames';
 import MyFriendsConnection from './MyFriendsConnection';
 import TabBarLabel from './TabBarLabel';
@@ -31,8 +31,8 @@ export default class MyFriends extends Component {
     const { styleSheet: styles } = this.props;
 
     return (
-      <MyFriendsConnection 
-        contentContainerStyle={styles.list} 
+      <MyFriendsConnection
+        contentContainerStyle={styles.list}
         onItemPress={this.onItemPress}
       />
     );

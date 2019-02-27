@@ -4,7 +4,7 @@ import { ListItem, Left, Body, Text, Right, View } from 'native-base';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import UserAvatar from '../UserAvatar';
 import UserOnlineStatus from '../UserOnlineStatus';
 import Placeholder from '../Placeholder';

@@ -5,7 +5,7 @@ import { Button, Text, View } from 'native-base';
 import { number, boolean, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import ImagePicker from './ImagePicker';
 
 const stories = storiesOf('Components/ImagePicker', module);

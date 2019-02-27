@@ -2,7 +2,7 @@ import React from 'react';
 import { withKnobs, number } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import ImageFit from './ImageFit';
 
 const stories = storiesOf('Components/ImageFit', module);

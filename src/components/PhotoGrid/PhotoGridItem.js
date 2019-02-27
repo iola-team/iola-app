@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 @withStyle('Sparkle.PhotoGridItem', {
   flex: 1,

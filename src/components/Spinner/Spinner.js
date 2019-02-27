@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Circle, CircleSnail } from 'react-native-progress';
 import { View } from 'react-native';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 
 @styleSheet('Sparkle.Spinner', {
   container: {

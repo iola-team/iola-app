@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { Text, View } from 'react-native';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import Icon from './Icon';
 import glyphMap from './glyphMap';
 

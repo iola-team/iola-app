@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'native-base';
 
-import { withStyleSheet } from 'theme';
-import { SearchBar } from 'components';
+import { withStyleSheet } from '~theme';
+import { SearchBar } from '~components';
 
 @withStyleSheet('Sparkle.DashboardScreenHead', {
   container: {

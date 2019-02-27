@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { storiesOf } from '@storybook/react-native';
 import { find } from 'lodash';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import ImageCommentsItem from './ImageCommentsItem';
 
 const stories = storiesOf('Components/ImageCommentsItem', module);

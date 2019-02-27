@@ -5,7 +5,7 @@ import { storiesOf } from '@storybook/react-native';
 import { compose, withStateHandlers } from 'recompose';
 import { Button, Text } from 'native-base';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import DatePicker from './DatePicker';
 
 const stories = storiesOf('Components/DatePicker', module);

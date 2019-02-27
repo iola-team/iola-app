@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { withNavigationFocus } from 'react-navigation';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 import MyPhotosConnection from './MyPhotosConnection';
 import TabBarLabel from './TabBarLabel';
 

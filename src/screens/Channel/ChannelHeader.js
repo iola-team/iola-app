@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { withStyleSheet as styleSheet } from 'theme';
-import { ScreenHeader, UserAvatar } from 'components';
+import { withStyleSheet as styleSheet } from '~theme';
+import { ScreenHeader, UserAvatar } from '~components';
 
 const userQuery = gql`
   query ChannelWithUserQuery($userId: ID!) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Animated, Easing, Dimensions, Image } from 'react-native';
 import { Container, View } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import * as routes from '../routeNames';
 import logo from './logo.png';
 

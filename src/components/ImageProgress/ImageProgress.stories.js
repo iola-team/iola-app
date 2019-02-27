@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { Image } from 'react-native';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import ImageProgress from './ImageProgress';
 
 const stories = storiesOf('Components/ImageProgress', module);
