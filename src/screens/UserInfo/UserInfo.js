@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
-import { ProfileFieldsView } from 'components';
+import { ProfileFieldsView } from '~components';
 
 const userFieldsQuery = gql`
   query UserInfoQuery($id: ID!) {

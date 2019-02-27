@@ -5,7 +5,7 @@ import { noop, clamp } from 'lodash';
 import { View, StyleSheet, Dimensions, Animated } from 'react-native';
 import { PanGestureHandler, State } from 'react-native-gesture-handler';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import BackdropHeader from './BackdropHeader';
 import Overlay from '../Overlay';
 

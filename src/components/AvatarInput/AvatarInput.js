@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Image, Alert } from 'react-native';
 import { Text, View, Button } from 'native-base';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 import ImagePicker from '../ImagePicker';
 import Placeholder from '../Placeholder';
 
@@ -104,12 +104,12 @@ export default class AvatarInput extends PureComponent {
     return (
       <View style={[styles.root, style]}>
         <View style={styles.imageHolder}>
-          {loading 
-            ? <Placeholder style={styles.image} /> 
+          {loading
+            ? <Placeholder style={styles.image} />
             : <Image style={styles.image} source={{ uri: avatarUrl }} />
           }
         </View>
-        
+
         <View style={styles.rightSection} horizontalPadder>
           <Text note>
             Edit profile photo
@@ -142,7 +142,7 @@ export default class AvatarInput extends PureComponent {
               }
             </View>
           )}
-          
+
         </View>
       </View>
     );

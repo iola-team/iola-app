@@ -3,7 +3,7 @@ import { number, boolean, color, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import { View, Text } from 'native-base';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import Shadow from './Shadow';
 
 const stories = storiesOf('Components/Shadow', module);

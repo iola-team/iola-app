@@ -7,7 +7,7 @@ import { find } from 'lodash';
 import { Animated } from 'react-native';
 import { Button, Text } from 'native-base';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook/index';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import UserHeading from './UserHeading';
 import ScreenHeader from '../ScreenHeader';
 
@@ -114,8 +114,8 @@ stories.add('Default', () => (
 ));
 
 stories.add('Loading', () => (
-  <UserHeading 
-    loading 
+  <UserHeading
+    loading
     shrinkAnimatedValue={getAnimatedValue()}
     shrinkAnimationHeight={shrinkAnimationHeight}
   />

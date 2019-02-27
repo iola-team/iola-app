@@ -2,7 +2,7 @@ import React from 'react';
 import { number, text, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import TabBarLabel from './TabBarLabel';
 
 const stories = storiesOf('Components/TabBarLabel', module);

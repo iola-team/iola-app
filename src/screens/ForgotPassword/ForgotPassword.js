@@ -3,8 +3,8 @@ import { ImageBackground, TouchableOpacity } from 'react-native';
 import { Button, Container, Text, View } from 'native-base';
 import { get } from 'lodash';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { Icon } from 'components';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
+import { Icon } from '~components';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({

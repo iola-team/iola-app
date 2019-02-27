@@ -5,7 +5,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import PhotoListItem from './PhotoListItem';
 
 const stories = storiesOf('Components/PhotoListItem', module);

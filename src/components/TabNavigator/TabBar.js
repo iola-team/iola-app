@@ -3,7 +3,7 @@ import { isFunction } from 'lodash';
 import { View as ViewRN } from 'react-native';
 import { Text, View } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 
 @withStyle('Sparkle.TabBar', {

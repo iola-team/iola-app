@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import Moment from 'react-moment';
 import { Text } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import FieldView from './FieldView';
 
 @withStyle('Sparkle.DateView')

@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
 import uuid from 'uuid/v4';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import ImageCommentsConnection from './ImageCommentsConnection';
 import Avatar from '../UserAvatar';
 import UserOnlineStatus from '../UserOnlineStatus';

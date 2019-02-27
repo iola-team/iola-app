@@ -1,7 +1,7 @@
 import React from 'react';
 import { View as ViewRN, StyleSheet } from 'react-native';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 const iconTheme = {
   '.disabled': {

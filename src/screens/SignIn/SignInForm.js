@@ -4,11 +4,11 @@ import { TouchableOpacity } from 'react-native';
 import { Button, Form, Text, View } from 'native-base';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { TextInput, Spinner } from 'components';
+import { TextInput, Spinner } from '~components';
 
 const readTokenQuery = gql`
   {

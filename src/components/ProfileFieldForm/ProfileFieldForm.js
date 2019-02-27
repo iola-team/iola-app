@@ -5,7 +5,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import * as Yup from 'yup';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import ProfileFieldList from '../ProfileFieldList';
 import Formik from './Formik';
 import Field from './Field';

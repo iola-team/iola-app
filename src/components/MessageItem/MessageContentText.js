@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 const contentFragment = gql`
   fragment MessageContentText_content on MessageContent {

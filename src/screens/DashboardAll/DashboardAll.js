@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 import { USER } from '../routeNames';
 import DashboardAllConnection from './DashboardAllConnection';
 

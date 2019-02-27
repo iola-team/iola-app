@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import Overlay from '../Overlay';
 import TouchableOpacity from '../TouchableOpacity';
 import ActionSheet from '../ActionSheet';

@@ -3,8 +3,8 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
 
-import { withStyleSheet } from 'theme';
-import { UserList, FriendsTabBarLabel } from 'components';
+import { withStyleSheet } from '~theme';
+import { UserList, FriendsTabBarLabel } from '~components';
 import TabBarLabel from './TabBarLabel';
 
 const userFriendsQuery = gql`

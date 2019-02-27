@@ -6,7 +6,7 @@ import { select, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import delay from 'promise-delay';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import ProfileFieldView from './ProfileFieldView';
 
 const stories = storiesOf('Components/ProfileFieldView', module);

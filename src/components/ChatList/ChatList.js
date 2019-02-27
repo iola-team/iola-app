@@ -4,7 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import { range } from 'lodash';
 import gql from 'graphql-tag';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import ChatListItem from '../ChatListItem';
 import MessageUpdateSubscription from '../MessageUpdateSubscription';
 import { FlatList, NoContent } from '../TabNavigator';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Label, Body, Right, Spinner, Toast } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 import Icon from '../Icon';
 

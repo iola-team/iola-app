@@ -8,8 +8,8 @@ import { withKnobs, number } from '@storybook/addon-knobs';
 import { connectionFromArray } from 'graphql-relay';
 import { createAppContainer } from 'react-navigation';
 
-import { getContainerDecorator, getApolloDecorator } from 'storybook';
-import { createHeadingTabsNavigator } from 'components';
+import { getContainerDecorator, getApolloDecorator } from '~storybook';
+import { createHeadingTabsNavigator } from '~components';
 import MyPhotos from './MyPhotos';
 
 const stories = storiesOf('Screens/MyPhotos', module);

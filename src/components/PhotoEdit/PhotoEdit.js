@@ -14,7 +14,7 @@ import {
   CardItem,
 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import PhotoGrid, { Item } from '../PhotoGrid';
 import ImagePicker from '../ImagePicker';
 import ImageProgress from '../ImageProgress';

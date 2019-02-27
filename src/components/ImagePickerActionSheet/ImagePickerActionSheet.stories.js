@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 import { Button, Text } from 'native-base';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import ImagePickerActionSheet from './ImagePickerActionSheet';
 
 const stories = storiesOf('Components/ImagePickerActionSheet', module);

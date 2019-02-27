@@ -6,7 +6,7 @@ import {
   View,
 } from 'native-base';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 
 const buttons = [
   {

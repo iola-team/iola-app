@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { SectionList } from 'react-native';
 import { groupBy, orderBy, map, filter, get } from 'lodash';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import MessageItem from '../MessageItem';
 import LoadMoreIndicator from '../LoadMoreIndicator';
 import SectionHeader from './SectionHeader';

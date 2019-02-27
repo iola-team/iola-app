@@ -4,7 +4,7 @@ import Moment from 'react-moment';
 import { View, StyleSheet } from 'react-native';
 import { Text } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import MessageStateIndicator from '../MessageStateIndicator';
 
 @withStyle('Sparkle.MessageStatus', {
