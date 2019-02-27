@@ -8,7 +8,7 @@ import { withFormik } from 'formik';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import { FormTextInput } from '~components';
-import { DEV_PLATFORM_URL, INTEGRATION_ADDRESS } from 'react-native-dotenv';
+import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
 
 @styleSheet('Sparkle.WebsiteURLForm', {
   row: {
@@ -69,7 +69,7 @@ class WebsiteURLForm extends Component {
   async onSubmit() {
     const { handleSubmit, onSubmit, values: { url } } = this.props;
     const platformURL = `https://${this.sanitizeURL(url)}`;
-    const healthURL = `${__DEV__ ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_ADDRESS}/health`;
+    const healthURL = `${__DEV__ ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_PATH}/health`;
 
     if (url.length === 0) {
       handleSubmit();
