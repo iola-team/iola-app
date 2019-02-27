@@ -137,10 +137,13 @@ android {
     signingConfigs {
         release {
             if (project.hasProperty("MYAPP_RELEASE_STORE_FILE")) {
+                Properties passwords = new Properties()
+                passwords.load(new FileInputStream("$project.rootDir/passwords.properties"))
+
                 storeFile file(MYAPP_RELEASE_STORE_FILE)
-                storePassword MYAPP_RELEASE_STORE_PASSWORD
+                storePassword passwords.MYAPP_RELEASE_STORE_PASSWORD
                 keyAlias MYAPP_RELEASE_KEY_ALIAS
-                keyPassword MYAPP_RELEASE_KEY_PASSWORD
+                keyPassword passwords.MYAPP_RELEASE_KEY_PASSWORD
             }
         }
     }

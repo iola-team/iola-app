@@ -46,9 +46,8 @@ Investigate this: https://reactnativetesting.io/
 
 ## Production
 0) Setup the production environment:
-  - @TODO: Fastline setup: https://medium.com/@tgpski/android-react-native-fastlane-working-with-multiple-build-types-a9a6641c5704:
   - Android:
-    1) `cp android/gradle.properties.sample android/gradle.properties` and fill it
+    1) `cp android/passwords.properties.sample android/passwords.properties` and fill it
   - iOS:
     1) @TODO
 1) Test the release app version (build the apk file + install it on emulator/device):
