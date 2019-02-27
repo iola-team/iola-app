@@ -1,4 +1,5 @@
 /* global __DEV__ */
+/* global fetch */
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { Button, Form, Text, View } from 'native-base';
@@ -7,6 +8,7 @@ import { withFormik } from 'formik';
 
 import { withStyleSheet as styleSheet } from 'theme';
 import { FormTextInput } from 'components';
+import { DEV_PLATFORM_URL, INTEGRATION_ADDRESS } from "react-native-dotenv";
 
 @styleSheet('Sparkle.WebsiteURLForm', {
   row: {
@@ -64,25 +66,10 @@ class WebsiteURLForm extends Component {
 
   sanitizeURL = url => url.replace(/\/$/, '').replace(/(https?):\/\//, '');
 
-  onChangeText() {
-    if (__DEV__) {
-      this.setState({ isValidURL: true });
-
-      return;
-    }
-
-    const { values: { url } } = this.props;
-    const domainRegexp = (
-      new RegExp(/^(?!:\/\/)([a-zA-Z0-9]+\.)?[a-zA-Z0-9][a-zA-Z0-9-]+\.[a-zA-Z]{2,6}?$/i)
-    );
-    const platformURL = this.sanitizeURL(url);
-
-    this.setState({ isValidURL: domainRegexp.test(platformURL) });
-  }
-
-  onSubmit() {
+  async onSubmit() {
     const { handleSubmit, onSubmit, values: { url } } = this.props;
     const platformURL = `https://${this.sanitizeURL(url)}`;
+    const healthURL = `${__DEV__ ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_ADDRESS}/health`;
 
     if (url.length === 0) {
       handleSubmit();
@@ -90,9 +77,15 @@ class WebsiteURLForm extends Component {
       return;
     }
 
-    if (!this.state.isValidURL) return;
+    try {
+      const { success } = await fetch(healthURL).then((response) => response.json());
 
-    onSubmit({ url: platformURL });
+      this.setState({ isValidURL: success === 'All good in the hood' });
+    } catch (error) {
+      this.setState({ isValidURL: false });
+    }
+
+    if (this.state.isValidURL) onSubmit({ url: platformURL });
   }
 
   render() {
@@ -109,7 +102,6 @@ class WebsiteURLForm extends Component {
             name="url"
             placeholder="Enter Website URL address"
             error={!isValidURL}
-            onChangeText={::this.onChangeText}
             customStyle={styles.url}
             {...this.props}
           />
@@ -130,7 +122,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: () => ({ url: __DEV__ ? 'DEV_GRAPHQL_URL will be used' : '' }),
+  mapPropsToValues: () => ({ url: __DEV__ ? 'DEV_PLATFORM_URL will be used' : '' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(WebsiteURLForm);
