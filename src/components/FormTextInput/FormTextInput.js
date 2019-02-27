@@ -71,7 +71,7 @@ import Icon from '../Icon';
     color: '#FFFFFF',
   },
 })
-export default class TextInput extends Component {
+export default class FormTextInput extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string.isRequired,
@@ -122,12 +122,9 @@ export default class TextInput extends Component {
     const { name, setFieldValue, status, setStatus, onChangeText } = this.props;
 
     setStatus({ ...status, changed: true });
+    setFieldValue(name, text);
 
-    if (onChangeText) {
-      onChangeText(text);
-    } else {
-      setFieldValue(name, text);
-    }
+    if (onChangeText) onChangeText(text);
   }
 
   render() {
@@ -164,7 +161,7 @@ export default class TextInput extends Component {
           styles.formItem,
           customStyle,
           !isValid && { borderColor: '#FF8787', backgroundColor: '#FFE0E0' },
-          isFocused && { backgroundColor: '#FFFFFF' },
+          isFocused && { backgroundColor: '#FFFFFF', borderColor: '#FFFFFF' },
         ]}
         pointerEvents="none"
         regular

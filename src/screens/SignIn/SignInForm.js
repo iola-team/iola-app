@@ -8,7 +8,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { TextInput, Spinner } from '~components';
+import { FormTextInput, Spinner } from '~components';
 
 const readTokenQuery = gql`
   {
@@ -19,6 +19,18 @@ const readTokenQuery = gql`
 `;
 
 @styleSheet('Sparkle.SignInForm', {
+  login: {
+    marginBottom: 0,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+    borderBottomWidth: 0,
+  },
+
+  password: {
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+  },
+
   infoBlock: {
     justifyContent: 'space-between',
     flexDirection: 'row-reverse',
@@ -82,27 +94,19 @@ class SignInForm extends Component {
 
           return (
             <Form>
-              <TextInput
+              <FormTextInput
                 name="login"
                 placeholder="Email or login"
-                customStyle={{
-                  marginBottom: 0,
-                  borderBottomLeftRadius: 0,
-                  borderBottomRightRadius: 0,
-                  borderBottomWidth: 0,
-                }}
+                customStyle={styles.login}
                 error={error}
                 {...this.props}
               />
 
-              <TextInput
+              <FormTextInput
                 name="password"
                 placeholder="Password"
                 infoText="At least 4 characters"
-                customStyle={{
-                  borderTopLeftRadius: 0,
-                  borderTopRightRadius: 0,
-                }}
+                customStyle={styles.password}
                 error={error}
                 secureTextEntry
                 {...this.props}
@@ -137,8 +141,7 @@ export default withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ defaultEmail }) => defaultEmail
     ? ({ login: defaultEmail, password: '' })
-    : ({ login: 'admin', password: 'admin' }) // @TODO: remove it
-  ,
+    : ({ login: 'admin', password: 'admin' }), // @TODO: remove it
   handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
   validationSchema,
 })(SignInForm);

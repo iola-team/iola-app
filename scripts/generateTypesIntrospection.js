@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
-import { GRAPHQL_URL } from 'react-native-dotenv';
+import { DEV_GRAPHQL_URL } from 'react-native-dotenv';
 
 const fragmentsFile = process.argv[2];
 
@@ -10,7 +10,7 @@ if (!fragmentsFile) {
   process.exit();
 }
 
-fetch(GRAPHQL_URL, {
+fetch(DEV_GRAPHQL_URL, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({

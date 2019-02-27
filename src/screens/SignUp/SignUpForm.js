@@ -8,7 +8,7 @@ import gql from 'graphql-tag';
 import { debounce, get } from 'lodash';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { TextInput, Spinner } from '~components';
+import { FormTextInput, Spinner } from '~components';
 
 const validateEmailQuery = gql`
   query validateEmailQuery($email: String = "") {
@@ -74,7 +74,6 @@ class SignUpForm extends Component {
   }
 
   onChangeEmail(text, client) {
-    this.props.setFieldValue('email', text);
     this.validateEmail(text, client);
   }
 
@@ -110,11 +109,11 @@ class SignUpForm extends Component {
 
     return (
       <Form>
-        <TextInput name="name" placeholder="Full Name" {...this.props} />
+        <FormTextInput name="name" placeholder="Full Name" {...this.props} />
 
         <ApolloConsumer>
           {client => (
-            <TextInput
+            <FormTextInput
               name="email"
               placeholder="Email"
               onChangeText={text => this.onChangeEmail(text, client)}
@@ -124,7 +123,7 @@ class SignUpForm extends Component {
           )}
         </ApolloConsumer>
 
-        <TextInput
+        <FormTextInput
           name="password"
           placeholder="Password"
           infoText="At least 4 characters"
