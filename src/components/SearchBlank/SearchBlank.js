@@ -5,6 +5,10 @@ import { View, Text } from 'native-base';
 import { withStyleSheet } from 'theme';
 
 @withStyleSheet('Sparkle.SearchBlank', {
+  root: {
+    flex: 1,
+  },
+
   sectionHeader: {
     marginLeft: 16,
     marginBottom: 10,
@@ -37,6 +41,7 @@ export default class SearchBlank extends PureComponent {
       headerList,
       ListComponent,
       isEmpty,
+      style,
       styleSheet: styles,
       ...props
     } = this.props;
@@ -45,6 +50,7 @@ export default class SearchBlank extends PureComponent {
       <ListComponent
         {...props}
 
+        style={[styles.root, style]}
         ListEmptyComponent={null}
         ListHeaderComponent={(
           <>

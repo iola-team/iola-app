@@ -8,7 +8,7 @@ import { SearchBar, SearchResult, UserList, UsersRow, SearchBlank } from 'compon
 import { USER } from '../routeNames';
 
 const searchQuery = gql`
-  query UserSearchQuery($search: String = "", $first: Int = 10, $after: Cursor) @connection(key: "UsersConnection_search") {
+  query UserSearchQuery($search: String = "", $first: Int = 10, $after: Cursor) {
     users(filter: { search: $search }, first: $first, after: $after) {
       ...SearchResult_connection
 
@@ -27,17 +27,15 @@ const searchQuery = gql`
   ${SearchResult.fragments.connection}
 `;
 
-const suggestionsQuery = gql`
-  query UserSearchSuggestionsQuery($first: Int = 50, $after: Cursor = null) {
-    users(first: $first, after: $after) @connection(key: "UsersConnection_suggestions") {
+const onlineUsersQuery = gql`
+  query UserSearchSuggestionsQuery {
+    users(filter: { online: true }, first: 100) {
       edges {
         ...UsersRow_edge
-        ...UserList_edge
       }
     }
   }
 
-  ${UserList.fragments.edge}
   ${UsersRow.fragments.edge}
 `;
 
@@ -82,26 +80,26 @@ export default class UserSearch extends Component {
     const { styleSheet: styles } = this.props;
 
     return (
-      <Query query={suggestionsQuery}>
-        {({ data, loading }) => (
-          <SearchBlank
-            edges={data.users?.edges || []}
+      <SearchBlank
+        edges={[]}
 
-            headerTitle="Online"
-            contentTitle="Recent"
-            isEmpty={!data.users?.edges.length}
-            ListComponent={UserList}
-            headerList={(
+        headerTitle="Online"
+        contentTitle="Recent"
+        isEmpty={true}
+        ListComponent={UserList}
+        headerList={(
+          <Query query={onlineUsersQuery}>
+            {({ data: { users }, loading }) => (
               <UsersRow
                 style={styles.usersRow}
                 loading={loading}
-                edges={data.users?.edges || []}
+                edges={users?.edges || []}
                 showsHorizontalScrollIndicator={false}
               />
             )}
-          />
+          </Query>
         )}
-      </Query>
+      />
     );
   };
 
