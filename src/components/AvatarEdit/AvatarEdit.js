@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { View } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import AvatarInput from '../AvatarInput';
 
 const userFragment = gql`
@@ -56,7 +56,7 @@ const deleteAvatarMutation = gql`
 })
 export default class AvatarEdit extends PureComponent {
   static HEIGHT = 140;
-  
+
   static fragments = {
     user: userFragment,
   };

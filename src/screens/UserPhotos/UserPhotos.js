@@ -4,8 +4,8 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { remove } from 'lodash';
 
-import { withStyleSheet } from 'theme';
-import { PhotoList, ImageView } from 'components';
+import { withStyleSheet } from '~theme';
+import { PhotoList, ImageView } from '~components';
 import TabBarLabel from './TabBarLabel';
 
 const userPhotosQuery = gql`

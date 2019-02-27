@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import ImageFit from '../ImageFit';
 import Shadow from '../Shadow';
 

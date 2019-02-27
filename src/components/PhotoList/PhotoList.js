@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { range, uniqueId } from 'lodash';
 import { View } from 'react-native';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 import { FlatList, NoContent } from '../TabNavigator';
 import Item from '../PhotoListItem';
 import TouchableOpacity from '../TouchableOpacity';

@@ -4,7 +4,7 @@ import { withFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, Form, Text } from 'native-base';
 
-import { FormTextInput } from 'components';
+import { FormTextInput } from '~components';
 
 class ForgotPasswordForm extends Component {
   static propTypes = {

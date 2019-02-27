@@ -7,7 +7,7 @@ import uuid from 'uuid';
 import { View } from 'native-base';
 import { get } from 'lodash';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import ChatFooter from '../ChatFooter';
 import Shadow from '../Shadow';
 import MessageList from '../MessageList';

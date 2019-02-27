@@ -4,8 +4,8 @@ import gql from 'graphql-tag';
 import { noop } from 'lodash';
 import { Button, Text } from 'native-base';
 
-import { withStyleSheet } from 'theme';
-import { ProfileFieldsEdit, TouchableOpacity } from 'components';
+import { withStyleSheet } from '~theme';
+import { ProfileFieldsEdit, TouchableOpacity } from '~components';
 
 @graphql(gql`
   query ProfileEditQuery {

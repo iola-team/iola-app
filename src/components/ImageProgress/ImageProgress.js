@@ -4,7 +4,7 @@ import { StyleSheet, ImageBackground } from 'react-native';
 import { View, Button } from 'native-base';
 import { noop } from 'lodash';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import CircularProgress from '../CircularProgress';
 import Icon from '../Icon';
 

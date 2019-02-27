@@ -11,8 +11,8 @@ import faker from 'faker';
 import moment from 'moment';
 import uuid from 'uuid/v4';
 
-import { getApolloDecorator, getContentDecorator } from 'storybook';
-import { createConnection } from 'storybook/decorators/Apollo';
+import { getApolloDecorator, getContentDecorator } from '~storybook';
+import { createConnection } from '~storybook/decorators/Apollo';
 import ImageComments from './ImageComments';
 import { photoDetailsQuery } from '../ImageView/ImageView';
 

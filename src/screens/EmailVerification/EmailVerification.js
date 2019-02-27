@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Container, Text, View } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
-import { Icon } from 'components';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
+import { Icon } from '~components';
 import ForgotPasswordForm from './EmailVerificationForm';
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({

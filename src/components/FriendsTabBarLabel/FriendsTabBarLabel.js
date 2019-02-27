@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import update from 'immutability-helper';
 
-import { TabBarLabel } from 'components';
+import { TabBarLabel } from '~components';
 
 const userFragment = gql`
   fragment FriendsTabBarLabel_user on User {

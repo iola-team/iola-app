@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Button, Text } from 'native-base';
 import { noop } from 'lodash';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import UserListItem from '../UserListItem';
 
 const friendshipFragment = gql`

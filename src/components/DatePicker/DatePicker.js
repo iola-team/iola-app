@@ -6,7 +6,7 @@ import moment from 'moment';
 import { PixelRatio } from 'react-native';
 import { View, Text } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import Backdrop from '../Backdrop';
 import TouchableOpacity from '../TouchableOpacity';
 

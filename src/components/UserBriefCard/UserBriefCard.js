@@ -9,7 +9,7 @@ import {
   Text,
 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 
 const userFragment = gql`
   fragment UserBriefCard_user on User {

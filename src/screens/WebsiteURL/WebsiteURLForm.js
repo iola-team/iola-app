@@ -6,9 +6,9 @@ import { Button, Form, Text, View } from 'native-base';
 import * as yup from 'yup';
 import { withFormik } from 'formik';
 
-import { withStyleSheet as styleSheet } from 'theme';
-import { FormTextInput } from 'components';
-import { DEV_PLATFORM_URL, INTEGRATION_ADDRESS } from "react-native-dotenv";
+import { withStyleSheet as styleSheet } from '~theme';
+import { FormTextInput } from '~components';
+import { DEV_PLATFORM_URL, INTEGRATION_ADDRESS } from 'react-native-dotenv';
 
 @styleSheet('Sparkle.WebsiteURLForm', {
   row: {

@@ -4,7 +4,7 @@ import Moment from 'react-moment';
 import { View } from 'react-native';
 import { Text } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 @withStyle('Sparkle.MessageListSectionHeader', {
   alignSelf: 'center',

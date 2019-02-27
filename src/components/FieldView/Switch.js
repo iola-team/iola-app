@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { isUndefined } from 'lodash';
 import { Text } from 'native-base';
 
-import { withStyle } from 'theme'
+import { withStyle } from '~theme';
 import FieldView from './FieldView';
 
 @withStyle('Sparkle.SwitchView')

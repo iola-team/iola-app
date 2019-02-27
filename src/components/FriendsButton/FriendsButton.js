@@ -4,7 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { Text, Button } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import Icon from '../Icon';
 import ActionSheet from '../ActionSheet';
 
@@ -149,7 +149,7 @@ export default class FriendsButton extends Component {
 
     return (
       <Fragment>
-        <Button 
+        <Button
           secondary
           bordered
           block={block}

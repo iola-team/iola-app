@@ -2,7 +2,7 @@ import React from 'react';
 import { text, boolean, withKnobs, date } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 
 import FieldSection from '../FieldSection';
 import FieldView from '.';

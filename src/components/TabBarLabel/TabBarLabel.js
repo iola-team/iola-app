@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { Text, Badge } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 @withStyle('Sparkle.TabBarLabel', {
   'NativeBase.Text': {
@@ -53,7 +53,7 @@ export default class TabBarLabel extends Component {
         {!!sanitizedCount && (
           <Text count>{sanitizedCount}</Text>
         )}
-        
+
         {!!sanitizedTotalCount && (
           <Badge>
             <Text>{sanitizedTotalCount}</Text>
