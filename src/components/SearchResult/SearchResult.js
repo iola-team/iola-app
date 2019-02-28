@@ -5,7 +5,7 @@ import { Query, withApollo } from 'react-apollo';
 import { get, noop, debounce, uniq } from 'lodash';
 import { View } from 'native-base';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 
 const connectionFrgment = gql`
   fragment SearchResult_connection on Connection {

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'native-base';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 
 @withStyleSheet('Sparkle.SearchBlank', {
   root: {

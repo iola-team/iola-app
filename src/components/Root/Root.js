@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { Root as RootNB } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 const GatewayComponent = props => <Fragment {...props} />;
 

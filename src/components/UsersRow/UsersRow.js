@@ -5,7 +5,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import { range } from 'lodash';
 import { FlatList } from 'react-native';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 import UsersRowItem from '../UsersRowItem';
 

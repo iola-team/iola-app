@@ -6,7 +6,7 @@ import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import delay from 'promise-delay';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import UsersRowItem from './UsersRowItem';
 
 const stories = storiesOf('Components/UsersRowItem', module);

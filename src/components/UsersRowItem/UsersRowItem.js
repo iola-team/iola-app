@@ -5,7 +5,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import { View as ViewRN } from 'react-native';
 import { View, Text } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import UserAvatar from '../UserAvatar';
 import UserOnlineStatus from '../UserOnlineStatus';
 import Placeholder from '../Placeholder';

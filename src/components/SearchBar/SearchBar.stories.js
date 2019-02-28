@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import { withKnobs, boolean, text } from '@storybook/addon-knobs';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import SearchBar from './SearchBar';
 
 const stories = storiesOf('Components/SearchBar', module);

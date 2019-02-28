@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-import { withStyleSheet } from 'theme';
-import { SearchBar, SearchResult, UserList, UsersRow, SearchBlank } from 'components';
+import { withStyleSheet } from '~theme';
+import { SearchBar, SearchResult, UserList, UsersRow, SearchBlank } from '~components';
 import { USER } from '../routeNames';
 
 const searchQuery = gql`

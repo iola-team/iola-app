@@ -6,9 +6,9 @@ import { range } from 'lodash';
 import delay from 'promise-delay';
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 
-import { getContainerDecorator, getApolloDecorator } from 'storybook';
-import { createConnection } from 'storybook/decorators/Apollo';
-import { ScreenHeader, BackButton } from 'components';
+import { getContainerDecorator, getApolloDecorator } from '~storybook';
+import { createConnection } from '~storybook/decorators/Apollo';
+import { ScreenHeader, BackButton } from '~components';
 import UserSearch from './UserSearch';
 
 const stories = storiesOf('Screens/UserSearch', module);

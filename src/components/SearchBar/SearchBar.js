@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, TextInput, Animated } from 'react-native';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 import Icon from '../Icon';
 import Spinner from '../Spinner';
 import TouchableOpacity from '../TouchableOpacity';
