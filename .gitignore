@@ -20,11 +20,14 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
-# Android/IntelliJ
-build/
-.idea
-.gradle
-local.properties
+# Android
+android/passwords.properties
+android/.gradle/
+android/app/build/*
+!android/app/build/build.gradle
+android/app/src/main/assets/index.android.bundle
+android/build/
+android/local.properties
 *.iml
 
 # node.js
@@ -49,7 +52,8 @@ buck-out/
 # Bundle artifact
 *.jsbundle
 
-# Visual Studio Code
+# IDE
+.idea
 .vscode
 
 # TMP
