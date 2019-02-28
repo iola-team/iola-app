@@ -65,10 +65,12 @@ stories.addDecorator(getApolloDecorator({
     }
 
     input UsersFilterInput {
-      search: String = ""
+      ids: [ID!] = null
+      search: String = null
     }
 
     type Query {
+      me: User
       users(filter: UsersFilterInput = {}, first: Int = 10, after: Cursor): UserConnection!
     }
   `,
@@ -87,12 +89,19 @@ stories.addDecorator(getApolloDecorator({
 
   resolvers: {
     Query: {
+      me: (root, args, { dataStore }) => dataStore.users[0],
       async users(root, args, { dataStore }) {
-        const users = args.filter.length 
-          ? dataStore.users.filter(({ name }) => {
-              return name.toLowerCase().indexOf(args.filter.search.toLowerCase()) === 0;
-            })
-          : dataStore.users;
+        let users = dataStore.users;
+
+        if (args.filter.search) {
+          users = users.filter(({ name }) => (
+            name.toLowerCase().indexOf(args.filter.search.toLowerCase()) === 0
+          ));
+        }
+
+        if (args.filter.ids) {
+          users = users.filter(({ id }) => args.filter.ids.includes(id));
+        }
 
         await delay(1000);
 

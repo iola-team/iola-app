@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { Text, View } from 'native-base';
 
 import { withStyleSheet } from 'theme';
 import { SearchBar, SearchResult, UserList, UsersRow, SearchBlank } from 'components';
@@ -28,7 +27,7 @@ const searchQuery = gql`
 `;
 
 const onlineUsersQuery = gql`
-  query UserSearchSuggestionsQuery {
+  query UserSearchOnlineQuery {
     users(filter: { online: true }, first: 100) {
       edges {
         ...UsersRow_edge
@@ -37,6 +36,18 @@ const onlineUsersQuery = gql`
   }
 
   ${UsersRow.fragments.edge}
+`;
+
+const recentUsersQuery = gql`
+  query UserSearchRecentQuery($ids: [ID!]) {
+    users(filter: { ids: $ids }) {
+      edges {
+        ...UserList_edge
+      }
+    }
+  }
+
+  ${UserList.fragments.edge}
 `;
 
 @withStyleSheet('Sparkle.UserSearchScreen')
@@ -69,37 +80,46 @@ export default class UserSearch extends Component {
     <UserList
       {...props}
       noContentText="No users found"
-      onItemPress={this.onItemPress}
 
       initialNumToRender={6}
       windowSize={1}
     />
   );
 
-  renderBlank = () => {
+  renderBlank = ({ onItemPress, recentIds }) => {
     const { styleSheet: styles } = this.props;
 
     return (
-      <SearchBlank
-        edges={[]}
+      <Query query={onlineUsersQuery}>
+        {({ data: { users: onlineUsers }, loading: loadingOnline }) => (
+          <Query query={recentUsersQuery} variables={{ ids: recentIds }} skip={!recentIds.length}>
+            {({ data: recentData, loading: loadingRecent }) => (
 
-        headerTitle="Online"
-        contentTitle="Recent"
-        isEmpty={true}
-        ListComponent={UserList}
-        headerList={(
-          <Query query={onlineUsersQuery}>
-            {({ data: { users }, loading }) => (
-              <UsersRow
-                style={styles.usersRow}
-                loading={loading}
-                edges={users?.edges || []}
-                showsHorizontalScrollIndicator={false}
+              <SearchBlank
+                edges={recentData?.users?.edges || []}
+                loading={loadingRecent}
+
+                hasRecentItems={!!recentIds.length}
+                headerTitle="Online"
+                contentTitle="Recent"
+                noContentText="No recent users"
+                onItemPress={onItemPress}
+                ListComponent={UserList}
+                headerList={(
+                  <UsersRow
+                    style={styles.usersRow}
+                    loading={loadingOnline}
+                    edges={onlineUsers?.edges || []} // TODO: Figure out UsersRow empty state
+                    onItemPress={onItemPress}
+                    showsHorizontalScrollIndicator={false}
+                  />
+                )}
               />
+
             )}
           </Query>
         )}
-      />
+      </Query>
     );
   };
 
@@ -113,14 +133,15 @@ export default class UserSearch extends Component {
 
   render() {
     const { navigation } = this.props;
-    const search = navigation.getParam('search', '');
 
     return (
       <SearchResult
-        search={search}
+        search={navigation.getParam('search', '')}
         query={searchQuery}
-        filterEdges={this.filterEdges}
+        historyKey="users"
         connectionPath="users"
+        onItemPress={this.onItemPress}
+        filterEdges={this.filterEdges}
         renderBlank={this.renderBlank}
         onSearchingStateChange={this.onSearchingStateChange}
       >

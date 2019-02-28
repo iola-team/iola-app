@@ -27,11 +27,19 @@ import { withStyleSheet } from 'theme';
 })
 export default class SearchBlank extends PureComponent {
   static propTypes = {
-    headerTitle: PropTypes.string.isRequired,
-    headerList: PropTypes.element.isRequired,
-    contentTitle: PropTypes.string.isRequired,
     ListComponent: PropTypes.func.isRequired,
-    isEmpty: PropTypes.bool.isRequired,
+
+    headerTitle: PropTypes.string,
+    contentTitle: PropTypes.string,
+    hasRecentItems: PropTypes.bool,
+    headerList: PropTypes.element,
+  };
+
+  static defaultProps = {
+    headerTitle: null,
+    contentTitle: null,
+    hasRecentItems: true,
+    headerList: null,
   };
 
   render() {
@@ -40,7 +48,7 @@ export default class SearchBlank extends PureComponent {
       contentTitle,
       headerList,
       ListComponent,
-      isEmpty,
+      hasRecentItems,
       style,
       styleSheet: styles,
       ...props
@@ -54,15 +62,19 @@ export default class SearchBlank extends PureComponent {
         ListEmptyComponent={null}
         ListHeaderComponent={(
           <>
-            <Text style={styles.sectionHeader}>{headerTitle}</Text>
-            <View style={styles.headerList}>
-              {headerList}
-            </View>
+            {headerList && (
+              <>
+                {headerTitle && <Text style={styles.sectionHeader}>{headerTitle}</Text>}
+                <View style={styles.headerList}>
+                  {headerList}
+                </View>
+              </>
+            )}
 
-            {!isEmpty && (
+            {hasRecentItems && (
               <>
                 <View style={styles.sectionDelim} />
-                <Text style={styles.sectionHeader}>{contentTitle}</Text>
+                {contentTitle && <Text style={styles.sectionHeader}>{contentTitle}</Text>}
               </>
             )}
           </>

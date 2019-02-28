@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query, withApollo } from 'react-apollo';
-import { get, noop, debounce } from 'lodash';
+import { get, noop, debounce, uniq } from 'lodash';
 import { View } from 'native-base';
 
 import { withStyleSheet } from 'theme';
@@ -19,6 +19,14 @@ const connectionFrgment = gql`
   }
 `;
 
+const searchHistoryQuery = gql`
+  query SearchResultHistoryQuery($key: String!) {
+    me {
+      id
+      recentIds: searchHistory(key: $key) @client
+    }
+  }
+`;
 
 @withStyleSheet('Sparkle.SearchResult', {
   root: {
@@ -33,18 +41,21 @@ export default class SearchResult extends Component {
 
   static propTypes = {
     connectionPath: PropTypes.string.isRequired,
+    historyKey: PropTypes.string.isRequired,
     query: PropTypes.object.isRequired,
     children: PropTypes.func.isRequired,
     filterEdges: PropTypes.func.isRequired,
     search: PropTypes.string,
     renderBlank: PropTypes.func,
     onSearchingStateChange: PropTypes.func,
+    onItemPress: PropTypes.func,
   };
 
   static defaultProps = {
     search: '',
     renderBlank: noop,
     onSearchingStateChange: noop,
+    onItemPress: noop,
   };
 
   scheduledQueriesCount = 0;
@@ -81,7 +92,38 @@ export default class SearchResult extends Component {
     
     return !loading && renderList({
       edges,
+      onItemPress: this.onItemPress,
     });
+  }
+
+  renderBlank = () => {
+    const { renderBlank, historyKey } = this.props;
+
+    return (
+      <Query fetchPolicy="cache-first" query={searchHistoryQuery} variables={{ key: historyKey }}>
+        {({ data }) => renderBlank({
+          recentIds: data.me?.recentIds || [],
+          onItemPress: this.onItemPress,
+        })}
+      </Query>
+    );
+  };
+
+  addHistoryRecord = ({ node }) => {
+    const { client, historyKey } = this.props;
+    const query = searchHistoryQuery;
+    const variables = { key: historyKey };
+    const data = client.readQuery({ query, variables });
+
+    data.me.recentIds = uniq([...data.me.recentIds, node.id]);
+    client.writeQuery({ query, variables, data });
+  };
+
+  onItemPress = (item) => {
+    const { onItemPress } = this.props;
+
+    onItemPress(item);
+    setTimeout(() => this.addHistoryRecord(item));
   }
 
   getQueryOptions() {
@@ -117,11 +159,14 @@ export default class SearchResult extends Component {
   }
 
   render() {
-    const { styleSheet: styles, search, renderBlank } = this.props;
+    const { styleSheet: styles, search } = this.props;
     
+    /**
+     * TODO: Do not unmount blank screen. Use `react-native-screens` or some other technic to keep it in hidden in memory.
+     */
     return (
       <View style={styles.root}>
-        {!search ? renderBlank() : (
+        {!search ? this.renderBlank() : (
           <Query {...this.getQueryOptions()} fetchPolicy='cache-only'>
             {this.renderResult}
           </Query>
