@@ -24,7 +24,12 @@ const userFragment = gql`
 `;
 
 @withStyle('Sparkle.UsersRowItem', {
+  width: 75,
+  padding: 5,
+
   'Sparkle.TouchableOpacity': {
+    alignItems: 'center',
+
     'NativeBase.Text': {
       fontSize: 12,
     },
@@ -32,11 +37,11 @@ const userFragment = gql`
     'Sparkle.UserAvatar': {
       marginBottom: 6,
     },
-
-    alignItems: 'center',
   },
 
   'Sparkle.Placeholder': {
+    alignItems: 'center',
+
     'NativeBase.ViewNB': {
       '.avatar': {
         width: 40,
@@ -53,12 +58,7 @@ const userFragment = gql`
         backgroundColor: '#F8F9FB',
       },
     },
-
-    alignItems: 'center',
   },
-
-  width: 75,
-  padding: 5,
 })
 export default class UserListItem extends Component {
   static fragments = {
