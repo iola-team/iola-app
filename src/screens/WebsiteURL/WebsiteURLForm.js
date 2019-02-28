@@ -84,7 +84,7 @@ class WebsiteURLForm extends Component {
   async onSubmit() {
     const { handleSubmit, onSubmit, values: { url } } = this.props;
     const platformURL = `https://${this.sanitizeURL(url)}`;
-    const healthURL = `${false ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_PATH}/health`;
+    const healthURL = `${__DEV__ ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_PATH}/health`;
 
     if (url.length === 0) {
       handleSubmit();
