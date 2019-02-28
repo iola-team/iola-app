@@ -23,6 +23,7 @@ export default class Storybook extends Component {
      */
     require('@storybook/addon-console');
 
+    // @TODO: There might be a case when the Storybook IP differs from platform domain/IP.
     const location = DEV_PLATFORM_URL.split( '/' );
     const host = location[2];
 
