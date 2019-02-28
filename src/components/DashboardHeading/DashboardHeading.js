@@ -11,7 +11,7 @@ import {
   H2,
 } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from 'theme';
+import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 
 const userFragment = gql`
   fragment DashboardHeading_user on User {

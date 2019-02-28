@@ -4,7 +4,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { View as ViewRN } from 'react-native';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import MessageContent from './MessageContent';
 import Avatar from '../UserAvatar';
 

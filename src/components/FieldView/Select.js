@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { find } from 'lodash';
 import { Text } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import FieldView from './FieldView';
 
 @withStyle('Sparkle.SelectView')

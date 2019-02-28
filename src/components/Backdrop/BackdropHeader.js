@@ -2,7 +2,7 @@ import React, { Component, isValidElement } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
-import { withStyleSheet } from 'theme';
+import { withStyleSheet } from '~theme';
 
 @withStyleSheet('Sparkle.BackdropHeader', {
   root: {

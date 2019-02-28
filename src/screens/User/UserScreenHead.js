@@ -3,8 +3,8 @@ import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import { Button, Text, View } from 'native-base';
 
-import { withStyleSheet } from 'theme';
-import { UserHeading, FriendsButton } from 'components';
+import { withStyleSheet } from '~theme';
+import { UserHeading, FriendsButton } from '~components';
 import * as routes from '../routeNames';
 
 const userQuery = gql`

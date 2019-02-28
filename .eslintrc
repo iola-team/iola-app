@@ -40,8 +40,22 @@
   },
   "settings": {
     "import/resolver": {
-      "node": {
-        "paths": ["src"]
+      "alias": {
+        "map": [
+          ["~application", "./src/application"],
+          ["~components", "./src/components"],
+          ["~graph", "./src/graph"],
+          ["~screens", "./src/screens"],
+          ["~storybook", "./src/storybook"],
+          ["~theme", "./src/theme"],
+          ["~utils", "./src/utils"]
+        ],
+        "extensions": [
+          ".ios.js",
+          ".android.js",
+          ".js",
+          ".json"
+        ]
       }
     }
   },

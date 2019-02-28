@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react-native';
 import { number, boolean, withKnobs } from '@storybook/addon-knobs';
 import { Text } from 'native-base';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import CircularProgress from './CircularProgress';
 
 const stories = storiesOf('Components/CircularProgress', module);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Icon, ScreenHeader, createHeadingTabsNavigator, TouchableOpacity } from 'components';
+import { Icon, ScreenHeader, createHeadingTabsNavigator, TouchableOpacity } from '~components';
 import { USER_SEARCH } from '../routeNames';
 
 export default (routes, config = {}) => createHeadingTabsNavigator(routes, {

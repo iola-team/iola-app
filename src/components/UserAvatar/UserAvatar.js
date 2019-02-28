@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { Thumbnail } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 import Placeholder from '../Placeholder';
 

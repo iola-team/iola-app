@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import update from 'immutability-helper';
 
-import { UserList } from 'components';
+import { UserList } from '~components';
 
 @graphql(gql`
   query users($cursor: Cursor = null) {

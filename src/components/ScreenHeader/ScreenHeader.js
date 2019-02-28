@@ -4,7 +4,7 @@ import { Header } from 'react-navigation';
 import { constant } from 'lodash';
 import { StyleSheet } from 'react-native';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import Icon from '../Icon';
 
 @styleSheet('Sparkle.ScreenHeader', {

@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import Placeholder from '../Placeholder';
 import UserAvatar from '../UserAvatar';
 import UserOnlineStatus from '../UserOnlineStatus';

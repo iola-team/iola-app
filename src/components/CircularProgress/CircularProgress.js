@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Circle } from 'react-native-progress';
 import { View, StyleSheet } from 'react-native';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 
 const styleSheet = StyleSheet.create({
   content: {

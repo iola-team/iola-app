@@ -5,7 +5,7 @@ import { View, StyleSheet } from "react-native";
 import { uniqueId } from 'lodash';
 import PropTypes from 'prop-types';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import Placeholder from '../Placeholder';
 import Image from '../Image';
 import ImageProgress from '../ImageProgress';

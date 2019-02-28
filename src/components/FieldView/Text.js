@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Text } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import FieldView from './FieldView';
 
 @withStyle('Sparkle.TextView')

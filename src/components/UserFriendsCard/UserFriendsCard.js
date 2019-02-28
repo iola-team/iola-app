@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 import { Card, CardItem, Text } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import UserAvatar from '../UserAvatar';
 
 const userFragment = gql`

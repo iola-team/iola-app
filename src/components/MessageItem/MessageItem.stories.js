@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { select, boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import MessageItem from './MessageItem';
 
 const stories = storiesOf('Components/MessageItem', module);

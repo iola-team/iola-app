@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View as ViewRN, StyleSheet } from 'react-native';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import Icon from '../Icon';
 
 @withStyle('Sparkle.MessageStateIndicator', {

@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 
-import { getContentDecorator } from 'storybook';
+import { getContentDecorator } from '~storybook';
 import Image from './Image';
 
 const stories = storiesOf('Components/Image', module);

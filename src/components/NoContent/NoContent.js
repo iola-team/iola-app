@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Animated } from 'react-native';
 import { View, Text } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import Icon from '../Icon';
 
 const AnimatedView = Animated.createAnimatedComponent(View);

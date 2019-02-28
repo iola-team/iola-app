@@ -25,7 +25,7 @@ import SearchBar from './SearchBar';
 import Shadow from './Shadow';
 import SettingList from './SettingList';
 import Spinner from './Spinner';
-import TextInput from './TextInput';
+import FormTextInput from './FormTextInput';
 import TouchableOpacity from './TouchableOpacity';
 import UserAvatar from './UserAvatar';
 import UserBriefCard from './UserBriefCard';
@@ -66,7 +66,7 @@ export {
   SearchBar,
   Shadow,
   Spinner,
-  TextInput,
+  FormTextInput,
   TouchableOpacity,
   UserAvatar,
   UserBriefCard,

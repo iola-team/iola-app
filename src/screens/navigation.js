@@ -7,7 +7,7 @@ import {
 } from 'react-navigation';
 
 // Components
-import { ScreenHeader, BottomTabBar } from 'components';
+import { ScreenHeader, BottomTabBar } from '~components';
 
 // Route names
 import * as routes from './routeNames';

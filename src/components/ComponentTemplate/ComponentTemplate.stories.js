@@ -5,7 +5,7 @@ import { number, withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 
-import { getContentDecorator, getApolloDecorator } from 'storybook';
+import { getContentDecorator, getApolloDecorator } from '~storybook';
 import ComponentTemplate from './ComponentTemplate';
 
 const stories = storiesOf('Components/ComponentTemplate', module);

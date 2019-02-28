@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Container } from 'native-base';
 
-import { Chat, ScreenHeader, UserAvatar } from 'components';
-import { withStyleSheet as styleSheet } from 'theme';
+import { Chat, ScreenHeader, UserAvatar } from '~components';
+import { withStyleSheet as styleSheet } from '~theme';
 import ChannelHeader from './ChannelHeader';
 
 const propsToVariables = props => ({

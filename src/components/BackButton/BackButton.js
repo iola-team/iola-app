@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Button } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import Icon from '../Icon';
 import ScreenHeader from '../ScreenHeader';
 

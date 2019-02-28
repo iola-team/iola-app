@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 
-import { withStyleSheet as styleSheet } from 'theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import SignInForm from './SignInForm';
-import Divider from './Divider';
 import * as routes from '../routeNames';
 
 @styleSheet('Sparkle.SignInScreen', {
@@ -26,10 +25,6 @@ import * as routes from '../routeNames';
     alignSelf: 'center',
     fontSize: 30,
     color: '#FFFFFF',
-  },
-
-  facebookButton: {
-    backgroundColor: '#6D83CC',
   },
 
   button: {
@@ -62,16 +57,6 @@ export default class SignInScreen extends Component {
         <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
           <Content padder contentContainerStyle={styles.content}>
             <H1 style={styles.title}>Sign in</H1>
-
-            <Button
-              style={styles.facebookButton}
-              onPress={() => alert('Sign in via Facebook')}
-              block
-            >
-              <Text>Sign in via Facebook</Text>
-            </Button>
-
-            <Divider>or</Divider>
 
             <SignInForm
               defaultEmail={this.state.defaultEmail}

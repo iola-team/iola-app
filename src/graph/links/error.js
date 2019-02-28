@@ -16,5 +16,11 @@ export default () => onError(({ networkError, graphQLErrors }) => {
     });
   }
 
-  if (networkError) console.error(JSON.stringify(networkError));
+  if (networkError) {
+    console.error(`
+      [Network error]: ${networkError.name}\n
+      [statusCode]: ${networkError.statusCode}\n
+      [response]: ${JSON.stringify(networkError.response)}
+    `);
+  }
 });

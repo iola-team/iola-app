@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Body } from 'native-base';
 
-import { withStyle } from 'theme';
+import { withStyle } from '~theme';
 import FieldItem from '../FieldItem';
 
 @withStyle('Sparkle.FieldView')
