@@ -31,7 +31,6 @@ import UserFriends from './UserFriends';
 import UserInfo from './UserInfo';
 import UserPhotos from './UserPhotos';
 import UserSearch from './UserSearch';
-import ChatSearch from './ChatSearch';
 
 import createUserNavigator from './User';
 import createDashboardNavigator from './Dashboard';
@@ -103,7 +102,6 @@ const RootNavigator = createSwitchNavigator({
 
     [routes.CHANNEL]: Channel,
     [routes.USER_SEARCH]: UserSearch,
-    [routes.CHAT_SEARCH]: ChatSearch,
   }, {
     headerLayoutPreset: 'center',
     headerMode: 'screen',
