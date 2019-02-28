@@ -1,3 +1,18 @@
+/* Dynamical version functionality */
+import groovy.json.JsonSlurper
+// calculated from git commits to give sequential integers
+def getGitVersion() {
+    def process = "git rev-list master --first-parent --count".execute()
+    return process.text.toInteger()
+}
+def getNpmVersion() {
+    def inputFile = new File("../package.json")
+    def packageJson = new JsonSlurper().parseText(inputFile.text)
+    return packageJson["version"]
+}
+def googleVersion = getGitVersion()
+def publicVersion = getNpmVersion()
+
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
@@ -91,7 +106,7 @@ def enableSeparateBuildPerCPUArchitecture = false
 /**
  * Run Proguard to shrink the Java bytecode in release builds.
  */
-def enableProguardInReleaseBuilds = false
+def enableProguardInReleaseBuilds = true
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -114,10 +129,33 @@ android {
         applicationId "com.apollomessenger"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0" 
+        versionCode googleVersion // is an integer - so we can't use semantic versioning here. This is used on the play store to tell which versions come after others - that's why it's tied to git commits in getGitVersion
+        versionName publicVersion // is shown to users
         vectorDrawables.useSupportLibrary = true
     }
+
+    signingConfigs {
+        release {
+            if (project.hasProperty("MYAPP_RELEASE_STORE_FILE")) {
+                Properties passwords = new Properties()
+                passwords.load(new FileInputStream("$project.rootDir/passwords.properties"))
+
+                storeFile file(MYAPP_RELEASE_STORE_FILE)
+                storePassword passwords.MYAPP_RELEASE_STORE_PASSWORD
+                keyAlias MYAPP_RELEASE_KEY_ALIAS
+                keyPassword passwords.MYAPP_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled enableProguardInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+        }
+    }
+
     splits {
         abi {
             reset()
@@ -126,12 +164,7 @@ android {
             include "armeabi-v7a", "x86", "arm64-v8a"
         }
     }
-    buildTypes {
-        release {
-            minifyEnabled enableProguardInReleaseBuilds
-            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-        }
-    }
+
     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
@@ -144,6 +177,11 @@ android {
                         versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
             }
         }
+    }
+
+    dexOptions {
+        preDexLibraries false
+        javaMaxHeapSize "8g"
     }
 }
 

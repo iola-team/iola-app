@@ -44,10 +44,23 @@ Investigate this: https://reactnativetesting.io/
   - Destructuring: in one line if length < 100 but in multiple lines if has default values
 
 
-## Release
-1) Build the app:
-  - @TODO: Add commands for Android/iOS here
-2) Change the app icon:
+## Production
+0) Setup the production environment:
+  - Android:
+    1) `cp android/passwords.properties.sample android/passwords.properties` and fill it
+  - iOS:
+    1) @TODO
+1) Test the release app version (build the apk file + install it on emulator/device):
+  - Android:
+    1) Uninstall the previous version of the app you already have installed
+    2) Install it on the device: `yarn release:test:android`
+  - iOS: @TODO
+2) Build the release app version (build the apk file):
+  - Android: `yarn release:build:android`
+  - iOS: @TODO: https://medium.com/@andr3wjack/versioning-react-native-apps-407469707661
+
+## For future customizations
+  - Change the app icon:
   - [Online Android Asset Studio](http://romannurik.github.io/AndroidAssetStudio/icons-launcher.html#foreground.type=clipart&foreground.clipart=android&foreground.space.trim=1&foreground.space.pad=0.25&foreColor=rgba(96%2C%20125%2C%20139%2C%200)&backColor=rgb(68%2C%20138%2C%20255)&crop=0&backgroundShape=square&effects=none&name=ic_launcher)
 
 
