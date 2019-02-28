@@ -160,8 +160,8 @@ export default class FormTextInput extends Component {
         style={[
           styles.formItem,
           customStyle,
-          !isValid && { borderColor: '#FF8787', backgroundColor: '#FFE0E0' },
           isFocused && { backgroundColor: '#FFFFFF', borderColor: '#FFFFFF' },
+          !isValid && { borderColor: '#FF8787', backgroundColor: '#FFE0E0' },
         ]}
         pointerEvents="none"
         regular

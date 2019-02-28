@@ -82,6 +82,7 @@
     "prop-types": "^15.6.2",
     "react": "16.6.3",
     "react-apollo": "^2.4.1",
+    "react-dom": "16.6.1",
     "react-gateway": "^3.0.0",
     "react-moment": "^0.8.4",
     "react-native": "0.58.3",
@@ -153,7 +154,6 @@
     "mock-async-storage": "^2.0.4",
     "node-fetch": "^2.3.0",
     "prettier": "^1.16.4",
-    "react-dom": "16.6.1",
     "react-native-debugger-open": "^0.3.17",
     "react-native-dotenv": "^0.2.0",
     "react-native-storybook-loader": "^1.8.0"

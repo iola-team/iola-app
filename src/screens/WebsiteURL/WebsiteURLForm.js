@@ -1,4 +1,5 @@
 /* global __DEV__ */
+/* global fetch */
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { Button, Form, Text, View } from 'native-base';
@@ -7,6 +8,7 @@ import { withFormik } from 'formik';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import { FormTextInput } from '~components';
+import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
 
 @styleSheet('Sparkle.WebsiteURLForm', {
   row: {
@@ -20,6 +22,9 @@ import { FormTextInput } from '~components';
     width: 72,
     height: 40,
     paddingLeft: 5,
+    borderWidth: 1,
+    borderRightWidth: 0,
+    borderColor: '#ECECEC',
     borderTopLeftRadius: 8,
     borderBottomLeftRadius: 8,
     backgroundColor: '#ECECEC',
@@ -52,6 +57,14 @@ import { FormTextInput } from '~components';
     borderRadius: 8,
     borderColor: 'rgba(255, 255, 255, 0.5)',
   },
+
+  error: {
+    marginTop: 20,
+    fontFamily: 'SF Pro Text',
+    fontSize: 14,
+    lineHeight: 17,
+    color: '#FFFFFF',
+  },
 })
 class WebsiteURLForm extends Component {
   static propTypes = {
@@ -62,27 +75,16 @@ class WebsiteURLForm extends Component {
     isValidURL: true,
   };
 
+  onChangeText = () => {
+    this.setState({ isValidURL: true });
+  };
+
   sanitizeURL = url => url.replace(/\/$/, '').replace(/(https?):\/\//, '');
 
-  onChangeText() {
-    if (__DEV__) {
-      this.setState({ isValidURL: true });
-
-      return;
-    }
-
-    const { values: { url } } = this.props;
-    const domainRegexp = (
-      new RegExp(/^(?!:\/\/)([a-zA-Z0-9]+\.)?[a-zA-Z0-9][a-zA-Z0-9-]+\.[a-zA-Z]{2,6}?$/i)
-    );
-    const platformURL = this.sanitizeURL(url);
-
-    this.setState({ isValidURL: domainRegexp.test(platformURL) });
-  }
-
-  onSubmit() {
+  async onSubmit() {
     const { handleSubmit, onSubmit, values: { url } } = this.props;
     const platformURL = `https://${this.sanitizeURL(url)}`;
+    const healthURL = `${false ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_PATH}/health`;
 
     if (url.length === 0) {
       handleSubmit();
@@ -90,9 +92,15 @@ class WebsiteURLForm extends Component {
       return;
     }
 
-    if (!this.state.isValidURL) return;
+    try {
+      const { success } = await fetch(healthURL).then((response) => response.json());
 
-    onSubmit({ url: platformURL });
+      this.setState({ isValidURL: success === 'All good in the hood' });
+    } catch (error) {
+      this.setState({ isValidURL: false });
+    }
+
+    if (this.state.isValidURL) onSubmit({ url: platformURL });
   }
 
   render() {
@@ -102,24 +110,30 @@ class WebsiteURLForm extends Component {
     return (
       <Form>
         <View style={styles.row}>
-          <View style={styles.left}>
-            <Text style={styles.text}>https://</Text>
+          <View style={[styles.left, !isValidURL && { borderColor: '#FF8787' }]}>
+            <Text style={styles.text}>
+              https://
+            </Text>
           </View>
           <FormTextInput
             name="url"
             placeholder="Enter Website URL address"
             error={!isValidURL}
-            onChangeText={::this.onChangeText}
+            onChangeText={this.onChangeText}
             customStyle={styles.url}
             {...this.props}
           />
         </View>
 
-        {!isValidURL && <Text>Please enter a valid URL address</Text>}
-
         <Button style={styles.submit} onPress={::this.onSubmit} block bordered light>
           <Text uppercase={false}>Continue</Text>
         </Button>
+
+        {!isValidURL && (
+          <Text style={styles.error}>
+            Please make sure the Website URL address you have entered supports iola app (Please contact the website administrator)
+          </Text>
+        )}
       </Form>
     );
   }
@@ -130,7 +144,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: () => ({ url: __DEV__ ? 'DEV_GRAPHQL_URL will be used' : '' }),
+  mapPropsToValues: () => ({ url: __DEV__ ? 'DEV_PLATFORM_URL will be used' : '' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(WebsiteURLForm);

@@ -92,7 +92,7 @@ export async function createClient({
   return client;
 }
 
-export default async (apiURL, subscriptionsURL) => {
+export default async ({ apiURL, subscriptionsURL }) => {
   /**
    * TODO: Review the app logic to decide if query batching is needed to be enabled back
    *
