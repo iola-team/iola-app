@@ -11,8 +11,8 @@ const stories = storiesOf('Components/Spinner', module);
 stories.addDecorator(getContentDecorator({ padder: true }));
 
 stories.add('With button', () => (
-  <Button style={{ position: 'relative' }} block>
+  <Button block>
     <Text>Sign In</Text>
-    <Spinner style={{ position: 'absolute', right: 20 }} />
+    <Spinner />
   </Button>
 ));
