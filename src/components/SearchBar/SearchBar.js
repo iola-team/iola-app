@@ -36,7 +36,6 @@ import TouchableOpacity from '../TouchableOpacity';
 
   spinner: {
     color: '#AFB2BF',
-    unfilledColor: '#F8F9FB',
     marginTop: -1,
     marginLeft: -1.5,
     marginRight: 5.5,
@@ -56,6 +55,8 @@ import TouchableOpacity from '../TouchableOpacity';
 })
 export default class SearchBar extends PureComponent {
   static propTypes = {
+    style: PropTypes.any,
+    styleSheet: PropTypes.object.isRequired,
     placeholder: PropTypes.string.isRequired,
     searching: PropTypes.bool,
     value: PropTypes.string,
@@ -65,6 +66,7 @@ export default class SearchBar extends PureComponent {
 
   static defaultProps = {
     value: '',
+    style: null,
     searching: false,
     autoFocus: false,
     cancelAnimatedValue: new Animated.Value(0),

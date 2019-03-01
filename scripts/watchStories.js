@@ -1,10 +1,10 @@
-import { join } from 'path'
+import { join } from 'path';
 import watch from 'glob-watcher';
 import { exec } from 'child-process-promise';
 
 const globs = [
   join(__dirname, '..', 'src', '**/*.(stories.js)'),
-]
+];
 
 const options = {
   ignoreInitial: false,

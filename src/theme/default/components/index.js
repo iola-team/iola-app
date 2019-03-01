@@ -77,6 +77,12 @@ export default (variables => ({
       elevation: 0,
       height: 50,
 
+      'Sparkle.Spinner': {
+        position: 'absolute',
+        right: variables.contentPadding,
+        color: '#FFFFFF',
+      },
+
       'NativeBase.Text': {
         fontSize: 16,
         fontWeight: '500',
