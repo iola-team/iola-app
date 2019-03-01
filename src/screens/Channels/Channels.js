@@ -3,8 +3,8 @@ import { Container } from 'native-base';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import { ChatList, Icon, SearchBar } from '~components';
-import * as routes from '../routeNames';
+import { ChatList, Icon, SearchBar, TouchableOpacity } from '~components';
+import { CHANNEL } from '../routeNames';
 
 @graphql(gql`
   query ChannelsQuery {
@@ -14,31 +14,24 @@ import * as routes from '../routeNames';
   }
 `)
 export default class Channels extends Component {
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => ({
     title: 'Chats',
     tabBarIcon: ({ focused, tintColor }) => (
       <Icon name="chats-bar" style={{ color: tintColor, fontSize: 20 }} />
     ),
-  };
+  });
 
   onItemPress = ({ node }) => {
     const { navigation: { navigate } } = this.props;
 
-    navigate(routes.CHANNEL, {
-      chatId: node.id,
-    });
+    navigate(CHANNEL, { chatId: node.id });
   };
-
-  onSearch = (searchPhrase) => {
-    console.log('Search', searchPhrase);
-  }
 
   render() {
     const { data: { me } } = this.props;
 
     return (
       <Container>
-        <SearchBar onSearch={this.onSearch} />
         <ChatList userId={me?.id} onItemPress={this.onItemPress} />
       </Container>
     );

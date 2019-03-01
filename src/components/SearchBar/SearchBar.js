@@ -1,47 +1,116 @@
 import React, { PureComponent } from 'react';
-import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import { Text, Item, ListItem, Input, Button } from 'native-base';
+import { View, TextInput, Animated } from 'react-native';
 
+import { withStyleSheet } from '~theme';
 import Icon from '../Icon';
+import Spinner from '../Spinner';
+import TouchableOpacity from '../TouchableOpacity';
 
+@withStyleSheet('Sparkle.SearchBar', {
+  root: {
+    overflow: 'hidden',
+    flex: 1,
+  },
+
+  input: {
+    flex: 1,
+  },
+
+  inputWrap: {
+    height: 40,
+    paddingLeft: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    borderRadius:  8,
+
+    backgroundColor: '#F8F9FB',
+  },
+
+  icon: {
+    color: '#AFB2BF',
+    fontSize: 18,
+    marginRight: 5,
+  },
+
+  spinner: {
+    color: '#AFB2BF',
+    unfilledColor: '#F8F9FB',
+    marginTop: -1,
+    marginLeft: -1.5,
+    marginRight: 5.5,
+  },
+
+  clearButton: {
+    height: 40,
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  clearIcon: {
+    fontSize: 20,
+    color: '#AFB2BF',
+  },
+})
 export default class SearchBar extends PureComponent {
   static propTypes = {
-    onSearch: PropTypes.func.isRequired,
+    placeholder: PropTypes.string.isRequired,
+    searching: PropTypes.bool,
+    value: PropTypes.string,
+    autoFocus: PropTypes.bool,
+    onChangeText: PropTypes.func,
   };
 
-  state = {
-    phrase: '',
+  static defaultProps = {
+    value: '',
+    searching: false,
+    autoFocus: false,
+    cancelAnimatedValue: new Animated.Value(0),
+    onChangeText: () => null,
   };
 
-  onSearch = debounce(this.props.onSearch, 200);
-
-  onPhraseChange(phrase) {
-    this.setState({
-      phrase,
-    });
-
-    this.onSearch(phrase);
-  }
+  onClearPress = () => this.props.onChangeText('');
 
   render() {
-    const { phrase } = this.state;
+    const {
+      styleSheet: styles,
+      style,
+      placeholder,
+      value,
+      searching,
+      autoFocus,
+      onChangeText,
+      
+      ...props
+    } = this.props;
 
     return (
-      <ListItem searchBar noBorder>
-        <Item>
-          <Icon name="search" />
-          <Input
-            placeholder="Search for users"
+      <View {...props} style={[style, styles.root]}>
+        <View style={styles.inputWrap}>
+          {searching ? (
+            <Spinner size={20} thickness={1.5} style={styles.spinner} />
+          ) : (
+            <Icon style={styles.icon} name="search" />
+          )}
+
+          <TextInput
+            style={styles.input}
+            autoFocus={autoFocus}
+            placeholder={placeholder}
             placeholderTextColor="#BDC0CB"
-            value={phrase}
-            onChangeText={::this.onPhraseChange}
+            value={value}
+            onChangeText={onChangeText}
           />
-        </Item>
-        <Button transparent>
-          <Text>Search</Text>
-        </Button>
-      </ListItem>
+
+          {!!value && (
+            <TouchableOpacity style={styles.clearButton} onPress={this.onClearPress}>
+              <Icon style={styles.clearIcon} name="cancel" />
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
     );
   }
 }

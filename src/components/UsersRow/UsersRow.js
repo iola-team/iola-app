@@ -3,24 +3,25 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { range } from 'lodash';
+import { FlatList } from 'react-native';
 
-import { withStyleSheet } from '~theme';
-import { FlatList, NoContent } from '../TabNavigator';
-import UserListItem from '../UserListItem';
+import { withStyle } from '~theme';
+
+import UsersRowItem from '../UsersRowItem';
 
 const edgeFragment = gql`
-  fragment UserList_edge on Edge {
+  fragment UsersRow_edge on Edge {
     node {
       id
       ...UserListItem_user
     }
   }
   
-  ${UserListItem.fragments.user}
+  ${UsersRowItem.fragments.user}
 `;
 
-@withStyleSheet('Sparkle.UserList')
-export default class UserList extends Component {
+@withStyle('Sparkle.UsersRow')
+export default class UsersRow extends Component {
   static fragments = {
     edge: edgeFragment,
   };
@@ -31,15 +32,11 @@ export default class UserList extends Component {
     ).isRequired,
     onItemPress: PropTypes.func,
     loading: PropTypes.bool,
-    noContentText: PropTypes.string,
-    noContentStyle: PropTypes.object,
   };
 
   static defaultProps = {
     onItemPress: () => {},
     loading: false,
-    noContentText: null,
-    noContentStyle: null,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -49,20 +46,14 @@ export default class UserList extends Component {
     const { node } = item;
 
     return (
-      <UserListItem
+      <UsersRowItem
         user={node}
         onPress={() => onItemPress(item)}
       />
     );
   };
 
-  getItemLayout = (data, index) => ({
-    length: UserListItem.ITEM_HEIGHT,
-    offset: UserListItem.ITEM_HEIGHT * index,
-    index,
-  });
-
-  getPlaceholders = () => range(3).map(index => ({
+  getPlaceholders = () => range(5).map(index => ({
     key: index.toString(),
   }));
 
@@ -70,10 +61,6 @@ export default class UserList extends Component {
     const {
       edges,
       loading,
-      styleSheet: styles,
-      noContentText,
-      noContentStyle,
-      renderItem = this.renderItem,
       ...listProps
     } = this.props;
 
@@ -81,17 +68,12 @@ export default class UserList extends Component {
 
     return (
       <FlatList
-        ListEmptyComponent={<NoContent style={noContentStyle} icon="comments-empty-state" text={noContentText} />}
-
         {...listProps}
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={this.extractItemKey}
-        getItemLayout={this.getItemLayout}
 
-        // Performance tweaks
-        updateCellsBatchingPeriod={25}
-        windowSize={41}
+        horizontal
+        data={data}
+        renderItem={this.renderItem}
+        keyExtractor={this.extractItemKey}
       />
     );
   }

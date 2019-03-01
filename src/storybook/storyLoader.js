@@ -48,6 +48,7 @@ function loadStories() {
   require('../components/ProfileFieldInput/ProfileFieldInput.stories');
   require('../components/ProfileFieldView/ProfileFieldView.stories');
   require('../components/ProfileFieldsView/ProfileFieldsView.stories');
+  require('../components/SearchBar/SearchBar.stories');
   require('../components/SettingList/SettingList.stories');
   require('../components/Shadow/Shadow.stories');
   require('../components/Spinner/Spinner.stories');
@@ -57,12 +58,15 @@ function loadStories() {
   require('../components/UserHeading/UserHeading.stories');
   require('../components/UserList/UserList.stories');
   require('../components/UserListItem/UserListItem.stories');
+  require('../components/UsersRow/UsersRow.stories');
+  require('../components/UsersRowItem/UsersRowItem.stories');
   require('../screens/EmailVerification/EmailVerification.stories');
   require('../screens/ForgotPassword/ForgotPassword.stories');
   require('../screens/Launch/Launch.stories');
   require('../screens/MyPhotos/MyPhotos.stories');
   require('../screens/SignIn/SignIn.stories');
   require('../screens/SignUp/SignUp.stories');
+  require('../screens/UserSearch/UserSearch.stories');
   require('./stories/Button.stories');
   
 }
@@ -111,6 +115,7 @@ const stories = [
   '../components/ProfileFieldInput/ProfileFieldInput.stories',
   '../components/ProfileFieldView/ProfileFieldView.stories',
   '../components/ProfileFieldsView/ProfileFieldsView.stories',
+  '../components/SearchBar/SearchBar.stories',
   '../components/SettingList/SettingList.stories',
   '../components/Shadow/Shadow.stories',
   '../components/Spinner/Spinner.stories',
@@ -120,12 +125,15 @@ const stories = [
   '../components/UserHeading/UserHeading.stories',
   '../components/UserList/UserList.stories',
   '../components/UserListItem/UserListItem.stories',
+  '../components/UsersRow/UsersRow.stories',
+  '../components/UsersRowItem/UsersRowItem.stories',
   '../screens/EmailVerification/EmailVerification.stories',
   '../screens/ForgotPassword/ForgotPassword.stories',
   '../screens/Launch/Launch.stories',
   '../screens/MyPhotos/MyPhotos.stories',
   '../screens/SignIn/SignIn.stories',
   '../screens/SignUp/SignUp.stories',
+  '../screens/UserSearch/UserSearch.stories',
   './stories/Button.stories',
   
 ];

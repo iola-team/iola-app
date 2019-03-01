@@ -9,6 +9,7 @@ import { withStyleSheet as styleSheet } from '~theme';
     backgroundColor: '#FFFFFF',
     elevation: 0,
     borderTopWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#A7A7AA',
   },
 
   label: {

@@ -2,15 +2,18 @@ import React, { Component, Fragment } from 'react';
 import { GatewayProvider, GatewayDest } from 'react-gateway';
 import { Root as RootNB } from 'native-base';
 
+import { withStyle } from '~theme';
+
 const GatewayComponent = props => <Fragment {...props} />;
 
+@withStyle('Sparkle.Root')
 export default class Root extends Component {
   render() {
-    const { children } = this.props;
+    const { style, children } = this.props;
 
     return (
       <GatewayProvider>
-        <RootNB>
+        <RootNB style={style}>
           {children}
 
           <GatewayDest name="root" component={GatewayComponent} />

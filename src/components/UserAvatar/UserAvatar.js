@@ -42,8 +42,8 @@ export default class UserAvatar extends Component {
 
   static defaultProps = {
     user: null,
-    size: 'small',
-    onPress: noop,
+    size: 'medium',
+    onPress: null,
     loading: false,
   };
 

@@ -1,10 +1,15 @@
 {
     "compilerOptions": {
-        "baseUrl": "./src/",
         "target": "esnext",
         "module": "commonjs",
         "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+
+        "baseUrl": "./src/",
+        "moduleResolution": "node",
+        "paths": {
+            "~*": ["./*"]
+        }
     },
 
     "include": [

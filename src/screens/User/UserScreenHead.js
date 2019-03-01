@@ -52,7 +52,7 @@ export default class UserScreenHead extends PureComponent {
     return (
       <Query query={userQuery} variables={{ userId }}>
         {({ data: { user }, loading }) => (
-          <UserHeading {...props} highlight loading={loading} user={user}>
+          <UserHeading {...props} loading={loading} user={user}>
             <View style={styles.buttons}>
               <Button
                 block

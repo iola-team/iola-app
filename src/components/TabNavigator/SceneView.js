@@ -169,10 +169,10 @@ export default class SceneView extends PureComponent {
     const windowHeight = Dimensions.get('window').height;
     const screenHeight = windowHeight - getStatusBarHeight() - bottomBarHeight - topBarHeight;
     const shrinkAnimationHeight = headerHeight ? headerHeight - headerShrinkHeight : 0;
-    const shrinkAnimatedValue = this.scrollAnimatedValue.interpolate({
+    const shrinkAnimatedValue = shrinkAnimationHeight ? this.scrollAnimatedValue.interpolate({
       inputRange: [0, shrinkAnimationHeight],
       outputRange: [1, 0],
-    });
+    }) : new Animated.Value(1);
 
     return {
       ...restProps,

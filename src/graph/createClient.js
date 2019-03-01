@@ -49,11 +49,7 @@ export async function createClient({
   const stateLink = withClientState({
     resolvers: resolvers.resolvers,
     defaults: resolvers.defaults,
-
-    /**
-     * TODO: Uncomment when it will support gql AST or typeDefs will be required by Apollo Client
-     */
-    // typeDefs: resolvers.typeDefs,
+    typeDefs: resolvers.typeDefs,
     cache,
   });
 

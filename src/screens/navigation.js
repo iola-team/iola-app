@@ -30,6 +30,7 @@ import SignUp from './SignUp';
 import UserFriends from './UserFriends';
 import UserInfo from './UserInfo';
 import UserPhotos from './UserPhotos';
+import UserSearch from './UserSearch';
 
 import createUserNavigator from './User';
 import createDashboardNavigator from './Dashboard';
@@ -74,14 +75,16 @@ const RootNavigator = createSwitchNavigator({
   [routes.APPLICATION]: createStackNavigator({
     [routes.APPLICATION]: {
       screen: TabsNavigator,
-      navigationOptions({ navigation: { state } }) {
-        const TabComponent = TabsNavigator.router.getComponentForRouteName(state.routes[state.index].routeName);
+      navigationOptions({ navigation, screenProps }) {
+        const route = navigation.state.routes[navigation.state.index];
+        const childNavigation = navigation.getChildNavigation(route.key);
+        const screenOptions = TabsNavigator.router.getScreenOptions(childNavigation, screenProps);
 
         return {
           /**
            * Pass tab component `navigationOptions` to main stack navigator
            */
-          ...TabComponent.navigationOptions,
+          ...screenOptions,
         };
       },
     },
@@ -92,11 +95,13 @@ const RootNavigator = createSwitchNavigator({
         [routes.USER_FRIENDS]: UserFriends,
       }),
     },
-    [routes.CHANNEL]: Channel,
     [routes.PROFILE_EDIT]: createProfileEditNavigator({
       [routes.PROFILE_EDIT_INFO]: ProfileEditInfo,
       [routes.SETTINGS]: Settings,
     }),
+
+    [routes.CHANNEL]: Channel,
+    [routes.USER_SEARCH]: UserSearch,
   }, {
     headerLayoutPreset: 'center',
     headerMode: 'screen',

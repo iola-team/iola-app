@@ -73,7 +73,7 @@ export default class MessageItem extends Component {
 
     return (
       <ViewRN style={style}>
-        {showAvatar && <Avatar user={message.user} />}
+        {showAvatar && <Avatar size="small" user={message.user} />}
         <MessageContent message={message} first={first} {...props} />
       </ViewRN>
     );
