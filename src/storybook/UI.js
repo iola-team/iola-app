@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { getStorybookUI, configure } from '@storybook/react-native';
-import { DEV_PLATFORM_URL } from 'react-native-dotenv';
+import { DEV_IP } from 'react-native-dotenv';
 
 import { loadStories } from './storyLoader';
 
@@ -23,12 +23,8 @@ export default class Storybook extends Component {
      */
     require('@storybook/addon-console');
 
-    // @TODO: There might be a case when the Storybook IP differs from platform domain/IP.
-    const location = DEV_PLATFORM_URL.split( '/' );
-    const host = location[2];
-
     this.ui = getStorybookUI({
-      host,
+      host: DEV_IP,
       port: 7007,
       onDeviceUI: false,
     });

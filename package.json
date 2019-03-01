@@ -19,7 +19,7 @@
     "schema:generate-types-introspection": "babel-node $NODE_DEBUG_OPTION ./scripts/generateTypesIntrospection.js ./src/graph/meta/fragmentTypes.json",
     "storybook": "concurrently -p name -n \"stories,server\" \"yarn storybook:watch\" \"yarn storybook:server\"",
     "prestorybook": "yarn storybook:generate",
-    "storybook:server": ". $PWD/.env && storybook start -h $IP -p 7007 -c ./src/storybook",
+    "storybook:server": ". $PWD/.env && storybook start -h $DEV_IP -p 7007 -c ./src/storybook",
     "storybook:generate": "rnstl",
     "storybook:watch": "babel-node $NODE_DEBUG_OPTION ./scripts/watchStories.js",
     "lint": "eslint \"./src/**/*.js\" --quiet; exit 0",
