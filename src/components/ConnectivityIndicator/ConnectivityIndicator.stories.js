@@ -13,6 +13,6 @@ stories.addDecorator(withKnobs);
 // Stories
 stories.add('Default', () => (
   <ConnectivityIndicator isOnline={boolean('Is online', true)}>
-    <Text>Overlay content</Text>
+    <Text>Some content...</Text>
   </ConnectivityIndicator>
 ));
