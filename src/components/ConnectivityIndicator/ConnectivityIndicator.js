@@ -27,6 +27,11 @@ import { withStyleSheet } from '~theme';
   content: {
     flex: 1,
   },
+
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(189, 192, 203, 0.5)',
+  },
 })
 export default class ConnectivityIndicator extends Component {
   static propTypes = {
@@ -55,6 +60,8 @@ export default class ConnectivityIndicator extends Component {
 
         <View style={styles.content}>
           {children}
+
+          {!isOnline && <View style={styles.overlay} />}
         </View>
       </View>
     );
