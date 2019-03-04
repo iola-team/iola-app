@@ -41,6 +41,7 @@ import SearchResult from './SearchResult';
 import UsersRow from './UsersRow';
 import UsersRowItem from './UsersRowItem';
 import SearchBlank from './SearchBlank';
+import ConnectivityIndicator from './ConnectivityIndicator';
 
 export {
   AvatarEdit,
@@ -83,6 +84,7 @@ export {
   UsersRow,
   UsersRowItem,
   SearchBlank,
+  ConnectivityIndicator,
 
   // Navigation
   ScreenHeader,

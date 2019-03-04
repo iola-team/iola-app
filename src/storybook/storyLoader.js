@@ -14,6 +14,7 @@ function loadStories() {
   require('../components/ChatListItem/ChatListItem.stories');
   require('../components/CircularProgress/CircularProgress.stories');
   require('../components/ComponentTemplate/ComponentTemplate.stories');
+  require('../components/ConnectivityIndicator/ConnectivityIndicator.stories');
   require('../components/DatePicker/DatePicker.stories');
   require('../components/FieldInput/FieldInput.stories');
   require('../components/FieldSection/FieldSection.stories');
@@ -81,6 +82,7 @@ const stories = [
   '../components/ChatListItem/ChatListItem.stories',
   '../components/CircularProgress/CircularProgress.stories',
   '../components/ComponentTemplate/ComponentTemplate.stories',
+  '../components/ConnectivityIndicator/ConnectivityIndicator.stories',
   '../components/DatePicker/DatePicker.stories',
   '../components/FieldInput/FieldInput.stories',
   '../components/FieldSection/FieldSection.stories',
