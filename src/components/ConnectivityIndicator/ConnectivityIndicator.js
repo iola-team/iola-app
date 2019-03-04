@@ -28,6 +28,9 @@ import { withStyleSheet } from '~theme';
     flex: 1,
   },
 
+  /**
+   * TODO: Remove overlay and aloow users browse cahce while offline
+   */
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: 'rgba(189, 192, 203, 0.5)',
