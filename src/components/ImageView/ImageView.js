@@ -7,6 +7,7 @@ import { graphql, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
+import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import Overlay from '../Overlay';
@@ -265,102 +266,132 @@ export default class ImageView extends Component {
     }
   }
 
+  getDateHumanized = (timestamp) => {
+    let result = '';
+
+    if (timestamp) {
+      const date = moment.duration(moment(timestamp).diff(moment())).humanize();
+
+      result = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
+    }
+
+    return result;
+  };
+
   renderControls() {
     const { edges, data: { me }, styleSheet: styles } = this.props;
-    const { index } = this.state;
+    const { index, isVisible } = this.state;
     const { node: { id } } = edges[index];
     const totalCountImages = edges.length;
 
+    /*
+     * firstPhotoId is using for optimization:
+     * Currently, all photos in she slider will have the same user data
+     * (so we don't need to get it for every photo)
+     */
+    const firstPhotoId = get(edges, `[0].node.id`, null);
+
     return (
       <View style={styles.controls}>
-        <Query query={photoDetailsQuery} variables={{ id }}>
-          {({ loading, data }) => {
-            if (loading) return null; // @TODO: add spinner
+        <Query
+          query={photoDetailsQuery}
+          variables={{ id: firstPhotoId }}
+          skip={!isVisible || !id}
+          fetchPolicy="cache-and-network"
+        >
+          {({ data: firstPhotoData }) => (
+            <Query query={photoDetailsQuery} variables={{ id }}>
+              {({ loading, data }) => {
+                const photo = data?.photo;
+                const caption = photo?.caption || '';
+                const photoId = photo?.id || '';
+                const totalCount = photo?.comments?.totalCount || 0;
+                const createdAt = this.getDateHumanized(photo?.createdAt || 0);
+                // const totalCountLikes = 0; // @TODO: Likes
 
-            const { id: photoId, caption, createdAt, user, comments: { totalCount } } = data.photo;
-            // const totalCountLikes = 0; // @TODO: Likes
-            const date = moment.duration(moment(createdAt).diff(moment())).humanize();
-            const dateFormatted = `${date.charAt(0).toUpperCase()}${date.slice(1)} ago`;
+                return (
+                  <>
+                    <View style={styles.header}>
+                      <TouchableOpacity
+                        onPress={::this.onClose}
+                        style={[styles.headerButton, styles.backButton]}
+                      >
+                        <Icon style={styles.headerIcon} name="back" />
+                      </TouchableOpacity>
 
-            return (
-              <>
-                <View style={styles.header}>
-                  <TouchableOpacity
-                    onPress={::this.onClose}
-                    style={[styles.headerButton, styles.backButton]}
-                  >
-                    <Icon style={styles.headerIcon} name="back" />
-                  </TouchableOpacity>
-
-                  {totalCountImages > 1 && (
-                    <Text style={styles.indicator}>
-                      {`${index + 1} of ${totalCountImages}`}
-                    </Text>
-                  )}
-
-                  {me.id === user.id && (
-                    <ActionSheet
-                      options={['Cancel', 'Delete']}
-                      cancelButtonIndex={0}
-                      destructiveButtonIndex={1}
-                      onPress={index => index === 1 && this.onDelete(photoId)}
-                    >
-                      {show => (
-                        <TouchableOpacity
-                          onPress={show}
-                          style={[styles.headerButton, styles.meatballMenu]}
-                        >
-                          <Icon style={styles.headerIcon} name="emoji" /* @TODO: meatball icon */ />
-                        </TouchableOpacity>
+                      {totalCountImages > 1 && (
+                        <Text style={styles.indicator}>
+                          {`${index + 1} of ${totalCountImages}`}
+                        </Text>
                       )}
-                    </ActionSheet>
-                  )}
-                </View>
 
-                <View style={styles.footer}>
-                  <View>
-                    <View style={styles.nameBlock}>
-                      <Text style={styles.name}>{user.name}</Text>
-                      <UserOnlineStatus user={user} />
-                    </View>
-                    <Text style={styles.caption}>{caption}</Text>
-                    <Text style={styles.dateTime}>{dateFormatted}</Text>
-                  </View>
-
-                  <View style={styles.actionsBlock}>
-                    <ImageComments photoId={photoId} totalCount={totalCount}>
-                      {onShowImageComments => (
-                        <TouchableOpacity
-                          onPress={onShowImageComments}
-                          style={[styles.actionButton, styles.buttonComments]}
+                      {me.id === firstPhotoData?.photo?.user?.id && (
+                        <ActionSheet
+                          options={['Cancel', 'Delete']}
+                          cancelButtonIndex={0}
+                          destructiveButtonIndex={1}
+                          onPress={index => index === 1 && this.onDelete(photoId)}
                         >
-                          <Icon name="chats-bar" style={styles.actionIcon} />
-                          <Text style={styles.actionText}>Comment</Text>
-                          {!totalCount ? null : (
-                            <Badge style={styles.actionBadge}>
-                              <Text style={styles.actionBadgeText}>{totalCount}</Text>
-                            </Badge>
+                          {show => (
+                            <TouchableOpacity
+                              onPress={show}
+                              style={[styles.headerButton, styles.meatballMenu]}
+                            >
+                              <Icon style={styles.headerIcon} name="emoji" /* @TODO: meatball icon */ />
+                            </TouchableOpacity>
                           )}
-                        </TouchableOpacity>
+                        </ActionSheet>
                       )}
-                    </ImageComments>
+                    </View>
 
-                    {/* @TODO: Likes
-                    <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
-                      <Icon name="like" style={styles.actionIcon} />
-                      <ActionText>Like</ActionText>
-                      {totalCountLikes ? (
-                        <ActionBadge>
-                          <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
-                        </ActionBadge>
-                      ) : null}
-                    </TouchableOpacity>
-                    */}
-                  </View>
-                </View>
-              </>
-            );
-          }}
+                    <View style={styles.footer}>
+                      <View>
+                        {firstPhotoData?.photo && (
+                          <View style={styles.nameBlock}>
+                            <Text style={styles.name}>{firstPhotoData.photo.user.name}</Text>
+                            <UserOnlineStatus user={firstPhotoData.photo.user} />
+                          </View>
+                        )}
+                        {!!caption && <Text style={styles.caption}>{caption}</Text>}
+                        <Text style={styles.dateTime}>{createdAt}</Text>
+                      </View>
+
+                      <View style={styles.actionsBlock}>
+                        <ImageComments photoId={photoId} totalCount={totalCount}>
+                          {onShowImageComments => (
+                            <TouchableOpacity
+                              onPress={onShowImageComments}
+                              style={[styles.actionButton, styles.buttonComments]}
+                            >
+                              <Icon name="chats-bar" style={styles.actionIcon} />
+                              <Text style={styles.actionText}>Comment</Text>
+                              {!totalCount ? null : (
+                                <Badge style={styles.actionBadge}>
+                                  <Text style={styles.actionBadgeText}>{totalCount}</Text>
+                                </Badge>
+                              )}
+                            </TouchableOpacity>
+                          )}
+                        </ImageComments>
+
+                        {/* @TODO: Likes
+                        <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
+                          <Icon name="like" style={styles.actionIcon} />
+                          <ActionText>Like</ActionText>
+                          {totalCountLikes ? (
+                            <ActionBadge>
+                              <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
+                            </ActionBadge>
+                          ) : null}
+                        </TouchableOpacity>
+                        */}
+                      </View>
+                    </View>
+                  </>
+                );
+              }}
+            </Query>
+          )}
         </Query>
       </View>
     );
@@ -383,10 +414,12 @@ export default class ImageView extends Component {
               onChange={::this.onChange}
               onSwipeDown={::this.onClose}
               renderIndicator={() => null}
-              failImageSource={{ uri: 'https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif' /* @TODO */ }}
+              failImageSource="https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif" /* @TODO */
               loadingRender={() => <View style={styles.spinnerContainer}><Spinner /></View>}
               footerContainerStyle={{ width: '100%' }}
               backgroundColor="rgba(46, 48, 55, 0.95)"
+              pageAnimateTime={400}
+              enablePreload
             />
 
             {isVisible && this.renderControls()}
