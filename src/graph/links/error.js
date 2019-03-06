@@ -16,7 +16,7 @@ export default () => onError(({ networkError, graphQLErrors }) => {
     });
   }
 
-  if (networkError) {
+  if (networkError && networkError.statusCode) {
     console.error(`
       [Network error]: ${networkError.name}\n
       [statusCode]: ${networkError.statusCode}\n

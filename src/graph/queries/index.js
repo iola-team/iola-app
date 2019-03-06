@@ -9,3 +9,7 @@ export const ROOT_QUERY = gql`
     }
   }
 `;
+
+export default {
+  ROOT_QUERY,
+};
