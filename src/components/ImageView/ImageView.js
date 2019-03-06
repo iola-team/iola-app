@@ -280,7 +280,7 @@ export default class ImageView extends Component {
 
   renderControls() {
     const { edges, data: { me }, styleSheet: styles } = this.props;
-    const { index, isVisible } = this.state;
+    const { index } = this.state;
     const { node: { id } } = edges[index];
     const totalCountImages = edges.length;
 
@@ -293,12 +293,7 @@ export default class ImageView extends Component {
 
     return (
       <View style={styles.controls}>
-        <Query
-          query={photoDetailsQuery}
-          variables={{ id: firstPhotoId }}
-          skip={!isVisible || !id}
-          fetchPolicy="cache-and-network"
-        >
+        <Query query={photoDetailsQuery} variables={{ id: firstPhotoId }} skip={!id}>
           {({ data: firstPhotoData }) => (
             <Query query={photoDetailsQuery} variables={{ id }}>
               {({ loading, data }) => {
