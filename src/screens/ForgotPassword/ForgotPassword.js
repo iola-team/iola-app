@@ -1,6 +1,8 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { ImageBackground, TouchableOpacity } from 'react-native';
-import { Button, Container, Text, View } from 'native-base';
+import { Button, Container, Text, Toast, View } from 'native-base';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
@@ -95,16 +97,60 @@ const SignInButton = connectToStyleSheet('signInButton', Button);
     color: '#FFFFFF',
   },
 })
+@graphql(gql`
+  mutation sendResetPasswordInstructionsMutation($email: String!) {
+    result: sendResetPasswordInstructions(email: $email) {
+      success
+      errorCode
+    }
+  }
+`, {
+  props: ({ mutate }) => ({
+    sendResetPasswordInstructions: email => mutate({ variables: { email } }),
+  }),
+})
 export default class ForgotPasswordScreen extends Component {
   state = {
     email: '',
     emailWasSent: false,
   };
 
-  onSubmit({ email }, { setSubmitting }) {
-    const success = true; // @TODO: await this.props.onForgotPassword(email);
+  async onSubmit({ email }, { setSubmitting }) {
+    const { sendResetPasswordInstructions } = this.props;
+    let success = false;
+    let errorMessage = 'Something went wrong.'; // @TODO: Add details to the message (maybe add the link "Send the request to Technical Support?)"
+
+    setSubmitting(true);
+
+    try {
+      const asd = await sendResetPasswordInstructions(email);
+      const { data: { result } } = await sendResetPasswordInstructions(email);
+
+      success = result.success;
+
+      switch (result.errorCode) {
+        case 'ERROR_NOT_FOUND':
+          errorMessage = 'There is no user with this email address.';
+          break;
+        case 'ERROR_DUPLICATE':
+          errorMessage = 'Reset code already sent. Please try again in 10 minutes.';
+          break;
+      }
+    } catch ($error) {}
 
     setSubmitting(false);
+
+    if (!success) {
+      Toast.show({
+        text: errorMessage,
+        duration: 5000,
+        buttonText: 'Ok',
+        type: 'danger',
+      });
+
+      return;
+    }
+
     this.setState({ email, emailWasSent: success });
   }
 
@@ -129,44 +175,40 @@ export default class ForgotPasswordScreen extends Component {
             <Header>
               <LockIcon />
               <Title>Forgot your password?</Title>
-              {
-                emailWasSent ? (
-                  <Fragment>
-                    <Description>
-                      A new password has been sent to
-                    </Description>
-                    <Description>
-                      {email}
-                    </Description>
-                    <SignInButton block onPress={::this.goBack}>
-                      <Text>Sign in</Text>
-                    </SignInButton>
-                  </Fragment>
-                ) : (
+              {emailWasSent ? (
+                <>
                   <Description>
-                    Enter your email below and we’ll{'\n'}
-                    send you password reset{'\n'}
-                    instructions
+                    A new password has been sent to
                   </Description>
-                )
-              }
+                  <Description>
+                    {email}
+                  </Description>
+                  <SignInButton block onPress={::this.goBack}>
+                    <Text>Sign in</Text>
+                  </SignInButton>
+                </>
+              ) : (
+                <Description>
+                  Enter your email below and we’ll{'\n'}
+                  send you password reset{'\n'}
+                  instructions
+                </Description>
+              )}
             </Header>
-            {
-              emailWasSent ? null : (
-                <Fragment>
-                  <ForgotPasswordForm onSubmit={::this.onSubmit} defaultEmail={defaultEmail} />
+            {emailWasSent ? null : (
+              <>
+                <ForgotPasswordForm onSubmit={::this.onSubmit} defaultEmail={defaultEmail} />
 
-                  <Footer>
-                    <FooterText>
-                      Remember your password?
-                    </FooterText>
-                    <SignInLink onPress={::this.goBack}>
-                      <SignInLinkText>Sign in</SignInLinkText>
-                    </SignInLink>
-                  </Footer>
-                </Fragment>
-              )
-            }
+                <Footer>
+                  <FooterText>
+                    Remember your password?
+                  </FooterText>
+                  <SignInLink onPress={::this.goBack}>
+                    <SignInLinkText>Sign in</SignInLinkText>
+                  </SignInLink>
+                </Footer>
+              </>
+            )}
           </Content>
         </Background>
       </Container>
