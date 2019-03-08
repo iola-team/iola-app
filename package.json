@@ -63,7 +63,6 @@
     "apollo-link-context": "^1.0.15",
     "apollo-link-error": "^1.1.8",
     "apollo-link-http": "^1.5.12",
-    "apollo-link-state": "^0.4.2",
     "apollo-upload-client": "^10.0.0",
     "apollo-utilities": "^1.2.1",
     "buffer": "^5.2.1",
