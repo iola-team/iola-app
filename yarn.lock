@@ -11465,10 +11465,10 @@ react-native-debugger-open@^0.3.18:
     minimist "^1.2.0"
     semver "^5.4.1"
 
-react-native-device-info@^0.26.2:
-  version "0.26.2"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.26.2.tgz#c9e350e11f0c2f9a65f3e4fec8ddcab6881b7deb"
-  integrity sha512-Hbzc3sZxfJX0Do1yLF8Dt+tuz6+IZ61iTNGqF2LPpRhCDiJI5asrEtXF7g6bRS1H5lA2/eJDYCI/c35w63JpKA==
+react-native-device-info@^0.26.4:
+  version "0.26.4"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.26.4.tgz#5d747fae91d5abceff2de5430ff92749a09c62dd"
+  integrity sha512-gQo/hSk26E/gK0W3QvkSv+mrBbceFszezxLfUriK3JbiUwvaOlXm6kru2jAu1XGJzfxo/JUO0Mc0lopqiPgw+A==
 
 react-native-dotenv@^0.2.0:
   version "0.2.0"
@@ -11497,7 +11497,16 @@ react-native-event-source@^1.0.2:
   resolved "https://registry.yarnpkg.com/react-native-event-source/-/react-native-event-source-1.0.2.tgz#575519287b8ca4e2ff50d37f4a91037c49f63edc"
   integrity sha512-VpCamJsMd0NX5VgU9kxAHPP+wJI5Iktix2W874HKF9PEJDZ/075LPLeDhuRCwdUtzWNpzrqoYxYAbv8PsHNuYg==
 
-react-native-gesture-handler@^1.0.15, react-native-gesture-handler@~1.0.14:
+react-native-gesture-handler@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.1.0.tgz#2a7d545ad2e0ca23adce22b2af441ad360ecccee"
+  integrity sha512-E9IKHpmL+sz/iCYkUriTUjBaQBORWV+oheYPQleADkxjo2sYsQfnlyTz4EQYFONkUwJ6WmfTNkYt2/yc5U4Ziw==
+  dependencies:
+    hoist-non-react-statics "^2.3.1"
+    invariant "^2.2.2"
+    prop-types "^15.5.10"
+
+react-native-gesture-handler@~1.0.14:
   version "1.0.15"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.15.tgz#7e0d0a457820a3c9325a3d492daaed14400508a6"
   integrity sha512-BePn+YOKcspHb1xPkUdJs+H6jiaECrT2c98txADBYWHwuUeundE+uUJG0r3FQLFvM2MoGeiJeD96sePzk+WSvQ==
@@ -11506,10 +11515,10 @@ react-native-gesture-handler@^1.0.15, react-native-gesture-handler@~1.0.14:
     invariant "^2.2.2"
     prop-types "^15.5.10"
 
-react-native-image-crop-picker@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.22.0.tgz#8f7f657dcde45cc366ac529a624205155571c03f"
-  integrity sha512-F8ytcTAbrUgsCaz3v+jm/qi4XAgv4qywxNnFH/qC3cApI0KwvHZ/WjiyzJbWiLQ+6UKDUeUCGum4oY4fzOlzpA==
+react-native-image-crop-picker@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.23.0.tgz#27bb1b2d1ce4a33b4edf93945519a1dee63d5a92"
+  integrity sha512-BmfP246feY+sElYArAR7/DGRT2kFCTvAdiBKcIH8sA7UbUNy2eGAZsXBZWtt917wm+RuhW98CoAsnKB3iH9IvQ==
 
 react-native-image-pan-zoom@^2.1.9:
   version "2.1.11"
@@ -11541,12 +11550,12 @@ react-native-linear-gradient@2.5.3:
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.3.tgz#d90cf19a13fcccfa8bb32025ac40a15ae1b49e99"
   integrity sha512-XdusrOXXlkI+yQpUW7YLeiq9cZiBwkvQX4XEkHPVrJ9H47gsKmdgBwObkZBzBQUP0dKK/Sg6aVpETEis4w43bQ==
 
-react-native-modal@^7.0.2:
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-7.0.2.tgz#6048217807e03cd585204dace2e1ca1726c0b647"
-  integrity sha512-IRTDeErr4asDdPs4DGbaKvz3fgr56tcVA7nAdCLu4IkjNw7DaIlAbQelg0Sdirb+8+RbIDPyrrnuEH84Fnj4ZA==
+react-native-modal@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-9.0.0.tgz#0bfd0770361a2e5c6e0072bfdb0f1277f9662dba"
+  integrity sha512-j4xeIK9noHU/ksp2Ndc8NI1qJvjApToqGvqLEu2wtYeaISanbhtd0S3V4hZkSlCa3DZtegl6aaMZBLeH1q6xfA==
   dependencies:
-    prop-types "^15.6.1"
+    prop-types "^15.6.2"
     react-native-animatable "^1.2.4"
 
 react-native-progress@^3.5.0:
@@ -11576,10 +11585,15 @@ react-native-safe-area-view@^0.13.0:
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.16.tgz#e3651b7077ea8fa04e8dd3265ad9b87f1f77a758"
   integrity sha512-t+/aq5jQa+Is6afiQHa1P+2UPnwPGY9NT0pSqNr2zQ5llCn8TcPq6GN8xDMuEc08g+y/9R5zWo32hlVStwWn1A==
 
-react-native-splash-screen@3.1.1:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.1.1.tgz#1a4e46c9fdce53ff52af2a2cb4181788c4e30b30"
-  integrity sha512-PU2YocOSGbLjL9Vgcq/cwMNuHHKNjjuPpa1IPMuWo+6EB/fSZ5VOmxSa7+eucQe3631s3NhGuk3eHKahU03a4Q==
+react-native-screens@^1.0.0-alpha.22:
+  version "1.0.0-alpha.22"
+  resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-1.0.0-alpha.22.tgz#7a120377b52aa9bbb94d0b8541a014026be9289b"
+  integrity sha512-kSyAt0AeVU6N7ZonfV6dP6iZF8B7Bce+tk3eujXhzBGsLg0VSLnU7uE9VqJF0xdQrHR91ZjGgVMieo/8df9KTA==
+
+react-native-splash-screen@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.2.0.tgz#d47ec8557b1ba988ee3ea98d01463081b60fff45"
+  integrity sha512-Ls9qiNZzW/OLFoI25wfjjAcrf2DZ975hn2vr6U9gyuxi2nooVbzQeFoQS5vQcbCt9QX5NY8ASEEAtlLdIa6KVg==
 
 react-native-status-bar-height@^2.2.0:
   version "2.2.0"
@@ -11625,10 +11639,10 @@ react-native-vector-icons@6.1.0:
     prop-types "^15.6.2"
     yargs "^8.0.2"
 
-react-native-vector-icons@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-6.2.0.tgz#2682b718099eb9470c0defd38da47deb844a0f9c"
-  integrity sha512-NEQeQF7RzO5OILV4Q/F8P3pSuwN45/PPbOwU8/Eocc2Kl1bH1D42WFj+WSbCLVKeEq6oo7uj3tGqmrXGLs974A==
+react-native-vector-icons@^6.3.0:
+  version "6.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-6.3.0.tgz#47a0c9e04e045c0ea0b9ca450e2af84e45c07b3f"
+  integrity sha512-3Rf77BC1BhCpHkCitq4hDAEyaAR7Won5qrHU3fBoZzkEsI5oFTCfvnMDYzCx7XDW5Xn0u/Yg7JD9USynAOYVYA==
   dependencies:
     lodash "^4.0.0"
     prop-types "^15.6.2"

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useScreens } from 'react-native-screens';
 import {
   createBottomTabNavigator,
   createSwitchNavigator,
@@ -36,6 +37,12 @@ import createUserNavigator from './User';
 import createDashboardNavigator from './Dashboard';
 import createProfileNavigator from './Profile';
 import createProfileEditNavigator from './ProfileEdit';
+
+/**
+ * TODO:
+ * Temporary disabled screens, we need to figure out jumping header when moving between chats and profile screens.
+ */
+// useScreens();
 
 // Navigator
 const TabsNavigator = createBottomTabNavigator({
