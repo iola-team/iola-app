@@ -5,11 +5,11 @@ const typeDefs = gql`
     token: String
   }
 
-  type Query {
+  extend type Query {
     auth: Auth!
   }
 
-  type Mutation {
+  extend type Mutation {
     storeAuthToken(token: String!): Boolean
     clearAuthToken: Boolean
   }
