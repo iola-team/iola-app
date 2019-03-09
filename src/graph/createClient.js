@@ -4,7 +4,6 @@ import { getMainDefinition } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
 import { from, split } from 'apollo-link';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
-import { withClientState } from 'apollo-link-state';
 import { CachePersistor } from 'apollo-cache-persist';
 import { setContext } from 'apollo-link-context';
 import { BatchHttpLink } from 'apollo-link-batch-http';
@@ -14,7 +13,7 @@ import EventSource from 'react-native-event-source';
 import DeviceInfo from 'react-native-device-info';
 
 import { AuthLink, ErrorLink, SSELink } from './links';
-import resolvers from './resolvers';
+import clientState from './resolvers';
 import cacheRedirects from './cacheRedirects';
 import introspectionQueryResultData from './meta/fragmentTypes.json';
 
@@ -46,24 +45,6 @@ export async function createClient({
     cachePersistor,
   }));
 
-  const stateLink = withClientState({
-    resolvers: resolvers.resolvers,
-    defaults: resolvers.defaults,
-    typeDefs: resolvers.typeDefs,
-    cache,
-  });
-
-  /**
-   * Reload resolvers if module.hot is available
-   */
-  if (module.hot) {
-    module.hot.accept(() => {
-      const newResolvers = require('./resolvers').default;
-
-      assign(resolvers.resolvers, newResolvers.resolvers);
-    });
-  }
-
   if (restoreCache) {
     // await cachePersistor.restore();
   }
@@ -74,16 +55,32 @@ export async function createClient({
   const client = new ApolloClient({
     link: from([
       errorLink,
-      withContext.concat(
-        stateLink,
-      ),
+      withContext,
       authLink,
       terminatingLink,
     ]),
     cache,
+
+    /**
+     * Client state configs
+     */
+    typeDefs: clientState.typeDefs,
+    resolvers: clientState.resolvers,
   });
 
-  client.onResetStore(stateLink.writeDefaults);
+  /**
+   * Reload resolvers if module.hot is available
+   */
+  if (module.hot) {
+    module.hot.accept(() => client.setResolvers(
+      require('./resolvers').default
+    ));
+  }
+
+  const writeDefaults = () => cache.writeData({ data: clientState.defaults });
+  client.onResetStore(writeDefaults);
+
+  writeDefaults();
 
   return client;
 }

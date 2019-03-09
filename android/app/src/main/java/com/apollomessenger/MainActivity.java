@@ -1,13 +1,14 @@
 package com.apollomessenger;
 
-import com.facebook.react.ReactActivity;
+import android.os.Bundle;
+import com.facebook.react.ReactFragmentActivity;
 import com.facebook.react.ReactActivityDelegate;
 
 import org.devio.rn.splashscreen.SplashScreen;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-public class MainActivity extends ReactActivity {
+public class MainActivity extends ReactFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen.show(this);
