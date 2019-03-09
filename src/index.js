@@ -7,11 +7,12 @@ import { ApolloProvider } from 'react-apollo';
 import SplashScreen from 'react-native-splash-screen';
 import { DEV_PLATFORM_URL, DEV_URL_PARAMETERS, INTEGRATION_PATH } from 'react-native-dotenv';
 import { AsyncStorage } from 'react-native';
+import RNRestart from 'react-native-restart';
 
 import createApiClient from '~graph';
 import Theme from '~theme';
 import Application from '~application';
-import { Root } from '~components';
+import { Root, ErrorBoundary } from '~components';
 import Storybook from '~storybook/UI';
 import WebsiteURLScreen from '~screens/WebsiteURL/WebsiteURL';
 /* eslint-enable */
@@ -23,7 +24,11 @@ class ApplicationRoot extends Component {
 
   apiClient = null;
 
-  async init(platformURL) {
+  onRequestRelaunch = () => {
+    RNRestart.Restart();
+  };
+
+  init = async (platformURL) => {
     const url = `${__DEV__ ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_PATH}`;
     const urlParameters = __DEV__ ? DEV_URL_PARAMETERS : '';
     const apiURL = `${url}/graphql${urlParameters}`;
@@ -31,7 +36,20 @@ class ApplicationRoot extends Component {
 
     this.apiClient = await createApiClient({ apiURL, subscriptionsURL });
     this.setState({ isReady: true });
-  }
+  };
+
+  onApplicationReady = () => {
+    SplashScreen.hide();
+  };
+
+  onApplicationReset = async () => {
+    try {
+      await AsyncStorage.removeItem('platformURL');
+      this.setState({ isReady: false });
+    } catch (error) {
+      // @TODO: display Error message?
+    }
+  };
 
   async componentDidMount() {
     try {
@@ -49,32 +67,21 @@ class ApplicationRoot extends Component {
     SplashScreen.hide();
   }
 
-  onApplicationReady() {
-    SplashScreen.hide();
-  }
-
-  async onApplicationReset() {
-    try {
-      await AsyncStorage.removeItem('platformURL');
-      this.setState({ isReady: false });
-    } catch (error) {
-      // @TODO: display Error message?
-    }
-  }
-
   render() {
     const { isReady } = this.state;
 
     return isReady ? (
       <ApolloProvider client={this.apiClient}>
         <Theme>
-          <Root>
-            <Application onReady={this.onApplicationReady} onReset={::this.onApplicationReset} />
-          </Root>
+          <ErrorBoundary onRequestRelaunch={this.onRequestRelaunch}>
+            <Root>
+              <Application onReady={this.onApplicationReady} onReset={this.onApplicationReset} />
+            </Root>
+          </ErrorBoundary>
         </Theme>
       </ApolloProvider>
     ) : (
-      <WebsiteURLScreen onSubmit={::this.init} />
+      <WebsiteURLScreen onSubmit={this.init} />
     );
   }
 }
