@@ -5,7 +5,7 @@
       "includes": [".tmp/**/*.graphql"],
       "extensions": {
         "endpoints": {
-          "default": "${env:GRAPHQL_URL}"
+          "default": "${env:DEV_PLATFORM_URL}/${env:INTEGRATION_PATH}${env:DEV_URL_PARAMETERS}"
         }
       }
     }

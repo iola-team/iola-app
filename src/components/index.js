@@ -42,6 +42,7 @@ import UsersRow from './UsersRow';
 import UsersRowItem from './UsersRowItem';
 import SearchBlank from './SearchBlank';
 import ConnectivityIndicator from './ConnectivityIndicator';
+import ErrorBoundary from './ErrorBoundary';
 
 export {
   AvatarEdit,
@@ -85,6 +86,7 @@ export {
   UsersRowItem,
   SearchBlank,
   ConnectivityIndicator,
+  ErrorBoundary,
 
   // Navigation
   ScreenHeader,

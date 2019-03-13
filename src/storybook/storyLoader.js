@@ -16,6 +16,7 @@ function loadStories() {
   require('../components/ComponentTemplate/ComponentTemplate.stories');
   require('../components/ConnectivityIndicator/ConnectivityIndicator.stories');
   require('../components/DatePicker/DatePicker.stories');
+  require('../components/ErrorBoundary/ErrorBoundary.stories');
   require('../components/FieldInput/FieldInput.stories');
   require('../components/FieldSection/FieldSection.stories');
   require('../components/FieldView/FieldView.stories');
@@ -84,6 +85,7 @@ const stories = [
   '../components/ComponentTemplate/ComponentTemplate.stories',
   '../components/ConnectivityIndicator/ConnectivityIndicator.stories',
   '../components/DatePicker/DatePicker.stories',
+  '../components/ErrorBoundary/ErrorBoundary.stories',
   '../components/FieldInput/FieldInput.stories',
   '../components/FieldSection/FieldSection.stories',
   '../components/FieldView/FieldView.stories',
