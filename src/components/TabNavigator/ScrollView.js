@@ -87,6 +87,8 @@ export default class ScrollView extends PureComponent {
         ref={this.onRef}
         onScroll={onScrollEvent}
         onMomentumScrollEnd={this.onMomentumScrollEnd}
+
+        scrollEventThrottle={1}
       >
         <Animated.View style={stickyStyle}>
           <Header />
