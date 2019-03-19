@@ -4,9 +4,7 @@ import { StyleSheet, ActivityIndicator } from 'react-native';
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.Spinner', {
-  size: 26,
-})
+@withStyle('Sparkle.Spinner')
 export default class Spinner extends Component {
   static propTypes = {
     style: PropTypes.any.isRequired,
@@ -14,8 +12,8 @@ export default class Spinner extends Component {
 
   render() {
     const { style, ...props } = this.props;
-    const { size, color, ...styles } = StyleSheet.flatten(style);
+    const { color, ...styles } = StyleSheet.flatten(style);
 
-    return <ActivityIndicator size={size} color={color} {...props} style={styles} />;
+    return <ActivityIndicator size="small" color={color} {...props} style={styles} />;
   }
 }

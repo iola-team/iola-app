@@ -92,7 +92,7 @@ export default class SearchBar extends PureComponent {
       <View {...props} style={[style, styles.root]}>
         <View style={styles.inputWrap}>
           {searching ? (
-            <Spinner size={20} thickness={1.5} style={styles.spinner} />
+            <Spinner style={styles.spinner} />
           ) : (
             <Icon style={styles.icon} name="search" />
           )}
