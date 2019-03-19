@@ -19,7 +19,7 @@ export default class ScrollView extends PureComponent {
     this.scrollRef = ref;
   }
 
-  onMomentumScrollEnd = ({ nativeEvent: { contentOffset } }) => {
+  onScrollEnd = ({ nativeEvent: { contentOffset } }) => {
     const { onScrollEnd, headerHeight } = this.context;
     const y = contentOffset.y > headerHeight ? headerHeight : contentOffset.y;
     
@@ -86,7 +86,8 @@ export default class ScrollView extends PureComponent {
         {...listProps}
         ref={this.onRef}
         onScroll={onScrollEvent}
-        onMomentumScrollEnd={this.onMomentumScrollEnd}
+        onScrollEnd={this.onScrollEnd}
+        onMomentumScrollEnd={this.onScrollEnd}
 
         scrollEventThrottle={1}
       >
