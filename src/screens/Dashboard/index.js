@@ -1,12 +1,17 @@
 import React from 'react';
+import { createMaterialTopTabNavigator } from 'react-navigation';
 
-import { Icon, ScreenHeader, createHeadingTabsNavigator, TouchableOpacity } from '~components';
+import { Icon, TouchableOpacity, TabBar } from '~components';
 import { USER_SEARCH } from '../routeNames';
 
-export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
+export default (routes, config = {}) => createMaterialTopTabNavigator(routes, {
   ...config,
-  topBarHeight: ScreenHeader.HEIGHT,
-  
+
+  tabBarComponent: TabBar,
+  swipeEnabled: false,
+  animationEnabled: false,
+  lazy: true,
+
   navigationOptions: ({ navigation }) => ({
     title: 'Users',
     headerStyle: {

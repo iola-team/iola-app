@@ -50,8 +50,6 @@ const TabsNavigator = createBottomTabNavigator({
     [routes.DASHBOARD_ALL]: DashboardAll,
     [routes.DASHBOARD_FRIENDS]: MyFriends,
     [routes.DASHBOARD_FEATURED]: DashboardFeatured,
-  }, {
-    bottomBarHeight: BottomTabBar.HEIGHT,
   }),
   [routes.CHANNELS]: Channels,
   [routes.PROFILE]: createProfileNavigator({
