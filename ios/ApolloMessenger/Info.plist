@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app requires access to the photo library</string>
+	<string>for Image Sharing</string>
   <key>NSCameraUsageDescription</key>
-  <string>This app requires access to the camera</string>
-  
+  <string>to Capture Photos</string>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
