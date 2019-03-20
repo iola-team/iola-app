@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Text, Toast } from 'native-base';
-import CodeInput from 'react-native-confirmation-code-input';
+// import CodeInput from 'react-native-confirmation-code-input'; // @TODO: Iteration 2
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 
+// @TODO: Iteration 2
+/*
 const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode, onFulfill }) => ({
   compareWithCode,
   onFulfill,
@@ -13,6 +15,7 @@ const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode
   secureTextEntry: false,
   inputPosition: 'center',
 }));
+*/
 const ResendButtonText = connectToStyleSheet('resendButtonText', Text);
 const ResendButton = connectToStyleSheet('resendButton', Button);
 
@@ -55,6 +58,8 @@ export default class ForgotPasswordForm extends Component {
     onResend: PropTypes.func.isRequired,
   };
 
+  // @TODO: Iteration 2
+  /*
   async onSubmit(code) {
     const isValid = (code === '12345'); // @TODO
 
@@ -69,19 +74,22 @@ export default class ForgotPasswordForm extends Component {
       });
     }
   }
+  */
 
   render() {
     const { styleSheet, onResend } = this.props;
-    const { code: { color }, containerStyle } = styleSheet;
+    // const { code: { color }, containerStyle } = styleSheet; // @TODO: Iteration 2
 
     return (
       <Form>
+        {/* // @TODO: Iteration 2
         <Code
           onFulfill={::this.onSubmit}
           activeColor={color}
           inactiveColor={color}
           containerStyle={containerStyle}
         />
+        */}
 
         <ResendButton onPress={onResend} block bordered>
           <ResendButtonText>Resend the verification code</ResendButtonText>

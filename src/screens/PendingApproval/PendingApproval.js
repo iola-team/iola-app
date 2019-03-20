@@ -1,30 +1,9 @@
 import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Container, Text, View } from 'native-base';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { Icon } from '~components';
-import ForgotPasswordForm from './EmailVerificationForm';
-
-const meQuery = gql`
-  query meQuery {
-    me {
-      id
-      email
-    }
-  }
-`;
-
-const sendConfirmEmailInstructionsMutation = gql`
-  mutation($email: String!) {
-    result: sendConfirmEmailInstructions(email: $email) {
-      success
-      errorCode
-    }
-  }
-`;
 
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
   source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
@@ -35,7 +14,7 @@ const EmailIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'envel
 const Title = connectToStyleSheet('title', Text);
 const Description = connectToStyleSheet('description', Text);
 
-@styleSheet('Sparkle.ForgotPasswordScreen', {
+@styleSheet('Sparkle.PendingApprovalScreen', {
   background: {
     flex: 1,
   },
@@ -91,30 +70,20 @@ export default class EmailVerificationScreen extends Component {
 
   render() {
     return (
-      <Query query={meQuery}>
-        {({ data: { me }, loading }) => (
-          <Container>
-            <Background>
-              <Content>
-                <Header>
-                  <EmailIcon />
-                  <Title>Email verification</Title>
-                  {!loading && (
-                    <Description>
-                      Verification code has been sent to:{'\n'}
-                      {me.email}
-                    </Description>
-                  )}
-                </Header>
-
-                {!loading && (
-                  <ForgotPasswordForm onSuccess={this.onSuccess} onResend={this.onResend} />
-                )}
-              </Content>
-            </Background>
-          </Container>
-        )}
-      </Query>
+      <Container>
+        <Background>
+          <Content>
+            <Header>
+              <EmailIcon />
+              <Title>Account Pending Approval</Title>
+              <Description>
+                Your account is currently pending approval.{'\n'}
+                Please wait until the review is completed by administration.
+              </Description>
+            </Header>
+          </Content>
+        </Background>
+      </Container>
     );
   }
 }

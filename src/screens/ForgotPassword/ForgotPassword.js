@@ -123,20 +123,21 @@ export default class ForgotPasswordScreen extends Component {
     setSubmitting(true);
 
     try {
-      const asd = await sendResetPasswordInstructions(email);
       const { data: { result } } = await sendResetPasswordInstructions(email);
 
       success = result.success;
 
       switch (result.errorCode) {
         case 'ERROR_NOT_FOUND':
-          errorMessage = 'There is no user with this email address.';
+          errorMessage = 'There is no user registered with that email address.';
           break;
         case 'ERROR_DUPLICATE':
           errorMessage = 'Reset code already sent. Please try again in 10 minutes.';
           break;
       }
-    } catch ($error) {}
+    } catch ($error) {
+      // @TODO
+    }
 
     setSubmitting(false);
 
