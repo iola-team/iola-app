@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Animated, AsyncStorage, Easing, Dimensions, Image } from 'react-native';
+import { Animated, Easing, Dimensions, Image } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Container, View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
