@@ -60,7 +60,6 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
 
   title: {
     marginRight: 5,
-    fontFamily: 'SF Pro Text',
     fontSize: 16,
     fontWeight: '600',
     color: '#45474F',

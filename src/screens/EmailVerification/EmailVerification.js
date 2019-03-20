@@ -53,7 +53,6 @@ const Description = connectToStyleSheet('description', Text);
 
   description: {
     paddingTop: 22,
-    fontFamily: 'SF Pro Text',
     fontSize: 16,
     lineHeight: 20,
     textAlign: 'center',

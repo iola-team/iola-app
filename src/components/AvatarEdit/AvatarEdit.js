@@ -101,7 +101,6 @@ export default class AvatarEdit extends PureComponent {
 
     return (
       <View
-        highlight
         horizontalPadder
         style={[styleSheet.root, style]}
       >

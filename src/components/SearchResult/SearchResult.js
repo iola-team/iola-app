@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { Query, withApollo } from 'react-apollo';
 import { get, noop, debounce, uniq } from 'lodash';
+import update from 'immutability-helper';
 import { View } from 'native-base';
 
 import { withStyleSheet } from '~theme';
@@ -115,15 +116,22 @@ export default class SearchResult extends Component {
     const variables = { key: historyKey };
     const data = client.readQuery({ query, variables });
 
-    data.me.recentIds = uniq([...data.me.recentIds, node.id]);
-    client.writeQuery({ query, variables, data });
+    client.writeQuery({
+      query,
+      variables,
+      data: update(data, {
+        me: {
+          recentIds: { $set: uniq([ node.id, ...data.me.recentIds ]) },
+        },
+      }),
+    });
   };
 
   onItemPress = (item) => {
     const { onItemPress } = this.props;
 
     onItemPress(item);
-    setTimeout(() => this.addHistoryRecord(item));
+    setTimeout(() => this.addHistoryRecord(item), 100);
   }
 
   getQueryOptions() {

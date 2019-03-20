@@ -57,7 +57,6 @@ const chatFragment = gql`
 
       'NativeBase.Text': {
         '.note': {
-          fontFamily: 'SF Pro Text',
           fontSize: 14,
           lineHeight: 17,
           color: '#AFB2BF',

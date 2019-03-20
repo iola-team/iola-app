@@ -30,7 +30,6 @@ const iconMargin = 17;
 
   'NativeBase.Text': {
     textAlign: 'center',
-    fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 20,
   },

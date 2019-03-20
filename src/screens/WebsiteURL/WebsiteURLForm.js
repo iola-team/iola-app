@@ -31,7 +31,6 @@ import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
   },
 
   text: {
-    fontFamily: 'SF Pro Text',
     fontSize: 14,
     color: '#AFB2BF',
   },
@@ -43,7 +42,6 @@ import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
     paddingLeft: 3,
     paddingRight: 5,
     paddingVertical: 0,
-    fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 40,
     borderLeftWidth: 0,
@@ -60,7 +58,6 @@ import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
 
   error: {
     marginTop: 20,
-    fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 17,
     color: '#FFFFFF',

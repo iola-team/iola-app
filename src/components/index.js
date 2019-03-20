@@ -43,6 +43,7 @@ import UsersRowItem from './UsersRowItem';
 import SearchBlank from './SearchBlank';
 import ConnectivityIndicator from './ConnectivityIndicator';
 import ErrorBoundary from './ErrorBoundary';
+import TabBar from './TabBar';
 
 export {
   AvatarEdit,
@@ -89,6 +90,7 @@ export {
   ErrorBoundary,
 
   // Navigation
+  TabBar,
   ScreenHeader,
   BottomTabBar,
   createHeadingTabsNavigator,

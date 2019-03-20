@@ -42,7 +42,7 @@ export default class FieldList extends Component {
   }
 
   getPlaceholders() {
-    return range(3).map(index => ({ 
+    return range(2).map(index => ({ 
       key: index.toString(),
       placeholder: true,
     }));
