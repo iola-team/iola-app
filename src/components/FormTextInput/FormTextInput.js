@@ -140,6 +140,7 @@ export default class FormTextInput extends Component {
       customStyle,
       secureTextEntry,
       infoText,
+      textContentType,
     } = this.props;
     const { isFocused, isPasswordIsShown } = this.state;
     const value = values[name] || '';
@@ -182,6 +183,7 @@ export default class FormTextInput extends Component {
           onFocus={::this.onFocus}
           onBlur={::this.onBlur}
           isValid={isValid}
+          textContentType={textContentType}
         />
         <View style={[styles.infoContent, !secureTextEntry && { position: 'relative', right: 0 }]}>
           {isValid ? FieldInfo : FieldError}

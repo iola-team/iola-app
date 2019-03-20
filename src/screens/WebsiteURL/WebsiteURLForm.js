@@ -115,6 +115,7 @@ class WebsiteURLForm extends Component {
           <FormTextInput
             name="url"
             placeholder="Enter Website URL address"
+            textContentType="URL"
             error={!isValidURL}
             onChangeText={this.onChangeText}
             customStyle={styles.url}
@@ -128,7 +129,9 @@ class WebsiteURLForm extends Component {
 
         {!isValidURL && (
           <Text style={styles.error}>
-            Please make sure the Website URL address you have entered supports iola app (Please contact the website administrator)
+            Please make sure the Website URL address you have entered supports the iola messenger.
+            {'\n\n'}
+            For more info please contact your Website Administrator.
           </Text>
         )}
       </Form>
@@ -137,7 +140,7 @@ class WebsiteURLForm extends Component {
 }
 
 const validationSchema = yup.object().shape({
-  url: yup.string().required('Is required'),
+  url: yup.string().required(' '), // ' ' - don't remove (without space .required will disable)
 });
 
 export default withFormik({

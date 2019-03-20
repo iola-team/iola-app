@@ -14,15 +14,35 @@ import Theme from '~theme';
 import Application from '~application';
 import { Root, ErrorBoundary } from '~components';
 import Storybook from '~storybook/UI';
+import LaunchScreen from '~screens/Launch/Launch';
 import WebsiteURLScreen from '~screens/WebsiteURL/WebsiteURL';
 /* eslint-enable */
 
 class ApplicationRoot extends Component {
   state = {
     isReady: false,
+    hasCachedPlatformURL: false,
   };
 
   apiClient = null;
+
+  async componentDidMount() {
+    try {
+      const platformURL = await AsyncStorage.getItem('platformURL');
+
+      if (platformURL !== null) {
+        this.setState({ hasCachedPlatformURL: true });
+        this.init(platformURL);
+
+        return;
+      }
+    } catch (error) {
+      this.setState({ hasCachedPlatformURL: false });
+      // @TODO: display Error message?
+    }
+
+    SplashScreen.hide();
+  }
 
   onRequestRelaunch = () => {
     RNRestart.Restart();
@@ -45,30 +65,17 @@ class ApplicationRoot extends Component {
   onApplicationReset = async () => {
     try {
       await AsyncStorage.removeItem('platformURL');
-      this.setState({ isReady: false });
+      this.setState({ isReady: false, hasCachedPlatformURL: false });
     } catch (error) {
       // @TODO: display Error message?
     }
   };
 
-  async componentDidMount() {
-    try {
-      const platformURL = await AsyncStorage.getItem('platformURL');
-
-      if (platformURL !== null) {
-        this.init(platformURL);
-
-        return;
-      }
-    } catch (error) {
-      // @TODO: display Error message?
-    }
-
-    SplashScreen.hide();
-  }
-
   render() {
-    const { isReady } = this.state;
+    const { isReady, hasCachedPlatformURL } = this.state;
+    const notReadyScreen = (hasCachedPlatformURL)
+      ? <LaunchScreen />
+      : <WebsiteURLScreen onSubmit={this.init} />;
 
     return isReady ? (
       <ApolloProvider client={this.apiClient}>
@@ -80,9 +87,7 @@ class ApplicationRoot extends Component {
           </ErrorBoundary>
         </Theme>
       </ApolloProvider>
-    ) : (
-      <WebsiteURLScreen onSubmit={this.init} />
-    );
+    ) : notReadyScreen;
   }
 }
 
