@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import SplashScreen from 'react-native-splash-screen';
 import { DEV_PLATFORM_URL, DEV_URL_PARAMETERS, INTEGRATION_PATH } from 'react-native-dotenv';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import RNRestart from 'react-native-restart';
 
 import createApiClient from '~graph';
