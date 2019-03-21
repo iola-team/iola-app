@@ -4,7 +4,8 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import Moment from 'react-moment';
 import { Text } from 'native-base';
-import { NetInfo, AppState } from 'react-native';
+import { AppState } from 'react-native';
+import NetInfo from "@react-native-community/netinfo";
 
 import Navigator from '~screens';
 import { ROOT_QUERY } from '~graph';

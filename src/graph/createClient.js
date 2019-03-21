@@ -1,5 +1,5 @@
 import { assign, find, isPlainObject, isArray } from 'lodash';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import { getMainDefinition } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
 import { from, split } from 'apollo-link';
