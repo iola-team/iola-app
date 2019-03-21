@@ -53,7 +53,6 @@ const imageCommentsItemFragment = gql`
 
   name: {
     marginRight: 8,
-    fontFamily: 'SF Pro Text',
     fontWeight: '600',
     fontSize: 14,
     lineHeight: 16,
@@ -62,7 +61,6 @@ const imageCommentsItemFragment = gql`
 
   text: {
     paddingVertical: 6,
-    fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 17,
     color: '#45474F',
@@ -74,7 +72,6 @@ const imageCommentsItemFragment = gql`
   },
 
   createdAt: {
-    fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 16,
     color: '#BDC0CB',

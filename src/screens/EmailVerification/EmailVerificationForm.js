@@ -28,7 +28,6 @@ const ResendButton = connectToStyleSheet('resendButton', Button);
     marginRight: 8,
     backgroundColor: '#FFFFFF',
     color: '#585A61',
-    fontFamily: 'SF Pro Text',
     fontSize: 24,
     fontWeight: '600',
   },

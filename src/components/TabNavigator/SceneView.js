@@ -1,5 +1,5 @@
 import React, { PureComponent, Component, createContext } from 'react';
-import { StyleSheet, View, Platform, Animated, Dimensions } from 'react-native';
+import { StyleSheet, View, Platform, Animated, Dimensions, SafeAreaView } from 'react-native';
 import PropTypes from 'prop-types';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { without } from 'lodash';
@@ -197,7 +197,7 @@ export default class SceneView extends PureComponent {
 
     return (
       <Context.Provider value={this.contextValue}>
-        <View
+        <SafeAreaView
           style={styles.container}
           collapsable={false}
           removeClippedSubviews={
@@ -210,7 +210,7 @@ export default class SceneView extends PureComponent {
           <View style={isFocused ? styles.attached : styles.detached}>
             {renderScene({ route })}
           </View>
-        </View>
+        </SafeAreaView>
       </Context.Provider>
     );
   }

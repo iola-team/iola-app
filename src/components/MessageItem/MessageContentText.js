@@ -20,7 +20,6 @@ const contentFragment = gql`
   backgroundColor: '#FFFFFF',
 
   'NativeBase.Text': {
-    fontFamily: 'SF Pro Text',
     fontSize: 16,
     lineHeight: 19,
   },

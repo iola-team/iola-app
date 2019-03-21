@@ -63,7 +63,6 @@ const SignInButton = connectToStyleSheet('signInButton', Button);
   },
 
   description: {
-    fontFamily: 'SF Pro Text',
     fontSize: 16,
     lineHeight: 20,
     textAlign: 'center',

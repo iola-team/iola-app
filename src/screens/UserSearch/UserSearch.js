@@ -88,6 +88,7 @@ export default class UserSearch extends Component {
 
   renderBlank = ({ onItemPress, recentIds }) => {
     const { styleSheet: styles } = this.props;
+    const recentEdgeSorter = (a, b) => recentIds.indexOf(a.node.id) - recentIds.indexOf(b.node.id);
 
     return (
       <Query query={onlineUsersQuery}>
@@ -96,9 +97,12 @@ export default class UserSearch extends Component {
             {({ data: recentData, loading: loadingRecent }) => (
 
               <SearchBlank
-                edges={recentData?.users?.edges || []}
-                loading={loadingRecent}
+                /**
+                 * TODO: Memo the sort result
+                 */
+                edges={recentData?.users?.edges.sort(recentEdgeSorter) || []}
 
+                loading={loadingRecent}
                 hasRecentItems={!!recentIds.length}
                 headerTitle="Online"
                 contentTitle="Recent"
@@ -109,7 +113,7 @@ export default class UserSearch extends Component {
                   <UsersRow
                     style={styles.usersRow}
                     loading={loadingOnline}
-                    edges={onlineUsers?.edges || []} // TODO: Figure out UsersRow empty state
+                    edges={onlineUsers?.edges || []}
                     onItemPress={onItemPress}
                     showsHorizontalScrollIndicator={false}
                   />

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Header } from 'react-navigation';
 import { constant } from 'lodash';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import Icon from '../Icon';
@@ -33,7 +33,12 @@ import Icon from '../Icon';
   },
 })
 export default class ScreenHeader extends PureComponent {
-  static HEIGHT = Header.HEIGHT;
+  static get HEIGHT() {
+    /**
+     * TODO: Find a way to not hardcode these numbers
+     */
+    return Platform.select({ ios: 44, android: 56, default: 0 });
+  }
 
   static propTypes = {
     renderLeft: PropTypes.func,

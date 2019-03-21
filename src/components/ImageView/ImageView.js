@@ -92,7 +92,6 @@ export const photoDetailsQuery = gql`
   header: {
     flexDirection: 'row',
     textAlign: 'center',
-    fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 17,
     color: '#BDC0CB',
@@ -129,7 +128,6 @@ export const photoDetailsQuery = gql`
     position: 'absolute',
     top: 14,
     textAlign: 'center',
-    fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 17,
     color: '#BDC0CB',
@@ -150,7 +148,6 @@ export const photoDetailsQuery = gql`
 
   name: {
     paddingRight: 7,
-    fontFamily: 'SF Pro Text',
     fontSize: 16,
     fontWeight: '600',
     lineHeight: 19,
@@ -160,7 +157,6 @@ export const photoDetailsQuery = gql`
   caption: {
     paddingTop: 10,
     paddingBottom: 19,
-    fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 17,
     color: '#FFFFFF',
@@ -168,7 +164,6 @@ export const photoDetailsQuery = gql`
 
   dateTime: {
     paddingBottom: 19,
-    fontFamily: 'SF Pro Text',
     fontSize: 14,
     lineHeight: 17,
     color: '#BDC0CB',
@@ -199,7 +194,6 @@ export const photoDetailsQuery = gql`
   actionText: {
     color: '#AFB2BF',
     fontSize: 14,
-    fontFamily: 'SF Pro Text',
   },
 
   actionBadge: {

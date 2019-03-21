@@ -17,6 +17,9 @@ const childrenShape = PropTypes.oneOfType([
   PropTypes.element,
 ]);
 
+/**
+ * TODO: Extract common logic for IOS and Android to a separate file
+ */
 @styleSheet('Sparkle.DatePicker', {
   wheel: {
     height: 250,
