@@ -42,6 +42,10 @@
 		2DCD954D1E0B4F2C00145EB5 /* ApolloMessengerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* ApolloMessengerTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		347F14F66DB5440F9178E660 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B5803346B094F21B4EE0488 /* SimpleLineIcons.ttf */; };
+		384598BB2243A51A00E0E0B7 /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384598BA2243A51A00E0E0B7 /* QBImagePicker.framework */; };
+		384598BC2243A51A00E0E0B7 /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 384598BA2243A51A00E0E0B7 /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		384598BF2243A52100E0E0B7 /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384598BE2243A52100E0E0B7 /* RSKImageCropper.framework */; };
+		384598C02243A52100E0E0B7 /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 384598BE2243A52100E0E0B7 /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3BD0A9FC1752463FA1BA4BC0 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5020F37DE6CD465DAC0914DB /* Octicons.ttf */; };
 		3FAC13E3210345B69DCFA8BD /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4C24A6C5E6F344A68BE242A4 /* Roboto_medium.ttf */; };
 		4AF34E8E13AD4329A283D0A9 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B17988E829FC4584AEB86616 /* EvilIcons.ttf */; };
@@ -463,6 +467,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		384598BD2243A51B00E0E0B7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				384598BC2243A51A00E0E0B7 /* QBImagePicker.framework in Embed Frameworks */,
+				384598C02243A52100E0E0B7 /* RSKImageCropper.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		005C749E881949BD8DFEAD90 /* iola-icons-2.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "iola-icons-2.ttf"; path = "../resources/fonts/iola-icons-2.ttf"; sourceTree = "<group>"; };
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
@@ -499,6 +518,8 @@
 		2D02E4901E0B4A5D006451C7 /* ApolloMessenger-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ApolloMessenger-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DAD9443F3F141AE8BD1543E /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
+		384598BA2243A51A00E0E0B7 /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		384598BE2243A52100E0E0B7 /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DF8D84955E94C1EBB4BAC2D /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		467A346F786F484B99030C19 /* libRNCNetInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNCNetInfo-tvOS.a"; sourceTree = "<group>"; };
 		4B5803346B094F21B4EE0488 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -560,6 +581,7 @@
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
+				384598BF2243A52100E0E0B7 /* RSKImageCropper.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
@@ -571,6 +593,7 @@
 				EF2E63388156459E90408A16 /* libRNDeviceInfo.a in Frameworks */,
 				247F828C667042A782771314 /* libRNGestureHandler.a in Frameworks */,
 				DED4C7170BCF4F3499CE32E5 /* libRNVectorIcons.a in Frameworks */,
+				384598BB2243A51A00E0E0B7 /* QBImagePicker.framework in Frameworks */,
 				D20A7EE673484CEF8721A228 /* libRNScreens.a in Frameworks */,
 				9B8EE0B44366406ABE796067 /* libRCTRestart.a in Frameworks */,
 				57ED7416CC8741B68D3CE0C3 /* libRNCAsyncStorage.a in Frameworks */,
@@ -933,6 +956,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				384598BE2243A52100E0E0B7 /* RSKImageCropper.framework */,
+				384598BA2243A51A00E0E0B7 /* QBImagePicker.framework */,
 				13B07FAE1A68108700A75B9A /* ApolloMessenger */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ApolloMessengerTests */,
@@ -995,6 +1020,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				384598BD2243A51B00E0E0B7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1052,7 +1078,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = LK3J52Z24A;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = LK3J52Z24A;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1706,6 +1736,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = LK3J52Z24A;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1758,6 +1789,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = LK3J52Z24A;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
@@ -1807,6 +1839,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = LK3J52Z24A;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
@@ -1839,6 +1872,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LK3J52Z24A;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
