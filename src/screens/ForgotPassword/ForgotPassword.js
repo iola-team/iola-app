@@ -97,15 +97,21 @@ const SignInButton = connectToStyleSheet('signInButton', Button);
   },
 })
 @graphql(gql`
-  mutation sendResetPasswordInstructionsMutation($email: String!) {
-    result: sendResetPasswordInstructions(email: $email) {
+  mutation sendResetPasswordInstructionsMutation($input: ResetPasswordInstructionsInput!) {
+    result: sendResetPasswordInstructions(input: $input) {
       success
       errorCode
     }
   }
 `, {
   props: ({ mutate }) => ({
-    sendResetPasswordInstructions: email => mutate({ variables: { email } }),
+    sendResetPasswordInstructions: email => mutate({
+      variables: {
+        input: {
+          email,
+        }
+      },
+    }),
   }),
 })
 export default class ForgotPasswordScreen extends Component {

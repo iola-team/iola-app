@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Container, Text, View } from 'native-base';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
-import { Icon } from '~components';
-import ForgotPasswordForm from './EmailVerificationForm';
+import { withStyleSheet as styleSheet } from '~theme';
+import { Icon, Spinner } from '~components';
+import EmailVerificationForm from './EmailVerificationForm';
+
+// @TODO: Make it dynamical with admin plugin
+const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
 
 const meQuery = gql`
   query meQuery {
@@ -17,23 +20,14 @@ const meQuery = gql`
   }
 `;
 
-const sendConfirmEmailInstructionsMutation = gql`
-  mutation($email: String!) {
-    result: sendConfirmEmailInstructions(email: $email) {
+const sendEmailVerificationInstructionsMutation = gql`
+  mutation($input: EmailVerificationInstructionsInput!) {
+    result: sendEmailVerificationInstructions(input: $input) {
       success
       errorCode
     }
   }
 `;
-
-const Background = connectToStyleSheet('background', ImageBackground).withProps({
-  source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
-});
-const Content = connectToStyleSheet('content', View);
-const Header = connectToStyleSheet('header', View);
-const EmailIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'envelope' });
-const Title = connectToStyleSheet('title', Text);
-const Description = connectToStyleSheet('description', Text);
 
 @styleSheet('Sparkle.ForgotPasswordScreen', {
   background: {
@@ -51,10 +45,9 @@ const Description = connectToStyleSheet('description', Text);
   header: {
     alignItems: 'center',
     marginTop: 34,
-    marginBottom: 28,
   },
 
-  lockIcon: {
+  icon: {
     width: 48,
     height: 48,
     borderRadius: 25,
@@ -71,48 +64,110 @@ const Description = connectToStyleSheet('description', Text);
     color: '#FFFFFF',
   },
 
+  info: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 90,
+  },
+
   description: {
-    paddingTop: 22,
     fontSize: 16,
     lineHeight: 20,
     textAlign: 'center',
     color: '#FFFFFF',
   },
+
+  spinner: {
+    color: '#FFFFFF',
+  },
 })
 export default class EmailVerificationScreen extends Component {
+  state = {
+    isSubmitting: false,
+    error: '',
+  };
+
   onSuccess() {
-    alert('Success!');
+    // @TODO: Iteration 2 (Email Verification with short code)
   }
 
-  onResend() {
-    alert('Resend the verification code');
+  async onSubmit(email, sendEmailVerificationInstructions) {
+    this.setState({ isSubmitting: true });
+
+    try {
+      let error = '';
+      const {
+        data: {
+          result: {
+            errorCode,
+          },
+        },
+      } = await sendEmailVerificationInstructions({
+        variables: {
+          input: {
+            email,
+          },
+        },
+      });
+
+      switch (errorCode) {
+        case 'ERROR_COMMON':
+          error = 'Something went wrong\nPlease try again later';
+          break;
+        case 'ERROR_NOT_FOUND':
+          error = `User with email\n${email}\nwas not found`;
+          break;
+      }
+
+      this.setState({ isSubmitting: false, error });
+    } catch (error) {
+      this.setState({
+        isSubmitting: false,
+        error: 'Something went wrong\nPlease try again later',
+      });
+    }
   }
 
   render() {
+    const { styleSheet: styles } = this.props;
+    const { isSubmitting, error } = this.state;
+
     return (
       <Query query={meQuery}>
-        {({ data: { me }, loading }) => (
-          <Container>
-            <Background>
-              <Content>
-                <Header>
-                  <EmailIcon />
-                  <Title>Email verification</Title>
-                  {!loading && (
-                    <Description>
-                      Verification code has been sent to:{'\n'}
-                      {me.email}
-                    </Description>
-                  )}
-                </Header>
+        {({ data: { me }, loading }) => {
+          const email = loading ? null : me.email;
+          const infoContent = (
+            <Text style={styles.description}>
+              {error ? error : `Verification code has been sent to:\n${email}`}
+            </Text>
+          );
 
-                {!loading && (
-                  <ForgotPasswordForm onSuccess={this.onSuccess} onResend={this.onResend} />
-                )}
-              </Content>
-            </Background>
-          </Container>
-        )}
+          return (
+            <Container>
+              <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
+                <View style={styles.content}>
+                  <View style={styles.header}>
+                    <Icon style={styles.icon} name="envelope" />
+                    <Text style={styles.title}>Email verification</Text>
+                    <View style={styles.info}>
+                      {!loading && !isSubmitting ? infoContent : <Spinner style={styles.spinner} />}
+                    </View>
+                  </View>
+
+                  <Mutation mutation={sendEmailVerificationInstructionsMutation}>
+                    {sendEmailVerificationInstructions => !loading && (
+                      <EmailVerificationForm
+                        onSubmit={() => this.onSubmit(email, sendEmailVerificationInstructions)}
+                        onSuccess={this.onSuccess}
+                        isSubmitting={isSubmitting}
+                      />
+                    )}
+                  </Mutation>
+                </View>
+              </ImageBackground>
+            </Container>
+          );
+        }}
       </Query>
     );
   }

@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
+import { ApolloConsumer } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import SignInForm from './SignInForm';
 import * as routes from '../routeNames';
+
+const meQuery = gql`
+  query meQuery {
+    me {
+      id
+      isEmailVerified
+    }
+  }
+`;
 
 @styleSheet('Sparkle.SignInScreen', {
   background: {
@@ -34,14 +45,41 @@ import * as routes from '../routeNames';
 export default class SignInScreen extends Component {
   state = { defaultEmail: '' };
 
-  onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }) => {
+  onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }, apolloClient) => {
     const { authenticate, navigation: { navigate } } = this.props;
-    const success = await authenticate(login, password);
+    let success = false;
+    let isEmailVerified = false;
+
+    try {
+      success = await authenticate(login, password);
+    } catch (error) {
+      // @TODO: handle the error?
+    }
 
     setStatus({ ...status, success });
     setSubmitting(false);
 
-    if (success) navigate(routes.APPLICATION);
+    try {
+      const { data: { me } } = await apolloClient.query({ query: meQuery });
+
+      isEmailVerified = me.isEmailVerified;
+    } catch (error) {
+      // @TODO: handle the error? (if !isEmailVerified Oxwall will respond with HTML of page with "Click Send button to receive a letter with the confirmation code to your email address.")
+    }
+
+    if (success) navigate(isEmailVerified ? routes.APPLICATION : routes.EMAIL_VERIFICATION);
+  };
+
+  onForgotPassword = (login) => {
+    const { navigation: { navigate } } = this.props;
+
+    navigate({
+      routeName: routes.FORGOT_PASSWORD,
+      params: {
+        defaultLogin: login,
+        setDefaultEmail: defaultEmail => this.setState({ defaultEmail }),
+      },
+    });
   };
 
   render() {
@@ -58,17 +96,15 @@ export default class SignInScreen extends Component {
           <Content padder contentContainerStyle={styles.content}>
             <H1 style={styles.title}>Sign in</H1>
 
-            <SignInForm
-              defaultEmail={this.state.defaultEmail}
-              onSubmit={this.onSubmit}
-              onForgotPassword={login => navigate({
-                routeName: routes.FORGOT_PASSWORD,
-                params: {
-                  defaultLogin: login,
-                  setDefaultEmail: defaultEmail => this.setState({ defaultEmail }),
-                },
-              })}
-            />
+            <ApolloConsumer>
+              {apolloClient => (
+                <SignInForm
+                  defaultEmail={this.state.defaultEmail}
+                  onSubmit={(values, formikBag) => this.onSubmit(values, formikBag, apolloClient)}
+                  onForgotPassword={login => this.onForgotPassword(login)}
+                />
+              )}
+            </ApolloConsumer>
 
             <Button
               style={styles.button}

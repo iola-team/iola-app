@@ -13,7 +13,7 @@ const generate = async () => {
 
   if (!fileSchemas.length) {
     try {
-      await exec(`npm run schema:load`);
+      await exec(`yarn run schema:load`);
     } catch (error) {
       console.error(error);
     }
