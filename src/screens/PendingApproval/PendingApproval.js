@@ -1,18 +1,24 @@
 import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Container, Text, View } from 'native-base';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
+import { withStyleSheet as styleSheet } from '~theme';
 import { Icon } from '~components';
+import PendingApprovalSubscription from './PendingApprovalSubscription';
+import * as routes from '../routeNames';
 
-const Background = connectToStyleSheet('background', ImageBackground).withProps({
-  source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
-});
-const Content = connectToStyleSheet('content', View);
-const Header = connectToStyleSheet('header', View);
-const EmailIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'envelope' });
-const Title = connectToStyleSheet('title', Text);
-const Description = connectToStyleSheet('description', Text);
+// @TODO: Make it dynamical with admin plugin
+const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
+
+const meQuery = gql`
+  query meQuery {
+    me {
+      id
+    }
+  }
+`;
 
 @styleSheet('Sparkle.PendingApprovalScreen', {
   background: {
@@ -33,7 +39,7 @@ const Description = connectToStyleSheet('description', Text);
     marginBottom: 28,
   },
 
-  lockIcon: {
+  icon: {
     width: 48,
     height: 48,
     borderRadius: 25,
@@ -45,7 +51,7 @@ const Description = connectToStyleSheet('description', Text);
   },
 
   title: {
-    alignSelf: 'center',
+    textAlign: 'center',
     fontSize: 30,
     color: '#FFFFFF',
   },
@@ -68,21 +74,34 @@ export default class EmailVerificationScreen extends Component {
     alert('Resend the verification code');
   }
 
+  onUserApproved = ({ isApproved }) => {
+    const { navigation: { navigate } } = this.props;
+
+    if (isApproved) navigate(routes.DASHBOARD);
+  };
+
   render() {
+    const { styleSheet: styles } = this.props;
+
     return (
       <Container>
-        <Background>
-          <Content>
-            <Header>
-              <EmailIcon />
-              <Title>Account Pending Approval</Title>
-              <Description>
+        <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
+          <View style={styles.content}>
+            <View style={styles.header}>
+              <Icon style={styles.icon} name="envelope" />
+              <Text style={styles.title}>Account Pending Approval</Text>
+              <Text style={styles.description}>
                 Your account is currently pending approval.{'\n'}
                 Please wait until the review is completed by administration.
-              </Description>
-            </Header>
-          </Content>
-        </Background>
+              </Text>
+            </View>
+          </View>
+        </ImageBackground>
+        <Query query={meQuery}>
+          {({ data: { me }, loading }) => !loading && (
+            <PendingApprovalSubscription userId={me.id} onSubscriptionData={this.onUserApproved} />
+          )}
+        </Query>
       </Container>
     );
   }

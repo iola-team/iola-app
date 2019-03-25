@@ -1,9 +1,77 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
+import { button, withKnobs } from '@storybook/addon-knobs';
+import gql from 'graphql-tag';
+import { PubSub } from 'graphql-subscriptions';
+import { find } from 'lodash';
 
+import { getApolloDecorator } from '~storybook';
 import PendingApproval from './PendingApproval';
 
 const stories = storiesOf('Screens/PendingApproval', module);
+const subscriptions = new PubSub();
+const mockedProps = {
+  navigation: {
+    navigate: () => alert('Stub for navigation action'),
+  },
+};
+
+// Decorators
+stories.addDecorator(withKnobs());
+stories.addDecorator(getApolloDecorator({
+  typeDefs: gql`
+    type Query {
+      me: User!
+    }
+    
+    type Subscription {
+      onUserApproved(userId: ID!): UserApprovePayload!
+    }
+    
+    type User {
+      id: ID!
+      isApproved: Boolean!
+    }
+    
+    type UserApprovePayload {
+      user: User!
+    }
+  `,
+
+  resolvers: {
+    Query: {
+      me: (root, args, { dataStore: { users } }) => {
+        return find(users, { id: 'User:1' });
+      }
+    },
+
+    Subscription: {
+      onUserApproved: {
+        resolve: ({ userId }, args, { dataStore }) => {
+          return {
+            user: {
+              id: userId,
+              isApproved: true,
+            },
+          };
+        },
+
+        subscribe: () => subscriptions.asyncIterator('onUserApproved'),
+      },
+    },
+  },
+
+  dataStore: () => ({
+    users: [{
+      id: 'User:1',
+      isEmailVerified: false,
+    }],
+  }),
+}));
 
 // Stories
-stories.add('Screen', () => <PendingApproval />);
+stories.add('Screen', () => {
+  button('Approve User', () => subscriptions.publish('onUserApproved', { userId: 'User:1' }));
+
+  return <PendingApproval {...mockedProps} />;
+});

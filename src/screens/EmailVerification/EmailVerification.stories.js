@@ -6,13 +6,11 @@ import { PubSub } from 'graphql-subscriptions';
 import delay from 'promise-delay';
 import { find } from 'lodash';
 
-import EmailVerification from './EmailVerification';
 import { getApolloDecorator } from '~storybook';
+import EmailVerification from './EmailVerification';
 
 const stories = storiesOf('Screens/EmailVerification', module);
 const subscriptions = new PubSub();
-const knobSelect = [null, 'ERROR_COMMON', 'ERROR_NOT_FOUND'];
-const getErrorCodeFromKnobSelect = () => select('errorCode', knobSelect, knobSelect[0]);
 const mockedProps = {
   navigation: {
     navigate: () => alert('Stub for navigation action'),
@@ -71,7 +69,8 @@ stories.addDecorator(getApolloDecorator({
 
     Mutation: {
       sendEmailVerificationInstructions: async (root, { input }, { dataStore }) => {
-        const errorCode = getErrorCodeFromKnobSelect();
+        const knobSelect = [null, 'ERROR_COMMON', 'ERROR_NOT_FOUND'];
+        const errorCode = select('errorCode', knobSelect, knobSelect[0]);
 
         await delay(1000 + Math.random() * 1000);
 

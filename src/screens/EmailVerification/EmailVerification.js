@@ -61,7 +61,7 @@ const sendEmailVerificationInstructionsMutation = gql`
   },
 
   title: {
-    alignSelf: 'center',
+    textAlign: 'center',
     fontSize: 30,
     color: '#FFFFFF',
   },
@@ -130,10 +130,10 @@ export default class EmailVerificationScreen extends Component {
     // @TODO: Iteration 2 (Email Verification with short code)
   }
 
-  onEmailVerified = (user) => {
+  onEmailVerified = ({ isEmailVerified }) => {
     const { navigation: { navigate } } = this.props;
 
-    if (user.isEmailVerified) navigate(routes.DASHBOARD);
+    if (isEmailVerified) navigate(routes.DASHBOARD);
   };
 
   render() {
