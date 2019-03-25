@@ -12,6 +12,7 @@ const meQuery = gql`
   query meQuery {
     me {
       id
+      isApproved
       isEmailVerified
     }
   }
@@ -47,27 +48,43 @@ export default class SignInScreen extends Component {
 
   onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }, apolloClient) => {
     const { authenticate, navigation: { navigate } } = this.props;
-    let success = false;
+    let authenticated = false;
+    let isApproved = false;
     let isEmailVerified = false;
 
     try {
-      success = await authenticate(login, password);
+      authenticated = await authenticate(login, password);
     } catch (error) {
       // @TODO: handle the error?
     }
 
-    setStatus({ ...status, success });
+    setStatus({ ...status, success: authenticated });
     setSubmitting(false);
 
     try {
       const { data: { me } } = await apolloClient.query({ query: meQuery });
 
+      isApproved = me.isApproved;
       isEmailVerified = me.isEmailVerified;
     } catch (error) {
-      // @TODO: handle the error? (if !isEmailVerified Oxwall will respond with HTML of page with "Click Send button to receive a letter with the confirmation code to your email address.")
+      // @TODO: handle the error?
     }
 
-    if (success) navigate(isEmailVerified ? routes.APPLICATION : routes.EMAIL_VERIFICATION);
+    if (authenticated) {
+      if (!isApproved) {
+        navigate(routes.PENDING_APPROVAL);
+
+        return;
+      }
+
+      if (!isEmailVerified) {
+        navigate(routes.EMAIL_VERIFICATION);
+
+        return;
+      }
+
+      navigate(routes.APPLICATION);
+    }
   };
 
   onForgotPassword = (login) => {
