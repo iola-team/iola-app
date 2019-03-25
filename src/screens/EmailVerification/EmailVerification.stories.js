@@ -1,7 +1,8 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
+import { button, select, withKnobs } from '@storybook/addon-knobs';
 import gql from 'graphql-tag';
-import { select, withKnobs } from '@storybook/addon-knobs';
+import { PubSub } from 'graphql-subscriptions';
 import delay from 'promise-delay';
 import { find } from 'lodash';
 
@@ -9,8 +10,14 @@ import EmailVerification from './EmailVerification';
 import { getApolloDecorator } from '~storybook';
 
 const stories = storiesOf('Screens/EmailVerification', module);
+const subscriptions = new PubSub();
 const knobSelect = [null, 'ERROR_COMMON', 'ERROR_NOT_FOUND'];
 const getErrorCodeFromKnobSelect = () => select('errorCode', knobSelect, knobSelect[0]);
+const mockedProps = {
+  navigation: {
+    navigate: () => alert('Stub for navigation action'),
+  },
+};
 
 // Decorators
 stories.addDecorator(withKnobs());
@@ -20,14 +27,19 @@ stories.addDecorator(getApolloDecorator({
     type Query {
       me: User!
     }
+
+    type Mutation {
+      sendEmailVerificationInstructions(input: EmailVerificationInstructionsInput!): EmailVerificationInstructionsPayload!
+    }
+    
+    type Subscription {
+      onUserEmailVerified(userId: ID): UserEmailVerificationPayload!
+    }
     
     type User {
       id: ID!
       email: String!
-    }
-
-    type Mutation {
-      sendEmailVerificationInstructions(input: EmailVerificationInstructionsInput!): EmailVerificationInstructionsPayload!
+      isEmailVerified: Boolean!
     }
     
     input EmailVerificationInstructionsInput {
@@ -42,6 +54,10 @@ stories.addDecorator(getApolloDecorator({
     type EmailVerificationInstructionsPayload {
       success: Boolean!
       errorCode: EmailVerificationInstructionsErrorCode
+    }
+    
+    type UserEmailVerificationPayload {
+      user: User!
     }
   `,
   /* eslint-enable */
@@ -65,15 +81,37 @@ stories.addDecorator(getApolloDecorator({
         };
       },
     },
+
+    Subscription: {
+      onUserEmailVerified: {
+        resolve: ({ userId }, args, { dataStore }) => {
+          return {
+            user: {
+              id: userId,
+              isEmailVerified: true,
+            },
+          };
+        },
+
+        subscribe: () => subscriptions.asyncIterator('onUserEmailVerified'),
+      },
+    },
   },
 
   dataStore: () => ({
     users: [{
       id: 'User:1',
       email: 'roman@banan.com',
+      isEmailVerified: false,
     }],
   }),
 }));
 
 // Stories
-stories.add('Screen', () => <EmailVerification />);
+stories.add('Screen', () => {
+  button('Verify User Email', () => subscriptions.publish('onUserEmailVerified', {
+    userId: 'User:1',
+  }));
+
+  return <EmailVerification {...mockedProps} />;
+});

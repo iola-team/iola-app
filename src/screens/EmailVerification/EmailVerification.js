@@ -7,6 +7,8 @@ import gql from 'graphql-tag';
 import { withStyleSheet as styleSheet } from '~theme';
 import { Icon, Spinner } from '~components';
 import EmailVerificationForm from './EmailVerificationForm';
+import EmailVerificationSubscription from './EmailVerificationSubscription';
+import * as routes from '../routeNames';
 
 // @TODO: Make it dynamical with admin plugin
 const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
@@ -87,10 +89,6 @@ export default class EmailVerificationScreen extends Component {
     error: '',
   };
 
-  onSuccess() {
-    // @TODO: Iteration 2 (Email Verification with short code)
-  }
-
   async onSubmit(email, sendEmailVerificationInstructions) {
     this.setState({ isSubmitting: true });
 
@@ -127,6 +125,16 @@ export default class EmailVerificationScreen extends Component {
       });
     }
   }
+
+  onSuccess() {
+    // @TODO: Iteration 2 (Email Verification with short code)
+  }
+
+  onEmailVerified = (user) => {
+    const { navigation: { navigate } } = this.props;
+
+    if (user.isEmailVerified) navigate(routes.DASHBOARD);
+  };
 
   render() {
     const { styleSheet: styles } = this.props;
@@ -165,6 +173,12 @@ export default class EmailVerificationScreen extends Component {
                   </Mutation>
                 </View>
               </ImageBackground>
+              {!loading && (
+                <EmailVerificationSubscription
+                  userId={me.id}
+                  onSubscriptionData={this.onEmailVerified}
+                />
+              )}
             </Container>
           );
         }}
