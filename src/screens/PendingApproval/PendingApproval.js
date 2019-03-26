@@ -75,7 +75,7 @@ export default class EmailVerificationScreen extends Component {
     alert('Resend the verification code');
   }
 
-  onUserApproved = ({ isApproved }) => {
+  onPendingApproval = ({ isApproved }) => {
     const { navigation: { navigate } } = this.props;
 
     if (isApproved) navigate(routes.DASHBOARD);
@@ -104,7 +104,10 @@ export default class EmailVerificationScreen extends Component {
         </ImageBackground>
         <Query query={meQuery}>
           {({ data: { me }, loading }) => !loading && (
-            <PendingApprovalSubscription userId={me.id} onSubscriptionData={this.onUserApproved} />
+            <PendingApprovalSubscription
+              userId={me.id}
+              onSubscriptionData={this.onPendingApproval}
+            />
           )}
         </Query>
       </Container>

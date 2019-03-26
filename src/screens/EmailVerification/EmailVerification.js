@@ -130,7 +130,7 @@ export default class EmailVerificationScreen extends Component {
     // @TODO: Iteration 2 (Email Verification with short code)
   }
 
-  onEmailVerified = ({ isApproved, isEmailVerified }) => {
+  onEmailVerification = ({ isApproved, isEmailVerified }) => {
     if (!isEmailVerified) return;
 
     const { navigation: { navigate } } = this.props;
@@ -178,7 +178,7 @@ export default class EmailVerificationScreen extends Component {
               {!loading && (
                 <EmailVerificationSubscription
                   userId={me.id}
-                  onSubscriptionData={this.onEmailVerified}
+                  onSubscriptionData={this.onEmailVerification}
                 />
               )}
             </Container>
