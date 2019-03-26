@@ -9,6 +9,7 @@ const emailVerificationSubscription = gql`
     onUserUpdate(userId: $userId) {
       user {
         id
+        isApproved
         isEmailVerified
       }
     }

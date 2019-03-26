@@ -8,6 +8,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { Icon } from '~components';
 import PendingApprovalSubscription from './PendingApprovalSubscription';
 import * as routes from '../routeNames';
+import LogoutButton from '../Profile/LogoutButton';
 
 // @TODO: Make it dynamical with admin plugin
 const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
@@ -94,6 +95,10 @@ export default class EmailVerificationScreen extends Component {
                 Your account is currently pending approval.{'\n'}
                 Please wait until the review is completed by administration.
               </Text>
+            </View>
+            <View>
+              {/* @TODO */}
+              <LogoutButton />
             </View>
           </View>
         </ImageBackground>

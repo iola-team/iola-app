@@ -71,14 +71,14 @@ export default class SignInScreen extends Component {
     }
 
     if (authenticated) {
-      if (!isApproved) {
-        navigate(routes.PENDING_APPROVAL);
+      if (!isEmailVerified) {
+        navigate(routes.EMAIL_VERIFICATION);
 
         return;
       }
 
-      if (!isEmailVerified) {
-        navigate(routes.EMAIL_VERIFICATION);
+      if (!isApproved) {
+        navigate(routes.PENDING_APPROVAL);
 
         return;
       }
