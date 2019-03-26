@@ -133,7 +133,12 @@ export default class EmailVerificationScreen extends Component {
   onEmailVerified = ({ isEmailVerified }) => {
     const { navigation: { navigate } } = this.props;
 
-    if (isEmailVerified) navigate(routes.DASHBOARD);
+    // This works thanks to order of checks on integration (1st - pending approval, 2nd email verification)
+    // @TODO: coupled with TODO on integration:
+    // @TODO: For some reason the $userDtoAfterSave is equal to $userDto... so we can't filter it with $userDto->emailVerify != $userDtoAfterSave->emailVerify
+    // if (isEmailVerified) navigate(routes.DASHBOARD);
+
+    navigate(routes.DASHBOARD);
   };
 
   render() {

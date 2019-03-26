@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 
 const pendingApprovalSubscription = gql`
   subscription PendingApprovalSubscription($userId: ID!) {
-    onUserApproved(userId: $userId) {
+    onUserUpdate(userId: $userId) {
       user {
         id
         isApproved
@@ -23,7 +23,7 @@ export default class PendingApprovalSubscription extends PureComponent {
 
   onSubscriptionData = ({ subscriptionData }) => {
     try {
-      this.props.onSubscriptionData(subscriptionData.data.onUserApproved.user);
+      this.props.onSubscriptionData(subscriptionData.data.onUserUpdate.user);
     } catch {
       Toast.show({
         text: 'Something went wrong',

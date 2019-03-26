@@ -25,7 +25,7 @@ stories.addDecorator(getApolloDecorator({
     }
     
     type Subscription {
-      onUserApproved(userId: ID!): UserApprovePayload!
+      onUserUpdate(userId: ID!): UserUpdatePayload!
     }
     
     type User {
@@ -33,7 +33,7 @@ stories.addDecorator(getApolloDecorator({
       isApproved: Boolean!
     }
     
-    type UserApprovePayload {
+    type UserUpdatePayload {
       user: User!
     }
   `,
@@ -46,7 +46,7 @@ stories.addDecorator(getApolloDecorator({
     },
 
     Subscription: {
-      onUserApproved: {
+      onUserUpdate: {
         resolve: ({ userId }, args, { dataStore }) => {
           return {
             user: {
@@ -56,7 +56,7 @@ stories.addDecorator(getApolloDecorator({
           };
         },
 
-        subscribe: () => subscriptions.asyncIterator('onUserApproved'),
+        subscribe: () => subscriptions.asyncIterator('onUserUpdate'),
       },
     },
   },
@@ -71,7 +71,7 @@ stories.addDecorator(getApolloDecorator({
 
 // Stories
 stories.add('Screen', () => {
-  button('Approve User', () => subscriptions.publish('onUserApproved', { userId: 'User:1' }));
+  button('Approve User', () => subscriptions.publish('onUserUpdate', { userId: 'User:1' }));
 
   return <PendingApproval {...mockedProps} />;
 });

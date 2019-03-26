@@ -31,7 +31,7 @@ stories.addDecorator(getApolloDecorator({
     }
     
     type Subscription {
-      onUserEmailVerified(userId: ID): UserEmailVerificationPayload!
+      onUserUpdate(userId: ID): UserUpdatePayload!
     }
     
     type User {
@@ -54,7 +54,7 @@ stories.addDecorator(getApolloDecorator({
       errorCode: EmailVerificationInstructionsErrorCode
     }
     
-    type UserEmailVerificationPayload {
+    type UserUpdatePayload {
       user: User!
     }
   `,
@@ -82,7 +82,7 @@ stories.addDecorator(getApolloDecorator({
     },
 
     Subscription: {
-      onUserEmailVerified: {
+      onUserUpdate: {
         resolve: ({ userId }, args, { dataStore }) => {
           return {
             user: {
@@ -92,7 +92,7 @@ stories.addDecorator(getApolloDecorator({
           };
         },
 
-        subscribe: () => subscriptions.asyncIterator('onUserEmailVerified'),
+        subscribe: () => subscriptions.asyncIterator('onUserUpdate'),
       },
     },
   },
@@ -108,7 +108,7 @@ stories.addDecorator(getApolloDecorator({
 
 // Stories
 stories.add('Screen', () => {
-  button('Verify User Email', () => subscriptions.publish('onUserEmailVerified', {
+  button('Verify User Email', () => subscriptions.publish('onUserUpdate', {
     userId: 'User:1',
   }));
 

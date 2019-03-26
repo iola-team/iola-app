@@ -16,7 +16,7 @@ if (require.main === module) {
     console.log('Generating schemas...');
 
     try {
-      await exec(`npm run schema:generate`);
+      await exec(`yarn run schema:generate`);
     } catch(e) {
       console.error(e);
     }

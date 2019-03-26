@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 
 const emailVerificationSubscription = gql`
   subscription UserEmailVerifiedSubscription($userId: ID!) {
-    onUserEmailVerified(userId: $userId) {
+    onUserUpdate(userId: $userId) {
       user {
         id
         isEmailVerified
@@ -23,7 +23,7 @@ export default class EmailVerificationSubscription extends PureComponent {
 
   onSubscriptionData = ({ subscriptionData }) => {
     try {
-      this.props.onSubscriptionData(subscriptionData.data.onUserEmailVerified.user);
+      this.props.onSubscriptionData(subscriptionData.data.onUserUpdate.user);
     } catch {
       Toast.show({
         text: 'Something went wrong',
