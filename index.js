@@ -8,7 +8,7 @@ if (Platform.OS === 'android') {
   NativeModules.UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-AppRegistry.registerComponent('ApolloMessenger', () => gestureHandlerRootHOC(Application));
+AppRegistry.registerComponent('iola', () => gestureHandlerRootHOC(Application));
 
 /**
  * TODO: Remove when it will be possible

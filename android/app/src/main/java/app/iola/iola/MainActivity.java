@@ -1,4 +1,4 @@
-package com.apollomessenger;
+package app.iola.iola;
 
 import android.os.Bundle;
 import com.facebook.react.ReactFragmentActivity;
@@ -21,7 +21,7 @@ public class MainActivity extends ReactFragmentActivity {
      */
     @Override
     protected String getMainComponentName() {
-        return "ApolloMessenger";
+        return "iola";
     }
 
     @Override
