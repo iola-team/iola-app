@@ -58,11 +58,11 @@
   },
 
   "xcodeSchemes": {
-		"Debug": ["Storybook"],
-		"Release": [],
-		"projectDirectory": "ios",
-		"settings": {}
-	},
+    "Debug": ["Storybook"],
+    "Release": [],
+    "projectDirectory": "ios",
+    "settings": {}
+  },
 
   "dependencies": {
     "@react-native-community/async-storage": "^1.2.1",
