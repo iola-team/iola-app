@@ -15,10 +15,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  NSMutableDictionary *initialProperties = [[NSMutableDictionary alloc] init];
+  NSString *isStorybookValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"isStorybook"];
+  BOOL isStorybook = [isStorybookValue boolValue];
+  
+  [initialProperties setValue:[NSNumber numberWithBool:isStorybook] forKey:@"isStorybook"];
+  
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
                                                    moduleName:@"iola"
-                                            initialProperties:nil];
+                                            initialProperties:initialProperties];
 
   rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
 
