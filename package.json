@@ -27,10 +27,10 @@
     "lint:statistics": "echo \"================\nESLint Statstics\n================\n\"; eslint -c .eslintrc ./src/**/*.js --format ./node_modules/eslint-stats/byErrorAndWarning.js; exit 0",
     "lint:fix": "eslint --fix \"./src/**/*.js\"; exit 0",
     "tools:generate-component": "generact ./src/components/ComponentTemplate/index.js --root ./src/components/",
-    "postinstall": "sh ./scripts/postinstall.sh && yarn xcode:schemas",
+    "postinstall": "sh ./scripts/postinstall.sh && yarn xcode:schemes",
     "release:build:android": "cd android && ./gradlew assembleApplication",
     "release:test:android": "cd android && ./gradlew installApplicationRelease --stacktrace",
-    "xcode:schemas": "react-native-schemes-manager all"
+    "xcode:schemes": "react-native-schemes-manager all"
   },
   "scripts-info": {
     "info": "Displays information about the scripts",
