@@ -1,6 +1,6 @@
 {
   "projects": {
-    "Sparkle": {
+    "iola": {
       "schemaPath": ".tmp/schemas/server.graphql",
       "includes": [".tmp/**/*.graphql"],
       "extensions": {

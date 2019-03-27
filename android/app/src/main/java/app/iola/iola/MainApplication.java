@@ -1,4 +1,4 @@
-package com.apollomessenger;
+package app.iola.iola;
 
 import android.app.Application;
 

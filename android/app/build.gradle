@@ -130,7 +130,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.apollomessenger"
+        applicationId "app.iola.iola"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode googleVersion // is an integer - so we can't use semantic versioning here. This is used on the play store to tell which versions come after others - that's why it's tied to git commits in getGitVersion
