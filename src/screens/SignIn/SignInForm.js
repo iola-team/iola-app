@@ -1,3 +1,4 @@
+/* global __DEV__ */
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
@@ -7,6 +8,7 @@ import * as yup from 'yup';
 import { withStyleSheet as styleSheet } from '~theme';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import { DEV_LOGIN, DEV_PASSWORD } from 'react-native-dotenv';
 
 import { FormTextInput, Spinner } from '~components';
 
@@ -141,7 +143,7 @@ export default withFormik({
   enableReinitialize: true,
   mapPropsToValues: ({ defaultEmail }) => defaultEmail
     ? ({ login: defaultEmail, password: '' })
-    : ({ login: 'admin', password: 'admin' }), // @TODO: remove it
+    : __DEV__ ? ({ login: DEV_LOGIN, password: DEV_PASSWORD }) : ({ login: '', password: '' }),
   handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
   validationSchema,
 })(SignInForm);
