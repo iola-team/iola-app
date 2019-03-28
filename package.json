@@ -12,6 +12,7 @@
     "log:android": "react-native log-android",
     "log:ios": "react-native log-ios",
     "run:ios": "react-native run-ios --simulator \"iPhone 6\"",
+    "run:ios-storybook": "react-native run-ios --simulator \"iPhone 6\" --scheme Storybook --configuration Storybook",
     "test": "jest",
     "debugger": "rndebugger-open --open --port 8081",
     "schema:load": "graphql get-schema",
