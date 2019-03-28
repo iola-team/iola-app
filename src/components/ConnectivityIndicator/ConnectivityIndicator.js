@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { View, Text } from 'native-base';
-import { StyleSheet, StatusBar } from 'react-native';
+import { StyleSheet, StatusBar, SafeAreaView, Platform } from 'react-native';
 
 import { withStyleSheet } from '~theme';
 
@@ -14,6 +15,8 @@ import { withStyleSheet } from '~theme';
     backgroundColor: '#F95356',
     alignItems: 'center',
     padding: 5,
+    marginTop: -50,
+    paddingTop: 50,
   },
 
   offlineIndicatorText: {
@@ -50,12 +53,21 @@ export default class ConnectivityIndicator extends Component {
     const { isOnline, children, styleSheet: styles, style, ...props } = this.props;
     const { backgroundColor } = StyleSheet.flatten(styles.offlineStatusBar);
 
+    const statusBarHeight = getStatusBarHeight();
+    const platformStyles = Platform.select({
+      ios: {
+        marginTop: -statusBarHeight,
+        paddingTop: statusBarHeight,
+      },
+      default: {},
+    });
+
     return (
-      <View style={[styles.root, style]} {...props}>
+      <SafeAreaView style={[styles.root, style]} {...props}>
         {!isOnline && (
           <>
-            <StatusBar backgroundColor={backgroundColor} />
-            <View style={styles.offlineIndicator}>
+            <StatusBar backgroundColor={backgroundColor} barStyle="light-content" />
+            <View style={[styles.offlineIndicator, platformStyles]}>
               <Text style={styles.offlineIndicatorText}>You are offline</Text>
             </View>
           </>
@@ -66,7 +78,7 @@ export default class ConnectivityIndicator extends Component {
 
           {!isOnline && <View style={styles.overlay} />}
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }
