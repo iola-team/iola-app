@@ -12,7 +12,7 @@ const stories = storiesOf('Components/SettingList', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({ padder: true }));
+stories.addDecorator(getContentDecorator());
 
 // Stories
 stories.add('Default', () => <SettingList />);
