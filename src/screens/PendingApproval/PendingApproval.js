@@ -5,8 +5,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { Icon, LogoutButton } from '~components';
-import PendingApprovalSubscription from './PendingApprovalSubscription';
+import { Icon, LogoutButton, UserUpdateSubscription } from '~components';
 import * as routes from '../routeNames';
 
 // @TODO: Make it dynamical with admin plugin
@@ -66,15 +65,7 @@ const meQuery = gql`
   },
 })
 export default class EmailVerificationScreen extends Component {
-  onSuccess() {
-    alert('Success!');
-  }
-
-  onResend() {
-    alert('Resend the verification code');
-  }
-
-  onPendingApproval = ({ isApproved }) => {
+  onUserUpdate = ({ isApproved }) => {
     const { navigation: { navigate } } = this.props;
 
     if (isApproved) navigate(routes.DASHBOARD);
@@ -103,10 +94,7 @@ export default class EmailVerificationScreen extends Component {
         </ImageBackground>
         <Query query={meQuery}>
           {({ data: { me }, loading }) => !loading && (
-            <PendingApprovalSubscription
-              userId={me.id}
-              onSubscriptionData={this.onPendingApproval}
-            />
+            <UserUpdateSubscription userId={me.id} onSubscriptionData={this.onUserUpdate} />
           )}
         </Query>
       </Container>

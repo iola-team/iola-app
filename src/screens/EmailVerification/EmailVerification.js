@@ -5,9 +5,8 @@ import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { Icon, Spinner } from '~components';
+import { Icon, Spinner, UserUpdateSubscription } from '~components';
 import EmailVerificationForm from './EmailVerificationForm';
-import EmailVerificationSubscription from './EmailVerificationSubscription';
 import * as routes from '../routeNames';
 
 // @TODO: Make it dynamical with admin plugin
@@ -130,7 +129,7 @@ export default class EmailVerificationScreen extends Component {
     // @TODO: Iteration 2 (Email Verification with short code)
   }
 
-  onEmailVerification = ({ isApproved, isEmailVerified }) => {
+  onUserUpdate = ({ isApproved, isEmailVerified }) => {
     if (!isEmailVerified) return;
 
     const { navigation: { navigate } } = this.props;
@@ -175,12 +174,7 @@ export default class EmailVerificationScreen extends Component {
                   </Mutation>
                 </View>
               </ImageBackground>
-              {!loading && (
-                <EmailVerificationSubscription
-                  userId={me.id}
-                  onSubscriptionData={this.onEmailVerification}
-                />
-              )}
+              {!loading && <UserUpdateSubscription userId={me.id} onSubscriptionData={this.onUserUpdate} />}
             </Container>
           );
         }}

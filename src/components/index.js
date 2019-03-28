@@ -45,6 +45,7 @@ import UserListItem from './UserListItem';
 import UserPhotosCard from './UserPhotosCard';
 import UsersRow from './UsersRow';
 import UsersRowItem from './UsersRowItem';
+import UserUpdateSubscription from './UserUpdateSubscription';
 
 export {
   AvatarEdit,
@@ -90,6 +91,7 @@ export {
   UserPhotosCard,
   UsersRow,
   UsersRowItem,
+  UserUpdateSubscription,
 
   // Navigation
   BottomTabBar,

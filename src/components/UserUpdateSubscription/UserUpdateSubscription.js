@@ -9,12 +9,13 @@ const userUpdateSubscription = gql`
       user {
         id
         isApproved
+        isEmailVerified
       }
     }
   }
 `;
 
-export default class PendingApprovalSubscription extends PureComponent {
+export default class UserUpdateSubscription extends PureComponent {
   static propTypes = {
     userId: PropTypes.string.isRequired,
     onSubscriptionData: PropTypes.func.isRequired,
