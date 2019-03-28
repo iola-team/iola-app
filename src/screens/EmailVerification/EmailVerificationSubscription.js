@@ -1,11 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Toast } from 'native-base';
 import { Subscription } from 'react-apollo';
 import gql from 'graphql-tag';
 
-const emailVerificationSubscription = gql`
-  subscription UserEmailVerifiedSubscription($userId: ID!) {
+const userUpdateSubscription = gql`
+  subscription UserUpdateSubscription($userId: ID!) {
     onUserUpdate(userId: $userId) {
       user {
         id
@@ -23,16 +22,7 @@ export default class EmailVerificationSubscription extends PureComponent {
   };
 
   onSubscriptionData = ({ subscriptionData }) => {
-    try {
-      this.props.onSubscriptionData(subscriptionData.data.onUserUpdate.user);
-    } catch {
-      Toast.show({
-        text: 'Something went wrong',
-        duration: 5000,
-        buttonText: 'Ok',
-        type: 'danger',
-      });
-    }
+    this.props.onSubscriptionData(subscriptionData.data.onUserUpdate.user);
   };
 
   render() {
@@ -40,7 +30,7 @@ export default class EmailVerificationSubscription extends PureComponent {
 
     return (
       <Subscription
-        subscription={emailVerificationSubscription}
+        subscription={userUpdateSubscription}
         variables={{ userId }}
         onSubscriptionData={this.onSubscriptionData}
       />

@@ -5,10 +5,9 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { Icon } from '~components';
+import { Icon, LogoutButton } from '~components';
 import PendingApprovalSubscription from './PendingApprovalSubscription';
 import * as routes from '../routeNames';
-import LogoutButton from '../Profile/LogoutButton';
 
 // @TODO: Make it dynamical with admin plugin
 const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
