@@ -8,8 +8,7 @@ import { withStyleSheet as styleSheet } from '~theme';
   root: {
     backgroundColor: '#FFFFFF',
     elevation: 0,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#A7A7AA',
+    borderTopWidth: 0,
   },
 
   label: {

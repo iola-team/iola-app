@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { USER } from '../routeNames';
@@ -21,6 +22,10 @@ export default class DashboardFeatured extends PureComponent {
   };
 
   render() {
-    return <DashboardFeaturedConnection onItemPress={this.onItemPress} />;
+    return (
+      <Container>
+        <DashboardFeaturedConnection onItemPress={this.onItemPress} />
+      </Container>
+    );
   }
 }

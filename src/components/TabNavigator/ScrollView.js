@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { ScrollView as ScrollViewRN, Animated, View } from 'react-native';
+import { ScrollView as ScrollViewRN, Animated, View as ViewRN } from 'react-native';
+import { View } from 'native-base';
 
 import { TabBar, Header, Context } from './SceneView';
 
@@ -92,13 +93,15 @@ export default class ScrollView extends PureComponent {
         scrollEventThrottle={1}
       >
         <Animated.View style={stickyStyle}>
-          <Header />
-          <TabBar />
+          <View highlight style={{ marginTop: -contentHeight, paddingTop: contentHeight }}>
+            <Header />
+            <TabBar />
+          </View>
         </Animated.View>
 
-        <View style={[contentStyle, { minHeight: contentHeight }]}>
+        <ViewRN style={[contentStyle, { minHeight: contentHeight }]}>
           {children}
-        </View>
+        </ViewRN>
 
       </Animated.ScrollView>
     );

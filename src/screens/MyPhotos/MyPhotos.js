@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withNavigationFocus } from 'react-navigation';
+import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import MyPhotosConnection from './MyPhotosConnection';
@@ -38,11 +39,13 @@ export default class UserPhotos extends Component {
     const { navigation, styleSheet: styles } = this.props;
 
     return (
-      <MyPhotosConnection
-        addButtonStyle={styles.add}
-        contentContainerStyle={styles.list}
-        noContentStyle={styles.noContent}
-      />
+      <Container>
+        <MyPhotosConnection
+          addButtonStyle={styles.add}
+          contentContainerStyle={styles.list}
+          noContentStyle={styles.noContent}
+        />
+      </Container>
     );
   }
 }

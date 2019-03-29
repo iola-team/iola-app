@@ -11,7 +11,6 @@ const stories = storiesOf('Components/ChatFooter', module);
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator({
   style: {
-    backgroundColor: '#F8F9FB',
     justifyContent: 'flex-end',
   },
 }));

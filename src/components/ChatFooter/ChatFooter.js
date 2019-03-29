@@ -14,7 +14,6 @@ import TouchableOpacity from '../TouchableOpacity';
   },
 
   input: {
-    backgroundColor: '#F8F9FB',
     borderWidth: 0,
     borderRadius: 8,
     height: 40,

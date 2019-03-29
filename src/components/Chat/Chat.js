@@ -198,7 +198,6 @@ const messageAddSubscription = gql`
 @styleSheet('Sparkle.Chat', {
   root: {
     flex: 1,
-    backgroundColor: '#F8F9FB',
   },
 
   list: {

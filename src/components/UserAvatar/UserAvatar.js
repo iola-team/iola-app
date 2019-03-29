@@ -24,7 +24,7 @@ const userFragment = gql`
 
 @withStyle('Sparkle.UserAvatar', {
   'Sparkle.Placeholder': {
-    backgroundColor: '#F8F9FB',
+    backgroundColor: '#FFFFFF',
     borderRadius: 8,
 
     'NativeBase.Thumbnail': {

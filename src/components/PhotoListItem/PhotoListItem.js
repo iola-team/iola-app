@@ -30,7 +30,7 @@ const createOptimisticPhoto = ({ id, url }) => ({
 
   'Sparkle.Placeholder': {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: '#F8F9FB',
+    backgroundColor: '#FFFFFF',
   },
 
   overflow: 'hidden',

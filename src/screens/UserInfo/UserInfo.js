@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
+import { Container } from 'native-base';
 
 import { ProfileFieldsView } from '~components';
 
@@ -36,6 +37,10 @@ export default class UserInfo extends Component {
   render() {
     const { data: { user, loading } } = this.props;
 
-    return <ProfileFieldsView loading={loading} user={user} />;
+    return (
+      <Container>
+        <ProfileFieldsView loading={loading} user={user} />
+      </Container>
+    );
   }
 }
