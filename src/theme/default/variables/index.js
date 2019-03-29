@@ -16,4 +16,5 @@ export default assign(defaultVariables, {
   androidRippleColor: "rgba(200, 200, 200, 0.7)",
   containerBgColor: '#F8F9FB',
   highlightColor: '#FFFFFF',
+  cardDefaultBg: 'transparent',
 });

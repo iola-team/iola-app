@@ -11,7 +11,7 @@ import Placeholder from '../Placeholder';
       'NativeBase.CardItem': {
         '.header': {
           'NativeBase.Text': {
-            backgroundColor: '#F8F9FB',
+            backgroundColor: '#FFFFFF',
             borderRadius: 4,
             width: 150,
           },
@@ -21,7 +21,7 @@ import Placeholder from '../Placeholder';
           alignItems: 'stretch',
 
           'NativeBase.ViewNB': {
-            backgroundColor: '#F8F9FB',
+            backgroundColor: '#FFFFFF',
             borderRadius: 4,
             height: 20,
             marginBottom: 10,

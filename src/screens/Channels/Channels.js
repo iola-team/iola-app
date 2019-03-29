@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import { TouchableWithoutFeedback } from 'react-native';
 import { Container, View } from 'native-base';
 
 import { withStyleSheet } from '~theme';
-import { ChatList, Icon, SearchBar, TouchableOpacity, UsersRow } from '~components';
+import { ChatList, Icon, SearchBar, UsersRow } from '~components';
 import { CHANNEL } from '../routeNames';
 
 @withStyleSheet('Sparkle.ChannelsScreen', {
   headerList: {
-    paddingBottom: 10,
+    paddingBottom: 15,
 
     /**
      * TODO: rethink
@@ -48,6 +49,11 @@ export default class Channels extends Component {
   onChatPress = ({ node }) => this.props.navigation.navigate(CHANNEL, { chatId: node.id });
   onUserPress = ({ node }) => this.props.navigation.navigate(CHANNEL, { userId: node.id });
 
+  /**
+   * TODO: implement chats search
+   */
+  onStartPress = () => {};
+
   render() {
     const { styleSheet: styles, data: { me, users, loading } } = this.props;
 
@@ -56,6 +62,13 @@ export default class Channels extends Component {
         <ChatList
           ListHeaderComponent={(
             <View highlight style={styles.headerList}>
+              <TouchableWithoutFeedback onPressIn={this.onStartPress}>
+                <View padder pointerEvents="box-only">
+                  <SearchBar placeholder="Search chats" />
+                </View>
+              </TouchableWithoutFeedback>
+
+
               <UsersRow
                 loading={loading}
                 edges={users?.edges || []}

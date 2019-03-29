@@ -233,7 +233,6 @@ export default (variables => ({
 
     'NativeBase.Card': {
       borderWidth: 0,
-      marginBottom: 16,
 
       'NativeBase.CardItem': {
         padding: 0,
