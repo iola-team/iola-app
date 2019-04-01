@@ -19,6 +19,10 @@ const userQuery = gql`
 `;
 
 @withStyleSheet('Sparkle.ProfileScreenHead', {
+  heading: {
+    paddingTop: 50,
+  },
+
   button: {
     width: '30%',
     alignSelf: 'center',
@@ -33,7 +37,7 @@ export default class ProfileHeading extends PureComponent {
     return (
       <Query query={userQuery}>
         {({ data: { user }, loading }) => (
-          <UserHeading {...props} loading={loading} user={user}>
+          <UserHeading highlight {...props} style={styles.heading} loading={loading} user={user}>
             <Button
               light
               bordered

@@ -56,12 +56,6 @@ export default class UserList extends Component {
     );
   };
 
-  getItemLayout = (data, index) => ({
-    length: UserListItem.ITEM_HEIGHT,
-    offset: UserListItem.ITEM_HEIGHT * index,
-    index,
-  });
-
   getPlaceholders = () => range(3).map(index => ({
     key: index.toString(),
   }));
@@ -87,11 +81,6 @@ export default class UserList extends Component {
         data={data}
         renderItem={renderItem}
         keyExtractor={this.extractItemKey}
-        getItemLayout={this.getItemLayout}
-
-        // Performance tweaks
-        updateCellsBatchingPeriod={25}
-        windowSize={41}
       />
     );
   }

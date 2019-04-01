@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
+import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { UserList, FriendsTabBarLabel } from '~components';
@@ -54,12 +55,14 @@ export default class UserFriends extends Component {
     const edges = user?.friends.edges || [];
 
     return (
-      <UserList
-        contentContainerStyle={styles.list}
-        edges={edges}
-        loading={loading}
-        noContentText="No friends"
-      />
+      <Container>
+        <UserList
+          contentContainerStyle={styles.list}
+          edges={edges}
+          loading={loading}
+          noContentText="No friends"
+        />
+      </Container>
     );
   }
 }

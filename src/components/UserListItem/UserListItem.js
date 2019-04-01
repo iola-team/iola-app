@@ -46,7 +46,7 @@ const userFragment = gql`
           height: 40,
           width: 40,
           borderRadius: 6,
-          backgroundColor: '#F8F9FB',
+          backgroundColor: '#FFFFFF',
         },
       },
 
@@ -55,7 +55,7 @@ const userFragment = gql`
           height: 20,
           borderRadius: 4,
           marginRight: 20,
-          backgroundColor: '#F8F9FB',
+          backgroundColor: '#FFFFFF',
         },
 
         height: 68,

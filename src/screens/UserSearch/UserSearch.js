@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
+import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { SearchBar, SearchResult, UserList, UsersRow, SearchBlank } from '~components';
@@ -50,7 +51,11 @@ const recentUsersQuery = gql`
   ${UserList.fragments.edge}
 `;
 
-@withStyleSheet('Sparkle.UserSearchScreen')
+@withStyleSheet('Sparkle.UserSearchScreen', {
+  'NativeBase.Container': {
+    backgroundColor: '#FFFFFF',
+  },
+})
 export default class UserSearch extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerTitle: (
@@ -62,9 +67,6 @@ export default class UserSearch extends Component {
         onChangeText={search => navigation.setParams({ search })}
       />
     ),
-    headerStyle: {
-      borderBottomWidth: 0,
-    },
     headerTitleContainerStyle: {
       right: 16, // TODO: Move this value to theme somehow
     },
@@ -139,18 +141,20 @@ export default class UserSearch extends Component {
     const { navigation } = this.props;
 
     return (
-      <SearchResult
-        search={navigation.getParam('search', '')}
-        query={searchQuery}
-        historyKey="users"
-        connectionPath="users"
-        onItemPress={this.onItemPress}
-        filterEdges={this.filterEdges}
-        renderBlank={this.renderBlank}
-        onSearchingStateChange={this.onSearchingStateChange}
-      >
-        {this.renderList}
-      </SearchResult>
+      <Container>
+        <SearchResult
+          search={navigation.getParam('search', '')}
+          query={searchQuery}
+          historyKey="users"
+          connectionPath="users"
+          onItemPress={this.onItemPress}
+          filterEdges={this.filterEdges}
+          renderBlank={this.renderBlank}
+          onSearchingStateChange={this.onSearchingStateChange}
+        >
+          {this.renderList}
+        </SearchResult>
+      </Container>
     );
   }
 }

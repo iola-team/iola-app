@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { noop } from 'lodash';
-import { Button, Text } from 'native-base';
+import { Container, Text } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { ProfileFieldsEdit, TouchableOpacity } from '~components';
@@ -85,16 +85,18 @@ export default class ProfileEditInfoScreen extends Component {
     const { data: { loading, me } } = this.props;
 
     return (
-      <ProfileFieldsEdit
-        loading={loading}
-        user={me}
-        onFormReady={(form) => {
-          this.form = form;
-        }}
+      <Container>
+        <ProfileFieldsEdit
+          loading={loading}
+          user={me}
+          onFormReady={(form) => {
+            this.form = form;
+          }}
 
-        onSaveStart={this.onSaveStart}
-        onSaveEnd={this.onSaveEnd}
-      />
+          onSaveStart={this.onSaveStart}
+          onSaveEnd={this.onSaveEnd}
+        />
+      </Container>
     );
   }
 }

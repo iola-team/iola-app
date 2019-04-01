@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container } from 'native-base';
+import { View } from 'react-native';
 
 import TabBar from '../TabBar';
 import SceneView from './SceneView';
@@ -47,7 +47,7 @@ export default class TabNavigatorView extends Component {
     };
 
     return (
-      <Container>
+      <View style={{ flex: 1 }}>
         {
           state.routes.map((route, index) => (
             <SceneView 
@@ -59,7 +59,7 @@ export default class TabNavigatorView extends Component {
             />
           ))
         }
-      </Container>
+      </View>
     );
   }
 }

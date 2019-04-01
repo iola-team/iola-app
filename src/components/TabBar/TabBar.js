@@ -7,14 +7,11 @@ import { withStyle } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 
 @withStyle('Sparkle.TabBar', {
-  backgroundColor: '#FFFFFF',
   flexDirection: 'row',
   height: 50,
   alignItems: 'flex-end',
   justifyContent: 'center',
   paddingHorizontal: 50,
-  borderBottomWidth: StyleSheet.hairlineWidth,
-  borderBottomColor: '#A7A7AA',
   
   'Sparkle.TouchableOpacity': {
     flex: 1,

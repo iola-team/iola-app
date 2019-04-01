@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { SettingList } from '~components';
@@ -10,6 +11,10 @@ export default class SettingsScreen extends Component {
   };
 
   render() {
-    return <SettingList />;
+    return (
+      <Container>
+        <SettingList />
+      </Container>
+    );
   }
 }

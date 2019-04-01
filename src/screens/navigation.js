@@ -63,6 +63,7 @@ const TabsNavigator = createBottomTabNavigator({
 }, {
   initialRouteName: routes.DASHBOARD,
   tabBarComponent: BottomTabBar,
+  lazy: false,
 });
 
 const RootNavigator = createSwitchNavigator({

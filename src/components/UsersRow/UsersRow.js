@@ -71,6 +71,8 @@ export default class UsersRow extends Component {
         {...listProps}
 
         horizontal
+        showsHorizontalScrollIndicator={false}
+
         data={data}
         renderItem={this.renderItem}
         keyExtractor={this.extractItemKey}

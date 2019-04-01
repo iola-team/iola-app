@@ -10,11 +10,11 @@ import Icon from '../Icon';
 @styleSheet('Sparkle.ScreenHeader', {
   header: {
     elevation: 0,
+    borderBottomWidth: 0,
   },
 
   opaqueHeader: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#A7A7AA',
+    
   },
 
   transparentHeader: {

@@ -18,16 +18,14 @@ export default (variables => ({
       }
     },
 
-    'NativeBase.Container': {
-      backgroundColor: '#FFFFFF',
-    },
+    'NativeBase.Container': {},
 
     'NativeBase.Fab': {
       'NativeBase.Icon': {
         color: '#000000',
       },
 
-      backgroundColor: '#F8F9FB',
+      backgroundColor: variables.highlightColor,
       elevation: 5,
     },
 
@@ -45,7 +43,7 @@ export default (variables => ({
       },
 
       '.highlight': {
-        backgroundColor: '#F8F9FB',
+        backgroundColor: variables.highlightColor,
       },
     },
 
@@ -235,7 +233,6 @@ export default (variables => ({
 
     'NativeBase.Card': {
       borderWidth: 0,
-      marginBottom: 16,
 
       'NativeBase.CardItem': {
         padding: 0,
@@ -264,7 +261,7 @@ export default (variables => ({
         },
 
         '.highlight': {
-          backgroundColor: '#F8F9FB',
+          backgroundColor: variables.highlightColor,
         },
 
         '.cardBody': {

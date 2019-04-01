@@ -58,7 +58,7 @@ const headerHeight = 350 + ScreenHeader.HEIGHT;
 
   placeholder: {
     borderRadius: 4,
-    backgroundColor: '#F0F2F7',
+    backgroundColor: '#F8F9FB',
   },
 
   onlineStatus: {
@@ -95,7 +95,7 @@ const headerHeight = 350 + ScreenHeader.HEIGHT;
   'NativeBase.ViewNB': {
     'Sparkle.UserAvatar': {
       'Sparkle.Placeholder': {
-        backgroundColor: '#F0F2F7',
+        backgroundColor: '#F8F9FB',
       },
     },
   },
@@ -133,8 +133,8 @@ export default class UserHeading extends PureComponent {
 
     const navBarStyle = {
       opacity: shrinkAnimatedValue.interpolate({
-        inputRange: [0, 0.3],
-        outputRange: [1, 0],
+        inputRange: [0, 0.01, 0.02],
+        outputRange: [1, 1, 0],
         extrapolate: 'clamp',
       }),
       transform: [
@@ -179,7 +179,7 @@ export default class UserHeading extends PureComponent {
         </View>
 
         <Animated.View style={[styles.navBarBg, navBarStyle]}>
-          <Text style={styles.navBarBgText}>{!loading && user.name}</Text>
+          <Animated.Text style={styles.navBarBgText}>{!loading && user.name}</Animated.Text>
         </Animated.View>
       </View>
     );

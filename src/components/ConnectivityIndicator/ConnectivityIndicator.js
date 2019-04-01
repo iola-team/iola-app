@@ -63,7 +63,7 @@ export default class ConnectivityIndicator extends Component {
     });
 
     return (
-      <SafeAreaView style={[styles.root, style]} {...props}>
+      <View style={[styles.root, style]} {...props}>
         {!isOnline && (
           <>
             <StatusBar backgroundColor={backgroundColor} barStyle="light-content" />
@@ -78,7 +78,7 @@ export default class ConnectivityIndicator extends Component {
 
           {!isOnline && <View style={styles.overlay} />}
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }

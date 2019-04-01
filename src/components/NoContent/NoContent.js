@@ -22,9 +22,11 @@ const iconMargin = 17;
     height: 120,
     marginBottom: iconMargin,
     borderRadius: 60,
+    backgroundColor: '#FFFFFF',
 
     'NativeBase.Icon': {
       fontSize: 46,
+      color: '#C5CAD1',
     },
   },
 
@@ -32,6 +34,21 @@ const iconMargin = 17;
     textAlign: 'center',
     fontSize: 14,
     lineHeight: 20,
+    color: '#C5CAD1',
+  },
+
+  '.inverted': {
+    'NativeBase.ViewNB': {
+      backgroundColor: '#F8F9FB',
+
+      'NativeBase.Icon': {
+        color: '#F1F2F7',
+      },
+    },
+
+    'NativeBase.Text': {
+      color: '#BDC0CB',
+    },
   },
 })
 export default class NoContent extends Component {
@@ -50,31 +67,20 @@ export default class NoContent extends Component {
 
   render() {
     const { icon, text, iconScale, inverted, ...props } = this.props;
-    const iconContainerStyle = { backgroundColor: inverted ? 'white' : '#F8F9FB' };
-    const iconStyle = { color: inverted ? '#F1F2F7' : '#C5CAD1' };
-    const labelStyle = { color: inverted ? '#BDC0CB' : '#C5CAD1' };
-
-    if (iconScale) {
-      iconContainerStyle.transform = [
-        { scale: iconScale },
-      ];
-
-      if (text) {
-        labelStyle.transform = [
-          {
-            translateY: iconScale.interpolate({
-              inputRange: [0, 1],
-              outputRange: [-120, 0],
-            }),
-          }
-        ];
-      }
-    }
+    const iconContainerStyle = iconScale && { transform: [ { scale: iconScale } ] };
+    const labelStyle = iconScale && {
+      transform: [{
+        translateY: iconScale.interpolate({
+          inputRange: [0, 1],
+          outputRange: [-120, 0],
+        }),
+      }]
+    };
 
     return (
       <Animated.View {...props}>
-        <AnimatedView highlight style={iconContainerStyle}>
-          <Icon name={icon} style={iconStyle} />
+        <AnimatedView style={iconContainerStyle}>
+          <Icon name={icon} />
         </AnimatedView>
 
         {text && <AnimatedText style={labelStyle}>{text}</AnimatedText>}

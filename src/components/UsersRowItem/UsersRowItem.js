@@ -43,19 +43,19 @@ const userFragment = gql`
     alignItems: 'center',
 
     'NativeBase.ViewNB': {
+      backgroundColor: '#F8F9FB',
+
       '.avatar': {
         width: 40,
         height: 40,
         borderRadius: 6,
         marginBottom: 6,
-        backgroundColor: '#F8F9FB',
       },
 
       '.name': {
         height: 12,
         width: '100%',
         borderRadius: 4,
-        backgroundColor: '#F8F9FB',
       },
     },
   },

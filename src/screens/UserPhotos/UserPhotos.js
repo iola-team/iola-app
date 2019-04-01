@@ -3,6 +3,7 @@ import { withNavigationFocus } from 'react-navigation';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { remove } from 'lodash';
+import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { PhotoList, ImageView } from '~components';
@@ -105,18 +106,20 @@ export default class UserPhotos extends Component {
     const edges = user?.photos.edges || [];
 
     return (
-      <ImageView edges={edges} deletePhoto={this.deletePhoto}>
-        {onShowImage => (
-          <PhotoList
-            contentContainerStyle={styles.list}
-            edges={edges}
-            loading={loading}
-            onItemPress={onShowImage}
-            noContentText="No photos"
-            noContentStyle={styles.noContent}
-          />
-        )}
-      </ImageView>
+      <Container>
+        <ImageView edges={edges} deletePhoto={this.deletePhoto}>
+          {onShowImage => (
+            <PhotoList
+              contentContainerStyle={styles.list}
+              edges={edges}
+              loading={loading}
+              onItemPress={onShowImage}
+              noContentText="No photos"
+              noContentStyle={styles.noContent}
+            />
+          )}
+        </ImageView>
+      </Container>
     );
   }
 }
