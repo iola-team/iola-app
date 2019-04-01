@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Header } from 'react-navigation';
-import { constant } from 'lodash';
+import { constant, assign } from 'lodash';
 import { StyleSheet, Platform } from 'react-native';
 
 import { withStyleSheet as styleSheet } from '~theme';
@@ -46,6 +46,12 @@ export default class ScreenHeader extends PureComponent {
     title: PropTypes.string,
   };
 
+  static defaultProps = {
+    renderLeft: undefined,
+    renderRight: undefined,
+    title: undefined,
+  };
+
   getSceneOptions(scene) {
     const { descriptor: { options } } = scene;
     const {
@@ -74,21 +80,11 @@ export default class ScreenHeader extends PureComponent {
   render() {
     const { scene } = this.props;
 
-    const headerProps = {
-      ...this.props,
+    /**
+     * Merge custom properties to the current scene descriptor
+     */
+    assign(scene.descriptor.options, this.getSceneOptions(scene));
 
-      scene: {
-        ...scene,
-        descriptor: {
-          ...scene.descriptor,
-          options: {
-            ...scene.options,
-            ...this.getSceneOptions(scene),
-          },
-        },
-      },
-    };
-
-    return <Header {...headerProps} />;
+    return <Header {...this.props} />;
   }
 }
