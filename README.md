@@ -32,8 +32,8 @@ Investigate this: https://reactnativetesting.io/
 
 ### Troubleshooting
 1. How to debug the subscriptions
-   - Start the subscription on the app
-   - Run in Postman (via GET): `*GRAPHQL_SUBSCRIPTIONS_URL from your .env file*/*streamId value from the subscriptions table (ow_esapi_subscription)*` (for example: http://192.168.31.74/ox/oxwall-1.8.4.1/everywhere/api/subscriptions/5f1e34db2cf318ae)
+   - Start the subscription in the app
+   - Run in the Postman (via GET): `*DEV_PLATFORM_URL*/*INTEGRATION_PATH*/subscriptions/*streamId value from the subscriptions table (ow_esapi_subscription)*` (for example: http://192.168.0.100/oxwall/everywhere/api/subscriptions/5f1e34db2cf318ae)
    - Run mutation that triggers the subscription (for example from GraphiQL interface)
 2. "Metro Bundler can't listen on port 8081" error (or "Error: listen EADDRINUSE :::7007")
    - `sudo lsof -i :8081`

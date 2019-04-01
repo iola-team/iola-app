@@ -97,15 +97,21 @@ const SignInButton = connectToStyleSheet('signInButton', Button);
   },
 })
 @graphql(gql`
-  mutation sendResetPasswordInstructionsMutation($email: String!) {
-    result: sendResetPasswordInstructions(email: $email) {
+  mutation sendResetPasswordInstructionsMutation($input: ResetPasswordInstructionsInput!) {
+    result: sendResetPasswordInstructions(input: $input) {
       success
       errorCode
     }
   }
 `, {
   props: ({ mutate }) => ({
-    sendResetPasswordInstructions: email => mutate({ variables: { email } }),
+    sendResetPasswordInstructions: email => mutate({
+      variables: {
+        input: {
+          email,
+        }
+      },
+    }),
   }),
 })
 export default class ForgotPasswordScreen extends Component {
@@ -122,20 +128,21 @@ export default class ForgotPasswordScreen extends Component {
     setSubmitting(true);
 
     try {
-      const asd = await sendResetPasswordInstructions(email);
       const { data: { result } } = await sendResetPasswordInstructions(email);
 
       success = result.success;
 
       switch (result.errorCode) {
-        case 'ERROR_NOT_FOUND':
-          errorMessage = 'There is no user with this email address.';
+        case 'NOT_FOUND':
+          errorMessage = 'There is no user registered with that email address.';
           break;
-        case 'ERROR_DUPLICATE':
+        case 'DUPLICATE':
           errorMessage = 'Reset code already sent. Please try again in 10 minutes.';
           break;
       }
-    } catch ($error) {}
+    } catch ($error) {
+      // @TODO
+    }
 
     setSubmitting(false);
 

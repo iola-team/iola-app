@@ -1,19 +1,34 @@
 import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Container, Text, View } from 'native-base';
+import { Query, Mutation } from 'react-apollo';
+import gql from 'graphql-tag';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
-import { Icon } from '~components';
-import ForgotPasswordForm from './EmailVerificationForm';
+import { withStyleSheet as styleSheet } from '~theme';
+import { Icon, Spinner, UserUpdateSubscription } from '~components';
+import EmailVerificationForm from './EmailVerificationForm';
+import * as routes from '../routeNames';
 
-const Background = connectToStyleSheet('background', ImageBackground).withProps({
-  source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
-});
-const Content = connectToStyleSheet('content', View);
-const Header = connectToStyleSheet('header', View);
-const EmailIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'envelope' });
-const Title = connectToStyleSheet('title', Text);
-const Description = connectToStyleSheet('description', Text);
+// @TODO: Make it dynamical with admin plugin
+const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
+
+const meQuery = gql`
+  query meQuery {
+    me {
+      id
+      email
+    }
+  }
+`;
+
+const sendEmailVerificationInstructionsMutation = gql`
+  mutation($input: EmailVerificationInstructionsInput!) {
+    result: sendEmailVerificationInstructions(input: $input) {
+      success
+      errorCode
+    }
+  }
+`;
 
 @styleSheet('Sparkle.ForgotPasswordScreen', {
   background: {
@@ -31,10 +46,9 @@ const Description = connectToStyleSheet('description', Text);
   header: {
     alignItems: 'center',
     marginTop: 34,
-    marginBottom: 28,
   },
 
-  lockIcon: {
+  icon: {
     width: 48,
     height: 48,
     borderRadius: 25,
@@ -46,46 +60,125 @@ const Description = connectToStyleSheet('description', Text);
   },
 
   title: {
-    alignSelf: 'center',
+    textAlign: 'center',
     fontSize: 30,
     color: '#FFFFFF',
   },
 
+  info: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 90,
+  },
+
   description: {
-    paddingTop: 22,
     fontSize: 16,
     lineHeight: 20,
     textAlign: 'center',
     color: '#FFFFFF',
   },
+
+  spinner: {
+    color: '#FFFFFF',
+  },
 })
 export default class EmailVerificationScreen extends Component {
-  onSuccess() {
-    alert('Success!');
+  state = {
+    isSubmitting: false,
+    error: '',
+  };
+
+  async onSubmit(email, sendEmailVerificationInstructions) {
+    this.setState({ isSubmitting: true });
+
+    try {
+      let error = '';
+      const {
+        data: {
+          result: {
+            errorCode,
+          },
+        },
+      } = await sendEmailVerificationInstructions({
+        variables: {
+          input: {
+            email,
+          },
+        },
+      });
+
+      switch (errorCode) {
+        case 'COMMON':
+          error = 'Something went wrong\nPlease try again later';
+          break;
+        case 'NOT_FOUND':
+          error = `User with email\n${email}\nwas not found`;
+          break;
+      }
+
+      this.setState({ isSubmitting: false, error });
+    } catch (error) {
+      this.setState({
+        isSubmitting: false,
+        error: 'Something went wrong\nPlease try again later',
+      });
+    }
   }
 
-  onResend() {
-    alert('Resend the verification code');
+  onSuccess() {
+    // @TODO: Iteration 2 (Email Verification with short code)
   }
+
+  onUserUpdate = ({ isApproved, isEmailVerified }) => {
+    if (!isEmailVerified) return;
+
+    const { navigation: { navigate } } = this.props;
+
+    navigate(isApproved ? routes.DASHBOARD : routes.PENDING_APPROVAL);
+  };
 
   render() {
-    return (
-      <Container>
-        <Background>
-          <Content>
-            <Header>
-              <EmailIcon />
-              <Title>Email verification</Title>
-              <Description>
-                Verification code has been sent to:{'\n'}
-                roman.banan@gmail.com (@TODO)
-              </Description>
-            </Header>
+    const { styleSheet: styles } = this.props;
+    const { isSubmitting, error } = this.state;
 
-            <ForgotPasswordForm onSuccess={this.onSuccess} onResend={this.onResend} />
-          </Content>
-        </Background>
-      </Container>
+    return (
+      <Query query={meQuery}>
+        {({ data: { me }, loading }) => {
+          const email = loading ? null : me.email;
+          const infoContent = (
+            <Text style={styles.description}>
+              {error ? error : `Verification code has been sent to:\n${email}`}
+            </Text>
+          );
+
+          return (
+            <Container>
+              <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
+                <View style={styles.content}>
+                  <View style={styles.header}>
+                    <Icon style={styles.icon} name="envelope" />
+                    <Text style={styles.title}>Email verification</Text>
+                    <View style={styles.info}>
+                      {!loading && !isSubmitting ? infoContent : <Spinner style={styles.spinner} />}
+                    </View>
+                  </View>
+
+                  <Mutation mutation={sendEmailVerificationInstructionsMutation}>
+                    {sendEmailVerificationInstructions => !loading && (
+                      <EmailVerificationForm
+                        onSubmit={() => this.onSubmit(email, sendEmailVerificationInstructions)}
+                        onSuccess={this.onSuccess}
+                        isSubmitting={isSubmitting}
+                      />
+                    )}
+                  </Mutation>
+                </View>
+              </ImageBackground>
+              {!loading && <UserUpdateSubscription userId={me.id} onSubscriptionData={this.onUserUpdate} />}
+            </Container>
+          );
+        }}
+      </Query>
     );
   }
 }
