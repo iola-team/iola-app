@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { withNavigation } from 'react-navigation';
 import { Text } from 'native-base';
 
-import { TouchableOpacity } from '../TouchableOpacity';
+import TouchableOpacity from '../TouchableOpacity';
 import * as routes from '../../screens/routeNames';
 
 @graphql(gql`
