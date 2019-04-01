@@ -18,6 +18,7 @@ import Channel from './Channel';
 import Channels from './Channels';
 import DashboardAll from './DashboardAll';
 import DashboardFeatured from './DashboardFeatured';
+import PendingApproval from './PendingApproval';
 import EmailVerification from './EmailVerification';
 import ForgotPassword from './ForgotPassword';
 import Launch from './Launch';
@@ -70,6 +71,7 @@ const RootNavigator = createSwitchNavigator({
     [routes.SIGN_IN]: SignIn,
     [routes.SIGN_UP]: SignUp,
     [routes.FORGOT_PASSWORD]: ForgotPassword,
+    [routes.PENDING_APPROVAL]: PendingApproval,
     [routes.EMAIL_VERIFICATION]: EmailVerification,
   }, {
     initialRouteName: routes.SIGN_IN,

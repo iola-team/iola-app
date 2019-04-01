@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { noop } from 'lodash';
 import PropTypes from 'prop-types';
 import ActionSheetRN from 'react-native-actionsheet';
@@ -42,7 +42,7 @@ export default class ActionSheet extends Component {
     const { children, ...props } = this.props;
 
     return (
-      <Fragment>
+      <>
         {children(::this.show)}
 
         <ActionSheetRN
@@ -50,7 +50,7 @@ export default class ActionSheet extends Component {
           onPress={this.onPress}
           ref={this.setActionSheet}
         />
-      </Fragment>
+      </>
     );
   }
 }

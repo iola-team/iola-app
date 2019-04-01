@@ -45,11 +45,12 @@ export default class Application extends Component {
   };
 
   onConnectionChange = isOnline => this.setState({ isOnline });
+
   onAppStateChange = appState => {
     if (appState === 'active') {
       NetInfo.isConnected.fetch().then(this.onConnectionChange);
     }
-  }
+  };
 
   componentDidMount() {
     this.props.onReady();

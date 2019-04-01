@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form, Text, Toast } from 'native-base';
-import CodeInput from 'react-native-confirmation-code-input';
+// import CodeInput from 'react-native-confirmation-code-input'; // @TODO: Iteration 2
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
+import { withStyleSheet as styleSheet } from '~theme';
 
+// @TODO: Iteration 2
+/*
 const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode, onFulfill }) => ({
   compareWithCode,
   onFulfill,
@@ -13,26 +15,22 @@ const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode
   secureTextEntry: false,
   inputPosition: 'center',
 }));
-const ResendButtonText = connectToStyleSheet('resendButtonText', Text);
-const ResendButton = connectToStyleSheet('resendButton', Button);
+*/
 
-@styleSheet('Sparkle.ForgotPasswordForm', {
+@styleSheet('Sparkle.EmailVerificationForm', {
   code: {
     width: 40,
     height: 64,
+    marginRight: 8,
     borderRadius: 8,
     textAlign: 'center',
-    marginRight: 8,
-    backgroundColor: '#FFFFFF',
-    color: '#585A61',
     fontSize: 24,
     fontWeight: '600',
+    color: '#585A61',
+    backgroundColor: '#FFFFFF',
   },
 
-  activeColor: 'red',
-  inactiveColor: 'lime',
-
-  containerStyle: {
+  container: {
     flexBasis: 64,
     flexGrow: 0,
     marginTop: 0,
@@ -40,20 +38,23 @@ const ResendButton = connectToStyleSheet('resendButton', Button);
     marginLeft: 8,
   },
 
-  resendButton: {
+  button: {
     borderColor: '#FFFFFF',
   },
 
-  resendButtonText: {
+  buttonText: {
     color: '#FFFFFF',
   },
 })
 export default class ForgotPasswordForm extends Component {
   static propTypes = {
+    onSubmit: PropTypes.func.isRequired,
     onSuccess: PropTypes.func.isRequired,
-    onResend: PropTypes.func.isRequired,
+    isSubmitting: PropTypes.bool.isRequired,
   };
 
+  // @TODO: Iteration 2 (Email Verification with short code)
+  /*
   async onSubmit(code) {
     const isValid = (code === '12345'); // @TODO
 
@@ -68,23 +69,25 @@ export default class ForgotPasswordForm extends Component {
       });
     }
   }
+  */
 
   render() {
-    const { styleSheet, onResend } = this.props;
-    const { code: { color }, containerStyle } = styleSheet;
+    const { styleSheet: styles, onSubmit, isSubmitting } = this.props;
 
     return (
       <Form>
+        {/* // @TODO: Iteration 2 (Email Verification with short code)
         <Code
           onFulfill={::this.onSubmit}
-          activeColor={color}
-          inactiveColor={color}
-          containerStyle={containerStyle}
+          activeColor={styles.code.color}
+          inactiveColor={styles.code.color}
+          containerStyle={styles.container}
         />
+        */}
 
-        <ResendButton onPress={onResend} block bordered>
-          <ResendButtonText>Resend the verification code</ResendButtonText>
-        </ResendButton>
+        <Button style={styles.button} onPress={onSubmit} disabled={isSubmitting} block bordered>
+          <Text style={styles.buttonText}>Resend the Verification Code</Text>
+        </Button>
       </Form>
     );
   }
