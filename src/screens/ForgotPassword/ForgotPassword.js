@@ -133,10 +133,10 @@ export default class ForgotPasswordScreen extends Component {
       success = result.success;
 
       switch (result.errorCode) {
-        case 'ERROR_NOT_FOUND':
+        case 'NOT_FOUND':
           errorMessage = 'There is no user registered with that email address.';
           break;
-        case 'ERROR_DUPLICATE':
+        case 'DUPLICATE':
           errorMessage = 'Reset code already sent. Please try again in 10 minutes.';
           break;
       }

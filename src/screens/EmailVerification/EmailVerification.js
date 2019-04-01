@@ -108,10 +108,10 @@ export default class EmailVerificationScreen extends Component {
       });
 
       switch (errorCode) {
-        case 'ERROR_COMMON':
+        case 'COMMON':
           error = 'Something went wrong\nPlease try again later';
           break;
-        case 'ERROR_NOT_FOUND':
+        case 'NOT_FOUND':
           error = `User with email\n${email}\nwas not found`;
           break;
       }

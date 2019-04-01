@@ -45,8 +45,8 @@ stories.addDecorator(getApolloDecorator({
     }
     
     enum EmailVerificationInstructionsErrorCode {
-      ERROR_COMMON
-      ERROR_NOT_FOUND
+      COMMON
+      NOT_FOUND
     }
     
     type EmailVerificationInstructionsPayload {
@@ -69,7 +69,7 @@ stories.addDecorator(getApolloDecorator({
 
     Mutation: {
       sendEmailVerificationInstructions: async (root, { input }, { dataStore }) => {
-        const knobSelect = [null, 'ERROR_COMMON', 'ERROR_NOT_FOUND'];
+        const knobSelect = [null, 'COMMON', 'NOT_FOUND'];
         const errorCode = select('errorCode', knobSelect, knobSelect[0]);
 
         await delay(1000 + Math.random() * 1000);
