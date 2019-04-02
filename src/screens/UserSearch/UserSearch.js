@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import { Container } from 'native-base';
+import { Container, Text } from 'native-base';
 
 import { withStyleSheet } from '~theme';
-import { SearchBar, SearchResult, UserList, UsersRow, SearchBlank } from '~components';
 import { USER } from '../routeNames';
+import {
+  SearchBar,
+  SearchResult,
+  UserList,
+  UsersRow,
+  SearchBlank,
+  TouchableOpacity,
+} from '~components';
 
 const searchQuery = gql`
   query UserSearchQuery($search: String = "", $first: Int = 10, $after: Cursor) {
@@ -68,8 +75,14 @@ export default class UserSearch extends Component {
       />
     ),
     headerTitleContainerStyle: {
-      right: 16, // TODO: Move this value to theme somehow
+      left: 16, // TODO: Move this value to theme somehow
     },
+    headerLeft: null,
+    headerRight: (
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Text>Close</Text>
+      </TouchableOpacity>
+    ),
   });
 
   onItemPress = ({ node: { id } }) => {
@@ -84,7 +97,6 @@ export default class UserSearch extends Component {
       noContentText="No users found"
 
       initialNumToRender={6}
-      windowSize={1}
     />
   );
 

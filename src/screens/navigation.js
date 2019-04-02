@@ -16,8 +16,6 @@ import * as routes from './routeNames';
 // Screens
 import Channel from './Channel';
 import Channels from './Channels';
-import DashboardAll from './DashboardAll';
-import DashboardFeatured from './DashboardFeatured';
 import PendingApproval from './PendingApproval';
 import EmailVerification from './EmailVerification';
 import ForgotPassword from './ForgotPassword';
@@ -33,9 +31,9 @@ import UserFriends from './UserFriends';
 import UserInfo from './UserInfo';
 import UserPhotos from './UserPhotos';
 import UserSearch from './UserSearch';
+import Users from './Users';
 
 import createUserNavigator from './User';
-import createDashboardNavigator from './Dashboard';
 import createProfileNavigator from './Profile';
 import createProfileEditNavigator from './ProfileEdit';
 
@@ -47,12 +45,9 @@ import createProfileEditNavigator from './ProfileEdit';
 
 // Navigator
 const TabsNavigator = createBottomTabNavigator({
-  [routes.DASHBOARD]: createDashboardNavigator({
-    [routes.DASHBOARD_ALL]: DashboardAll,
-    [routes.DASHBOARD_FRIENDS]: MyFriends,
-    [routes.DASHBOARD_FEATURED]: DashboardFeatured,
-  }),
+  [routes.DASHBOARD]: Users,
   [routes.CHANNELS]: Channels,
+
   [routes.PROFILE]: createProfileNavigator({
     [routes.PROFILE_PHOTOS]: MyPhotos,
     [routes.PROFILE_INFO]: MyInfo,
@@ -116,6 +111,25 @@ const RootNavigator = createSwitchNavigator({
     headerBackTitleVisible: false,
     cardShadowEnabled: false,
     cardOverlayEnabled: true,
+
+    transitionConfig: (to, from) => {
+      const toRoute = to.scene.route.routeName;
+      const fromRoute = from?.scene.route.routeName;
+
+      /**
+       * TODO: find a way to not hardcode rote names
+       */
+      const isSearchTransition = (
+        toRoute === routes.USER_SEARCH && fromRoute === routes.APPLICATION
+        || fromRoute === routes.USER_SEARCH && toRoute === routes.APPLICATION
+      );
+
+      return !isSearchTransition ? {} : {
+        transitionSpec: {
+          duration: 0,
+        },
+      };
+    },
 
     defaultNavigationOptions: {
       header: props => <ScreenHeader {...props} />,
