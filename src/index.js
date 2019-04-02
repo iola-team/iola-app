@@ -14,14 +14,14 @@ import Theme from '~theme';
 import Application from '~application';
 import { Root, ErrorBoundary } from '~components';
 import Storybook from '~storybook/UI';
-import LaunchScreen from '~screens/Launch/Launch';
+import SplashBackground from '~screens/Launch/SplashBackground';
 import WebsiteURLScreen from '~screens/WebsiteURL/WebsiteURL';
 /* eslint-enable */
 
 class ApplicationRoot extends Component {
   state = {
     isReady: false,
-    hasCachedPlatformURL: false,
+    initWasLaunched: false,
   };
 
   apiClient = null;
@@ -30,14 +30,8 @@ class ApplicationRoot extends Component {
     try {
       const platformURL = await AsyncStorage.getItem('platformURL');
 
-      if (platformURL !== null) {
-        this.setState({ hasCachedPlatformURL: true });
-        this.init(platformURL);
-
-        return;
-      }
+      if (platformURL) this.init(platformURL);
     } catch (error) {
-      this.setState({ hasCachedPlatformURL: false });
       // @TODO: display Error message?
     }
 
@@ -49,6 +43,8 @@ class ApplicationRoot extends Component {
   };
 
   init = async (platformURL) => {
+    this.setState({ initWasLaunched: true });
+
     const url = `${__DEV__ ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_PATH}`;
     const urlParameters = __DEV__ ? DEV_URL_PARAMETERS : '';
     const apiURL = `${url}/graphql${urlParameters}`;
@@ -65,16 +61,16 @@ class ApplicationRoot extends Component {
   onApplicationReset = async () => {
     try {
       await AsyncStorage.removeItem('platformURL');
-      this.setState({ isReady: false, hasCachedPlatformURL: false });
+      this.setState({ isReady: false, initWasLaunched: false });
     } catch (error) {
       // @TODO: display Error message?
     }
   };
 
   render() {
-    const { isReady, hasCachedPlatformURL } = this.state;
-    const notReadyScreen = (hasCachedPlatformURL)
-      ? <LaunchScreen />
+    const { isReady, initWasLaunched } = this.state;
+    const displayOnNotReady = (initWasLaunched)
+      ? <SplashBackground />
       : <WebsiteURLScreen onSubmit={this.init} />;
 
     return isReady ? (
@@ -87,7 +83,7 @@ class ApplicationRoot extends Component {
           </ErrorBoundary>
         </Theme>
       </ApolloProvider>
-    ) : notReadyScreen;
+    ) : displayOnNotReady;
   }
 }
 

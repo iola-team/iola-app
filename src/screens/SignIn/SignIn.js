@@ -54,21 +54,20 @@ export default class SignInScreen extends Component {
 
     try {
       authenticated = await authenticate(login, password);
+
+      if (authenticated) {
+        const { data: { me } } = await apolloClient.query({ query: meQuery });
+
+        isApproved = me.isApproved;
+        isEmailVerified = me.isEmailVerified;
+      }
     } catch (error) {
       // @TODO: handle the error?
     }
 
     setStatus({ ...status, success: authenticated });
+
     setSubmitting(false);
-
-    try {
-      const { data: { me } } = await apolloClient.query({ query: meQuery });
-
-      isApproved = me.isApproved;
-      isEmailVerified = me.isEmailVerified;
-    } catch (error) {
-      // @TODO: handle the error?
-    }
 
     if (authenticated) {
       if (!isEmailVerified) {
