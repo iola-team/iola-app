@@ -99,14 +99,14 @@ export default class UserListItem extends Component {
   }
 
   render() {
-    const { user, onPress, style, children } = this.props;
+    const { user, onPress, style, children, ...props } = this.props;
 
     if (!user) {
       return this.renderPlaceholder();
     }
 
     return (
-      <ListItem style={style} onPress={() => onPress(user)} button avatar>
+      <ListItem {...props} style={style} onPress={() => onPress(user)} button avatar>
         <Left>
           <UserAvatar user={user} />
         </Left>
