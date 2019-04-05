@@ -26,6 +26,10 @@ const meQuery = gql`
   ${ChatList.fragments.user}
 `;
 
+/**
+ * TODO: Add search phrase filter when chat list pagination will be implemented
+ * Currently the system do filtering on client side
+ */
 const searchQuery = gql`
   query UserChatsSearchQuery {
     me {
@@ -64,6 +68,10 @@ const onlineUsersQuery = gql`
   ${UsersRow.fragments.edge}
 `;
 
+/**
+ * TODO: Add ids filter when chat list pagination will be implemented
+ * Currently the system do filtering on client side
+ */
 const recentChatsQuery = gql`
   query ChatSearchRecentQuery {
     me {
@@ -196,6 +204,7 @@ export default class ChatSearch extends Component {
     return (
       <Container>
         <SearchResult
+          fetchPolicy="cache-first" // TODO: remove this when we add pagination to chat list
           search={navigation.getParam('search', '')}
           query={searchQuery}
           historyKey="chats"

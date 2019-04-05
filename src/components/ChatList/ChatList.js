@@ -50,8 +50,8 @@ export default class ChatList extends Component {
     loading: false,
     onItemPress: () => {},
     unreadCounts: [],
-    noContentText: null,
-    noContentStyle: null,
+    noContentText: undefined,
+    noContentStyle: undefined,
   };
 
   renderItem = ({ item, index }) => {
@@ -81,7 +81,11 @@ export default class ChatList extends Component {
     return (
       <FlatList
         ListEmptyComponent={(
-          <NoContent style={noContentStyle} icon="chats-empty-state" text={noContentText} />
+          <NoContent 
+            style={noContentStyle}
+            icon="chats-empty-state"
+            text={noContentText === undefined ? 'No chats' : noContentText}
+          />
         )}
 
         {...listProps}
