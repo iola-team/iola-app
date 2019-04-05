@@ -38,8 +38,8 @@ export default class UserList extends Component {
   static defaultProps = {
     onItemPress: () => {},
     loading: false,
-    noContentText: null,
-    noContentStyle: null,
+    noContentText: undefined,
+    noContentStyle: undefined,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -75,7 +75,13 @@ export default class UserList extends Component {
 
     return (
       <FlatList
-        ListEmptyComponent={<NoContent style={noContentStyle} icon="comments-empty-state" text={noContentText} />}
+        ListEmptyComponent={(
+          <NoContent
+            style={noContentStyle}
+            icon="users-empty-state"
+            text={noContentText === undefined ? 'No users' : noContentText}
+          />
+        )}
 
         {...listProps}
         data={data}

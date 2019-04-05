@@ -57,7 +57,7 @@ const userQuery = gql`
   query($id: ID!) {
     user: node(id: $id) {
       id
-      ...UserListItem_user
+      ...UsersRowItem_user
     }
   }
   

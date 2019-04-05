@@ -11,7 +11,7 @@ import { getContainerDecorator, getApolloDecorator } from '~storybook';
 import { createConnection } from '~storybook/decorators/Apollo';
 import ChatList from '.';
 
-const stories = storiesOf('Components/ChatList', module);
+const stories = storiesOf('Components/UserChats', module);
 
 // Decorators
 stories.addDecorator(withKnobs);

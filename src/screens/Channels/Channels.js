@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { TouchableWithoutFeedback } from 'react-native';
 import { Container, View } from 'native-base';
 
 import { withStyleSheet } from '~theme';
-import { ChatList, Icon, SearchBar, UsersRow } from '~components';
-import { CHANNEL } from '../routeNames';
+import { UserChats, Icon, SearchBar, UsersRow, TouchableOpacity } from '~components';
+import { CHANNEL, CHAT_SEARCH } from '../routeNames';
 
 @withStyleSheet('Sparkle.ChannelsScreen', {
   headerList: {
@@ -48,25 +47,21 @@ export default class Channels extends Component {
 
   onChatPress = ({ node }) => this.props.navigation.navigate(CHANNEL, { chatId: node.id });
   onUserPress = ({ node }) => this.props.navigation.navigate(CHANNEL, { userId: node.id });
-
-  /**
-   * TODO: implement chats search
-   */
-  onStartPress = () => {};
+  onSearchPress = () => this.props.navigation.navigate(CHAT_SEARCH);
 
   render() {
     const { styleSheet: styles, data: { me, users, loading } } = this.props;
 
     return (
       <Container>
-        <ChatList
+        <UserChats
           ListHeaderComponent={(
             <View highlight style={styles.headerList}>
-              <TouchableWithoutFeedback onPressIn={this.onStartPress}>
+              <TouchableOpacity onPressIn={this.onSearchPress}>
                 <View padder pointerEvents="box-only">
                   <SearchBar placeholder="Search chats" />
                 </View>
-              </TouchableWithoutFeedback>
+              </TouchableOpacity>
 
 
               <UsersRow

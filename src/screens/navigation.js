@@ -16,6 +16,7 @@ import * as routes from './routeNames';
 // Screens
 import Channel from './Channel';
 import Channels from './Channels';
+import ChatSearch from './ChatSearch';
 import PendingApproval from './PendingApproval';
 import EmailVerification from './EmailVerification';
 import ForgotPassword from './ForgotPassword';
@@ -104,7 +105,8 @@ const RootNavigator = createSwitchNavigator({
     }),
 
     [routes.CHANNEL]: Channel,
-    [routes.USER_SEARCH]: UserSearch,
+    [routes.USER_SEARCH]: { screen: UserSearch, params: { isSearch: true } },
+    [routes.CHAT_SEARCH]: { screen: ChatSearch, params: { isSearch: true } },
   }, {
     headerLayoutPreset: 'center',
     headerMode: 'screen',
@@ -113,15 +115,15 @@ const RootNavigator = createSwitchNavigator({
     cardOverlayEnabled: true,
 
     transitionConfig: (to, from) => {
-      const toRoute = to.scene.route.routeName;
-      const fromRoute = from?.scene.route.routeName;
+      const toRoute = to.scene.route;
+      const fromRoute = from?.scene.route;
 
       /**
        * TODO: find a way to not hardcode rote names
        */
       const isSearchTransition = (
-        toRoute === routes.USER_SEARCH && fromRoute === routes.APPLICATION
-        || fromRoute === routes.USER_SEARCH && toRoute === routes.APPLICATION
+        toRoute.params?.isSearch && fromRoute?.routeName === routes.APPLICATION
+        || fromRoute?.params?.isSearch && toRoute.routeName === routes.APPLICATION
       );
 
       return !isSearchTransition ? {} : {

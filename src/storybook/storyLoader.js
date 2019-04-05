@@ -10,7 +10,6 @@ function loadStories() {
   require('../components/Backdrop/Backdrop.stories');
   require('../components/Chat/Chat.stories');
   require('../components/ChatFooter/ChatFooter.stories');
-  require('../components/ChatList/ChatList.stories');
   require('../components/ChatListItem/ChatListItem.stories');
   require('../components/CircularProgress/CircularProgress.stories');
   require('../components/ComponentTemplate/ComponentTemplate.stories');
@@ -57,11 +56,13 @@ function loadStories() {
   require('../components/TabBarLabel/TabBarLabel.stories');
   require('../components/TabNavigator/TabNavigator.stories');
   require('../components/TextPicker/TextPicker.stories');
+  require('../components/UserChats/UserChats.stories');
   require('../components/UserHeading/UserHeading.stories');
   require('../components/UserList/UserList.stories');
   require('../components/UserListItem/UserListItem.stories');
   require('../components/UsersRow/UsersRow.stories');
   require('../components/UsersRowItem/UsersRowItem.stories');
+  require('../screens/ChatSearch/ChatSearch.stories');
   require('../screens/EmailVerification/EmailVerification.stories');
   require('../screens/ForgotPassword/ForgotPassword.stories');
   require('../screens/Launch/Launch.stories');
@@ -80,7 +81,6 @@ const stories = [
   '../components/Backdrop/Backdrop.stories',
   '../components/Chat/Chat.stories',
   '../components/ChatFooter/ChatFooter.stories',
-  '../components/ChatList/ChatList.stories',
   '../components/ChatListItem/ChatListItem.stories',
   '../components/CircularProgress/CircularProgress.stories',
   '../components/ComponentTemplate/ComponentTemplate.stories',
@@ -127,11 +127,13 @@ const stories = [
   '../components/TabBarLabel/TabBarLabel.stories',
   '../components/TabNavigator/TabNavigator.stories',
   '../components/TextPicker/TextPicker.stories',
+  '../components/UserChats/UserChats.stories',
   '../components/UserHeading/UserHeading.stories',
   '../components/UserList/UserList.stories',
   '../components/UserListItem/UserListItem.stories',
   '../components/UsersRow/UsersRow.stories',
   '../components/UsersRowItem/UsersRowItem.stories',
+  '../screens/ChatSearch/ChatSearch.stories',
   '../screens/EmailVerification/EmailVerification.stories',
   '../screens/ForgotPassword/ForgotPassword.stories',
   '../screens/Launch/Launch.stories',

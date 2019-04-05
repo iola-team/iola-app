@@ -1,37 +1,59 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { Query, graphql } from 'react-apollo';
 import { Container, Text } from 'native-base';
 
 import { withStyleSheet } from '~theme';
-import { USER } from '../routeNames';
+import { CHANNEL } from '../routeNames';
 import {
   SearchBar,
   SearchResult,
-  UserList,
+  ChatList,
   UsersRow,
   SearchBlank,
   TouchableOpacity,
 } from '~components';
 
-const searchQuery = gql`
-  query UserSearchQuery($search: String = "", $first: Int = 10, $after: Cursor) {
-    users(filter: { search: $search }, first: $first, after: $after) {
-      ...SearchResult_connection
+const meQuery = gql`
+  query UserChatsSearchMeQuery {
+    me {
+      id
 
-      edges {
-        node {
-          id
-          name
+      ...ChatList_user
+    }
+  }
+
+  ${ChatList.fragments.user}
+`;
+
+/**
+ * TODO: Add search phrase filter when chat list pagination will be implemented
+ * Currently the system do filtering on client side
+ */
+const searchQuery = gql`
+  query UserChatsSearchQuery {
+    me {
+      id
+      chats {
+        edges {
+          node {
+            id
+            participants {
+              id
+              name
+            }
+          }
+
+          ...ChatList_edge
         }
 
-        ...UserList_edge
+        ...SearchResult_connection
       }
     }
   }
 
-  ${UserList.fragments.edge}
   ${SearchResult.fragments.connection}
+  ${ChatList.fragments.edge}
 `;
 
 const onlineUsersQuery = gql`
@@ -46,29 +68,36 @@ const onlineUsersQuery = gql`
   ${UsersRow.fragments.edge}
 `;
 
-const recentUsersQuery = gql`
-  query UserSearchRecentQuery($ids: [ID!]) {
-    users(filter: { ids: $ids }) {
-      edges {
-        ...UserList_edge
+/**
+ * TODO: Add ids filter when chat list pagination will be implemented
+ * Currently the system do filtering on client side
+ */
+const recentChatsQuery = gql`
+  query ChatSearchRecentQuery {
+    me {
+      chats {
+        edges {
+          ...ChatList_edge
+        }
       }
     }
   }
 
-  ${UserList.fragments.edge}
+  ${ChatList.fragments.edge}
 `;
 
-@withStyleSheet('Sparkle.UserSearchScreen', {
+@withStyleSheet('Sparkle.ChatSearchScreen', {
   'NativeBase.Container': {
     backgroundColor: '#FFFFFF',
   },
 })
-export default class UserSearch extends Component {
+@graphql(meQuery)
+export default class ChatSearch extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerTitle: (
       <SearchBar
         autoFocus
-        placeholder="Search users"
+        placeholder="Search chats"
         searching={navigation.getParam('searching', false)}
         value={navigation.getParam('search', '')}
         onChangeText={search => navigation.setParams({ search })}
@@ -88,40 +117,51 @@ export default class UserSearch extends Component {
   onItemPress = ({ node: { id } }) => {
     const { navigation } = this.props;
 
-    navigation.navigate(USER, { id });
+    navigation.navigate(CHANNEL, { userId: id });
   };
 
-  renderList = (props) => (
-    <UserList
-      {...props}
-      ListEmptyComponent={null} // Disable `no items`
+  renderList = (props) => {
+    const { data: { me } } = this.props;
 
-      initialNumToRender={6}
-    />
-  );
+    return (
+      <ChatList
+        {...props}
+
+        user={me}
+        ListEmptyComponent={null} // Disable `no items`
+
+        initialNumToRender={6}
+      />
+    );
+  };
 
   renderBlank = ({ onItemPress, recentIds }) => {
+    const { data: { me } } = this.props;
+    const recentEdgeFilter = ({ node }) => recentIds.includes(node.id);
     const recentEdgeSorter = (a, b) => recentIds.indexOf(a.node.id) - recentIds.indexOf(b.node.id);
 
     return (
       <Query query={onlineUsersQuery}>
         {({ data: { users: onlineUsers }, loading: loadingOnline }) => (
-          <Query query={recentUsersQuery} variables={{ ids: recentIds }} skip={!recentIds.length}>
+          <Query query={recentChatsQuery} variables={{ ids: recentIds }} skip={!recentIds.length}>
             {({ data: recentData, loading: loadingRecent }) => (
 
               <SearchBlank
                 /**
                  * TODO: Memo the sort result
                  */
-                edges={recentData?.users?.edges.sort(recentEdgeSorter) || []}
+                edges={(
+                  recentData?.me?.chats.edges.filter(recentEdgeFilter).sort(recentEdgeSorter) || []
+                )}
 
+                user={me}
                 loading={loadingRecent}
                 hasRecentItems={!!recentIds.length}
                 headerTitle="Online"
                 contentTitle="Recent"
-                ListEmptyComponent={null} // Disable `no items`
                 onItemPress={onItemPress}
-                ListComponent={UserList}
+                ListEmptyComponent={null} // Disable `no items`
+                ListComponent={ChatList}
                 headerList={(
                   <UsersRow
                     loading={loadingOnline}
@@ -139,7 +179,18 @@ export default class UserSearch extends Component {
     );
   };
 
-  filterEdges = (edge, search) => edge.node.name.toLowerCase().indexOf(search.toLowerCase()) === 0;
+  filterEdges = (edge, rawSearch) => {
+    const { data: { me } } = this.props;
+    const { node: { participants } } = edge;
+    const search = rawSearch.toLowerCase();
+
+    const recipients = participants.filter(({ id }) => me.id !== id);
+    const inRecipients = !!recipients.filter(({ name }) => (
+      name.toLowerCase().indexOf(search) === 0
+    )).length;
+
+    return inRecipients;
+  };
 
   onSearchingStateChange = (searching) => {
     const { navigation } = this.props;
@@ -153,10 +204,11 @@ export default class UserSearch extends Component {
     return (
       <Container>
         <SearchResult
+          fetchPolicy="cache-first" // TODO: remove this when we add pagination to chat list
           search={navigation.getParam('search', '')}
           query={searchQuery}
-          historyKey="users"
-          connectionPath="users"
+          historyKey="chats"
+          connectionPath="me.chats"
           onItemPress={this.onItemPress}
           filterEdges={this.filterEdges}
           renderBlank={this.renderBlank}

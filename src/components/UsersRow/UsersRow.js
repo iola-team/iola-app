@@ -13,7 +13,7 @@ const edgeFragment = gql`
   fragment UsersRow_edge on Edge {
     node {
       id
-      ...UserListItem_user
+      ...UsersRowItem_user
     }
   }
   
