@@ -38,6 +38,7 @@ import TabBarLabel from './TabBarLabel';
 import TouchableOpacity from './TouchableOpacity';
 import UserAvatar from './UserAvatar';
 import UserBriefCard from './UserBriefCard';
+import UserChats from './UserChats';
 import UserFriendsCard from './UserFriendsCard';
 import UserHeading from './UserHeading';
 import UserList from './UserList';
@@ -84,6 +85,7 @@ export {
   TouchableOpacity,
   UserAvatar,
   UserBriefCard,
+  UserChats,
   UserFriendsCard,
   UserHeading,
   UserList,

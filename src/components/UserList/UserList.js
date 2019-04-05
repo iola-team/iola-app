@@ -75,7 +75,9 @@ export default class UserList extends Component {
 
     return (
       <FlatList
-        ListEmptyComponent={<NoContent style={noContentStyle} icon="comments-empty-state" text={noContentText} />}
+        ListEmptyComponent={(
+          <NoContent style={noContentStyle} icon="users-empty-state" text={noContentText} />
+        )}
 
         {...listProps}
         data={data}

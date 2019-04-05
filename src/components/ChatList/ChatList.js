@@ -6,7 +6,6 @@ import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import ChatListItem from '../ChatListItem';
-import MessageUpdateSubscription from '../MessageUpdateSubscription';
 import { FlatList, NoContent } from '../TabNavigator';
 
 const userFragment = gql`
@@ -41,6 +40,8 @@ export default class ChatList extends Component {
     unreadCounts: PropTypes.arrayOf(PropTypes.number),
     loading: PropTypes.bool,
     onItemPress: PropTypes.func,
+    noContentText: PropTypes.string,
+    noContentStyle: PropTypes.object,
   };
 
   static defaultProps = {
@@ -49,6 +50,8 @@ export default class ChatList extends Component {
     loading: false,
     onItemPress: () => {},
     unreadCounts: [],
+    noContentText: null,
+    noContentStyle: null,
   };
 
   renderItem = ({ item, index }) => {
@@ -72,21 +75,20 @@ export default class ChatList extends Component {
   extractItemKey = ({ node, key }) => key || node.id;
 
   render() {
-    const { edges, loading, user, ...listProps } = this.props;
+    const { edges, loading, user, noContentText, noContentStyle, ...listProps } = this.props;
     const listData = loading && !edges.length ? this.getPlaceholders() : edges;
 
     return (
-      <>
-        <FlatList
-          {...listProps}
-          data={listData}
-          keyExtractor={this.extractItemKey}
-          renderItem={this.renderItem}
-          ListEmptyComponent={<NoContent text="You have no chats" icon="chats-empty-state" />}
-        />
+      <FlatList
+        ListEmptyComponent={(
+          <NoContent style={noContentStyle} icon="chats-empty-state" text={noContentText} />
+        )}
 
-        {user && <MessageUpdateSubscription userId={user.id} />}
-      </>
+        {...listProps}
+        data={listData}
+        keyExtractor={this.extractItemKey}
+        renderItem={this.renderItem}
+      />
     );
   }
 }

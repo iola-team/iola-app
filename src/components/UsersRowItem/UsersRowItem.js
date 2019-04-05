@@ -12,7 +12,7 @@ import Placeholder from '../Placeholder';
 import Touchable from '../TouchableOpacity';
 
 const userFragment = gql`
-  fragment UserListItem_user on User {
+  fragment UsersRowItem_user on User {
     id
     name
     ...UserOnlineStatus_user
