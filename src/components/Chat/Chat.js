@@ -427,15 +427,13 @@ export default class Chat extends Component {
 
     return (
       <View style={[styles.root, style]}>
-        <Shadow top bottom inset style={styles.list}>
-          <MessageList
-            edges={edges}
-            loadingMore={hasMore}
-            getItemSide={this.getItemSide}
-            onRead={this.onMessagesRead}
-            inverted
-          />
-        </Shadow>
+        <MessageList
+          edges={edges}
+          loadingMore={hasMore}
+          getItemSide={this.getItemSide}
+          onRead={this.onMessagesRead}
+          inverted
+        />
 
         <ChatFooter style={styles.footer} onSend={this.onSend} />
         {me && <MessageUpdateSubscription userId={me.id} />}

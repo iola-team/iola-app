@@ -20,7 +20,7 @@ const Section = ({ children }) => (
     <CardItem header padder>
       <Text>Fields Section</Text>
     </CardItem>
-    <CardItem cardBody highlight horizontalPadder>
+    <CardItem cardBody foreground horizontalPadder>
       {children}
     </CardItem>
   </Card>

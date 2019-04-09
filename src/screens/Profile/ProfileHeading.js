@@ -37,7 +37,7 @@ export default class ProfileHeading extends PureComponent {
     return (
       <Query query={userQuery}>
         {({ data: { user }, loading }) => (
-          <UserHeading highlight {...props} style={styles.heading} loading={loading} user={user}>
+          <UserHeading foreground {...props} style={styles.heading} loading={loading} user={user}>
             <Button
               light
               bordered

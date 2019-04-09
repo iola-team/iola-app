@@ -34,7 +34,7 @@ export default class DashboardAll extends PureComponent {
       <Container>
         <UsersConnection
           ListHeaderComponent={(
-            <View highlight style={styles.listHeader}>
+            <View foreground style={styles.listHeader}>
               <TouchableOpacity onPress={this.onSearchPress}>
                 <View padder pointerEvents="box-only">
                   <SearchBar placeholder="Search users" />

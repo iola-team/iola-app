@@ -13,7 +13,7 @@ const stories = storiesOf('Components/UsersRowItem', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({ centered: true }));
+stories.addDecorator(getContentDecorator({ centered: true, backgroundColor: '#FFFFFF' }));
 
 /**
  * Apollo decorator example

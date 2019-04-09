@@ -51,7 +51,7 @@ export default class FieldSection extends PureComponent {
           <Text>{label}</Text>
         </CardItem>
 
-        <CardItem cardBody highlight={!loading} horizontalPadder>
+        <CardItem cardBody foreground={!loading} horizontalPadder>
           {!loading ? children : (
             <Fragment>
               <View />

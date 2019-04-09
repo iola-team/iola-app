@@ -56,7 +56,7 @@ export default class Channels extends Component {
       <Container>
         <UserChats
           ListHeaderComponent={(
-            <View highlight style={styles.headerList}>
+            <View foreground style={styles.headerList}>
               <TouchableOpacity onPressIn={this.onSearchPress}>
                 <View padder pointerEvents="box-only">
                   <SearchBar placeholder="Search chats" />
