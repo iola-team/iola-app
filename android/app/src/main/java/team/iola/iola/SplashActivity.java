@@ -1,4 +1,4 @@
-package app.iola.iola;
+package team.iola.iola;
 
 import android.content.Intent;
 import android.os.Bundle;
