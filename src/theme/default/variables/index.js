@@ -14,7 +14,10 @@ export default assign(defaultVariables, {
   textColor: '#585A61',
   contentPadding: 16,
   androidRippleColor: "rgba(200, 200, 200, 0.7)",
-  containerBgColor: '#F8F9FB',
-  highlightColor: '#FFFFFF',
   cardDefaultBg: 'transparent',
+
+  foregroundColor: '#FFFFFF',
+  backgroundColor: '#F8F9FB',
+  highlightColor: '#F8F9FB',
+  placeholderColor: '#FFFFFF',
 });

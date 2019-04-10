@@ -4,6 +4,10 @@ import getTheme from 'native-base/src/theme/components';
 export default (variables => ({
   ...variables,
   ...merge(getTheme(variables), {
+    'NativeBase.Container': {
+      backgroundColor: variables.backgroundColor,
+    },
+
     'Sparkle.TouchableOpacity': {
       '.disabled': {
         opacity: 0.3,
@@ -17,8 +21,6 @@ export default (variables => ({
         }
       }
     },
-
-    'NativeBase.Container': {},
 
     'NativeBase.Fab': {
       'NativeBase.Icon': {
@@ -44,6 +46,14 @@ export default (variables => ({
 
       '.highlight': {
         backgroundColor: variables.highlightColor,
+      },
+
+      '.background': {
+        backgroundColor: variables.backgroundColor,
+      },
+
+      '.foreground': {
+        backgroundColor: variables.foregroundColor,
       },
     },
 
@@ -264,6 +274,14 @@ export default (variables => ({
           backgroundColor: variables.highlightColor,
         },
 
+        '.background': {
+          backgroundColor: variables.backgroundColor,
+        },
+  
+        '.foreground': {
+          backgroundColor: variables.foregroundColor,
+        },
+
         '.cardBody': {
           flexDirection: 'column',
         }
@@ -278,9 +296,11 @@ export default (variables => ({
 
     'Sparkle.Shadow': {},
 
-    'Sparkle.UserListItem': {},
-
     'Sparkle.ScreenHeader': {
+      header: {
+        backgroundColor: variables.foregroundColor,
+      },
+
       'NativeBase.Icon': {
         fontSize: 35,
         color: '#BDC0CB',
@@ -293,6 +313,131 @@ export default (variables => ({
         },
 
         paddingHorizontal: variables.contentPadding,
+      },
+    },
+
+
+    'Sparkle.SearchBar': {
+      inputWrap: {
+        backgroundColor: variables.highlightColor,
+      },
+    },
+
+    'Sparkle.TabBar': {
+      backgroundColor: variables.foregroundColor,
+    },
+
+    'Sparkle.BottomTabBar': {
+      root: {
+        backgroundColor: variables.foregroundColor,
+      },
+    },
+
+    'Sparkle.ChatFooter': {
+      root: {
+        backgroundColor: variables.foregroundColor,
+      },
+    },
+
+    'Sparkle.NoContent': {
+      'NativeBase.ViewNB': {
+        backgroundColor: variables.placeholderColor,
+      },
+    
+      '.inverted': {
+        'NativeBase.ViewNB': {
+          backgroundColor: variables.foregroundColor,
+        },
+      },
+    },
+
+    /**
+     * Placeholders
+     * TODO: Think of a better approach ( more generic - less hardcoded )
+     */
+    'Sparkle.ChatListItem': {
+      'Sparkle.Placeholder': {
+        'NativeBase.ListItem': {
+          'NativeBase.Left': {
+            'NativeBase.ViewNB': {
+              backgroundColor: variables.placeholderColor,
+            },
+          },
+    
+          'NativeBase.Body': {
+            'NativeBase.Text': {
+              backgroundColor: variables.placeholderColor,
+            },
+          },
+        },
+      },
+    },
+
+    'Sparkle.FieldSection': {
+      'Sparkle.Placeholder': {
+        'NativeBase.Card': {
+          'NativeBase.CardItem': {
+            '.header': {
+              'NativeBase.Text': {
+                backgroundColor: variables.placeholderColor,
+              },
+            },
+    
+            '.cardBody': {
+              'NativeBase.ViewNB': {
+                backgroundColor: variables.placeholderColor,
+              },
+            },
+          },
+        },
+      },
+    },
+
+    'Sparkle.PhotoListItem': {
+      'Sparkle.Placeholder': {
+        backgroundColor: variables.placeholderColor,
+      },
+    },
+
+    'Sparkle.UserAvatar': {
+      'Sparkle.Placeholder': {
+        backgroundColor: variables.placeholderColor,
+      },
+    },
+
+    'Sparkle.UserHeading': {
+      'NativeBase.ViewNB': {
+        'Sparkle.UserAvatar': {
+          'Sparkle.Placeholder': {
+            backgroundColor: variables.backgroundColor,
+          },
+        },
+      },
+    },
+
+    'Sparkle.UserListItem': {
+      'Sparkle.Placeholder': {
+        'NativeBase.ListItem': {
+          'NativeBase.Left': {
+            'NativeBase.ViewNB': {
+              backgroundColor: variables.placeholderColor,
+            },
+          },
+    
+          'NativeBase.Body': {
+            'NativeBase.ViewNB': {
+              backgroundColor: variables.placeholderColor,
+            },
+          },
+        },
+      },
+    },
+
+    'Sparkle.UsersRowItem': {
+      'Sparkle.Placeholder': {
+        'NativeBase.ViewNB': {
+          backgroundColor: variables.highlightColor,
+        },
       },
     },
   }),

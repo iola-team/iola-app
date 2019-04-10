@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
-import { select, text, withKnobs } from '@storybook/addon-knobs';
+import { select, text, boolean, withKnobs } from '@storybook/addon-knobs';
 
 import { getContainerDecorator } from '~storybook';
 import NoContent from './NoContent';
@@ -15,5 +15,12 @@ stories.addDecorator(getContainerDecorator());
 const icons = ['photos-empty-state', 'chats-empty-state', 'comments-empty-state'];
 const getIcon = () => select('Icon', icons, icons[0]);
 const getText = () => text('Text', 'No Content');
+const getInverted = () => boolean('Inverted', false);
 
-stories.add('Default', () => <NoContent icon={getIcon()} text={getText()} />);
+stories.add('Default', () => (
+  <NoContent
+    icon={getIcon()}
+    text={getText()}
+    inverted={getInverted()}
+  />
+));

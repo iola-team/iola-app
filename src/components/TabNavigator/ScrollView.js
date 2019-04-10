@@ -93,7 +93,7 @@ export default class ScrollView extends PureComponent {
         scrollEventThrottle={1}
       >
         <Animated.View style={stickyStyle}>
-          <View highlight style={{ marginTop: -contentHeight, paddingTop: contentHeight }}>
+          <View foreground style={{ marginTop: -contentHeight, paddingTop: contentHeight }}>
             <Header />
             <TabBar />
           </View>
