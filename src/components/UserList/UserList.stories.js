@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
 import faker from 'faker';
 import delay from 'promise-delay';
 import { connectionFromArray } from 'graphql-relay';
@@ -106,7 +107,11 @@ const usersQuery = gql`
 stories.add('Full flow', () => (
   <Query query={usersQuery}>
     {({ loading, data }) => (
-      <UserList edges={loading ? [] : data.users.edges} loading={loading} />
+      <UserList
+        edges={loading ? [] : data.users.edges}
+        loading={loading}
+        onRefresh={action('onRefresh')}
+      />
     )}
   </Query>
 ));

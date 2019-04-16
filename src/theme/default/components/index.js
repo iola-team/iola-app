@@ -440,5 +440,9 @@ export default (variables => ({
         },
       },
     },
+
+    'Sparkle.RefreshControl': {
+      color: variables.brandPrimary,
+    },
   }),
 }));

@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
-import { ScrollView as ScrollViewRN, Animated, View as ViewRN } from 'react-native';
+import { Animated, View as ViewRN } from 'react-native';
+import { ScrollView as ScrollViewRN } from 'react-native-gesture-handler';
 import { View } from 'native-base';
 
+import RefreshControl from '../RefreshControl';
 import { TabBar, Header, Context } from './SceneView';
 
-export default class ScrollView extends PureComponent {
+class ScrollView extends PureComponent {
   static contextType = Context;
 
   unsubscribe = null;
@@ -107,3 +109,14 @@ export default class ScrollView extends PureComponent {
     );
   }
 }
+
+export const renderScrollComponent = ({ refreshing = false, onRefresh, ...props }) => (
+  <ScrollView
+    {...props}
+    refreshControl={onRefresh && (
+      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+    )}
+  />
+);
+
+export default ScrollView;

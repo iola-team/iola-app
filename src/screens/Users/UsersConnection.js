@@ -33,14 +33,21 @@ export default class UsersConnection extends Component {
     onItemPress: () => {},
   };
 
-  shouldComponentUpdate({ data }) {
-    const { users, networkStatus } = data;
-    const prev = this.props.data;
+  state = {
+    isRefreshing: false,
+  };
 
-    return prev.users !== users || prev.networkStatus !== networkStatus;
-  }
-
-  refresh = (vars = {}) => this.props.data.refetch(vars);
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch();
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
+  };
 
   loadMore = ({ distanceFromEnd }) => {
     const { loading, fetchMore, users } = this.props.data;
@@ -79,12 +86,14 @@ export default class UsersConnection extends Component {
 
   render() {
     const { data: { users, loading }, onItemPress, ...listProps } = this.props;
+    const { isRefreshing } = this.state;
 
     return (
       <UserList
         {...listProps}
 
         loading={loading}
+        refreshing={isRefreshing}
         edges={users ? users.edges : []}
         onItemPress={onItemPress}
         onRefresh={this.refresh}
