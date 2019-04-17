@@ -116,6 +116,10 @@ export default class UserPhotos extends Component {
               onItemPress={onShowImage}
               noContentText="No photos"
               noContentStyle={styles.noContent}
+
+              removeClippedSubviews
+              initialNumToRender={6}
+              updateCellsBatchingPeriod={100}
             />
           )}
         </ImageView>
