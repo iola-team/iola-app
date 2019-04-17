@@ -46,12 +46,32 @@ export default class UserFriends extends Component {
     tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
   });
 
+  state = {
+    isRefreshing: false,
+  };
+
+  /**
+   * TODO: Move these common logic to a central place, to prevent copy & past
+   */
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
+  };
+
   shouldComponentUpdate({ isFocused }) {
     return isFocused;
   }
 
   render() {
     const { data: { user, loading }, styleSheet: styles } = this.props;
+    const { isRefreshing } = this.state;
     const edges = user?.friends.edges || [];
 
     return (
@@ -61,6 +81,8 @@ export default class UserFriends extends Component {
           edges={edges}
           loading={loading}
           noContentText="No friends"
+          refreshing={isRefreshing}
+          onRefresh={this.refresh}
         />
       </Container>
     );

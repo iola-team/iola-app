@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import { Button, Text, View } from 'native-base';
 
 import { withStyleSheet } from '~theme';
@@ -31,14 +31,30 @@ const userQuery = gql`
     marginHorizontal: 5,
   }
 })
+@graphql(userQuery, {
+  options: ({ navigation }) => ({
+    variables: {
+      userId: navigation.state.params.id,
+    },
+  }),
+})
 export default class UserScreenHead extends PureComponent {
   static HEIGHT = UserHeading.HEIGHT;
+
+  componentDidMount() {
+    const { addListener, data } = this.props;
+
+    addListener('refetch', () => data.refetch());
+  }
 
   render() {
     const {
       styleSheet: styles,
+      data: {
+        loading,
+        user,
+      },
       navigation: {
-        goBack,
         navigate,
         state: {
           params: {
@@ -50,23 +66,19 @@ export default class UserScreenHead extends PureComponent {
     } = this.props;
 
     return (
-      <Query query={userQuery} variables={{ userId }}>
-        {({ data: { user }, loading }) => (
-          <UserHeading {...props} loading={loading} user={user}>
-            <View style={styles.buttons}>
-              <Button
-                block
-                style={styles.button}
-                onPress={() => navigate(routes.CHANNEL, { userId })}
-              >
-                <Text>Chat</Text>
-              </Button>
+      <UserHeading {...props} loading={loading} user={user}>
+        <View style={styles.buttons}>
+          <Button
+            block
+            style={styles.button}
+            onPress={() => navigate(routes.CHANNEL, { userId })}
+          >
+            <Text>Chat</Text>
+          </Button>
 
-              <FriendsButton block style={styles.button} userId={userId} />
-            </View>
-          </UserHeading>
-        )}
-      </Query>
+          <FriendsButton block style={styles.button} userId={userId} />
+        </View>
+      </UserHeading>
     );
   }
 }

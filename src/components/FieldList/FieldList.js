@@ -49,11 +49,11 @@ export default class FieldList extends Component {
   }
 
   render() {
-    const { style, loading, sections } = this.props;
+    const { style, loading, sections, ...props } = this.props;
     const items = loading ? this.getPlaceholders() : sections;
 
     return (
-      <ScrollView style={style}>
+      <ScrollView {...props} style={style}>
         {
           items.map(this.renderSection)
         }

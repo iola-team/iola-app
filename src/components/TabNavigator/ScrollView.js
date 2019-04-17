@@ -9,7 +9,7 @@ import { TabBar, Header, Context } from './SceneView';
 class ScrollView extends PureComponent {
   static contextType = Context;
 
-  unsubscribe = null;
+  unsubscribe = [];
   scrollRef = null;
 
   scrollTo = (y, animated = false) => {
@@ -29,24 +29,52 @@ class ScrollView extends PureComponent {
     onScrollEnd(y);
   }
 
-  componentDidMount() {
+  onRefresh = () => {
+    const { onRefresh } = this.props;
+
+    onRefresh();
+
     if (this.context) {
-      this.unsubscribe = this.context.addListener('scroll', this.scrollTo);
+      this.context.refetch();
     }
+  };
+
+  componentDidMount() {
+    this.unsubscribe = !this.context ? [] : [
+      this.context.addListener('scroll', this.scrollTo),
+    ];
   }
 
   componentWillUnmount() {
-    if (this.unsubscribe) {
-      this.unsubscribe();
+    this.unsubscribe.map(unsub => unsub());
+  }
+
+  renderRefreshControl() {
+    const { refreshControl, refreshing, onRefresh } = this.props;
+
+    if (refreshControl) {
+      return refreshControl;
     }
+
+    return onRefresh && (
+      <RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />
+    );
   }
   
   render() {
     const { contentContainerStyle, ...restProps } = this.props;
     const contentStyle = [contentContainerStyle, { flexGrow: 1 }];
+    const refreshControl = this.renderRefreshControl();
 
     if (!this.context) {
-      return <ScrollViewRN contentContainerStyle={contentStyle} {...restProps} />;
+      return (
+        <ScrollViewRN
+          contentContainerStyle={contentStyle}
+
+          {...restProps}
+          refreshControl={refreshControl}
+        />
+      );
     }
 
     const {
@@ -57,7 +85,12 @@ class ScrollView extends PureComponent {
       onScroll: onScrollEvent,
     } = this.context;
 
-    const { onScroll, children, ...listProps } = restProps;
+    const {
+      onScroll,
+      children,
+      ...listProps
+    } = restProps;
+
     if (onScroll) {
       Animated.forkEvent(onScrollEvent, onScroll);
     }
@@ -91,6 +124,7 @@ class ScrollView extends PureComponent {
         onScroll={onScrollEvent}
         onScrollEnd={this.onScrollEnd}
         onMomentumScrollEnd={this.onScrollEnd}
+        refreshControl={refreshControl}
 
         scrollEventThrottle={1}
       >
@@ -110,13 +144,5 @@ class ScrollView extends PureComponent {
   }
 }
 
-export const renderScrollComponent = ({ refreshing = false, onRefresh, ...props }) => (
-  <ScrollView
-    {...props}
-    refreshControl={onRefresh && (
-      <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-    )}
-  />
-);
-
+export const renderScrollComponent = props => <ScrollView {...props} />;
 export default ScrollView;

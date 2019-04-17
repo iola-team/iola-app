@@ -297,8 +297,12 @@ export default (variables => ({
     'Sparkle.Shadow': {},
 
     'Sparkle.ScreenHeader': {
-      header: {
+      opaqueHeader: {
         backgroundColor: variables.foregroundColor,
+      },
+
+      transparentHeader: {
+        backgroundColor: 'transparent',
       },
 
       'NativeBase.Icon': {

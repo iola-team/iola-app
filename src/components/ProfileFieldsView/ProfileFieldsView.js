@@ -51,7 +51,7 @@ export default class ProfileFieldsView extends PureComponent {
   );
 
   render() {
-    const { style, user, loading } = this.props;
+    const { style, user, loading, ...props } = this.props;
     let fields = [];
     let values = [];
 
@@ -62,6 +62,8 @@ export default class ProfileFieldsView extends PureComponent {
 
     return (
       <ProfileFieldList
+        {...props}
+
         loading={loading}
         style={style}
         fields={fields}
