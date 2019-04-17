@@ -2,7 +2,7 @@ import React from 'react';
 import { range } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { withKnobs } from '@storybook/addon-knobs';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import { action } from '@storybook/addon-actions';
 import faker from 'faker';
@@ -110,6 +110,7 @@ stories.add('Full flow', () => (
       <UserList
         edges={loading ? [] : data.users.edges}
         loading={loading}
+        hasMore={boolean('Has more', true)}
         onRefresh={action('onRefresh')}
       />
     )}

@@ -7,8 +7,8 @@ import update from 'immutability-helper';
 import { UserList } from '~components';
 
 @graphql(gql`
-  query users($cursor: Cursor = null) {
-    users(first: 20 after: $cursor) {
+  query users($first: Int = 20, $cursor: Cursor = null) {
+    users(first: $first after: $cursor) {
       edges {
         ...UserList_edge
       }
@@ -42,7 +42,7 @@ export default class UsersConnection extends Component {
     
     this.setState({ isRefreshing: true });
     try {
-      await refetch();
+      await refetch({ cursor: null });
     } catch {
       // Pass...
     }
@@ -60,7 +60,7 @@ export default class UsersConnection extends Component {
 
     this.fetchMorePromise = this.fetchMorePromise || fetchMore({
       variables: {
-        cursor: users.pageInfo.endCursor,
+        cursor: pageInfo.endCursor,
       },
 
       updateQuery: (prev, { fetchMoreResult: { users } }) => {
@@ -74,7 +74,7 @@ export default class UsersConnection extends Component {
               $push: users.edges,
             },
             pageInfo: {
-              $merge: users.pageInfo,
+              $merge: pageInfo,
             },
           },
         });
@@ -93,8 +93,9 @@ export default class UsersConnection extends Component {
         {...listProps}
 
         loading={loading}
+        hasMore={users?.pageInfo.hasNextPage}
         refreshing={isRefreshing}
-        edges={users ? users.edges : []}
+        edges={users?.edges || []}
         onItemPress={onItemPress}
         onRefresh={this.refresh}
         onEndReached={this.loadMore}
