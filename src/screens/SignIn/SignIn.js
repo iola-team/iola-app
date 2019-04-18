@@ -2,21 +2,10 @@ import React, { Component } from 'react';
 import { ImageBackground } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 import { ApolloConsumer } from 'react-apollo';
-import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import SignInForm from './SignInForm';
 import * as routes from '../routeNames';
-
-const meQuery = gql`
-  query meQuery {
-    me {
-      id
-      isApproved
-      isEmailVerified
-    }
-  }
-`;
 
 @styleSheet('Sparkle.SignInScreen', {
   background: {
@@ -46,44 +35,20 @@ const meQuery = gql`
 export default class SignInScreen extends Component {
   state = { defaultEmail: '' };
 
-  onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }, apolloClient) => {
+  onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }) => {
     const { authenticate, navigation: { navigate } } = this.props;
     let authenticated = false;
-    let isApproved = false;
-    let isEmailVerified = false;
 
     try {
       authenticated = await authenticate(login, password);
-
-      if (authenticated) {
-        const { data: { me } } = await apolloClient.query({ query: meQuery });
-
-        isApproved = me.isApproved;
-        isEmailVerified = me.isEmailVerified;
-      }
     } catch (error) {
       // @TODO: handle the error?
     }
 
     setStatus({ ...status, success: authenticated });
-
     setSubmitting(false);
 
-    if (authenticated) {
-      if (!isEmailVerified) {
-        navigate(routes.EMAIL_VERIFICATION);
-
-        return;
-      }
-
-      if (!isApproved) {
-        navigate(routes.PENDING_APPROVAL);
-
-        return;
-      }
-
-      navigate(routes.APPLICATION);
-    }
+    if (authenticated) navigate(routes.LAUNCH);
   };
 
   onForgotPassword = (login) => {
