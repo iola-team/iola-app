@@ -43,7 +43,6 @@ function loadStories() {
   require('../components/PhotoGrid/PhotoGrid.stories');
   require('../components/PhotoList/PhotoList.stories');
   require('../components/PhotoListItem/PhotoListItem.stories');
-  require('../components/PhotosTabBarLabel/PhotosTabBarLabel.stories');
   require('../components/Placeholder/Placeholder.stories');
   require('../components/ProfileFieldForm/ProfileFieldForm.stories');
   require('../components/ProfileFieldInput/ProfileFieldInput.stories');
@@ -114,7 +113,6 @@ const stories = [
   '../components/PhotoGrid/PhotoGrid.stories',
   '../components/PhotoList/PhotoList.stories',
   '../components/PhotoListItem/PhotoListItem.stories',
-  '../components/PhotosTabBarLabel/PhotosTabBarLabel.stories',
   '../components/Placeholder/Placeholder.stories',
   '../components/ProfileFieldForm/ProfileFieldForm.stories',
   '../components/ProfileFieldInput/ProfileFieldInput.stories',
