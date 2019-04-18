@@ -138,6 +138,13 @@ export default class UserPhotos extends Component {
               noContentStyle={styles.noContent}
               refreshing={isRefreshing}
               onRefresh={this.refresh}
+
+              /**
+               * TODO: Review these optimizations
+               */
+              removeClippedSubviews
+              initialNumToRender={6}
+              updateCellsBatchingPeriod={100}
             />
           )}
         </ImageView>

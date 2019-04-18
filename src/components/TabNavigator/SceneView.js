@@ -114,6 +114,13 @@ export default class SceneView extends PureComponent {
     headerHeight: 0,
   };
 
+  static getDerivedStateFromProps({ isFocused }, state) {
+    return {
+      ...state,
+      shouldRender: isFocused || state.shouldRender,
+    };
+  }
+
   subscribers = {
     focus: [],
     scroll: [],
@@ -137,6 +144,10 @@ export default class SceneView extends PureComponent {
       useNativeDriver: true,
     },
   );
+
+  state = {
+    shouldRender: false,
+  };
 
   constructor(...args) {
     super(...args);
@@ -200,6 +211,7 @@ export default class SceneView extends PureComponent {
 
   render() {
     const { isFocused, route, renderScene } = this.props;
+    const { shouldRender } = this.state;
 
     return (
       <Context.Provider value={this.contextValue}>
@@ -214,7 +226,7 @@ export default class SceneView extends PureComponent {
           pointerEvents={isFocused ? 'auto' : 'none'}
         >
           <View style={isFocused ? styles.attached : styles.detached}>
-            {renderScene({ route })}
+            {shouldRender && renderScene({ route })}
           </View>
         </SafeAreaView>
       </Context.Provider>
