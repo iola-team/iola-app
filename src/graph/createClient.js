@@ -45,13 +45,8 @@ export async function createClient({
     cachePersistor,
   }));
 
-  if (restoreCache) {
-    // await cachePersistor.restore();
-  }
-
   const authLink = new AuthLink();
   const errorLink = new ErrorLink();
-
   const client = new ApolloClient({
     link: from([
       errorLink,
@@ -81,6 +76,10 @@ export async function createClient({
   client.onResetStore(writeDefaults);
 
   writeDefaults();
+
+  if (restoreCache) {
+    await cachePersistor.restore();
+  }
 
   return client;
 }
