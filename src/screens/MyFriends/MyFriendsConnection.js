@@ -102,6 +102,25 @@ export default class MyFriendsConnection extends PureComponent {
     skip: false,
   };
 
+  state = {
+    isRefreshing: false,
+  };
+
+  /**
+   * TODO: Move these common logic to a central place, to prevent copy & past
+   */
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
+  };
+
   onAcceptPress = async ({ node, friendship }) => {
     const { addFriend, data: { me } } = this.props;
     const status = 'ACTIVE';
@@ -165,6 +184,7 @@ export default class MyFriendsConnection extends PureComponent {
 
   render() {
     const { data: { loading, me }, skip, ...props } = this.props;
+    const { isRefreshing } = this.state;
     const edges = get(me, 'friends.edges', []);
 
     return (
@@ -172,8 +192,9 @@ export default class MyFriendsConnection extends PureComponent {
         {...props}
         edges={edges}
         loading={skip || loading}
+        refreshing={isRefreshing}
         noContentText="No friends"
-
+        onRefresh={this.refresh}
         onAcceptPress={this.onAcceptPress}
         onIgnorePress={this.onIgnorePress}
         onCancelPress={this.onCancelPress}

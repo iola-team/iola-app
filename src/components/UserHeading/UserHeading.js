@@ -148,27 +148,29 @@ export default class UserHeading extends PureComponent {
       ],
     };
 
+    const showLoading = loading && !user;
+
     return (
       <View style={[styles.root, style]} {...props}>
-        <UserAvatar style={styles.avatar} loading={loading} user={user} size="large" />
+        <UserAvatar style={styles.avatar} loading={showLoading} user={user} size="large" />
 
         <View style={styles.info}>
           <View style={styles.infoLine}>
-            <Placeholder isActive={loading}>
-              <H2 style={loading ? [styles.placeholder, styles.namePlaceholder] : null}>
-                {loading ? ' ' : user.name}
+            <Placeholder isActive={showLoading}>
+              <H2 style={showLoading ? [styles.placeholder, styles.namePlaceholder] : null}>
+                {showLoading ? ' ' : user.name}
               </H2>
             </Placeholder>
-            <UserOnlineStatus style={styles.onlineStatus} user={loading ? null : user} />
+            <UserOnlineStatus style={styles.onlineStatus} user={showLoading ? null : user} />
           </View>
 
           <View style={styles.infoLine}>
-            <Placeholder isActive={loading}>
+            <Placeholder isActive={showLoading}>
               <Text
                 note
-                style={loading ? [styles.placeholder, styles.headlinePlaceholder] : styles.headline}
+                style={showLoading ? [styles.placeholder, styles.headlinePlaceholder] : styles.headline}
               >
-                {loading ? ' ' : user.info.headline}
+                {showLoading ? ' ' : user.info.headline}
               </Text>
             </Placeholder>
           </View>
@@ -179,7 +181,7 @@ export default class UserHeading extends PureComponent {
         </View>
 
         <Animated.View style={[styles.navBarBg, navBarStyle]}>
-          <Animated.Text style={styles.navBarBgText}>{!loading && user.name}</Animated.Text>
+          <Animated.Text style={styles.navBarBgText}>{!showLoading && user.name}</Animated.Text>
         </Animated.View>
       </View>
     );
