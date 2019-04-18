@@ -22,7 +22,6 @@ import LogoutButton from './LogoutButton';
 import NoContent from './NoContent';
 import PhotoEdit from './PhotoEdit';
 import PhotoList from './PhotoList';
-import PhotosTabBarLabel from './PhotosTabBarLabel';
 import ProfileFieldsEdit from './ProfileFieldsEdit';
 import ProfileFieldsView from './ProfileFieldsView';
 import Root from './Root';
@@ -71,7 +70,6 @@ export {
   NoContent,
   PhotoEdit,
   PhotoList,
-  PhotosTabBarLabel,
   ProfileFieldsEdit,
   ProfileFieldsView,
   Root,

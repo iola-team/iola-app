@@ -42,17 +42,6 @@ stories.addDecorator(getApolloDecorator({
   },
 }));
 
-const meQuery = gql`
-  query {
-    me {
-      id
-      ...FriendsTabBarLabel_me
-    }
-  }
-  
-  ${FriendsTabBarLabel.fragments.me}
-`;
-
 const userQuery = gql`
   query {
     user: me {
@@ -66,12 +55,6 @@ const userQuery = gql`
 
 // Stories
 stories.add('My friends', () => (
-  <Query query={meQuery}>
-    {({ data }) => <FriendsTabBarLabel user={data.me} />}
-  </Query>
-));
-
-stories.add('User friends', () => (
   <Query query={userQuery}>
     {({ data }) => <FriendsTabBarLabel user={data.user} />}
   </Query>

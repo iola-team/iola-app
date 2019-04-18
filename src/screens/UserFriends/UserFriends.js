@@ -5,8 +5,7 @@ import { withNavigationFocus } from 'react-navigation';
 import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
-import { UserList, FriendsTabBarLabel } from '~components';
-import TabBarLabel from './TabBarLabel';
+import { UserList } from '~components';
 
 const userFriendsQuery = gql`
   query UserFriendsQuery($id: ID!) {
@@ -18,13 +17,10 @@ const userFriendsQuery = gql`
             ...UserList_edge
           }
         }
-
-        ...FriendsTabBarLabel_user
       }
     }
   }
   
-  ${FriendsTabBarLabel.fragments.user}
   ${UserList.fragments.edge}
 `;
 
@@ -42,9 +38,9 @@ const userFriendsQuery = gql`
 })
 @withNavigationFocus
 export default class UserFriends extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
-  });
+  static navigationOptions = {
+    tabBarLabel: 'Friends',
+  };
 
   state = {
     isRefreshing: false,

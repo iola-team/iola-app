@@ -7,7 +7,6 @@ import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { PhotoList, ImageView } from '~components';
-import TabBarLabel from './TabBarLabel';
 
 const userPhotosQuery = gql`
   query UserPhotosQuery($id: ID!) {
@@ -59,9 +58,9 @@ const deletePhotoMutation = gql`
 })
 @withNavigationFocus
 export default class UserPhotos extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
-  });
+  static navigationOptions = {
+    tabBarLabel: 'Photos',
+  };
 
   state = {
     isRefreshing: false,

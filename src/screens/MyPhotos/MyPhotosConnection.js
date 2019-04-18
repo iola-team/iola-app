@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'native-base';
-import { graphql, Mutation } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { get, filter, uniqueId, remove } from 'lodash';
+import { uniqueId, remove } from 'lodash';
 import update from 'immutability-helper';
 
-import { PhotoList, ImagePicker, ImageView, ImageProgress, PhotosTabBarLabel } from '~components';
+import { PhotoList, ImagePicker, ImageView } from '~components';
 
 const myPhotosQuery = gql`
   query MyPhotosQuery {
@@ -17,13 +17,10 @@ const myPhotosQuery = gql`
           ...PhotoList_edge
         }
       }
-
-      ...PhotosTabBarLabel_user
     }
   }
 
   ${PhotoList.fragments.edge}
-  ${PhotosTabBarLabel.fragments.user}
 `;
 
 const addPhotoMutation = gql`
@@ -40,7 +37,6 @@ const addPhotoMutation = gql`
   }
 
   ${PhotoList.fragments.edge}
-  ${PhotosTabBarLabel.fragments.user}
 `;
 
 const deletePhotoMutation = gql`
@@ -188,7 +184,6 @@ export default class MyFriendsConnection extends PureComponent {
 
               refreshing={isRefreshing}
               onRefresh={this.refresh}
-              renderItem={this.renderItem}
               itemsProgress={photoProgress}
               onItemPress={onShowImage}
               edges={edges}
