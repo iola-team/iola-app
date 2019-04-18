@@ -7,8 +7,8 @@ import update from 'immutability-helper';
 import { UserList } from '~components';
 
 @graphql(gql`
-  query users($cursor: Cursor = null) {
-    users(first: 20 after: $cursor) {
+  query users($first: Int = 20, $cursor: Cursor = null) {
+    users(first: $first after: $cursor) {
       edges {
         ...UserList_edge
       }
@@ -33,14 +33,21 @@ export default class UsersConnection extends Component {
     onItemPress: () => {},
   };
 
-  shouldComponentUpdate({ data }) {
-    const { users, networkStatus } = data;
-    const prev = this.props.data;
+  state = {
+    isRefreshing: false,
+  };
 
-    return prev.users !== users || prev.networkStatus !== networkStatus;
-  }
-
-  refresh = (vars = {}) => this.props.data.refetch(vars);
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
+  };
 
   loadMore = ({ distanceFromEnd }) => {
     const { loading, fetchMore, users } = this.props.data;
@@ -53,7 +60,7 @@ export default class UsersConnection extends Component {
 
     this.fetchMorePromise = this.fetchMorePromise || fetchMore({
       variables: {
-        cursor: users.pageInfo.endCursor,
+        cursor: pageInfo.endCursor,
       },
 
       updateQuery: (prev, { fetchMoreResult: { users } }) => {
@@ -67,7 +74,7 @@ export default class UsersConnection extends Component {
               $push: users.edges,
             },
             pageInfo: {
-              $merge: users.pageInfo,
+              $merge: pageInfo,
             },
           },
         });
@@ -79,13 +86,16 @@ export default class UsersConnection extends Component {
 
   render() {
     const { data: { users, loading }, onItemPress, ...listProps } = this.props;
+    const { isRefreshing } = this.state;
 
     return (
       <UserList
         {...listProps}
 
         loading={loading}
-        edges={users ? users.edges : []}
+        hasMore={users?.pageInfo.hasNextPage}
+        refreshing={isRefreshing}
+        edges={users?.edges || []}
         onItemPress={onItemPress}
         onRefresh={this.refresh}
         onEndReached={this.loadMore}

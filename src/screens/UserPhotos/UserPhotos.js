@@ -7,7 +7,6 @@ import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { PhotoList, ImageView } from '~components';
-import TabBarLabel from './TabBarLabel';
 
 const userPhotosQuery = gql`
   query UserPhotosQuery($id: ID!) {
@@ -59,9 +58,28 @@ const deletePhotoMutation = gql`
 })
 @withNavigationFocus
 export default class UserPhotos extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
-  });
+  static navigationOptions = {
+    tabBarLabel: 'Photos',
+  };
+
+  state = {
+    isRefreshing: false,
+  };
+
+  /**
+   * TODO: Move these common logic to a central place, to prevent copy & past
+   */
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
+  };
 
   deletePhoto = (photoId) => {
     const { deletePhoto, data: { user } } = this.props;
@@ -103,6 +121,7 @@ export default class UserPhotos extends Component {
 
   render() {
     const { data: { user, loading }, styleSheet: styles } = this.props;
+    const { isRefreshing } = this.state;
     const edges = user?.photos.edges || [];
 
     return (
@@ -116,6 +135,15 @@ export default class UserPhotos extends Component {
               onItemPress={onShowImage}
               noContentText="No photos"
               noContentStyle={styles.noContent}
+              refreshing={isRefreshing}
+              onRefresh={this.refresh}
+
+              /**
+               * TODO: Review these optimizations
+               */
+              removeClippedSubviews
+              initialNumToRender={6}
+              updateCellsBatchingPeriod={100}
             />
           )}
         </ImageView>

@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Icon } from 'native-base';
-import { graphql, Mutation } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { get, filter, uniqueId, remove } from 'lodash';
+import { uniqueId, remove } from 'lodash';
 import update from 'immutability-helper';
 
-import { PhotoList, ImagePicker, ImageView, ImageProgress, PhotosTabBarLabel } from '~components';
+import { PhotoList, ImagePicker, ImageView } from '~components';
 
 const myPhotosQuery = gql`
   query MyPhotosQuery {
@@ -17,13 +17,10 @@ const myPhotosQuery = gql`
           ...PhotoList_edge
         }
       }
-
-      ...PhotosTabBarLabel_user
     }
   }
 
   ${PhotoList.fragments.edge}
-  ${PhotosTabBarLabel.fragments.user}
 `;
 
 const addPhotoMutation = gql`
@@ -40,7 +37,6 @@ const addPhotoMutation = gql`
   }
 
   ${PhotoList.fragments.edge}
-  ${PhotosTabBarLabel.fragments.user}
 `;
 
 const deletePhotoMutation = gql`
@@ -74,6 +70,22 @@ export default class MyFriendsConnection extends PureComponent {
 
   state = {
     photoProgress: {},
+    isRefreshing: false,
+  };
+
+  /**
+   * TODO: Move these common logic to a central place, to prevent copy & past
+   */
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
   };
 
   setPhotoProgress = (id, progress) => this.setState(state => ({
@@ -160,7 +172,7 @@ export default class MyFriendsConnection extends PureComponent {
 
   render() {
     const { data: { loading, me }, skip, addButtonStyle, ...props } = this.props;
-    const { photoProgress } = this.state;
+    const { photoProgress, isRefreshing } = this.state;
     const edges = me?.photos.edges || [];
 
     return (
@@ -169,7 +181,9 @@ export default class MyFriendsConnection extends PureComponent {
           {onShowImage => (
             <PhotoList
               {...props}
-              renderItem={this.renderItem}
+
+              refreshing={isRefreshing}
+              onRefresh={this.refresh}
               itemsProgress={photoProgress}
               onItemPress={onShowImage}
               edges={edges}

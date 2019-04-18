@@ -45,12 +45,19 @@ const connectionFragment = gql`
 `;
 
 const chatQuery = gql`
-  query ChatMessagesQuery($chatId: ID, $recipientId: ID, $first: Int = 20 $last: Int $after: Cursor $before: Cursor) {
+  query ChatMessagesQuery(
+    $chatId: ID
+    $recipientId: ID
+    $first: Int = 20
+    $last: Int
+    $after: Cursor
+    $before: Cursor
+  ) {
     me {
       id
       chat(id: $chatId, recipientId: $recipientId) {
         id
-        messages(last: $last after: $after first: $first before: $before) {
+        messages(last: $last after: $after first: $first before: $before) @connection(key: "ChatMessagesConnection") {
           ...Chat_messages
         }
       }
@@ -65,16 +72,16 @@ const chatQuery = gql`
 
 const startChatMutation = gql`
   mutation StartChatMessageMutation(
-  $input: MessageInput!
-  $chatId: ID
-  $recipientId: ID
+    $input: MessageInput!
+    $chatId: ID
+    $recipientId: ID
   ) {
     addMessage(input: $input) {
       user {
         id
         chat(id: $chatId, recipientId: $recipientId) {
           id
-          messages(first: 20) {
+          messages(first: 20) @connection(key: "ChatMessagesConnection") {
             ...Chat_messages
           }
         }
@@ -226,12 +233,14 @@ export default class Chat extends Component {
 
   async startChat(content) {
     const {
+      chatId,
       recipientId,
       data: { me },
       startChatMutation,
     } = this.props;
 
     const variables = {
+      chatId,
       recipientId,
       input: {
         recipientIds: [recipientId],
@@ -376,14 +385,14 @@ export default class Chat extends Component {
     this.startSubscriptions();
   }
 
-  onSend = async (text) => {
+  onSend = (text) => {
     const { data: { me } } = this.props;
     const input = { text, image: null };
 
     if (me.chat) {
-      await this.addMessage(input);
+      this.addMessage(input);
     } else {
-      await this.startChat(input);
+      this.startChat(input);
     }
   };
 
@@ -434,7 +443,7 @@ export default class Chat extends Component {
           inverted
         />
 
-        <ChatFooter style={styles.footer} onSend={this.onSend} />
+        <ChatFooter disabled={!me} style={styles.footer} onSend={this.onSend} />
         {me && <MessageUpdateSubscription userId={me.id} />}
       </View>
     );

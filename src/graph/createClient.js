@@ -1,4 +1,4 @@
-import { assign, find, isPlainObject, isArray } from 'lodash';
+import { find, isPlainObject, isArray } from 'lodash';
 import AsyncStorage from '@react-native-community/async-storage';
 import { getMainDefinition } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
@@ -45,13 +45,8 @@ export async function createClient({
     cachePersistor,
   }));
 
-  if (restoreCache) {
-    await cachePersistor.restore();
-  }
-
   const authLink = new AuthLink();
   const errorLink = new ErrorLink();
-
   const client = new ApolloClient({
     link: from([
       errorLink,
@@ -82,6 +77,10 @@ export async function createClient({
 
   writeDefaults();
 
+  if (restoreCache) {
+    await cachePersistor.restore();
+  }
+
   return client;
 }
 
@@ -109,7 +108,6 @@ export default async ({ apiURL, subscriptionsURL }) => {
       return promise;
     }
   });
-
 
   if (enableBatching) {
     const batchHttpLink = new BatchHttpLink({

@@ -32,7 +32,12 @@ import TouchableOpacity from '../TouchableOpacity';
 })
 export default class ChatFooter extends Component {
   static propTypes = {
-    onSend: PropTypes.func,
+    onSend: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    disabled: false,
   };
 
   state = {
@@ -54,15 +59,15 @@ export default class ChatFooter extends Component {
   };
 
   render() {
-    const { style, styleSheet: styles } = this.props;
+    const { style, styleSheet: styles, disabled } = this.props;
     const { text } = this.state;
 
     return (
       <View style={[styles.root, style]}>
         <Item rounded style={styles.input}>
-          <Input placeholder="Type Message" onChangeText={this.onChange} value={text} />
+          <Input disabled={disabled} placeholder="Type Message" onChangeText={this.onChange} value={text} />
         </Item>
-        <TouchableOpacity style={styles.sendButton} onPress={this.onSend}>
+        <TouchableOpacity disabled={disabled} style={styles.sendButton} onPress={this.onSend}>
           <Icon style={styles.sendIcon} name="send-message" />
         </TouchableOpacity>
       </View>

@@ -5,7 +5,12 @@ import './polyfill';
 import React, { Component } from 'react';
 import { ApolloProvider } from 'react-apollo';
 import SplashScreen from 'react-native-splash-screen';
-import { DEV_PLATFORM_URL, DEV_URL_PARAMETERS, INTEGRATION_PATH } from 'react-native-dotenv';
+import {
+  INTEGRATION_PATH,
+  DEV_PLATFORM_URL,
+  DEV_URL_PARAMETERS_FOR_API,
+  DEV_URL_PARAMETERS_FOR_SUBSCRIPTIONS,
+} from 'react-native-dotenv';
 import AsyncStorage from '@react-native-community/async-storage';
 import RNRestart from 'react-native-restart';
 
@@ -46,9 +51,10 @@ class ApplicationRoot extends Component {
     this.setState({ initWasLaunched: true });
 
     const url = `${__DEV__ ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_PATH}`;
-    const urlParameters = __DEV__ ? DEV_URL_PARAMETERS : '';
-    const apiURL = `${url}/graphql${urlParameters}`;
-    const subscriptionsURL = `${url}/subscriptions${urlParameters}`;
+    const apiURL = `${url}/graphql${__DEV__ ? DEV_URL_PARAMETERS_FOR_API : ''}`;
+    const subscriptionsURL = (
+      `${url}/subscriptions${__DEV__ ? DEV_URL_PARAMETERS_FOR_SUBSCRIPTIONS : ''}`
+    );
 
     this.apiClient = await createApiClient({ apiURL, subscriptionsURL });
     this.setState({ isReady: true });

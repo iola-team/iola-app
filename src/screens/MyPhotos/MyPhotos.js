@@ -4,7 +4,6 @@ import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import MyPhotosConnection from './MyPhotosConnection';
-import TabBarLabel from './TabBarLabel';
 
 @withStyleSheet('Sparkle.MyPhotosScreen', {
   list: {
@@ -28,7 +27,7 @@ import TabBarLabel from './TabBarLabel';
 @withNavigationFocus
 export default class UserPhotos extends Component {
   static navigationOptions = {
-    tabBarLabel: <TabBarLabel />,
+    tabBarLabel: 'Photos',
   };
 
   shouldComponentUpdate({ isFocused }) {
