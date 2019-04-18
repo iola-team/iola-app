@@ -31,6 +31,7 @@ export default class UserList extends Component {
     ).isRequired,
     onItemPress: PropTypes.func,
     loading: PropTypes.bool,
+    hasMore: PropTypes.bool,
     noContentText: PropTypes.string,
     noContentStyle: PropTypes.object,
   };
@@ -38,6 +39,7 @@ export default class UserList extends Component {
   static defaultProps = {
     onItemPress: () => {},
     loading: false,
+    hasMore: false,
     noContentText: undefined,
     noContentStyle: undefined,
   };
@@ -56,7 +58,7 @@ export default class UserList extends Component {
     );
   };
 
-  getPlaceholders = () => range(3).map(index => ({
+  getPlaceholders = count => range(count).map(index => ({
     key: index.toString(),
   }));
 
@@ -64,6 +66,7 @@ export default class UserList extends Component {
     const {
       edges,
       loading,
+      hasMore,
       styleSheet: styles,
       noContentText,
       noContentStyle,
@@ -71,7 +74,7 @@ export default class UserList extends Component {
       ...listProps
     } = this.props;
 
-    const data = loading && !edges.length ? this.getPlaceholders() : edges;
+    const data = loading && !edges.length ? this.getPlaceholders(3) : edges;
 
     return (
       <FlatList
@@ -82,6 +85,11 @@ export default class UserList extends Component {
             text={noContentText === undefined ? 'No users' : noContentText}
           />
         )}
+
+        /**
+         * Render load more placeholder
+         */
+        ListFooterComponent={!!edges.length && hasMore && <UserListItem />}
 
         {...listProps}
         data={data}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { NetworkStatus } from 'apollo-client';
 import update from 'immutability-helper';
 import uuid from 'uuid';
 import { View } from 'native-base';
@@ -9,7 +8,6 @@ import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import ChatFooter from '../ChatFooter';
-import Shadow from '../Shadow';
 import MessageList from '../MessageList';
 import UserAvatar from '../UserAvatar';
 import MessageUpdateSubscription from '../MessageUpdateSubscription';
@@ -380,13 +378,14 @@ export default class Chat extends Component {
 
   onSend = async (text) => {
     const { data: { me } } = this.props;
+    const input = { text, image: null };
 
     if (me.chat) {
-      await this.addMessage({ text });
+      await this.addMessage(input);
     } else {
-      await this.startChat({ text });
+      await this.startChat(input);
     }
-  }
+  };
 
   getItemSide = ({ user }) => this.props.data.me.id === user.id ? 'right' : 'left';
   onMessagesRead = (nodes) => {

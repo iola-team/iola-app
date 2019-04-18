@@ -74,6 +74,22 @@ export default class MyFriendsConnection extends PureComponent {
 
   state = {
     photoProgress: {},
+    isRefreshing: false,
+  };
+
+  /**
+   * TODO: Move these common logic to a central place, to prevent copy & past
+   */
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
   };
 
   setPhotoProgress = (id, progress) => this.setState(state => ({
@@ -160,7 +176,7 @@ export default class MyFriendsConnection extends PureComponent {
 
   render() {
     const { data: { loading, me }, skip, addButtonStyle, ...props } = this.props;
-    const { photoProgress } = this.state;
+    const { photoProgress, isRefreshing } = this.state;
     const edges = me?.photos.edges || [];
 
     return (
@@ -169,6 +185,9 @@ export default class MyFriendsConnection extends PureComponent {
           {onShowImage => (
             <PhotoList
               {...props}
+
+              refreshing={isRefreshing}
+              onRefresh={this.refresh}
               renderItem={this.renderItem}
               itemsProgress={photoProgress}
               onItemPress={onShowImage}

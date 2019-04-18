@@ -31,7 +31,8 @@ export class Header extends Component {
       renderHeader, 
       scrollAnimatedValue, 
       shrinkAnimatedValue, 
-      shrinkAnimationHeight 
+      shrinkAnimationHeight,
+      addListener
     } = this.context;
 
     return renderHeader({
@@ -39,6 +40,7 @@ export class Header extends Component {
       scrollAnimatedValue,
       shrinkAnimatedValue,
       shrinkAnimationHeight,
+      addListener,
     });
   }
 }
@@ -123,6 +125,7 @@ export default class SceneView extends PureComponent {
     focus: [],
     scroll: [],
     layout: [],
+    refetch: [],
   };
 
   contextValue = {};
@@ -157,6 +160,8 @@ export default class SceneView extends PureComponent {
 
     return () => without(this.subscribers, subscriber);
   }
+
+  refetch = () => Promise.all(this.subscribers.refetch.map(sub => sub()));
 
   componentDidUpdate(prevProps) {
     const { isFocused, scrollOffset } = this.props;
@@ -200,6 +205,7 @@ export default class SceneView extends PureComponent {
       // Handlers
       addListener: this.addListener,
       onScroll: this.onScroll,
+      refetch: this.refetch,
     };
   }
 
