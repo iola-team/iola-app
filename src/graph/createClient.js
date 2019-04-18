@@ -1,4 +1,4 @@
-import { assign, find, isPlainObject, isArray } from 'lodash';
+import { find, isPlainObject, isArray } from 'lodash';
 import AsyncStorage from '@react-native-community/async-storage';
 import { getMainDefinition } from 'apollo-utilities';
 import { ApolloClient } from 'apollo-client';
@@ -108,7 +108,6 @@ export default async ({ apiURL, subscriptionsURL }) => {
       return promise;
     }
   });
-
 
   if (enableBatching) {
     const batchHttpLink = new BatchHttpLink({
