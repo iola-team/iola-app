@@ -7,9 +7,9 @@ import SplashBackground from './SplashBackground';
 @styleSheet('Sparkle.LaunchScreen')
 export default class LaunchScreen extends Component {
   componentDidUpdate(nextProps, prevState) {
-    const { data: { loading }, navigation: { navigate } } = this.props;
-
-    if (loading !== nextProps.data.loading) {
+    const { data: { loading, me }, navigation: { navigate } } = this.props;
+alert('me: ' + (me ? me.id : null));
+    if (!loading && loading !== nextProps.data.loading) {
       navigate(routes.AUTHENTICATION);
     }
   }

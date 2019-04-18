@@ -46,7 +46,7 @@ export async function createClient({
   }));
 
   if (restoreCache) {
-    // await cachePersistor.restore();
+    await cachePersistor.restore();
   }
 
   const authLink = new AuthLink();
