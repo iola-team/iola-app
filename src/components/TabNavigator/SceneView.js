@@ -31,7 +31,8 @@ export class Header extends Component {
       renderHeader, 
       scrollAnimatedValue, 
       shrinkAnimatedValue, 
-      shrinkAnimationHeight 
+      shrinkAnimationHeight,
+      addListener
     } = this.context;
 
     return renderHeader({
@@ -39,6 +40,7 @@ export class Header extends Component {
       scrollAnimatedValue,
       shrinkAnimatedValue,
       shrinkAnimationHeight,
+      addListener,
     });
   }
 }
@@ -112,10 +114,18 @@ export default class SceneView extends PureComponent {
     headerHeight: 0,
   };
 
+  static getDerivedStateFromProps({ isFocused }, state) {
+    return {
+      ...state,
+      shouldRender: isFocused || state.shouldRender,
+    };
+  }
+
   subscribers = {
     focus: [],
     scroll: [],
     layout: [],
+    refetch: [],
   };
 
   contextValue = {};
@@ -135,6 +145,10 @@ export default class SceneView extends PureComponent {
     },
   );
 
+  state = {
+    shouldRender: false,
+  };
+
   constructor(...args) {
     super(...args);
 
@@ -146,6 +160,8 @@ export default class SceneView extends PureComponent {
 
     return () => without(this.subscribers, subscriber);
   }
+
+  refetch = () => Promise.all(this.subscribers.refetch.map(sub => sub()));
 
   componentDidUpdate(prevProps) {
     const { isFocused, scrollOffset } = this.props;
@@ -189,11 +205,13 @@ export default class SceneView extends PureComponent {
       // Handlers
       addListener: this.addListener,
       onScroll: this.onScroll,
+      refetch: this.refetch,
     };
   }
 
   render() {
     const { isFocused, route, renderScene } = this.props;
+    const { shouldRender } = this.state;
 
     return (
       <Context.Provider value={this.contextValue}>
@@ -208,7 +226,7 @@ export default class SceneView extends PureComponent {
           pointerEvents={isFocused ? 'auto' : 'none'}
         >
           <View style={isFocused ? styles.attached : styles.detached}>
-            {renderScene({ route })}
+            {shouldRender && renderScene({ route })}
           </View>
         </SafeAreaView>
       </Context.Provider>

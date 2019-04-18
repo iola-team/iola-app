@@ -75,6 +75,10 @@ export default class UserChats extends Component {
     userId: null,
   };
 
+  state = {
+    isRefreshing: false,
+  };
+
   unsubscribe = () => null;
 
   startSubscriptions() {
@@ -110,6 +114,18 @@ export default class UserChats extends Component {
     });
   }
 
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
+  };
+
   componentDidUpdate(prevProps) {
     const { userId } = this.props;
 
@@ -124,6 +140,7 @@ export default class UserChats extends Component {
 
   render() {
     const { data, ...restProps } = this.props;
+    const { isRefreshing } = this.state;
     const loading = !data || data.loading;
     const edges = data?.user?.chats.edges || [];
     const unreadCounts = edges.map(edge => edge.node.unreadMessages.totalCount);
@@ -132,10 +149,14 @@ export default class UserChats extends Component {
       <>
         <ChatList
           {...restProps}
+
+          refreshing={isRefreshing}
           loading={loading}
           user={data?.user}
           unreadCounts={unreadCounts}
           edges={data?.user?.chats.edges}
+
+          onRefresh={this.refresh}
         />
 
         {data?.user && <MessageUpdateSubscription userId={data.user.id} />}

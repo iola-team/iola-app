@@ -63,6 +63,25 @@ export default class UserPhotos extends Component {
     tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
   });
 
+  state = {
+    isRefreshing: false,
+  };
+
+  /**
+   * TODO: Move these common logic to a central place, to prevent copy & past
+   */
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
+  };
+
   deletePhoto = (photoId) => {
     const { deletePhoto, data: { user } } = this.props;
     const optimisticResponse = {
@@ -103,6 +122,7 @@ export default class UserPhotos extends Component {
 
   render() {
     const { data: { user, loading }, styleSheet: styles } = this.props;
+    const { isRefreshing } = this.state;
     const edges = user?.photos.edges || [];
 
     return (
@@ -116,6 +136,15 @@ export default class UserPhotos extends Component {
               onItemPress={onShowImage}
               noContentText="No photos"
               noContentStyle={styles.noContent}
+              refreshing={isRefreshing}
+              onRefresh={this.refresh}
+
+              /**
+               * TODO: Review these optimizations
+               */
+              removeClippedSubviews
+              initialNumToRender={6}
+              updateCellsBatchingPeriod={100}
             />
           )}
         </ImageView>

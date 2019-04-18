@@ -297,8 +297,12 @@ export default (variables => ({
     'Sparkle.Shadow': {},
 
     'Sparkle.ScreenHeader': {
-      header: {
+      opaqueHeader: {
         backgroundColor: variables.foregroundColor,
+      },
+
+      transparentHeader: {
+        backgroundColor: 'transparent',
       },
 
       'NativeBase.Icon': {
@@ -439,6 +443,10 @@ export default (variables => ({
           backgroundColor: variables.highlightColor,
         },
       },
+    },
+
+    'Sparkle.RefreshControl': {
+      color: variables.brandPrimary,
     },
   }),
 }));
