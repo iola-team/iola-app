@@ -141,9 +141,8 @@ export default class UserChats extends Component {
   render() {
     const { data, ...restProps } = this.props;
     const { isRefreshing } = this.state;
-    const loading = !data || data.loading;
-    const edges = data?.user?.chats.edges || [];
-    const unreadCounts = edges.map(edge => edge.node.unreadMessages.totalCount);
+    const edges = data?.user?.chats.edges;
+    const unreadCounts = edges?.map(edge => edge.node.unreadMessages.totalCount) || [];
 
     return (
       <>
@@ -151,10 +150,10 @@ export default class UserChats extends Component {
           {...restProps}
 
           refreshing={isRefreshing}
-          loading={loading}
+          loading={data?.loading}
           user={data?.user}
           unreadCounts={unreadCounts}
-          edges={data?.user?.chats.edges}
+          edges={edges}
 
           onRefresh={this.refresh}
         />

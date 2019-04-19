@@ -173,11 +173,11 @@ export default class MyFriendsConnection extends PureComponent {
   render() {
     const { data: { loading, me }, skip, addButtonStyle, ...props } = this.props;
     const { photoProgress, isRefreshing } = this.state;
-    const edges = me?.photos.edges || [];
+    const edges = me?.photos.edges;
 
     return (
       <>
-        <ImageView edges={edges} deletePhoto={this.deletePhoto}>
+        <ImageView edges={edges || []} deletePhoto={this.deletePhoto}>
           {onShowImage => (
             <PhotoList
               {...props}

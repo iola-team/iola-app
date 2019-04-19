@@ -151,7 +151,7 @@ export default class ChatSearch extends Component {
                  * TODO: Memo the sort result
                  */
                 edges={(
-                  recentData?.me?.chats.edges.filter(recentEdgeFilter).sort(recentEdgeSorter) || []
+                  recentData?.me?.chats.edges.filter(recentEdgeFilter).sort(recentEdgeSorter)
                 )}
 
                 user={me}
@@ -165,7 +165,7 @@ export default class ChatSearch extends Component {
                 headerList={(
                   <UsersRow
                     loading={loadingOnline}
-                    edges={onlineUsers?.edges || []}
+                    edges={onlineUsers?.edges}
                     onItemPress={onItemPress}
                     showsHorizontalScrollIndicator={false}
                   />

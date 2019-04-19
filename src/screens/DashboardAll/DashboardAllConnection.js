@@ -83,7 +83,7 @@ export default class DashboardAll extends Component {
     return (
       <UserList
         loading={loading}
-        edges={users ? users.edges : []}
+        edges={users?.edges}
         onItemPress={onItemPress}
         onRefresh={this.refresh}
         onEndReached={this.loadMore}

@@ -30,7 +30,7 @@ export default class FieldList extends Component {
 
   static defaultProps = {
     renderItem: noop,
-    sections: [],
+    sections: null,
     loading: false,
     renderSection: defaultSectionRenderer,
   };
@@ -41,21 +41,20 @@ export default class FieldList extends Component {
     return renderSection({ key: index, ...rest }, renderItem);
   }
 
-  getPlaceholders() {
-    return range(2).map(index => ({ 
-      key: index.toString(),
-      placeholder: true,
-    }));
-  }
+  getPlaceholders = count => range(count).map(index => ({ 
+    key: index.toString(),
+    placeholder: true,
+  }));
 
   render() {
     const { style, loading, sections, ...props } = this.props;
-    const items = loading ? this.getPlaceholders() : sections;
+    const isLoaded = sections !== null;
+    const data = !isLoaded && loading ? this.getPlaceholders(2) : sections;
 
     return (
       <ScrollView {...props} style={style}>
         {
-          items.map(this.renderSection)
+          data.map(this.renderSection)
         }
       </ScrollView>
     );

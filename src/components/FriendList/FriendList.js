@@ -33,7 +33,7 @@ export default class FriendList extends Component {
   static propTypes = {
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment).isRequired
-    ).isRequired,
+    ),
 
     /**
      * Handlers
