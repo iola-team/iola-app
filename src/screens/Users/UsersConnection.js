@@ -7,7 +7,7 @@ import update from 'immutability-helper';
 import { UserList } from '~components';
 
 @graphql(gql`
-  query users($first: Int = 20, $cursor: Cursor = null) {
+  query users($first: Int $cursor: Cursor) {
     users(first: $first after: $cursor) {
       edges {
         ...UserList_edge
@@ -21,7 +21,13 @@ import { UserList } from '~components';
   }
   
   ${UserList.fragments.edge}
-`)
+`, {
+  options: {
+    variables: {
+      first: 30,
+    },
+  },
+})
 export default class UsersConnection extends Component {
   static propTypes = {
     search: PropTypes.string,
@@ -52,33 +58,27 @@ export default class UsersConnection extends Component {
   loadMore = ({ distanceFromEnd }) => {
     const { loading, fetchMore, users } = this.props.data;
 
-    if (loading) return;
-
-    const { pageInfo } = users;
-
-    if (!pageInfo.hasNextPage) return;
+    if (loading || !users.pageInfo.hasNextPage) {
+      return;
+    }
 
     this.fetchMorePromise = this.fetchMorePromise || fetchMore({
       variables: {
-        cursor: pageInfo.endCursor,
+        first: 50,
+        cursor: users.pageInfo.endCursor,
       },
 
-      updateQuery: (prev, { fetchMoreResult: { users } }) => {
-        if (!users || !users.edges.length) {
-          return prev;
-        }
-
-        return update(prev, {
-          users: {
-            edges: {
-              $push: users.edges,
-            },
-            pageInfo: {
-              $merge: pageInfo,
-            },
+      updateQuery: (prev, { fetchMoreResult }) => update(prev, {
+        users: {
+          edges: {
+            $push: fetchMoreResult.users.edges,
           },
-        });
-      }
+          pageInfo: {
+            $set: fetchMoreResult.users.pageInfo,
+          },
+        },
+      }),
+
     }).then(() => {
       this.fetchMorePromise = null;
     });
@@ -99,6 +99,8 @@ export default class UsersConnection extends Component {
         onItemPress={onItemPress}
         onRefresh={this.refresh}
         onEndReached={this.loadMore}
+
+        onEndReachedThreshold={2} // Two screens
       />
     );
   }
