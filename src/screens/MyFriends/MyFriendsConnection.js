@@ -113,7 +113,7 @@ export default class MyFriendsConnection extends PureComponent {
    */
   refresh = async () => {
     const { data: { refetch } } = this.props;
-    
+
     this.setState({ isRefreshing: true });
     try {
       await refetch({ cursor: null });
@@ -196,7 +196,7 @@ export default class MyFriendsConnection extends PureComponent {
   }
 
   componentWillUnmount() {
-    this.unsubscribeFromFocus();
+    this.unsubscribeFromFocus.remove();
   }
 
   render() {
