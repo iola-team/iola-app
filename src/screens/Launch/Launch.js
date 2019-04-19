@@ -29,7 +29,7 @@ const meQuery = gql`
 @graphql(configQuery, {
   name: 'configData',
   options: {
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'network-first',
   },
 })
 @graphql(meQuery, {
