@@ -29,7 +29,7 @@ export default class UsersRow extends Component {
   static propTypes = {
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment).isRequired
-    ).isRequired,
+    ),
     onItemPress: PropTypes.func,
     loading: PropTypes.bool,
   };
@@ -37,6 +37,7 @@ export default class UsersRow extends Component {
   static defaultProps = {
     onItemPress: () => {},
     loading: false,
+    edges: null,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -53,7 +54,7 @@ export default class UsersRow extends Component {
     );
   };
 
-  getPlaceholders = () => range(5).map(index => ({
+  getPlaceholders = count => range(count).map(index => ({
     key: index.toString(),
   }));
 
@@ -64,7 +65,8 @@ export default class UsersRow extends Component {
       ...listProps
     } = this.props;
 
-    const data = loading && !edges.length ? this.getPlaceholders() : edges;
+    const isLoaded = edges !== null;
+    const data = loading && !isLoaded ? this.getPlaceholders(5) : edges;
 
     return (
       <FlatList

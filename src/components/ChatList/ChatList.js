@@ -46,7 +46,7 @@ export default class ChatList extends Component {
 
   static defaultProps = {
     user: null,
-    edges: [],
+    edges: null,
     loading: false,
     onItemPress: () => {},
     unreadCounts: [],
@@ -68,7 +68,7 @@ export default class ChatList extends Component {
     );
   }
 
-  getPlaceholders = () => range(3).map(index => ({
+  getPlaceholders = count => range(count).map(index => ({
     key: index.toString(),
   }));
 
@@ -76,7 +76,8 @@ export default class ChatList extends Component {
 
   render() {
     const { edges, loading, user, noContentText, noContentStyle, ...listProps } = this.props;
-    const listData = loading && !edges.length ? this.getPlaceholders() : edges;
+    const isLoaded = edges !== null;
+    const data = !isLoaded && loading ? this.getPlaceholders(3) : edges;
 
     return (
       <FlatList
@@ -89,7 +90,7 @@ export default class ChatList extends Component {
         )}
 
         {...listProps}
-        data={listData}
+        data={data}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
       />

@@ -202,13 +202,12 @@ export default class MyFriendsConnection extends PureComponent {
   render() {
     const { data: { loading, me }, skip, ...props } = this.props;
     const { isRefreshing } = this.state;
-    const edges = get(me, 'friends.edges', []);
 
     return (
       <FriendList
         {...props}
-        edges={edges}
-        loading={skip || loading}
+        edges={me?.friends.edges}
+        loading={loading}
         refreshing={isRefreshing}
         noContentText="No friends"
         onRefresh={this.refresh}

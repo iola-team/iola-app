@@ -52,13 +52,6 @@ export default class ProfileFieldsView extends PureComponent {
 
   render() {
     const { style, user, loading, ...props } = this.props;
-    let fields = [];
-    let values = [];
-
-    if (user && !loading) {
-      fields = user.profile.accountType.fields;
-      values = user.profile.values;
-    }
 
     return (
       <ProfileFieldList
@@ -66,8 +59,8 @@ export default class ProfileFieldsView extends PureComponent {
 
         loading={loading}
         style={style}
-        fields={fields}
-        values={values}
+        fields={user?.profile.accountType.fields}
+        values={user?.profile.values}
         renderItem={this.renderItem}
       />
     );

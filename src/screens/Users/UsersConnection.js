@@ -95,7 +95,7 @@ export default class UsersConnection extends Component {
         loading={loading}
         hasMore={users?.pageInfo.hasNextPage}
         refreshing={isRefreshing}
-        edges={users?.edges || []}
+        edges={users?.edges}
         onItemPress={onItemPress}
         onRefresh={this.refresh}
         onEndReached={this.loadMore}
