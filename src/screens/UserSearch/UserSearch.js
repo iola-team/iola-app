@@ -113,7 +113,7 @@ export default class UserSearch extends Component {
                 /**
                  * TODO: Memo the sort result
                  */
-                edges={recentData?.users?.edges.sort(recentEdgeSorter) || []}
+                edges={recentData?.users?.edges.sort(recentEdgeSorter)}
 
                 loading={loadingRecent}
                 hasRecentItems={!!recentIds.length}
@@ -125,7 +125,7 @@ export default class UserSearch extends Component {
                 headerList={(
                   <UsersRow
                     loading={loadingOnline}
-                    edges={onlineUsers?.edges || []}
+                    edges={onlineUsers?.edges}
                     onItemPress={onItemPress}
                     showsHorizontalScrollIndicator={false}
                   />

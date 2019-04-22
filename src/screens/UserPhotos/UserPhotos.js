@@ -122,11 +122,11 @@ export default class UserPhotos extends Component {
   render() {
     const { data: { user, loading }, styleSheet: styles } = this.props;
     const { isRefreshing } = this.state;
-    const edges = user?.photos.edges || [];
+    const edges = user?.photos.edges;
 
     return (
       <Container>
-        <ImageView edges={edges} deletePhoto={this.deletePhoto}>
+        <ImageView edges={edges || []} deletePhoto={this.deletePhoto}>
           {onShowImage => (
             <PhotoList
               contentContainerStyle={styles.list}

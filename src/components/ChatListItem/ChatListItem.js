@@ -8,7 +8,6 @@ import Moment from 'react-moment';
 
 import { withStyle } from '~theme';
 import UserAvatar from '../UserAvatar';
-import UserOnlineStatus from '../UserOnlineStatus';
 import MessageStateIndicator from '../MessageStateIndicator';
 import Placeholder from '../Placeholder';
 
@@ -18,7 +17,6 @@ const chatFragment = gql`
     participants {
       id
       name
-      ...UserOnlineStatus_user
       ...UserAvatar_user
     }
     messages(first: 1) {
@@ -38,35 +36,15 @@ const chatFragment = gql`
     }
   }
   
-  ${UserOnlineStatus.fragments.user}
   ${UserAvatar.fragments.user}
 `;
 
 @withStyle('Sparkle.ChatListItem', {
   'NativeBase.ListItem': {
-    'NativeBase.Body': {
-      'NativeBase.ViewNB': {
-        flexDirection: 'row',
-        alignItems: 'center',
-
-        'Sparkle.UserOnlineStatus': {
-          marginLeft: 8,
-          marginBottom: -1,
-        },
-      },
-
-      'NativeBase.Text': {
-        '.note': {
-          fontSize: 14,
-          lineHeight: 17,
-          color: '#AFB2BF',
-        },
-      },
-    },
-
     'NativeBase.Right': {
       'Sparkle.MessageStateIndicator': {
-        marginTop: 3,
+        marginTop: 5,
+        marginRight: 3,
       },
     },
   },
@@ -125,7 +103,7 @@ export default class ChatListItem extends Component {
     }
 
     return unreadCount ? (
-      <Badge primary>
+      <Badge>
         <Text>{unreadCount}</Text>
       </Badge>
     ) : (
@@ -144,7 +122,7 @@ export default class ChatListItem extends Component {
           </Left>
           <Body>
             <Text headline>{" "}</Text>
-            <Text note>{" "}</Text>
+            <Text content>{" "}</Text>
           </Body>
         </ListItem>
       </Placeholder>
@@ -171,19 +149,16 @@ export default class ChatListItem extends Component {
     const lastMessage = messages.edges[0].node;
 
     return (
-      <ListItem style={style} button avatar onPress={onPress}>
+      <ListItem style={style} button avatar chatItem onPress={onPress}>
         <Left>
           <UserAvatar user={recipient} />
         </Left>
         <Body>
-          <View>
-            <Text headline>{recipient.name}</Text>
-            <UserOnlineStatus user={recipient} />
-          </View>
-          <Text note numberOfLines={1}>{lastMessage.content.text}</Text>
+          <Text name headline>{recipient.name}</Text>
+          <Text content numberOfLines={1}>{lastMessage.content.text}</Text>
         </Body>
         <Right>
-          <Moment headline time note element={Text} format="HH:mm">{lastMessage.createdAt}</Moment>
+          <Moment element={Text} format="HH:mm">{lastMessage.createdAt}</Moment>
           {this.renderStatus(lastMessage, unreadMessagesCount)}
         </Right>
       </ListItem>

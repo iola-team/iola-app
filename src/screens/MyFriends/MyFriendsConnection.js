@@ -113,7 +113,7 @@ export default class MyFriendsConnection extends PureComponent {
    */
   refresh = async () => {
     const { data: { refetch } } = this.props;
-    
+
     this.setState({ isRefreshing: true });
     try {
       await refetch({ cursor: null });
@@ -196,19 +196,18 @@ export default class MyFriendsConnection extends PureComponent {
   }
 
   componentWillUnmount() {
-    this.unsubscribeFromFocus();
+    this.unsubscribeFromFocus.remove();
   }
 
   render() {
     const { data: { loading, me }, skip, ...props } = this.props;
     const { isRefreshing } = this.state;
-    const edges = get(me, 'friends.edges', []);
 
     return (
       <FriendList
         {...props}
-        edges={edges}
-        loading={skip || loading}
+        edges={me?.friends.edges}
+        loading={loading}
         refreshing={isRefreshing}
         noContentText="No friends"
         onRefresh={this.refresh}

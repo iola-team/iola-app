@@ -213,30 +213,53 @@ export default (variables => ({
 
       'NativeBase.Body': {
         'NativeBase.Text': {
+          '.name': {
+            fontWeight: '600',
+          },
+
           '.headline': {
             lineHeight: 20,
             marginBottom: 5,
+          },
+
+          '.content': {
+            color: '#AFB2BF',
+            fontSize: 14,
           },
         },
       },
 
       'NativeBase.Right': {
         'NativeBase.Text': {
-          '.headline': {
-            lineHeight: 20,
-            marginBottom: 5,
-          },
+          color: '#AFB2BF',
+          lineHeight: 20,
+          marginBottom: 5,
+          fontSize: 10,
         },
 
         'NativeBase.Badge': {
           height: null,
-          minWidth: 20,
-          paddingHorizontal: 3,
+          minWidth: 18,
+          paddingHorizontal: 2.5,
 
           'NativeBase.Text': {
-            fontSize: 12,
-            lineHeight: 20,
+            fontSize: 10,
+            lineHeight: 11,
           },
+        },
+      },
+
+      '.chatItem': {
+        'NativeBase.Body': {
+          paddingVertical: 15,
+        },
+
+        'NativeBase.Right': {
+          paddingVertical: 15,
+        },
+
+        'NativeBase.Left': {
+          paddingVertical: 15,
         },
       },
     },

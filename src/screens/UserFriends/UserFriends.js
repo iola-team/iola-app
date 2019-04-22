@@ -68,13 +68,12 @@ export default class UserFriends extends Component {
   render() {
     const { data: { user, loading }, styleSheet: styles } = this.props;
     const { isRefreshing } = this.state;
-    const edges = user?.friends.edges || [];
 
     return (
       <Container>
         <UserList
           contentContainerStyle={styles.list}
-          edges={edges}
+          edges={user?.friends.edges}
           loading={loading}
           noContentText="No friends"
           refreshing={isRefreshing}

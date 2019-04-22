@@ -44,7 +44,7 @@ export default class PhotoList extends Component {
   static propTypes = {
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment).isRequired
-    ).isRequired,
+    ),
     loading: PropTypes.bool,
     onItemPress: PropTypes.func,
     noContentText: PropTypes.string,
@@ -54,6 +54,7 @@ export default class PhotoList extends Component {
   };
 
   static defaultProps = {
+    edges: null,
     loading: false,
     onItemPress: () => null,
     noContentText: null,
@@ -90,11 +91,9 @@ export default class PhotoList extends Component {
     return renderItem(params, this.defaultRenderItem);
   };
 
-  getPlaceholders() {
-    return range(9).map(index => ({
-      key: index.toString(),
-    }));
-  }
+  getPlaceholders = count => range(count).map(index => ({
+    key: index.toString(),
+  }));
 
   render() {
     const {
@@ -105,7 +104,9 @@ export default class PhotoList extends Component {
       itemsProgress,
       ...listProps
     } = this.props;
-    const data = loading ? this.getPlaceholders() : edges;
+
+    const isLoaded = edges !== null;
+    const data = !isLoaded && loading ? this.getPlaceholders(9) : edges;
 
     return (
       <FlatList

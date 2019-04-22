@@ -28,7 +28,7 @@ export default class UserList extends Component {
   static propTypes = {
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment).isRequired
-    ).isRequired,
+    ),
     onItemPress: PropTypes.func,
     loading: PropTypes.bool,
     hasMore: PropTypes.bool,
@@ -40,6 +40,7 @@ export default class UserList extends Component {
     onItemPress: () => {},
     loading: false,
     hasMore: false,
+    edges: null,
     noContentText: undefined,
     noContentStyle: undefined,
   };
@@ -74,7 +75,8 @@ export default class UserList extends Component {
       ...listProps
     } = this.props;
 
-    const data = loading && !edges.length ? this.getPlaceholders(3) : edges;
+    const isLoaded = edges !== null;
+    const data = !isLoaded && loading ? this.getPlaceholders(3) : edges;
 
     return (
       <FlatList
@@ -89,7 +91,7 @@ export default class UserList extends Component {
         /**
          * Render load more placeholder
          */
-        ListFooterComponent={!!edges.length && hasMore && <UserListItem />}
+        ListFooterComponent={!!edges?.length && hasMore && <UserListItem />}
 
         {...listProps}
         data={data}
