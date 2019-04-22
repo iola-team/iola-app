@@ -6,17 +6,13 @@ import { withStyleSheet as styleSheet } from '~theme';
 import * as routes from '../routeNames';
 import SplashBackground from './SplashBackground';
 
-const configQuery = gql`
+const initQuery = gql`
   query {
     config {
       emailConfirmIsRequired
       userApproveIsRequired
     }
-  }
-`;
-
-const meQuery = gql`
-  query {
+    
     me {
       id
       name
@@ -26,26 +22,18 @@ const meQuery = gql`
   }
 `;
 
-@graphql(configQuery, {
-  name: 'configData',
+@graphql(initQuery, {
   options: {
     fetchPolicy: 'network-first',
-  },
-})
-@graphql(meQuery, {
-  name: 'meData',
-  options: {
-    fetchPolicy: 'no-cache',
   },
 })
 @styleSheet('Sparkle.LaunchScreen')
 export default class LaunchScreen extends Component {
   componentDidUpdate(nextProps, prevState) {
-    const { configData, meData, navigation: { navigate } } = this.props;
+    const { data, navigation: { navigate } } = this.props;
 
-    if (!configData.loading && !meData.loading) {
-      const { emailConfirmIsRequired, userApproveIsRequired } = configData;
-      const { me } = meData;
+    if (!data.loading) {
+      const { emailConfirmIsRequired, userApproveIsRequired, me } = data;
 
       if (!me) {
         navigate(routes.AUTHENTICATION);
