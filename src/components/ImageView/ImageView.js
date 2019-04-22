@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dimensions, StatusBar, Text, View } from 'react-native';
+import { Dimensions, Text, View } from 'react-native';
 import { Badge } from 'native-base';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { graphql, Query } from 'react-apollo';
@@ -12,7 +12,6 @@ import { get } from 'lodash';
 import { withStyleSheet as styleSheet } from '~theme';
 import Overlay from '../Overlay';
 import TouchableOpacity from '../TouchableOpacity';
-import ActionSheet from '../ActionSheet';
 import ImageComments from '../ImageComments';
 import UserOnlineStatus from '../UserOnlineStatus';
 import Icon from '../Icon';
@@ -75,7 +74,7 @@ export const photoDetailsQuery = gql`
   content: {
     flex: 1,
     position: 'relative',
-    height: Dimensions.get('window').height - StatusBar.currentHeight,
+    height: Dimensions.get('window').height,
     width: Dimensions.get('window').width,
   },
 
