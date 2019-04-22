@@ -57,6 +57,7 @@ export default class FriendsButton extends Component {
 
   static propTypes = {
     edge: fragmentProp(edgeFragment),
+    disabled: PropTypes.bool, 
     loading: PropTypes.bool,
     onAcceptPress: PropTypes.func.isRequired,
     onCancelPress: PropTypes.func.isRequired,
@@ -66,6 +67,7 @@ export default class FriendsButton extends Component {
 
   static defaultProps = {
     edge: null,
+    disabled: false,
     loading: false,
   };
 
@@ -143,7 +145,7 @@ export default class FriendsButton extends Component {
   }
 
   render() {
-    const { style, block, loading} = this.props;
+    const { style, block, disabled, loading} = this.props;
     const friendshipType = this.getFriendshipType();
     const hasIcon = ['active', 'sent'].includes(friendshipType);
 
@@ -155,7 +157,7 @@ export default class FriendsButton extends Component {
           block={block}
           iconRight={hasIcon}
           style={style}
-          disabled={loading}
+          disabled={disabled || loading}
           onPress={this.onPress}
         >
           <Text style={{ opacity: loading ? 0 : 1 }}>
