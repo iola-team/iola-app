@@ -134,7 +134,7 @@ export default class EmailVerificationScreen extends Component {
 
     const { navigation: { navigate } } = this.props;
 
-    navigate(routes.LAUNCH);
+    navigate(routes.LAUNCH, { loading: true });
   };
 
   render() {

@@ -48,7 +48,7 @@ export default class SignInScreen extends Component {
     setStatus({ ...status, success: authenticated });
     setSubmitting(false);
 
-    if (authenticated) navigate(routes.LAUNCH);
+    if (authenticated) navigate(routes.LAUNCH, { loading: true });
   };
 
   onForgotPassword = (login) => {

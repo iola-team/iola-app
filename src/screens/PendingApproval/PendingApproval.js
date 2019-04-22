@@ -70,7 +70,7 @@ export default class EmailVerificationScreen extends Component {
 
     const { navigation: { navigate } } = this.props;
 
-    navigate(routes.LAUNCH);
+    navigate(routes.LAUNCH, { loading: true });
   };
 
   render() {
@@ -88,10 +88,7 @@ export default class EmailVerificationScreen extends Component {
                 Please wait until the review is completed by administration.
               </Text>
             </View>
-            <View>
-              {/* @TODO */}
-              <LogoutButton />
-            </View>
+            <LogoutButton button bordered />
           </View>
         </ImageBackground>
         <Query query={meQuery}>

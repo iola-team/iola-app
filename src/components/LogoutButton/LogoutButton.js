@@ -18,7 +18,7 @@ export default class LogoutButton extends Component {
   async onPress() {
     const { mutate, navigation: { navigate }, client } = this.props;
 
-    navigate(routes.AUTHENTICATION);
+    navigate(routes.SIGN_IN);
 
     await mutate();
     await client.resetStore();

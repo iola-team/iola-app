@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import * as routes from '../routeNames';
+import LoadingBackground from './LoadingBackground';
 import SplashBackground from './SplashBackground';
 
 const initQuery = gql`
@@ -24,7 +26,7 @@ const initQuery = gql`
 
 @graphql(initQuery, {
   options: {
-    fetchPolicy: 'network-first',
+    fetchPolicy: 'cache-and-network',
   },
 })
 @styleSheet('Sparkle.LaunchScreen')
@@ -33,7 +35,7 @@ export default class LaunchScreen extends Component {
     const { data, navigation: { navigate } } = this.props;
 
     if (!data.loading) {
-      const { emailConfirmIsRequired, userApproveIsRequired, me } = data;
+      const { config: { emailConfirmIsRequired, userApproveIsRequired }, me } = data;
 
       if (!me) {
         navigate(routes.AUTHENTICATION);
@@ -58,6 +60,8 @@ export default class LaunchScreen extends Component {
   }
 
   render() {
-    return <SplashBackground />;
+    const loading = get(this.props, 'navigation.state.params.loading', false);
+
+    return loading ? <LoadingBackground /> : <SplashBackground />;
   }
 }
