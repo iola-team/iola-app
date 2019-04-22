@@ -111,7 +111,7 @@ export default class UserListItem extends Component {
           <UserAvatar user={user} />
         </Left>
         <Body>
-          <Text>{user.name}</Text>
+          <Text name>{user.name}</Text>
           <UserOnlineStatus user={user} />
         </Body>
         {children && <Right>{children}</Right>}
