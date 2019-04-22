@@ -32,7 +32,7 @@ export default class MyFriendsTabBarLabel extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribeFromFocus();
+    this.unsubscribeFromFocus.remove();
   }
 
   render() {

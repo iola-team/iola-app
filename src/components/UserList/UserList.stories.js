@@ -108,14 +108,32 @@ stories.add('Full flow', () => (
   <Query query={usersQuery}>
     {({ loading, data }) => (
       <UserList
-        edges={loading ? [] : data.users.edges}
-        loading={loading}
+        edges={data.users?.edges}
+        loading={loading || boolean('Is loading', false)}
         hasMore={boolean('Has more', true)}
+        refreshing={boolean('Is refreshing')}
         onRefresh={action('onRefresh')}
       />
     )}
   </Query>
 ));
 
-stories.add('Initial Load', () => <UserList edges={[]} loading />);
-stories.add('No Items', () => <UserList edges={[]} noContentText="No Users" />);
+stories.add('Initial Load', () => (
+  <UserList
+    loading
+    hasMore={boolean('Has more', false)}
+    refreshing={boolean('Is refreshing')}
+    onRefresh={action('onRefresh')}
+  />
+));
+
+stories.add('No Items', () => (
+  <UserList
+    edges={[]}
+    noContentText="No Users"
+    hasMore={boolean('Has more', false)}
+    loading={boolean('Is loading', false)}
+    refreshing={boolean('Is refreshing', false)}
+    onRefresh={action('onRefresh')}
+  />
+));
