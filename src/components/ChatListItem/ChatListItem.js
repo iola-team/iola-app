@@ -144,8 +144,7 @@ export default class ChatListItem extends Component {
     }
 
     const { messages, participants } = chat;
-
-    const recipient = filter(participants, ({ id }) => id !== currentUserId)[0];
+    const [ recipient = participants[0] ] = filter(participants, ({ id }) => id !== currentUserId);
     const lastMessage = messages.edges[0].node;
 
     return (

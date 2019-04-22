@@ -140,10 +140,11 @@ export default class FriendsButtonContainer extends Component {
   };
 
   render() {
-    const { data: { me, loading }, ...props } = this.props;
+    const { data: { me, loading }, userId, ...props } = this.props;
 
     return (
       <FriendsButton
+        disabled={me?.id === userId}
         edge={me?.friends.edges[0]}
         loading={loading}
         onAcceptPress={this.onAddPress}

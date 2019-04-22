@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import { ScreenHeader, UserAvatar } from '~components';
+import { USER } from '../routeNames';
 
 const userQuery = gql`
   query ChannelWithUserQuery($userId: ID!) {
@@ -79,17 +80,21 @@ export default class ChannelHeader extends Component {
     }
 
     const { chat, me } = chatData;
-    const [ user ] = chat.participants.filter(({ id }) => id !== me.id);
+    const [ user = chat.participants[0] ] = chat.participants.filter(({ id }) => id !== me.id);
 
     return user;
   }
 
-  renderRight() {
-    const { styleSheet } = this.props;
+  renderRight = () => {
+    const { styleSheet, navigation } = this.props;
     const user = this.getUser();
 
     return user && (
-      <UserAvatar user={user} style={styleSheet.avatar} />
+      <UserAvatar
+        user={user}
+        style={styleSheet.avatar}
+        onPress={() => navigation.navigate(USER, { id: user.id })}
+      />
     );
   }
 
@@ -98,7 +103,7 @@ export default class ChannelHeader extends Component {
     const title = user && user.name || '';
 
     return (
-      <ScreenHeader {...this.props} title={title} renderRight={::this.renderRight} />
+      <ScreenHeader {...this.props} title={title} renderRight={this.renderRight} />
     );
   }
 }
