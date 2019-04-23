@@ -3,9 +3,9 @@ import { get, noop } from 'lodash';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { Thumbnail } from 'native-base';
+import { Thumbnail, View } from 'native-base';
 
-import { withStyle } from '~theme';
+import { withStyle, theme } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 import Placeholder from '../Placeholder';
 import UserOnlineStatus from '../UserOnlineStatus';
@@ -35,6 +35,51 @@ const userFragment = gql`
       opacity: 0,
     },
   },
+
+  'NativeBase.ViewNB': {
+    position: 'relative',
+
+    'NativeBase.ViewNB': {
+      position: 'absolute',
+      borderWidth: 2,
+      borderRadius: 5,
+    },
+
+    '.small': {
+      'NativeBase.ViewNB': {
+        top: (32 - 7),
+        left: (32 - 7),
+      }
+    },
+
+    '.medium': {
+      'NativeBase.ViewNB': {
+        top: (40 - 7),
+        left: (40 - 7),
+      }
+    },
+
+    '.large': {
+      'NativeBase.ViewNB': {
+        top: (168 - 12),
+        left: (168 - 12),
+        borderWidth: 4,
+        borderRadius: 10,
+
+        'Sparkle.UserOnlineStatus': {
+          'NativeBase.ViewNB': {
+            'Sparkle.OnlineStatus': {
+              'NativeBase.ViewNB': {
+                width: 15,
+                height: 15,
+                borderRadius: 7,
+              }
+            }
+          }
+        }
+      }
+    },
+  },
 })
 export default class UserAvatar extends Component {
   static propTypes = {
@@ -42,6 +87,7 @@ export default class UserAvatar extends Component {
     user: fragmentProp(userFragment),
     onPress: PropTypes.func,
     loading: PropTypes.bool,
+    foreground: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -49,6 +95,7 @@ export default class UserAvatar extends Component {
     size: 'medium',
     onPress: null,
     loading: false,
+    foreground: false,
   };
 
   static fragments = {
@@ -56,7 +103,7 @@ export default class UserAvatar extends Component {
   };
 
   render() {
-    const { style, user, loading, size, onPress, ...props } = this.props;
+    const { style, user, loading, size, onPress, foreground, ...props } = this.props;
     const sizeProps = {
       small: size === 'small',
       large: size === 'large',
@@ -73,12 +120,23 @@ export default class UserAvatar extends Component {
       );
     }
 
+    const borderSizeProps = {
+      small: size === 'small',
+      medium: size === 'medium',
+      large: size === 'large',
+    };
+    const borderStyle = {
+      borderColor: foreground ? theme.foregroundColor : theme.highlightColor,
+      backgroundColor: foreground ? theme.foregroundColor : theme.highlightColor,
+    };
     const uri = get(user, ['avatar', size], defaultUri);
     const thumbnail = (
-      <>
+      <View {...borderSizeProps}>
         <Thumbnail {...thumbnailProps} style={style} source={{ uri }} />
-        <UserOnlineStatus user={user} />
-      </>
+        <View style={borderStyle}>
+          <UserOnlineStatus user={user} />
+        </View>
+      </View>
     );
 
     return onPress ? (

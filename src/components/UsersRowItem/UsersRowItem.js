@@ -7,7 +7,6 @@ import { View, Text } from 'native-base';
 
 import { withStyle } from '~theme';
 import UserAvatar from '../UserAvatar';
-import UserOnlineStatus from '../UserOnlineStatus';
 import Placeholder from '../Placeholder';
 import Touchable from '../TouchableOpacity';
 
@@ -15,11 +14,9 @@ const userFragment = gql`
   fragment UsersRowItem_user on User {
     id
     name
-    ...UserOnlineStatus_user
     ...UserAvatar_user
   }
 
-  ${UserOnlineStatus.fragments.user}
   ${UserAvatar.fragments.user}
 `;
 
@@ -96,7 +93,7 @@ export default class UserListItem extends Component {
     return (
       <ViewRN {...props}>
         <Touchable onPress={onPress}>
-          <UserAvatar size="medium" user={user} />
+          <UserAvatar size="medium" user={user} foreground />
           <Text numberOfLines={1} ellipsizeMode="clip">{user.name}</Text>
         </Touchable>
       </ViewRN>

@@ -2,28 +2,28 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'native-base';
 
-import { withStyleSheet as styleSheet } from '~theme';
+import { withStyle } from '~theme';
 
-@styleSheet('Sparkle.OnlineStatus', {
-  status: {
+@withStyle('Sparkle.OnlineStatus', {
+  'NativeBase.ViewNB': {
     width: 8,
     height: 8,
     borderRadius: 4,
     backgroundColor: '#BDC0CB',
-  },
 
-  online: {
-    backgroundColor: '#3BC486',
+    '.online': {
+      backgroundColor: '#3BC486',
+    },
   },
 })
-export default class UserOnlineStatus extends Component {
+export default class OnlineStatus extends Component {
   static propTypes = {
     online: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { online, styleSheet: styles } = this.props;
+    const onlineProp = { online: this.props.online };
 
-    return <View style={[styles.status, online && styles.online]} />;
+    return <View {...onlineProp} />;
   }
 }

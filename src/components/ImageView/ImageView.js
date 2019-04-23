@@ -13,7 +13,6 @@ import { withStyleSheet as styleSheet } from '~theme';
 import Overlay from '../Overlay';
 import TouchableOpacity from '../TouchableOpacity';
 import ImageComments from '../ImageComments';
-import UserOnlineStatus from '../UserOnlineStatus';
 import Icon from '../Icon';
 import Spinner from '../Spinner';
 
@@ -49,7 +48,6 @@ export const photoDetailsQuery = gql`
         user {
           id
           name
-          ...UserOnlineStatus_user
         }
 
         comments @connection(key: "PhotoCommentsConnection") {
@@ -58,8 +56,6 @@ export const photoDetailsQuery = gql`
       }
     }
   }
-  
-  ${UserOnlineStatus.fragments.user}
 `;
 
 @styleSheet('Sparkle.ImageView', {
@@ -337,7 +333,6 @@ export default class ImageView extends Component {
                         {firstPhotoData?.photo && (
                           <View style={styles.nameBlock}>
                             <Text style={styles.name}>{firstPhotoData.photo.user.name}</Text>
-                            <UserOnlineStatus user={firstPhotoData.photo.user} />
                           </View>
                         )}
                         {!!caption && <Text style={styles.caption}>{caption}</Text>}

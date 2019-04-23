@@ -7,7 +7,6 @@ import moment from 'moment';
 import { withStyleSheet as styleSheet } from '~theme';
 import Placeholder from '../Placeholder';
 import UserAvatar from '../UserAvatar';
-import UserOnlineStatus from '../UserOnlineStatus';
 import ImageFit from '../ImageFit';
 
 const imageCommentsItemFragment = gql`
@@ -19,12 +18,10 @@ const imageCommentsItemFragment = gql`
     user {
       id
       name
-      ...UserOnlineStatus_user
       ...UserAvatar_user
     }
   }
 
-  ${UserOnlineStatus.fragments.user}
   ${UserAvatar.fragments.user}
 `;
 
@@ -137,7 +134,6 @@ export default class ImageCommentsItem extends Component {
         <View style={styles.content}>
           <View style={styles.nameRow}>
             <Text style={styles.name}>{user.name}</Text>
-            <UserOnlineStatus user={user} />
           </View>
           {!!text && <Text style={styles.text}>{text}</Text>}
           {image && <ImageFit style={styles.image} url={image} maxHeight={192} maxWidth={192} />}

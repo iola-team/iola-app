@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { View } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -26,6 +27,7 @@ const chatQuery = gql`
     me {
       id
     }
+
     chat: node(id: $chatId) {
       id
       ...on Chat {
@@ -67,7 +69,6 @@ const chatQuery = gql`
   },
 })
 export default class ChannelHeader extends Component {
-
   getUser() {
     const { userData, chatData } = this.props;
 
@@ -90,13 +91,15 @@ export default class ChannelHeader extends Component {
     const user = this.getUser();
 
     return user && (
-      <UserAvatar
-        user={user}
-        style={styleSheet.avatar}
-        onPress={() => navigation.navigate(USER, { id: user.id })}
-      />
+      <View style={styleSheet.avatar}>
+        <UserAvatar
+          user={user}
+          onPress={() => navigation.navigate(USER, { id: user.id })}
+          foreground
+        />
+      </View>
     );
-  }
+  };
 
   render() {
     const user = this.getUser();
