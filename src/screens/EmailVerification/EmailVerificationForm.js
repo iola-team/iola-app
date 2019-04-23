@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Form, Text, Toast } from 'native-base';
+import { Form, Text } from 'native-base';
 // import CodeInput from 'react-native-confirmation-code-input'; // @TODO: Iteration 2
 
-import { withStyleSheet as styleSheet } from '~theme';
+import { withStyleSheet as styleSheet, withStyle } from '~theme';
+import { LogoutButton, TouchableOpacity } from '~components';
 
 // @TODO: Iteration 2
 /*
@@ -18,6 +19,8 @@ const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode
 */
 
 @styleSheet('Sparkle.EmailVerificationForm', {
+  // @TODO: Iteration 2 (Email Verification with short code)
+  /*
   code: {
     width: 40,
     height: 64,
@@ -37,13 +40,13 @@ const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode
     marginBottom: 32,
     marginLeft: 8,
   },
-
-  button: {
-    borderColor: '#FFFFFF',
-  },
-
-  buttonText: {
-    color: '#FFFFFF',
+  */
+})
+@withStyle('Sparkle.ForgotPasswordForm', {
+  'NativeBase.Form': {
+    'Sparkle.TouchableOpacity': {
+      marginTop: 8,
+    },
   },
 })
 export default class ForgotPasswordForm extends Component {
@@ -85,9 +88,11 @@ export default class ForgotPasswordForm extends Component {
         />
         */}
 
-        <Button style={styles.button} onPress={onSubmit} disabled={isSubmitting} block bordered>
+        <TouchableOpacity onPress={onSubmit} disabled={isSubmitting} button bordered>
           <Text style={styles.buttonText}>Resend the Verification Code</Text>
-        </Button>
+        </TouchableOpacity>
+
+        <LogoutButton button bordered />
       </Form>
     );
   }

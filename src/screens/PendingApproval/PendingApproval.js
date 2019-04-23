@@ -66,9 +66,11 @@ const meQuery = gql`
 })
 export default class EmailVerificationScreen extends Component {
   onUserUpdate = ({ isApproved }) => {
+    if (!isApproved) return;
+
     const { navigation: { navigate } } = this.props;
 
-    if (isApproved) navigate(routes.DASHBOARD);
+    navigate(routes.LAUNCH, { loading: true });
   };
 
   render() {
@@ -86,10 +88,7 @@ export default class EmailVerificationScreen extends Component {
                 Please wait until the review is completed by administration.
               </Text>
             </View>
-            <View>
-              {/* @TODO */}
-              <LogoutButton />
-            </View>
+            <LogoutButton button bordered />
           </View>
         </ImageBackground>
         <Query query={meQuery}>

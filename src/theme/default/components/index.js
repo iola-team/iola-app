@@ -17,9 +17,31 @@ export default (variables => ({
 
       '.primary': {
         'NativeBase.Text': {
-          color: variables.brandPrimary,
+          color: variables.brandPrimaryColor,
         }
-      }
+      },
+
+      '.button': {
+        justifyContent: 'center',
+        height: 50,
+
+        '.bordered': {
+          borderWidth: 1,
+          borderRadius: variables.borderRadiusBase,
+          borderColor: variables.buttonBorderColor,
+
+          'NativeBase.Text': {
+            color: variables.buttonBorderColor,
+          },
+        },
+
+        'NativeBase.Text': {
+          textAlign: 'center',
+          fontSize: 16,
+          fontWeight: '500',
+          color: variables.textColor,
+        },
+      },
     },
 
     'NativeBase.Fab': {
@@ -66,7 +88,7 @@ export default (variables => ({
     'NativeBase.Thumbnail': {
       width: 40,
       height: 40,
-      borderRadius: 8,
+      borderRadius: variables.borderRadiusBase,
 
       '.small': {
         width: 32,
@@ -75,7 +97,7 @@ export default (variables => ({
       },
 
       '.large': {
-        borderRadius: 8,
+        borderRadius: variables.borderRadiusBase,
         height: 168,
         width: 168,
       },
@@ -300,7 +322,7 @@ export default (variables => ({
         '.background': {
           backgroundColor: variables.backgroundColor,
         },
-  
+
         '.foreground': {
           backgroundColor: variables.foregroundColor,
         },
@@ -335,11 +357,11 @@ export default (variables => ({
       },
 
       'Sparkle.TouchableOpacity': {
+        paddingHorizontal: variables.contentPadding,
+
         'NativeBase.Text': {
           color: '#BDC0CB',
         },
-
-        paddingHorizontal: variables.contentPadding,
       },
     },
 
@@ -370,7 +392,7 @@ export default (variables => ({
       'NativeBase.ViewNB': {
         backgroundColor: variables.placeholderColor,
       },
-    
+
       '.inverted': {
         'NativeBase.ViewNB': {
           backgroundColor: variables.foregroundColor,
@@ -390,7 +412,7 @@ export default (variables => ({
               backgroundColor: variables.placeholderColor,
             },
           },
-    
+
           'NativeBase.Body': {
             'NativeBase.Text': {
               backgroundColor: variables.placeholderColor,
@@ -409,7 +431,7 @@ export default (variables => ({
                 backgroundColor: variables.placeholderColor,
               },
             },
-    
+
             '.cardBody': {
               'NativeBase.ViewNB': {
                 backgroundColor: variables.placeholderColor,
@@ -450,7 +472,7 @@ export default (variables => ({
               backgroundColor: variables.placeholderColor,
             },
           },
-    
+
           'NativeBase.Body': {
             'NativeBase.ViewNB': {
               backgroundColor: variables.placeholderColor,
@@ -469,7 +491,7 @@ export default (variables => ({
     },
 
     'Sparkle.RefreshControl': {
-      color: variables.brandPrimary,
+      color: variables.brandPrimaryColor,
     },
   }),
 }));
