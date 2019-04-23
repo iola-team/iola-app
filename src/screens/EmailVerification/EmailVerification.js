@@ -129,12 +129,12 @@ export default class EmailVerificationScreen extends Component {
     // @TODO: Iteration 2 (Email Verification with short code)
   }
 
-  onUserUpdate = ({ isApproved, isEmailVerified }) => {
+  onUserUpdate = ({ isEmailVerified }) => {
     if (!isEmailVerified) return;
 
     const { navigation: { navigate } } = this.props;
 
-    navigate(isApproved ? routes.DASHBOARD : routes.PENDING_APPROVAL);
+    navigate(routes.LAUNCH, { loading: true });
   };
 
   render() {
