@@ -8,6 +8,7 @@ import { Thumbnail } from 'native-base';
 import { withStyle } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 import Placeholder from '../Placeholder';
+import UserOnlineStatus from '../UserOnlineStatus';
 
 const userFragment = gql`
   fragment UserAvatar_user on User {
@@ -19,7 +20,10 @@ const userFragment = gql`
       medium: url(size: MEDIUM)
       large: url(size: MEDIUM)
     }
+    ...UserOnlineStatus_user
   }
+  
+  ${UserOnlineStatus.fragments.user}
 `;
 
 @withStyle('Sparkle.UserAvatar', {
@@ -71,7 +75,10 @@ export default class UserAvatar extends Component {
 
     const uri = get(user, ['avatar', size], defaultUri);
     const thumbnail = (
-      <Thumbnail {...thumbnailProps} style={style} source={{ uri }} />
+      <>
+        <Thumbnail {...thumbnailProps} style={style} source={{ uri }} />
+        <UserOnlineStatus user={user} />
+      </>
     );
 
     return onPress ? (
