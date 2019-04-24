@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Animated, View as ViewRN } from 'react-native';
+import { Animated, View as ViewRN, StyleSheet } from 'react-native';
 import { ScrollView as ScrollViewRN } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
 import { View } from 'native-base';
 
 import RefreshControl from '../RefreshControl';
 import { TabBar, Header, Context } from './SceneView';
+import BarBackgroundView from '../BarBackgroundView';
 
 @withNavigation
 class ScrollView extends PureComponent {
@@ -145,7 +146,8 @@ class ScrollView extends PureComponent {
         scrollEventThrottle={1}
       >
         <Animated.View style={stickyStyle}>
-          <View foreground style={{ marginTop: -contentHeight, paddingTop: contentHeight }}>
+          <View style={{ marginTop: -contentHeight, paddingTop: contentHeight }}>
+            <BarBackgroundView style={StyleSheet.absoluteFill} />
             <Header />
             <TabBar />
           </View>

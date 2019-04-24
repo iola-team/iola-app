@@ -19,8 +19,6 @@ const userQuery = gql`
 `;
 
 @withStyleSheet('Sparkle.ProfileScreenHead', {
-  heading: {},
-
   buttons: {
     flexDirection: 'row',
     width: '100%',
@@ -47,14 +45,7 @@ export default class ProfileHeading extends PureComponent {
     const { navigation: { goBack, navigate }, styleSheet: styles, data, ...props } = this.props;
 
     return (
-      <UserHeading
-        foreground
-        {...props}
-
-        style={styles.heading}
-        loading={data.loading}
-        user={data.user}
-      >
+      <UserHeading {...props} loading={data.loading} user={data.user}>
         <View style={styles.buttons}>
           <Button
             light

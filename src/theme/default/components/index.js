@@ -372,15 +372,8 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.TabBar': {
-      backgroundColor: variables.foregroundColor,
-    },
-
-    'Sparkle.BottomTabBar': {
-      root: {
-        backgroundColor: variables.foregroundColor,
-      },
-    },
+    'Sparkle.TabBar': {},
+    'Sparkle.BottomTabBar': {},
 
     'Sparkle.ChatFooter': {
       root: {
