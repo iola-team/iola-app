@@ -65,9 +65,16 @@ class ScrollView extends PureComponent {
   }
   
   render() {
-    const { contentContainerStyle = {}, navigation, ...restProps } = this.props;
+    const { contentContainerStyle = {}, contentInset = {}, navigation, ...restProps } = this.props;
     const refreshControl = this.renderRefreshControl();
     const screenProps = navigation.getScreenProps();
+    let inset = { ...screenProps.contentInset, ...contentInset };
+
+    if (restProps.inverted) {
+      inset = { ...inset, top: inset.bottom, bottom: inset.top };
+    }
+
+    const contentOffset = { y: -inset.top };
     const contentStyle = [contentContainerStyle, {
       // flexGrow: 1, // TODO: Check no items cases before removing this line
     }];
@@ -76,8 +83,8 @@ class ScrollView extends PureComponent {
       return (
         <ScrollViewRN
           contentContainerStyle={contentStyle}
-          contentOffset={{ y: -screenProps.contentInset.top }}
-          contentInset={screenProps.contentInset}
+          contentOffset={contentOffset}
+          contentInset={inset}
 
           {...restProps}
           refreshControl={refreshControl}
@@ -126,11 +133,6 @@ class ScrollView extends PureComponent {
       ],
     };
 
-    const contentInset = {
-      ...screenProps.contentInset,
-      bottom: bottomBarHeight,
-    };
-
     return (
       <Animated.ScrollView
         {...listProps}
@@ -140,8 +142,8 @@ class ScrollView extends PureComponent {
         onMomentumScrollEnd={this.onScrollEnd}
         refreshControl={refreshControl}
 
-        contentOffset={{ y: -contentInset.top }}
-        contentInset={contentInset}
+        contentOffset={contentOffset}
+        contentInset={{ ...inset, bottom: bottomBarHeight }}
 
         scrollEventThrottle={1}
       >

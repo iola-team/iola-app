@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { SectionList } from 'react-native';
 import { groupBy, orderBy, map, filter, get } from 'lodash';
 
 import { withStyle } from '~theme';
 import MessageItem from '../MessageItem';
 import LoadMoreIndicator from '../LoadMoreIndicator';
+import { SectionList } from '../TabNavigator';
 import SectionHeader from './SectionHeader';
 
 const edgeFragment = gql`

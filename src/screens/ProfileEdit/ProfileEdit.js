@@ -100,6 +100,7 @@ export default class ProfileEditScreen extends Component {
           onSaveEnd={this.onSaveEnd}
 
           ListHeaderComponent={<AvatarEdit style={styles.avatar} user={me} loading={loading} />}
+          contentInset={{ bottom: 0 }}
         />
       </Container>
     );

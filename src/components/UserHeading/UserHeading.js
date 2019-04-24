@@ -28,13 +28,14 @@ const userFragment = gql`
   ${UserAvatar.fragments.user}
 `;
 
-const headerHeight = 350;
+const headerHeight = 350 + 10;
 
 @withStyleSheet('Sparkle.UserHeading', {
   root: {
     alignItems: 'center',
     overflow: 'hidden',
     height: headerHeight,
+    paddingTop: 10,
   },
 
   avatar: {

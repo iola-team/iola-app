@@ -451,7 +451,7 @@ export default (variables => ({
       'NativeBase.ViewNB': {
         'Sparkle.UserAvatar': {
           'Sparkle.Placeholder': {
-            backgroundColor: variables.backgroundColor,
+            backgroundColor: variables.placeholderColor,
           },
         },
       },
@@ -485,6 +485,12 @@ export default (variables => ({
 
     'Sparkle.RefreshControl': {
       color: variables.brandPrimaryColor,
+    },
+
+    'Sparkle.AvatarInput': {
+      imageHolder: {
+        backgroundColor: variables.placeholderColor,
+      },
     },
   }),
 }));

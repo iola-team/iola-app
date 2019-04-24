@@ -5,7 +5,7 @@ import { withStyle } from '~theme';
 
 @withStyle('Sparkle.BarBackgroundView', {
   flex: 1,
-  opacity: 0.9,
+  opacity: 0.98,
 })
 export default class BarBackgroundView extends Component {
   render() {

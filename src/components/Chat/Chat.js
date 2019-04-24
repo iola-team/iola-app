@@ -426,6 +426,7 @@ export default class Chat extends Component {
       styleSheet: styles,
       children,
       data: { me },
+      ...props
     } = this.props;
 
     const {
@@ -436,6 +437,7 @@ export default class Chat extends Component {
     return (
       <View style={[styles.root, style]}>
         <MessageList
+          {...props}
           edges={edges}
           loadingMore={hasMore}
           getItemSide={this.getItemSide}
