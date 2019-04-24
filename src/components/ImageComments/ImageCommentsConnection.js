@@ -162,7 +162,6 @@ export default class ImageCommentsConnection extends Component {
                   listRef={listRef}
                   onEndReached={onEndReached}
                   onEndReachedThreshold={2}
-                  inverted={!!edges}
                   subscribeToNewComments={subscribeToNewComments}
                 />
               );

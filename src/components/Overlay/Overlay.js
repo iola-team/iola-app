@@ -24,7 +24,7 @@ export default class Overlay extends Component {
     onRequestClose();
 
     return true;
-  }
+  };
 
   componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.onBackButtonClick);
