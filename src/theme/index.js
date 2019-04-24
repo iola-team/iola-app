@@ -5,7 +5,6 @@ import getTheme from './default/components';
 import themeVariables from './default/variables';
 
 export * from './utils';
-export const theme = themeVariables;
 
 export default class ThemeProvider extends Component {
   static propTypes = {

@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { Thumbnail, View } from 'native-base';
 
-import { withStyle, theme } from '~theme';
+import { withStyle } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 import Placeholder from '../Placeholder';
 import UserOnlineStatus from '../UserOnlineStatus';
@@ -37,33 +37,19 @@ const userFragment = gql`
   },
 
   'NativeBase.ViewNB': {
-    position: 'relative',
-
     'NativeBase.ViewNB': {
       position: 'absolute',
-      borderWidth: 2,
+      right: -5,
+      bottom: -5,
+      padding: 2,
       borderRadius: 5,
-    },
-
-    '.small': {
-      'NativeBase.ViewNB': {
-        top: (32 - 7),
-        left: (32 - 7),
-      }
-    },
-
-    '.medium': {
-      'NativeBase.ViewNB': {
-        top: (40 - 7),
-        left: (40 - 7),
-      }
     },
 
     '.large': {
       'NativeBase.ViewNB': {
-        top: (168 - 12),
-        left: (168 - 12),
-        borderWidth: 4,
+        right: -11,
+        bottom: -11,
+        padding: 4,
         borderRadius: 10,
 
         'Sparkle.UserOnlineStatus': {
@@ -73,11 +59,11 @@ const userFragment = gql`
                 width: 15,
                 height: 15,
                 borderRadius: 7,
-              }
-            }
-          }
-        }
-      }
+              },
+            },
+          },
+        },
+      },
     },
   },
 })
@@ -114,9 +100,11 @@ export default class UserAvatar extends Component {
 
     if (loading) {
       return (
-        <Placeholder style={style} {...sizeProps}>
-          <Thumbnail {...thumbnailProps} source={{ uri: defaultUri }} />
-        </Placeholder>
+        <View style={style}>
+          <Placeholder {...sizeProps}>
+            <Thumbnail {...thumbnailProps} source={{ uri: defaultUri }} />
+          </Placeholder>
+        </View>
       );
     }
 
@@ -125,15 +113,11 @@ export default class UserAvatar extends Component {
       medium: size === 'medium',
       large: size === 'large',
     };
-    const borderStyle = {
-      borderColor: foreground ? theme.foregroundColor : theme.highlightColor,
-      backgroundColor: foreground ? theme.foregroundColor : theme.highlightColor,
-    };
     const uri = get(user, ['avatar', size], defaultUri);
     const thumbnail = (
-      <View {...borderSizeProps}>
-        <Thumbnail {...thumbnailProps} style={style} source={{ uri }} />
-        <View style={borderStyle}>
+      <View {...borderSizeProps} style={style}>
+        <Thumbnail {...thumbnailProps} source={{ uri }} />
+        <View foreground={foreground} highlight={!foreground}>
           <UserOnlineStatus user={user} />
         </View>
       </View>
