@@ -17,7 +17,7 @@ export default (variables => ({
 
       '.primary': {
         'NativeBase.Text': {
-          color: variables.brandPrimaryColor,
+          color: variables.brandPrimary,
         }
       },
 
@@ -484,7 +484,7 @@ export default (variables => ({
     },
 
     'Sparkle.RefreshControl': {
-      color: variables.brandPrimaryColor,
+      color: variables.brandPrimary,
     },
 
     'Sparkle.AvatarInput': {
