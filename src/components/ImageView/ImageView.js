@@ -6,6 +6,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import { graphql, Query } from 'react-apollo';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import moment from 'moment';
 import { get } from 'lodash';
 
@@ -15,6 +16,7 @@ import TouchableOpacity from '../TouchableOpacity';
 import ImageComments from '../ImageComments';
 import Icon from '../Icon';
 import Spinner from '../Spinner';
+import ActionSheet from '../ActionSheet';
 
 const meQuery = gql`
   query meQuery {
@@ -74,29 +76,22 @@ export const photoDetailsQuery = gql`
     width: Dimensions.get('window').width,
   },
 
-  controls: {
-    flex: 1,
-    justifyContent: 'space-between',
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-  },
-
   header: {
+    position: 'absolute',
+    top: getStatusBarHeight(),
+    left: 0,
+    right: 0,
     flexDirection: 'row',
     textAlign: 'center',
     fontSize: 14,
     lineHeight: 17,
     color: '#BDC0CB',
-    zIndex: 999,
+    zIndex: 2,
   },
 
   headerButton: {
     position: 'relative',
     padding: 15,
-    zIndex: 1,
   },
 
   headerIcon: {
@@ -105,7 +100,6 @@ export const photoDetailsQuery = gql`
   },
 
   backButton: {
-    position: 'relative',
     marginRight: 'auto',
     padding: 15,
     zIndex: 1,
@@ -115,7 +109,6 @@ export const photoDetailsQuery = gql`
     position: 'relative',
     marginLeft: 'auto',
     padding: 15,
-    zIndex: 1,
   },
 
   indicator: {
@@ -129,11 +122,15 @@ export const photoDetailsQuery = gql`
   },
 
   footer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     paddingTop: 25,
     paddingHorizontal: 17,
     justifyContent: 'space-between',
     backgroundColor: 'rgba(46, 48, 55, 0.3)',
-    pointerEvents: 'none', // @TODO: it doesn't work
+    zIndex: 2,
   },
 
   nameBlock: {
@@ -192,18 +189,15 @@ export const photoDetailsQuery = gql`
   },
 
   actionBadge: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 7,
-    marginTop: 2,
     height: 16,
+    marginLeft: 7,
+    paddingVertical: 0,
     backgroundColor: '#BDC0CB',
   },
 
   actionBadgeText: {
-    paddingVertical: 0,
     fontSize: 12,
-    lineHeight: 58,
+    lineHeight: 16,
     color: '#FFFFFF',
   },
 })
@@ -281,102 +275,101 @@ export default class ImageView extends Component {
     const firstPhotoId = get(edges, `[0].node.id`, null);
 
     return (
-      <View style={styles.controls}>
-        <Query query={photoDetailsQuery} variables={{ id: firstPhotoId }} skip={!id}>
-          {({ data: firstPhotoData }) => (
-            <Query query={photoDetailsQuery} variables={{ id }}>
-              {({ loading, data }) => {
-                const photo = data?.photo;
-                const caption = photo?.caption || '';
-                const photoId = photo?.id || '';
-                const totalCount = photo?.comments?.totalCount || 0;
-                const createdAt = this.getDateHumanized(photo?.createdAt || 0);
-                // const totalCountLikes = 0; // @TODO: Likes
+      <Query query={photoDetailsQuery} variables={{ id: firstPhotoId }} skip={!id}>
+        {({ data: firstPhotoData }) => (
+          <Query query={photoDetailsQuery} variables={{ id }}>
+            {({ loading, data }) => {
+              const photo = data?.photo;
+              const caption = photo?.caption || '';
+              const photoId = photo?.id || '';
+              const totalCount = photo?.comments?.totalCount || 0;
+              const createdAt = this.getDateHumanized(photo?.createdAt || 0);
+              // const totalCountLikes = 0; // @TODO: Likes
 
-                return (
-                  <>
-                    <View style={styles.header}>
-                      <TouchableOpacity
-                        onPress={::this.onClose}
-                        style={[styles.headerButton, styles.backButton]}
+              return (
+                <>
+                  <View style={styles.header}>
+                    <TouchableOpacity
+                      onPress={::this.onClose}
+                      style={[styles.headerButton, styles.backButton]}
+                    >
+                      <Icon style={styles.headerIcon} name="back" />
+                    </TouchableOpacity>
+
+                    {totalCountImages > 1 && (
+                      <Text style={styles.indicator}>
+                        {`${index + 1} of ${totalCountImages}`}
+                      </Text>
+                    )}
+
+                    {me.id === firstPhotoData?.photo?.user?.id && (
+                      <ActionSheet
+                        options={['Cancel', 'Delete']}
+                        cancelButtonIndex={0}
+                        destructiveButtonIndex={1}
+                        onPress={index => index === 1 && this.onDelete(photoId)}
                       >
-                        <Icon style={styles.headerIcon} name="back" />
-                      </TouchableOpacity>
-
-                      {totalCountImages > 1 && (
-                        <Text style={styles.indicator}>
-                          {`${index + 1} of ${totalCountImages}`}
-                        </Text>
-                      )}
-
-                      {me.id === firstPhotoData?.photo?.user?.id && (
-                        <ActionSheet
-                          options={['Cancel', 'Delete']}
-                          cancelButtonIndex={0}
-                          destructiveButtonIndex={1}
-                          onPress={index => index === 1 && this.onDelete(photoId)}
-                        >
-                          {show => (
-                            <TouchableOpacity
-                              onPress={show}
-                              style={[styles.headerButton, styles.meatballMenu]}
-                            >
-                              <Icon style={styles.headerIcon} name="emoji" /* @TODO: meatball icon */ />
-                            </TouchableOpacity>
-                          )}
-                        </ActionSheet>
-                      )}
-                    </View>
-
-                    <View style={styles.footer}>
-                      <View>
-                        {firstPhotoData?.photo && (
-                          <View style={styles.nameBlock}>
-                            <Text style={styles.name}>{firstPhotoData.photo.user.name}</Text>
-                          </View>
+                        {show => (
+                          <TouchableOpacity
+                            onPress={show}
+                            style={[styles.headerButton, styles.meatballMenu]}
+                          >
+                            <Icon style={styles.headerIcon} name="emoji" /* @TODO: meatball icon */ />
+                          </TouchableOpacity>
                         )}
-                        {!!caption && <Text style={styles.caption}>{caption}</Text>}
-                        <Text style={styles.dateTime}>{createdAt}</Text>
-                      </View>
+                      </ActionSheet>
+                    )}
+                  </View>
 
-                      <View style={styles.actionsBlock}>
-                        <ImageComments photoId={photoId} totalCount={totalCount}>
-                          {onShowImageComments => (
-                            <TouchableOpacity
-                              onPress={onShowImageComments}
-                              style={[styles.actionButton, styles.buttonComments]}
-                            >
-                              <Icon name="chats-bar" style={styles.actionIcon} />
-                              <Text style={styles.actionText}>Comment</Text>
-                              {!totalCount ? null : (
-                                <Badge style={styles.actionBadge}>
-                                  <Text style={styles.actionBadgeText}>{totalCount}</Text>
-                                </Badge>
-                              )}
-                            </TouchableOpacity>
-                          )}
-                        </ImageComments>
-
-                        {/* @TODO: Likes
-                        <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
-                          <Icon name="like" style={styles.actionIcon} />
-                          <ActionText>Like</ActionText>
-                          {totalCountLikes ? (
-                            <ActionBadge>
-                              <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
-                            </ActionBadge>
-                          ) : null}
-                        </TouchableOpacity>
-                        */}
-                      </View>
+                  <View style={styles.footer}>
+                    <View>
+                      {firstPhotoData?.photo && (
+                        <View style={styles.nameBlock}>
+                          <Text style={styles.name}>{firstPhotoData.photo.user.name}</Text>
+                          <UserOnlineStatus user={firstPhotoData.photo.user} />
+                        </View>
+                      )}
+                      {!!caption && <Text style={styles.caption}>{caption}</Text>}
+                      <Text style={styles.dateTime}>{createdAt}</Text>
                     </View>
-                  </>
-                );
-              }}
-            </Query>
-          )}
-        </Query>
-      </View>
+
+                    <View style={styles.actionsBlock}>
+                      <ImageComments photoId={photoId} totalCount={totalCount}>
+                        {onShowImageComments => (
+                          <TouchableOpacity
+                            onPress={onShowImageComments}
+                            style={[styles.actionButton, styles.buttonComments]}
+                          >
+                            <Icon name="chats-bar" style={styles.actionIcon} />
+                            <Text style={styles.actionText}>Comment</Text>
+                            {!totalCount ? null : (
+                              <Badge style={styles.actionBadge}>
+                                <Text style={styles.actionBadgeText}>{totalCount}</Text>
+                              </Badge>
+                            )}
+                          </TouchableOpacity>
+                        )}
+                      </ImageComments>
+
+                      {/* @TODO: Likes
+                      <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
+                        <Icon name="like" style={styles.actionIcon} />
+                        <ActionText>Like</ActionText>
+                        {totalCountLikes ? (
+                          <ActionBadge>
+                            <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
+                          </ActionBadge>
+                        ) : null}
+                      </TouchableOpacity>
+                      */}
+                    </View>
+                  </View>
+                </>
+              );
+            }}
+          </Query>
+        )}
+      </Query>
     );
   }
 
@@ -400,6 +393,7 @@ export default class ImageView extends Component {
               failImageSource="https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif" /* @TODO */
               loadingRender={() => <View style={styles.spinnerContainer}><Spinner /></View>}
               footerContainerStyle={{ width: '100%' }}
+              style={{ zIndex: 1 }}
               backgroundColor="rgba(46, 48, 55, 0.95)"
               pageAnimateTime={400}
               enablePreload
