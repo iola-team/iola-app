@@ -372,15 +372,8 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.TabBar': {
-      backgroundColor: variables.foregroundColor,
-    },
-
-    'Sparkle.BottomTabBar': {
-      root: {
-        backgroundColor: variables.foregroundColor,
-      },
-    },
+    'Sparkle.TabBar': {},
+    'Sparkle.BottomTabBar': {},
 
     'Sparkle.ChatFooter': {
       root: {
@@ -458,7 +451,7 @@ export default (variables => ({
       'NativeBase.ViewNB': {
         'Sparkle.UserAvatar': {
           'Sparkle.Placeholder': {
-            backgroundColor: variables.backgroundColor,
+            backgroundColor: variables.placeholderColor,
           },
         },
       },
@@ -492,6 +485,12 @@ export default (variables => ({
 
     'Sparkle.RefreshControl': {
       color: variables.brandPrimaryColor,
+    },
+
+    'Sparkle.AvatarInput': {
+      imageHolder: {
+        backgroundColor: variables.placeholderColor,
+      },
     },
   }),
 }));

@@ -83,8 +83,8 @@ export default class ProfileFieldForm extends Component {
 
   static defaultProps = {
     loading: false,
-    fields: [],
-    values: [],
+    fields: null,
+    values: null,
     onSubmit: noop,
     onFormReady: noop,
     onSubmitError: noop,
@@ -112,14 +112,17 @@ export default class ProfileFieldForm extends Component {
 
   render() {
     const {
-      fields: profileFields,
+      fields,
       values,
       onSubmit,
       onSubmitError,
       ...props
     } = this.props;
 
-    const valuesByField = getValuesByField(profileFields, values);
+    const profileFields = fields || [];
+    const profileFieldValues = values || [];
+
+    const valuesByField = getValuesByField(profileFields, profileFieldValues);
     const fieldSchemas = {};
     const initialValues = {};
 
@@ -143,10 +146,10 @@ export default class ProfileFieldForm extends Component {
         validationSchema={validationSchema}
 
         onSubmitError={onSubmitError}
-        onSubmit={async (values, bag) => {
-          const changedFields = filter(profileFields, ({ id }) => values[id] !== initialValues[id]);
+        onSubmit={async (fieldValues, bag) => {
+          const changedFields = filter(profileFields, ({ id }) => fieldValues[id] !== initialValues[id]);
           const resultValues = mapFieldOptions(changedFields, valuesByField, ((options, { id }) => ({
-            ...options.transformResult(values[id]),
+            ...options.transformResult(fieldValues[id]),
             fieldId: id,
           })));
 

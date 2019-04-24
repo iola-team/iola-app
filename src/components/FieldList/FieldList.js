@@ -26,6 +26,7 @@ export default class FieldList extends Component {
     sections: PropTypes.arrayOf(sectionShape),
     renderItem: PropTypes.func,
     renderSection: PropTypes.func,
+    ListHeaderComponent: PropTypes.any,
   };
 
   static defaultProps = {
@@ -33,6 +34,7 @@ export default class FieldList extends Component {
     sections: null,
     loading: false,
     renderSection: defaultSectionRenderer,
+    ListHeaderComponent: null,
   };
 
   renderSection = ({ key, ...rest }, index) => {
@@ -47,12 +49,14 @@ export default class FieldList extends Component {
   }));
 
   render() {
-    const { style, loading, sections, ...props } = this.props;
+    const { style, ListHeaderComponent, loading, sections, ...props } = this.props;
     const isLoaded = sections !== null;
     const data = !isLoaded && loading ? this.getPlaceholders(2) : sections;
 
     return (
       <ScrollView {...props} style={style}>
+        {ListHeaderComponent}
+
         {
           data.map(this.renderSection)
         }

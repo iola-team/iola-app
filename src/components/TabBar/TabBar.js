@@ -1,6 +1,6 @@
 import React, { Component, isValidElement } from 'react';
 import { isFunction } from 'lodash';
-import { View as ViewRN, StyleSheet } from 'react-native';
+import { View as ViewRN } from 'react-native';
 import { Text, View } from 'native-base';
 
 import { withStyle } from '~theme';
