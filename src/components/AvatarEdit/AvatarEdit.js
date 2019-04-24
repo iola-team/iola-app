@@ -50,9 +50,7 @@ const deleteAvatarMutation = gql`
   name: 'deleteAvatar',
 })
 @styleSheet('Sparkle.AvatarEdit', {
-  root: {
-    paddingVertical: 30,
-  }
+  root: {}
 })
 export default class AvatarEdit extends PureComponent {
   static HEIGHT = 140;

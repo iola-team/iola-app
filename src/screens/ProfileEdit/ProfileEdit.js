@@ -5,29 +5,32 @@ import { noop } from 'lodash';
 import { Container, Text } from 'native-base';
 
 import { withStyleSheet } from '~theme';
-import { ProfileFieldsEdit, TouchableOpacity } from '~components';
+import { ProfileFieldsEdit, TouchableOpacity, AvatarEdit } from '~components';
 
 @graphql(gql`
   query ProfileEditQuery {
     me {
       id
       ...ProfileFieldsEdit_user
+      ...AvatarEdit_user
     }
   }
 
   ${ProfileFieldsEdit.fragments.user}
+  ${AvatarEdit.fragments.user}
 `)
-@withStyleSheet('Sparkle.ProfileEditInfoScreen', {
+@withStyleSheet('Sparkle.ProfileEditScreen', {
   avatar: {
-    paddingVertical: 30,
+    marginTop: 15,
+    marginBottom: 10,
   }
 })
-export default class ProfileEditInfoScreen extends Component {
+export default class ProfileEditScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const { done = noop, busy = false } = navigation.state.params || {};
 
     return  {
-      title: 'Info',
+      title: 'Profile Edit',
       headerRight: (
         <TouchableOpacity disabled={busy} onPress={done}>
           <Text>Done</Text>
@@ -82,7 +85,7 @@ export default class ProfileEditInfoScreen extends Component {
   }
 
   render() {
-    const { data: { loading, me } } = this.props;
+    const { data: { loading, me }, styleSheet: styles } = this.props;
 
     return (
       <Container>
@@ -95,6 +98,8 @@ export default class ProfileEditInfoScreen extends Component {
 
           onSaveStart={this.onSaveStart}
           onSaveEnd={this.onSaveEnd}
+
+          ListHeaderComponent={<AvatarEdit style={styles.avatar} user={me} loading={loading} />}
         />
       </Container>
     );

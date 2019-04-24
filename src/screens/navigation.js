@@ -25,7 +25,7 @@ import Launch from './Launch';
 import MyFriends from './MyFriends';
 import MyInfo from './MyInfo';
 import MyPhotos from './MyPhotos';
-import ProfileEditInfo from './ProfileEditInfo';
+import ProfileEdit from './ProfileEdit';
 import Settings from './Settings';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -37,7 +37,6 @@ import Users from './Users';
 
 import createUserNavigator from './User';
 import createProfileNavigator from './Profile';
-import createProfileEditNavigator from './ProfileEdit';
 
 /**
  * TODO:
@@ -103,10 +102,9 @@ const RootNavigator = createSwitchNavigator({
         [routes.USER_FRIENDS]: UserFriends,
       }),
     },
-    [routes.PROFILE_EDIT]: createProfileEditNavigator({
-      [routes.PROFILE_EDIT_INFO]: ProfileEditInfo,
-      [routes.SETTINGS]: Settings,
-    }),
+
+    [routes.PROFILE_EDIT]: ProfileEdit,
+    [routes.SETTINGS]: Settings,
 
     [routes.CHANNEL]: Channel,
     [routes.USER_SEARCH]: { screen: UserSearch, params: { isSearch: true } },

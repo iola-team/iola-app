@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { Button, Text } from 'native-base';
+import { Button, Text, View } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { UserHeading } from '~components';
@@ -19,13 +19,18 @@ const userQuery = gql`
 `;
 
 @withStyleSheet('Sparkle.ProfileScreenHead', {
-  heading: {
-    paddingTop: 50,
+  heading: {},
+
+  buttons: {
+    flexDirection: 'row',
+    width: '100%',
   },
 
   button: {
+    height: 50,
     width: '30%',
     alignSelf: 'center',
+    marginHorizontal: 5,
   }
 })
 @graphql(userQuery)
@@ -50,16 +55,29 @@ export default class ProfileHeading extends PureComponent {
         loading={data.loading}
         user={data.user}
       >
-        <Button
-          light
-          bordered
-          secondary
-          block
-          style={styles.button}
-          onPress={() => navigate(routes.PROFILE_EDIT)}
-        >
-          <Text>Edit Profile</Text>
-        </Button>
+        <View style={styles.buttons}>
+          <Button
+            light
+            bordered
+            secondary
+            block
+            style={styles.button}
+            onPress={() => navigate(routes.PROFILE_EDIT)}
+          >
+            <Text>Edit Profile</Text>
+          </Button>
+
+          <Button
+            light
+            bordered
+            secondary
+            block
+            style={styles.button}
+            onPress={() => navigate(routes.SETTINGS)}
+          >
+            <Text>Settings</Text>
+          </Button>
+        </View>
       </UserHeading>
     );
   }
