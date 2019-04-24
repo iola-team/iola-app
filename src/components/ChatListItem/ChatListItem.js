@@ -62,15 +62,15 @@ const chatFragment = gql`
 
       'NativeBase.Body': {
         'NativeBase.Text': {
-          '.headline': {
-            marginTop: 3,
-            width: '50%',
-          },
-
           lineHeight: 15,
           borderRadius: 4,
           marginRight: 20,
           backgroundColor: '#FFFFFF',
+
+          '.headline': {
+            marginTop: 3,
+            width: '50%',
+          },
         },
       },
     },

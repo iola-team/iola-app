@@ -14,7 +14,6 @@ import { withStyleSheet as styleSheet } from '~theme';
 import Overlay from '../Overlay';
 import TouchableOpacity from '../TouchableOpacity';
 import ImageComments from '../ImageComments';
-import UserOnlineStatus from '../UserOnlineStatus';
 import Icon from '../Icon';
 import Spinner from '../Spinner';
 import ActionSheet from '../ActionSheet';
@@ -51,7 +50,6 @@ export const photoDetailsQuery = gql`
         user {
           id
           name
-          ...UserOnlineStatus_user
         }
 
         comments @connection(key: "PhotoCommentsConnection") {
@@ -60,8 +58,6 @@ export const photoDetailsQuery = gql`
       }
     }
   }
-  
-  ${UserOnlineStatus.fragments.user}
 `;
 
 @styleSheet('Sparkle.ImageView', {
@@ -90,7 +86,7 @@ export const photoDetailsQuery = gql`
     fontSize: 14,
     lineHeight: 17,
     color: '#BDC0CB',
-    zIndex: 2,
+    zIndex: 1,
   },
 
   headerButton: {
@@ -134,7 +130,7 @@ export const photoDetailsQuery = gql`
     paddingHorizontal: 17,
     justifyContent: 'space-between',
     backgroundColor: 'rgba(46, 48, 55, 0.3)',
-    zIndex: 2,
+    zIndex: 1,
   },
 
   nameBlock: {
@@ -330,7 +326,6 @@ export default class ImageView extends Component {
                       {firstPhotoData?.photo && (
                         <View style={styles.nameBlock}>
                           <Text style={styles.name}>{firstPhotoData.photo.user.name}</Text>
-                          <UserOnlineStatus user={firstPhotoData.photo.user} />
                         </View>
                       )}
                       {!!caption && <Text style={styles.caption}>{caption}</Text>}
@@ -397,7 +392,6 @@ export default class ImageView extends Component {
               failImageSource="https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif" /* @TODO */
               loadingRender={() => <View style={styles.spinnerContainer}><Spinner /></View>}
               footerContainerStyle={{ width: '100%' }}
-              style={{ zIndex: 1 }}
               backgroundColor="rgba(46, 48, 55, 0.95)"
               pageAnimateTime={400}
               enablePreload

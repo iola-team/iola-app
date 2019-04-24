@@ -13,7 +13,7 @@ export default class ThemeProvider extends Component {
 
   static defaultProps = {
     variables: {},
-  }
+  };
 
   render() {
     const variables = {

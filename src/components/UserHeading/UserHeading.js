@@ -161,7 +161,13 @@ export default class UserHeading extends PureComponent {
 
     return (
       <View style={[styles.root, style]} {...props}>
-        <UserAvatar style={styles.avatar} loading={showLoading} user={user} size="large" />
+        <UserAvatar
+          style={styles.avatar}
+          loading={showLoading}
+          user={user}
+          size="large"
+          foreground
+        />
 
         <View style={styles.info}>
           <View style={styles.infoLine}>
@@ -170,7 +176,6 @@ export default class UserHeading extends PureComponent {
                 {showLoading ? ' ' : user.name}
               </H2>
             </Placeholder>
-            <UserOnlineStatus style={styles.onlineStatus} user={showLoading ? null : user} />
           </View>
 
           <View style={styles.infoLine}>
