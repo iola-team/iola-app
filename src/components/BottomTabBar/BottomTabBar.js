@@ -1,23 +1,36 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { BottomTabBar as BottomTabBarRN } from 'react-navigation-tabs';
 
 import { withStyleSheet as styleSheet } from '~theme';
+import BarBackgroundView from '../BarBackgroundView';
 
 @styleSheet('Sparkle.BottomTabBar', {
-  root: {
-    backgroundColor: '#FFFFFF',
+  bar: {
     elevation: 0,
     borderTopWidth: 0,
   },
 
-  label: {
-
+  transparentBar: {
+    backgroundColor: 'transparent',
   },
 
-  tab: {
-
+  opaqueBar: {
+    backgroundColor: '#FFFFFF',
   },
+
+  opaqueContainer: {},
+  transparentContainer: {
+    ...StyleSheet.absoluteFillObject,
+    top: null,
+  },
+
+  backgroundView: {
+    ...StyleSheet.absoluteFillObject,
+  },
+
+  label: {},
+  tab: {},
 
   activeTintColor: '#5F96F2',
   inactiveTintColor: '#45474F',
@@ -34,24 +47,32 @@ export default class BottomTabBar extends Component {
   static HEIGHT = 49;
 
   render() {
-    const { styleSheet: styles, ...props } = this.props;
+    const { styleSheet: styles, barTransparent, ...props } = this.props;
+    const barStyle = [
+      styles.bar,
+      barTransparent ? styles.transparentBar : styles.opaqueBar,
+      props.style
+    ];
 
     return (
-      <BottomTabBarRN
-        showIcon
-        showLabel={false}
+      <View style={barTransparent ? styles.transparentContainer : styles.opaqueContainer}>
+        <BarBackgroundView style={styles.backgroundView} />
+        <BottomTabBarRN
+          showIcon
+          showLabel={false}
 
-        activeTintColor={styles.activeTintColor}
-        inactiveTintColor={styles.inactiveTintColor}
-        activeBackgroundColor={styles.activeBackgroundColor}
-        inactiveBackgroundColor={styles.inactiveBackgroundColor}
+          activeTintColor={styles.activeTintColor}
+          inactiveTintColor={styles.inactiveTintColor}
+          activeBackgroundColor={styles.activeBackgroundColor}
+          inactiveBackgroundColor={styles.inactiveBackgroundColor}
 
-        {...props}
+          {...props}
 
-        style={[styles.root, props.style]}
-        labelStyle={[styles.label, props.labelStyle]}
-        tabStyle={[styles.tab, props.tabStyle]}
-      />
+          style={barStyle}
+          labelStyle={[styles.label, props.labelStyle]}
+          tabStyle={[styles.tab, props.tabStyle]}
+        />
+      </View>
     );
   }
 }

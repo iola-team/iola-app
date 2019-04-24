@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { useScreens } from 'react-native-screens';
 import {
   createBottomTabNavigator,
@@ -8,7 +9,7 @@ import {
 } from 'react-navigation';
 
 // Components
-import { ScreenHeader, BottomTabBar } from '~components';
+import { ScreenHeader, BottomTabBar, BarBackgroundView } from '~components';
 
 // Route names
 import * as routes from './routeNames';
@@ -60,6 +61,9 @@ const TabsNavigator = createBottomTabNavigator({
   initialRouteName: routes.DASHBOARD,
   tabBarComponent: BottomTabBar,
   lazy: false,
+  tabBarOptions: {
+    barTransparent: true,
+  },
 });
 
 const RootNavigator = createSwitchNavigator({
@@ -135,6 +139,8 @@ const RootNavigator = createSwitchNavigator({
 
     defaultNavigationOptions: {
       header: props => <ScreenHeader {...props} />,
+      headerTransparent: true,
+      headerBackground: <BarBackgroundView />,
     },
   }),
 

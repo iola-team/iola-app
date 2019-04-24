@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import { Animated, View as ViewRN } from 'react-native';
 import { ScrollView as ScrollViewRN } from 'react-native-gesture-handler';
+import { withNavigation } from 'react-navigation';
 import { View } from 'native-base';
 
 import RefreshControl from '../RefreshControl';
 import { TabBar, Header, Context } from './SceneView';
 
+@withNavigation
 class ScrollView extends PureComponent {
   static contextType = Context;
 
@@ -62,14 +64,18 @@ class ScrollView extends PureComponent {
   }
   
   render() {
-    const { contentContainerStyle, ...restProps } = this.props;
-    const contentStyle = [contentContainerStyle, { flexGrow: 1 }];
+    const { contentContainerStyle = {}, navigation, ...restProps } = this.props;
     const refreshControl = this.renderRefreshControl();
+    const { contentInset } = navigation.getScreenProps();
+    // const contentStyle = [contentContainerStyle, { flexGrow: 1 }];
+    const contentStyle = contentContainerStyle;
 
     if (!this.context) {
       return (
         <ScrollViewRN
           contentContainerStyle={contentStyle}
+          contentOffset={{ y: -contentInset.top }}
+          contentInset={contentInset}
 
           {...restProps}
           refreshControl={refreshControl}

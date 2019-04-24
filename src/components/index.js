@@ -1,6 +1,7 @@
 import AvatarEdit from './AvatarEdit';
 import BackButton from './BackButton';
 import BottomTabBar from './BottomTabBar';
+import BarBackgroundView from './BarBackgroundView';
 import Chat from './Chat';
 import ChatList from './ChatList';
 import ConnectivityIndicator from './ConnectivityIndicator';
@@ -50,6 +51,7 @@ import UserUpdateSubscription from './UserUpdateSubscription';
 export {
   AvatarEdit,
   BackButton,
+  BarBackgroundView,
   Chat,
   ChatList,
   ConnectivityIndicator,

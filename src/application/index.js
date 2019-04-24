@@ -6,10 +6,11 @@ import Moment from 'react-moment';
 import { Text } from 'native-base';
 import { AppState } from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import Navigator from '~screens';
 import { ROOT_QUERY } from '~graph';
-import { ConnectivityIndicator } from '~components';
+import { ConnectivityIndicator, ScreenHeader, BottomTabBar } from '~components';
 
 Moment.globalElement = Text;
 
@@ -41,6 +42,10 @@ export default class Application extends Component {
     isOnline: true,
     screenProps: {
       onApplicationReset: this.props.onReset,
+      contentInset: {
+        top: ScreenHeader.HEIGHT + getStatusBarHeight(),
+        bottom: BottomTabBar.HEIGHT,
+      },
     },
   };
 
