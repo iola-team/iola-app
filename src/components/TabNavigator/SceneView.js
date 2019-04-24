@@ -1,5 +1,5 @@
 import React, { PureComponent, Component, createContext } from 'react';
-import { StyleSheet, View, Platform, Animated, Dimensions, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Platform, Animated, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { without } from 'lodash';
@@ -182,9 +182,10 @@ export default class SceneView extends PureComponent {
       ...restProps
     } = this.props;
 
+    const shrinkHeight = headerShrinkHeight + getStatusBarHeight();
     const windowHeight = Dimensions.get('window').height;
-    const screenHeight = windowHeight - getStatusBarHeight() - bottomBarHeight - topBarHeight;
-    const shrinkAnimationHeight = headerHeight ? headerHeight - headerShrinkHeight : 0;
+    const screenHeight = windowHeight - bottomBarHeight - topBarHeight;
+    const shrinkAnimationHeight = headerHeight ? headerHeight - shrinkHeight : 0;
     const shrinkAnimatedValue = shrinkAnimationHeight ? this.scrollAnimatedValue.interpolate({
       inputRange: [0, shrinkAnimationHeight],
       outputRange: [1, 0],
@@ -194,12 +195,14 @@ export default class SceneView extends PureComponent {
       ...restProps,
 
       // Values
+      bottomBarHeight,
+      topBarHeight,
       headerHeight,
       tabBarHeight,
-      headerShrinkHeight,
+      headerShrinkHeight: shrinkHeight,
       shrinkAnimatedValue,
       shrinkAnimationHeight,
-      contentHeight: screenHeight - tabBarHeight - headerShrinkHeight,
+      contentHeight: screenHeight - shrinkHeight - tabBarHeight,
       scrollAnimatedValue: this.scrollAnimatedValue,
 
       // Handlers
@@ -215,7 +218,7 @@ export default class SceneView extends PureComponent {
 
     return (
       <Context.Provider value={this.contextValue}>
-        <SafeAreaView
+        <View
           style={styles.container}
           collapsable={false}
           removeClippedSubviews={
@@ -228,7 +231,7 @@ export default class SceneView extends PureComponent {
           <View style={isFocused ? styles.attached : styles.detached}>
             {shouldRender && renderScene({ route })}
           </View>
-        </SafeAreaView>
+        </View>
       </Context.Provider>
     );
   }

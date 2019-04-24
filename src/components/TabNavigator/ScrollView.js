@@ -1,11 +1,14 @@
 import React, { PureComponent } from 'react';
-import { Animated, View as ViewRN } from 'react-native';
+import { Animated, View as ViewRN, StyleSheet } from 'react-native';
 import { ScrollView as ScrollViewRN } from 'react-native-gesture-handler';
+import { withNavigation } from 'react-navigation';
 import { View } from 'native-base';
 
 import RefreshControl from '../RefreshControl';
 import { TabBar, Header, Context } from './SceneView';
+import BarBackgroundView from '../BarBackgroundView';
 
+@withNavigation
 class ScrollView extends PureComponent {
   static contextType = Context;
 
@@ -62,14 +65,26 @@ class ScrollView extends PureComponent {
   }
   
   render() {
-    const { contentContainerStyle, ...restProps } = this.props;
-    const contentStyle = [contentContainerStyle, { flexGrow: 1 }];
+    const { contentContainerStyle = {}, contentInset = {}, navigation, ...restProps } = this.props;
     const refreshControl = this.renderRefreshControl();
+    const screenProps = navigation.getScreenProps();
+    let inset = { ...screenProps.contentInset, ...contentInset };
+
+    if (restProps.inverted) {
+      inset = { ...inset, top: inset.bottom, bottom: inset.top };
+    }
+
+    const contentOffset = { y: -inset.top };
+    const contentStyle = [contentContainerStyle, {
+      // flexGrow: 1, // TODO: Check no items cases before removing this line
+    }];
 
     if (!this.context) {
       return (
         <ScrollViewRN
           contentContainerStyle={contentStyle}
+          contentOffset={contentOffset}
+          contentInset={inset}
 
           {...restProps}
           refreshControl={refreshControl}
@@ -83,6 +98,7 @@ class ScrollView extends PureComponent {
       headerHeight,
       contentHeight,
       onScroll: onScrollEvent,
+      bottomBarHeight,
     } = this.context;
 
     const {
@@ -126,10 +142,14 @@ class ScrollView extends PureComponent {
         onMomentumScrollEnd={this.onScrollEnd}
         refreshControl={refreshControl}
 
+        contentOffset={contentOffset}
+        contentInset={{ ...inset, bottom: bottomBarHeight }}
+
         scrollEventThrottle={1}
       >
         <Animated.View style={stickyStyle}>
-          <View foreground style={{ marginTop: -contentHeight, paddingTop: contentHeight }}>
+          <View style={{ marginTop: -contentHeight, paddingTop: contentHeight }}>
+            <BarBackgroundView style={StyleSheet.absoluteFill} />
             <Header />
             <TabBar />
           </View>

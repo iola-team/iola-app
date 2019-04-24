@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { useScreens } from 'react-native-screens';
 import {
   createBottomTabNavigator,
@@ -8,7 +9,7 @@ import {
 } from 'react-navigation';
 
 // Components
-import { ScreenHeader, BottomTabBar } from '~components';
+import { ScreenHeader, BottomTabBar, BarBackgroundView } from '~components';
 
 // Route names
 import * as routes from './routeNames';
@@ -24,7 +25,7 @@ import Launch from './Launch';
 import MyFriends from './MyFriends';
 import MyInfo from './MyInfo';
 import MyPhotos from './MyPhotos';
-import ProfileEditInfo from './ProfileEditInfo';
+import ProfileEdit from './ProfileEdit';
 import Settings from './Settings';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -36,7 +37,6 @@ import Users from './Users';
 
 import createUserNavigator from './User';
 import createProfileNavigator from './Profile';
-import createProfileEditNavigator from './ProfileEdit';
 
 /**
  * TODO:
@@ -60,6 +60,9 @@ const TabsNavigator = createBottomTabNavigator({
   initialRouteName: routes.DASHBOARD,
   tabBarComponent: BottomTabBar,
   lazy: false,
+  tabBarOptions: {
+    barTransparent: true,
+  },
 });
 
 const RootNavigator = createSwitchNavigator({
@@ -99,10 +102,9 @@ const RootNavigator = createSwitchNavigator({
         [routes.USER_FRIENDS]: UserFriends,
       }),
     },
-    [routes.PROFILE_EDIT]: createProfileEditNavigator({
-      [routes.PROFILE_EDIT_INFO]: ProfileEditInfo,
-      [routes.SETTINGS]: Settings,
-    }),
+
+    [routes.PROFILE_EDIT]: ProfileEdit,
+    [routes.SETTINGS]: Settings,
 
     [routes.CHANNEL]: Channel,
     [routes.USER_SEARCH]: { screen: UserSearch, params: { isSearch: true } },
@@ -135,6 +137,8 @@ const RootNavigator = createSwitchNavigator({
 
     defaultNavigationOptions: {
       header: props => <ScreenHeader {...props} />,
+      headerTransparent: true,
+      headerBackground: <BarBackgroundView />,
     },
   }),
 

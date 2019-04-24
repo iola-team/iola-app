@@ -11,5 +11,6 @@ export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
 
   navigationOptions: {
     headerTransparent: true,
+    headerBackground: null,
   },
 });

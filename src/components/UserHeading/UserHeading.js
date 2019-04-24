@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { View, Text, H2 } from 'native-base';
 import { Animated, StyleSheet } from 'react-native';
 
@@ -27,14 +28,14 @@ const userFragment = gql`
   ${UserAvatar.fragments.user}
 `;
 
-const headerHeight = 350 + ScreenHeader.HEIGHT;
+const headerHeight = 350 + 10;
 
 @withStyleSheet('Sparkle.UserHeading', {
   root: {
     alignItems: 'center',
     overflow: 'hidden',
     height: headerHeight,
-    paddingTop: ScreenHeader.HEIGHT,
+    paddingTop: 10,
   },
 
   avatar: {
@@ -80,10 +81,10 @@ const headerHeight = 350 + ScreenHeader.HEIGHT;
   navBarBg: {
     ...StyleSheet.absoluteFillObject,
     bottom: null,
+    top: getStatusBarHeight(),
     height: ScreenHeader.HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
   },
 
   navBarBgText: {
@@ -133,7 +134,7 @@ export default class UserHeading extends PureComponent {
 
     const navBarStyle = {
       opacity: shrinkAnimatedValue.interpolate({
-        inputRange: [0, 0.01, 0.02],
+        inputRange: [0, 0.01, 0.1],
         outputRange: [1, 1, 0],
         extrapolate: 'clamp',
       }),
@@ -146,6 +147,14 @@ export default class UserHeading extends PureComponent {
           }),
         },
       ],
+    };
+
+    const contentStyle = {
+      opacity: shrinkAnimatedValue.interpolate({
+        inputRange: [0, 0.1, 0.25],
+        outputRange: [0, 0, 1],
+        extrapolate: 'clamp',
+      }),
     };
 
     const showLoading = loading && !user;
@@ -181,9 +190,9 @@ export default class UserHeading extends PureComponent {
           </View>
         </View>
 
-        <View style={styles.content}>
+        <Animated.View style={[styles.content, contentStyle]}>
           {children}
-        </View>
+        </Animated.View>
 
         <Animated.View style={[styles.navBarBg, navBarStyle]}>
           <Animated.Text style={styles.navBarBgText}>{!showLoading && user.name}</Animated.Text>

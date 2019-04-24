@@ -9,7 +9,6 @@ import {
   SearchBar,
   SearchResult,
   ChatList,
-  UsersRow,
   SearchBlank,
   TouchableOpacity,
 } from '~components';
@@ -54,18 +53,6 @@ const searchQuery = gql`
 
   ${SearchResult.fragments.connection}
   ${ChatList.fragments.edge}
-`;
-
-const onlineUsersQuery = gql`
-  query UserSearchOnlineQuery {
-    users(filter: { online: true }, first: 100) {
-      edges {
-        ...UsersRow_edge
-      }
-    }
-  }
-
-  ${UsersRow.fragments.edge}
 `;
 
 /**
@@ -117,7 +104,7 @@ export default class ChatSearch extends Component {
   onItemPress = ({ node: { id } }) => {
     const { navigation } = this.props;
 
-    navigation.navigate(CHANNEL, { userId: id });
+    navigation.navigate(CHANNEL, { chatId: id });
   };
 
   renderList = (props) => {
@@ -141,39 +128,24 @@ export default class ChatSearch extends Component {
     const recentEdgeSorter = (a, b) => recentIds.indexOf(a.node.id) - recentIds.indexOf(b.node.id);
 
     return (
-      <Query query={onlineUsersQuery}>
-        {({ data: { users: onlineUsers }, loading: loadingOnline }) => (
-          <Query query={recentChatsQuery} variables={{ ids: recentIds }} skip={!recentIds.length}>
-            {({ data: recentData, loading: loadingRecent }) => (
-
-              <SearchBlank
-                /**
-                 * TODO: Memo the sort result
-                 */
-                edges={(
-                  recentData?.me?.chats.edges.filter(recentEdgeFilter).sort(recentEdgeSorter)
-                )}
-
-                user={me}
-                loading={loadingRecent}
-                hasRecentItems={!!recentIds.length}
-                headerTitle="Online"
-                contentTitle="Recent"
-                onItemPress={onItemPress}
-                ListEmptyComponent={null} // Disable `no items`
-                ListComponent={ChatList}
-                headerList={(
-                  <UsersRow
-                    loading={loadingOnline}
-                    edges={onlineUsers?.edges}
-                    onItemPress={onItemPress}
-                    showsHorizontalScrollIndicator={false}
-                  />
-                )}
-              />
-
+      <Query query={recentChatsQuery} variables={{ ids: recentIds }} skip={!recentIds.length}>
+        {({ data, loading }) => (
+          <SearchBlank
+            /**
+             * TODO: Memo the sort result
+             */
+            edges={(
+              data?.me?.chats.edges.filter(recentEdgeFilter).sort(recentEdgeSorter)
             )}
-          </Query>
+
+            user={me}
+            loading={loading}
+            hasRecentItems={!!recentIds.length}
+            contentTitle="Recent"
+            onItemPress={onItemPress}
+            ListEmptyComponent={null} // Disable `no items`
+            ListComponent={ChatList}
+          />
         )}
       </Query>
     );

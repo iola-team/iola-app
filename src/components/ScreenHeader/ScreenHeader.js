@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Header } from 'react-navigation';
 import { constant, assign } from 'lodash';
-import { Platform } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import Icon from '../Icon';
@@ -13,13 +13,8 @@ import Icon from '../Icon';
     borderBottomWidth: 0,
   },
 
-  opaqueHeader: {
-
-  },
-
-  transparentHeader: {
-
-  },
+  opaque: {},
+  transparent: {},
 
   icon: {
     fontSize: 16,
@@ -70,7 +65,7 @@ export default class ScreenHeader extends PureComponent {
       headerRight: renderRight(scene),
       headerStyle: [
         styles.header,
-        options.headerTransparent ? styles.transparentHeader : styles.opaqueHeader,
+        options.headerTransparent ? styles.transparent : styles.opaque,
         options.headerStyle
       ],
       headerTitleStyle: [styles.title, options.headerTitleStyle],

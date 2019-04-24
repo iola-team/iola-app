@@ -70,7 +70,7 @@ export default class SearchBlank extends PureComponent {
 
             {hasRecentItems && (
               <>
-                <View style={styles.sectionDelim} />
+                {headerList && <View style={styles.sectionDelim} />}
                 {contentTitle && <Text style={styles.sectionHeader}>{contentTitle}</Text>}
               </>
             )}
