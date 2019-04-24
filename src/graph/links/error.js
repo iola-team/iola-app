@@ -2,10 +2,11 @@ import { onError } from 'apollo-link-error';
 
 export default () => onError(({ networkError, graphQLErrors }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, category, locations, path, originalError }) => {
+    graphQLErrors.forEach(({ debugMessage, message, category, locations, path, originalError }) => {
       if (category !== 'user') {
         console.error(`
           [GraphQL error]:
+            debugMessage: ${debugMessage},
             message: ${message},
             category: ${category},
             location: ${JSON.stringify(locations)},
