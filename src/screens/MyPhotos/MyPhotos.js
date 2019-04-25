@@ -3,7 +3,6 @@ import { withNavigationFocus } from 'react-navigation';
 import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
-import { BottomTabBar } from '~components';
 import MyPhotosConnection from './MyPhotosConnection';
 
 @withStyleSheet('Sparkle.MyPhotosScreen', {
