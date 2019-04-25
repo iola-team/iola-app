@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity } from 'react-native';
+import { ImageBackground, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Container, Text, View } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { LAUNCH } from '../routeNames';
@@ -96,28 +96,30 @@ export default class SignUpScreen extends Component {
     return (
       <Container>
         <Background>
-          <Content>
-            <Title>Please sign up</Title>
+          <SafeAreaView style={{ flex: 1 }}>
+            <Content>
+              <Title>Please sign up</Title>
 
-            <SignUpForm onSubmit={() => navigate(LAUNCH)} />
+              <SignUpForm onSubmit={() => navigate(LAUNCH)} />
 
-            <TermsContainer>
-              <TermsText>By signing up, you agree</TermsText>
-              <TermsSubcontainer>
-                <TermsText>to the</TermsText>
-                <TermsButton onPress={() => alert('Terms and Conditions')}>
-                  <TermsButtonText>Terms and Conditions</TermsButtonText>
-                </TermsButton>
-              </TermsSubcontainer>
-            </TermsContainer>
+              <TermsContainer>
+                <TermsText>By signing up, you agree</TermsText>
+                <TermsSubcontainer>
+                  <TermsText>to the</TermsText>
+                  <TermsButton onPress={() => alert('Terms and Conditions')}>
+                    <TermsButtonText>Terms and Conditions</TermsButtonText>
+                  </TermsButton>
+                </TermsSubcontainer>
+              </TermsContainer>
 
-            <AlreadyHaveAnAccountContainer>
-              <AlreadyHaveAnAccountText>Already have an account?</AlreadyHaveAnAccountText>
-              <ButtonSignIn onPress={() => goBack()}>
-                <ButtonSignInText>Sign in</ButtonSignInText>
-              </ButtonSignIn>
-            </AlreadyHaveAnAccountContainer>
-          </Content>
+              <AlreadyHaveAnAccountContainer>
+                <AlreadyHaveAnAccountText>Already have an account?</AlreadyHaveAnAccountText>
+                <ButtonSignIn onPress={() => goBack()}>
+                  <ButtonSignInText>Sign in</ButtonSignInText>
+                </ButtonSignIn>
+              </AlreadyHaveAnAccountContainer>
+            </Content>
+          </SafeAreaView>
         </Background>
       </Container>
     );
