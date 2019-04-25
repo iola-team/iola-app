@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, SafeAreaView } from 'react-native';
 import { Container, Text, View } from 'native-base';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -154,25 +154,27 @@ export default class EmailVerificationScreen extends Component {
           return (
             <Container>
               <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
-                <View style={styles.content}>
-                  <View style={styles.header}>
-                    <Icon style={styles.icon} name="envelope" />
-                    <Text style={styles.title}>Email verification</Text>
-                    <View style={styles.info}>
-                      {!loading && !isSubmitting ? infoContent : <Spinner style={styles.spinner} />}
+                <SafeAreaView style={{ flex: 1 }}>
+                  <View style={styles.content}>
+                    <View style={styles.header}>
+                      <Icon style={styles.icon} name="envelope" />
+                      <Text style={styles.title}>Email verification</Text>
+                      <View style={styles.info}>
+                        {!loading && !isSubmitting ? infoContent : <Spinner style={styles.spinner} />}
+                      </View>
                     </View>
-                  </View>
 
-                  <Mutation mutation={sendEmailVerificationInstructionsMutation}>
-                    {sendEmailVerificationInstructions => !loading && (
-                      <EmailVerificationForm
-                        onSubmit={() => this.onSubmit(email, sendEmailVerificationInstructions)}
-                        onSuccess={this.onSuccess}
-                        isSubmitting={isSubmitting}
-                      />
-                    )}
-                  </Mutation>
-                </View>
+                    <Mutation mutation={sendEmailVerificationInstructionsMutation}>
+                      {sendEmailVerificationInstructions => !loading && (
+                        <EmailVerificationForm
+                          onSubmit={() => this.onSubmit(email, sendEmailVerificationInstructions)}
+                          onSuccess={this.onSuccess}
+                          isSubmitting={isSubmitting}
+                        />
+                      )}
+                    </Mutation>
+                  </View>
+                </SafeAreaView>
               </ImageBackground>
               {!loading && <UserUpdateSubscription userId={me.id} onSubscriptionData={this.onUserUpdate} />}
             </Container>

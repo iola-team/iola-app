@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, SafeAreaView } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 import { ApolloConsumer } from 'react-apollo';
 
@@ -74,33 +74,35 @@ export default class SignInScreen extends Component {
     return (
       <Container>
         <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
-          <Content padder contentContainerStyle={styles.content}>
-            <H1 style={styles.title}>Sign in</H1>
+          <SafeAreaView style={{ flex: 1 }}>
+            <Content padder contentContainerStyle={styles.content}>
+              <H1 style={styles.title}>Sign in</H1>
 
-            <ApolloConsumer>
-              {apolloClient => (
-                <SignInForm
-                  defaultEmail={this.state.defaultEmail}
-                  onSubmit={(values, formikBag) => this.onSubmit(values, formikBag, apolloClient)}
-                  onForgotPassword={login => this.onForgotPassword(login)}
-                />
-              )}
-            </ApolloConsumer>
+              <ApolloConsumer>
+                {apolloClient => (
+                  <SignInForm
+                    defaultEmail={this.state.defaultEmail}
+                    onSubmit={(values, formikBag) => this.onSubmit(values, formikBag, apolloClient)}
+                    onForgotPassword={login => this.onForgotPassword(login)}
+                  />
+                )}
+              </ApolloConsumer>
 
-            <Button
-              style={styles.button}
-              onPress={() => navigate(routes.SIGN_UP)}
-              block
-              bordered
-              light
-            >
-              <Text>Sign up</Text>
-            </Button>
+              <Button
+                style={styles.button}
+                onPress={() => navigate(routes.SIGN_UP)}
+                block
+                bordered
+                light
+              >
+                <Text>Sign up</Text>
+              </Button>
 
-            <Button style={styles.button} onPress={onApplicationReset} block bordered light>
-              <Text>Change Website URL</Text>
-            </Button>
-          </Content>
+              <Button style={styles.button} onPress={onApplicationReset} block bordered light>
+                <Text>Change Website URL</Text>
+              </Button>
+            </Content>
+          </SafeAreaView>
         </ImageBackground>
       </Container>
     );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity } from 'react-native';
+import { ImageBackground, TouchableOpacity, SafeAreaView } from 'react-native';
 import { Button, Container, Text, Toast, View } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -177,45 +177,47 @@ export default class ForgotPasswordScreen extends Component {
     return (
       <Container>
         <Background>
-          <Content>
-            <Header>
-              <LockIcon />
-              <Title>Forgot your password?</Title>
-              {emailWasSent ? (
+          <SafeAreaView style={{ flex: 1 }}>
+            <Content>
+              <Header>
+                <LockIcon />
+                <Title>Forgot your password?</Title>
+                {emailWasSent ? (
+                  <>
+                    <Description>
+                      A new password has been sent to
+                    </Description>
+                    <Description>
+                      {email}
+                    </Description>
+                    <SignInButton block onPress={::this.goBack}>
+                      <Text>Sign in</Text>
+                    </SignInButton>
+                  </>
+                ) : (
+                  <Description>
+                    Enter your email below and we’ll{'\n'}
+                    send you password reset{'\n'}
+                    instructions
+                  </Description>
+                )}
+              </Header>
+              {emailWasSent ? null : (
                 <>
-                  <Description>
-                    A new password has been sent to
-                  </Description>
-                  <Description>
-                    {email}
-                  </Description>
-                  <SignInButton block onPress={::this.goBack}>
-                    <Text>Sign in</Text>
-                  </SignInButton>
-                </>
-              ) : (
-                <Description>
-                  Enter your email below and we’ll{'\n'}
-                  send you password reset{'\n'}
-                  instructions
-                </Description>
-              )}
-            </Header>
-            {emailWasSent ? null : (
-              <>
-                <ForgotPasswordForm onSubmit={::this.onSubmit} defaultEmail={defaultEmail} />
+                  <ForgotPasswordForm onSubmit={::this.onSubmit} defaultEmail={defaultEmail} />
 
-                <Footer>
-                  <FooterText>
-                    Remember your password?
-                  </FooterText>
-                  <SignInLink onPress={::this.goBack}>
-                    <SignInLinkText>Sign in</SignInLinkText>
-                  </SignInLink>
-                </Footer>
-              </>
-            )}
-          </Content>
+                  <Footer>
+                    <FooterText>
+                      Remember your password?
+                    </FooterText>
+                    <SignInLink onPress={::this.goBack}>
+                      <SignInLinkText>Sign in</SignInLinkText>
+                    </SignInLink>
+                  </Footer>
+                </>
+              )}
+            </Content>
+          </SafeAreaView>
         </Background>
       </Container>
     );
