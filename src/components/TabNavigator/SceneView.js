@@ -107,7 +107,7 @@ export default class SceneView extends PureComponent {
 
   static defaultProps = {
     tabBarHeight: 0,
-    scrollOffset: 0,
+    scrollOffset: null,
     headerShrinkHeight: 0,
     bottomBarHeight: 0,
     topBarHeight: 0,
@@ -168,8 +168,18 @@ export default class SceneView extends PureComponent {
 
     if (isFocused !== prevProps.isFocused && isFocused) {
       this.subscribers.focus.map(sub => sub(isFocused));
-      this.subscribers.scroll.map(sub => sub(scrollOffset));
+
+      if (scrollOffset !== null) {
+        this.subscribers.scroll.map(sub => sub(scrollOffset));
+      }
     }
+  }
+
+  componentDidMount() {
+    /**
+     * Delay not focused tabs rendering to prevent navigation animation freezies
+     */
+    setTimeout(() => this.setState({ shouldRender: true }), 100);
   }
 
   createContext() {

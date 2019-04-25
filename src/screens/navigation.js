@@ -38,11 +38,7 @@ import Users from './Users';
 import createUserNavigator from './User';
 import createProfileNavigator from './Profile';
 
-/**
- * TODO:
- * Temporary disabled screens, we need to figure out jumping header when moving between chats and profile screens.
- */
-// useScreens();
+useScreens();
 
 // Navigator
 const TabsNavigator = createBottomTabNavigator({
