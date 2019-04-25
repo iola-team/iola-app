@@ -3,6 +3,7 @@ import { withNavigationFocus } from 'react-navigation';
 import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
+import { BottomTabBar } from '~components';
 import MyPhotosConnection from './MyPhotosConnection';
 
 @withStyleSheet('Sparkle.MyPhotosScreen', {
@@ -13,7 +14,7 @@ import MyPhotosConnection from './MyPhotosConnection';
 
   add: {
     position: 'absolute',
-    bottom: 16,
+    bottom: 16 + BottomTabBar.HEIGHT,
     right: 16,
     width: 56,
     height: 56,
