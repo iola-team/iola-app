@@ -1,4 +1,4 @@
-package app.iola.iola;
+package team.iola.iola;
 
 import android.os.Bundle;
 import com.facebook.react.ReactFragmentActivity;
