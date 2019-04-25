@@ -139,6 +139,7 @@ class ScrollView extends PureComponent {
         ref={this.onRef}
         onScroll={onScrollEvent}
         onScrollEnd={this.onScrollEnd}
+        onScrollEndDrag={this.onScrollEnd}
         onMomentumScrollEnd={this.onScrollEnd}
         refreshControl={refreshControl}
 
