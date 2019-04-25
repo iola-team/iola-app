@@ -14,7 +14,7 @@ import MyPhotosConnection from './MyPhotosConnection';
 
   add: {
     position: 'absolute',
-    bottom: 16 + BottomTabBar.HEIGHT,
+    bottom: 16,
     right: 16,
     width: 56,
     height: 56,
@@ -37,11 +37,12 @@ export default class UserPhotos extends Component {
 
   render() {
     const { navigation, styleSheet: styles } = this.props;
+    const { contentInset } = navigation.getScreenProps();
 
     return (
       <Container>
         <MyPhotosConnection
-          addButtonStyle={styles.add}
+          addButtonStyle={[styles.add, { marginBottom: contentInset.bottom }]}
           contentContainerStyle={styles.list}
           noContentStyle={styles.noContent}
         />
