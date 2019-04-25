@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'native-base';
 
-import { Chat, ScreenHeader, UserAvatar } from '~components';
+import { Chat, KeyboardAvoidingView } from '~components';
 import { withStyleSheet as styleSheet } from '~theme';
 import ChannelHeader from './ChannelHeader';
 
@@ -27,7 +27,9 @@ export default class Channel extends Component {
 
     return (
       <Container>
-        <Chat chatId={chatId} recipientId={userId} />
+        <KeyboardAvoidingView>
+          <Chat chatId={chatId} recipientId={userId} contentInset={{ bottom: 0 }} />
+        </KeyboardAvoidingView>
       </Container>
     );
   }

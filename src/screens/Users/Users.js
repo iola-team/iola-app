@@ -24,7 +24,12 @@ export default class DashboardAll extends PureComponent {
     ),
   };
 
-  onItemPress = ({ node }) => this.props.navigation.navigate(USER, { id: node.id });
+  onItemPress = ({ node: { id } }) => {
+    const { navigation } = this.props;
+
+    navigation.navigate({ routeName: USER, params: { id }, key: id });
+  };
+
   onSearchPress = () => this.props.navigation.navigate(USER_SEARCH);
 
   render() {
@@ -34,7 +39,7 @@ export default class DashboardAll extends PureComponent {
       <Container>
         <UsersConnection
           ListHeaderComponent={(
-            <View highlight style={styles.listHeader}>
+            <View foreground style={styles.listHeader}>
               <TouchableOpacity onPress={this.onSearchPress}>
                 <View padder pointerEvents="box-only">
                   <SearchBar placeholder="Search users" />

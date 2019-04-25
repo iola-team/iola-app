@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
@@ -18,11 +19,11 @@ const userFriendsQuery = gql`
         }
       }
 
-      ...FriendsTabBarLabel_me
+      ...FriendsTabBarLabel_user
     }
   }
   
-  ${FriendsTabBarLabel.fragments.me}
+  ${FriendsTabBarLabel.fragments.user}
   ${FriendList.fragments.edge}
 `;
 
@@ -31,7 +32,7 @@ const addFriendMutation = gql`
     result: addFriend(input: $input) {
       user {
         id
-        ...FriendsTabBarLabel_me
+        ...FriendsTabBarLabel_user
       }
       friendship {
         id
@@ -40,28 +41,27 @@ const addFriendMutation = gql`
     }
   }
 
-  ${FriendsTabBarLabel.fragments.me}
+  ${FriendsTabBarLabel.fragments.user}
 `;
-
 
 const deleteFriendMutation = gql`
   mutation DeleteFriendMutation($input: DeleteFriendInput!) {
     result: deleteFriend(input: $input) {
       user {
         id
-        ...FriendsTabBarLabel_me
+        ...FriendsTabBarLabel_user
       }
       deletedId
     }
   }
 
-  ${FriendsTabBarLabel.fragments.me}
+  ${FriendsTabBarLabel.fragments.user}
 `;
 
-const createAddFriendOptimistic = (user, { friendship, status, friends, requests }) => ({
+const createAddFriendOptimistic = (user, { friendship, status, requests }) => ({
   result: {
     __typename: 'AddFriendPayload',
-    user: FriendsTabBarLabel.createOptimisticUser(user, { friends, requests }),
+    user: FriendsTabBarLabel.createOptimisticUser(user, { requests }),
     friendship: {
       ...friendship,
       status,
@@ -91,6 +91,7 @@ const removeFromCache = (cache, toDeleteId) => {
 @graphql(deleteFriendMutation, {
   name: 'deleteFriend',
 })
+@withNavigation
 export default class MyFriendsConnection extends PureComponent {
   static propTypes = {
     data: PropTypes.object,
@@ -100,6 +101,26 @@ export default class MyFriendsConnection extends PureComponent {
   static defaultProps = {
     data: {},
     skip: false,
+  };
+
+  unsubscribeFromFocus = null;
+  state = {
+    isRefreshing: false,
+  };
+
+  /**
+   * TODO: Move these common logic to a central place, to prevent copy & past
+   */
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
   };
 
   onAcceptPress = async ({ node, friendship }) => {
@@ -116,7 +137,6 @@ export default class MyFriendsConnection extends PureComponent {
       optimisticResponse: createAddFriendOptimistic(me, {
         friendship,
         status,
-        friends: +1,
         requests: -1,
       }),
     });
@@ -163,17 +183,34 @@ export default class MyFriendsConnection extends PureComponent {
     });
   };
 
+  /**
+   * TODO: It might be better to use Subscriptions to update the counter. Think about it later
+   * TODO: Try to move this logic somewhere to be able to reuse it
+   */
+  componentDidMount() {
+    const { navigation, data } = this.props;
+
+    this.unsubscribeFromFocus = navigation.addListener('willFocus', () => {
+      if (data) data.refetch();
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromFocus.remove();
+  }
+
   render() {
     const { data: { loading, me }, skip, ...props } = this.props;
-    const edges = get(me, 'friends.edges', []);
+    const { isRefreshing } = this.state;
 
     return (
       <FriendList
         {...props}
-        edges={edges}
-        loading={skip || loading}
+        edges={me?.friends.edges}
+        loading={loading}
+        refreshing={isRefreshing}
         noContentText="No friends"
-
+        onRefresh={this.refresh}
         onAcceptPress={this.onAcceptPress}
         onIgnorePress={this.onIgnorePress}
         onCancelPress={this.onCancelPress}

@@ -8,31 +8,15 @@ import { TabBarLabel } from '~components';
 const userFragment = gql`
   fragment FriendsTabBarLabel_user on User {
     id
-    activeFriends: friends {
-      totalCount
-    }
-  }
-`;
-
-const meFragment = gql`
-  fragment FriendsTabBarLabel_me on User {
-    id
     friendRequests: friends(filter: {
       friendshipPhaseIn: [ REQUEST_RECEIVED ]
     }) {
       totalCount
     }
-
-    ...FriendsTabBarLabel_user
   }
-
-  ${userFragment}
 `;
 
-const createOptimisticUser = (user, { requests = 0, friends = 0 }) => update(user, {
-  activeFriends: {
-    totalCount: { $set: Math.max(user.activeFriends.totalCount + friends, 0) },
-  },
+const createOptimisticUser = (user, { requests = 0 }) => update(user, {
   friendRequests: {
     totalCount: { $set: Math.max(user.friendRequests.totalCount + requests, 0) },
   },
@@ -40,12 +24,10 @@ const createOptimisticUser = (user, { requests = 0, friends = 0 }) => update(use
 
 export default class FriendsTabBarLabel extends Component {
   static fragments = {
-    me: meFragment,
     user: userFragment,
   };
 
   static propTypes = {
-    me: fragmentProp(meFragment),
     user: fragmentProp(userFragment),
   };
 
@@ -57,13 +39,12 @@ export default class FriendsTabBarLabel extends Component {
   static createOptimisticUser = createOptimisticUser;
 
   render() {
-    const { user, me } = this.props;
-    const data = me || user;
+    const { user } = this.props;
+    const data = user;
 
     return (
       <TabBarLabel
         label="Friends"
-        count={data?.activeFriends.totalCount}
         activeCount={data?.friendRequests?.totalCount}
       />
     );

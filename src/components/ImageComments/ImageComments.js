@@ -9,7 +9,6 @@ import uuid from 'uuid/v4';
 import { withStyleSheet as styleSheet } from '~theme';
 import ImageCommentsConnection from './ImageCommentsConnection';
 import Avatar from '../UserAvatar';
-import UserOnlineStatus from '../UserOnlineStatus';
 import Backdrop from '../Backdrop';
 import TouchableOpacity from '../TouchableOpacity';
 import ChatFooter from '../ChatFooter';
@@ -18,12 +17,10 @@ const meQuery = gql`
   query meQuery {
     me {
       name
-      ...UserOnlineStatus_user
       ...UserAvatar_user
     }
   }
 
-  ${UserOnlineStatus.fragments.user}
   ${Avatar.fragments.user}
 `;
 

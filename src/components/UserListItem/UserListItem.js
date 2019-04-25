@@ -6,18 +6,15 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 
 import { withStyle } from '~theme';
 import UserAvatar from '../UserAvatar';
-import UserOnlineStatus from '../UserOnlineStatus';
 import Placeholder from '../Placeholder';
 
 const userFragment = gql`
   fragment UserListItem_user on User {
     id
     name
-    ...UserOnlineStatus_user
     ...UserAvatar_user
   }
 
-  ${UserOnlineStatus.fragments.user}
   ${UserAvatar.fragments.user}
 `;
 
@@ -27,11 +24,6 @@ const userFragment = gql`
       flexDirection: 'row',
       alignItems: 'center',
       height: 68,
-
-      'Sparkle.UserOnlineStatus': {
-        marginLeft: -3,
-        marginBottom: -2,
-      },
     },
 
     'NativeBase.Right': {
@@ -111,8 +103,7 @@ export default class UserListItem extends Component {
           <UserAvatar user={user} />
         </Left>
         <Body>
-          <Text>{user.name}</Text>
-          <UserOnlineStatus user={user} />
+          <Text name>{user.name}</Text>
         </Body>
         {children && <Right>{children}</Right>}
       </ListItem>

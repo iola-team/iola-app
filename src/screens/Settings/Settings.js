@@ -13,7 +13,7 @@ export default class SettingsScreen extends Component {
   render() {
     return (
       <Container>
-        <SettingList />
+        <SettingList contentInset={{ bottom: 0 }} />
       </Container>
     );
   }

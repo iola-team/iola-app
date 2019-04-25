@@ -5,8 +5,8 @@ import { withNavigationFocus } from 'react-navigation';
 import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
-import { UserList, FriendsTabBarLabel } from '~components';
-import TabBarLabel from './TabBarLabel';
+import { UserList } from '~components';
+import { USER } from '../routeNames';
 
 const userFriendsQuery = gql`
   query UserFriendsQuery($id: ID!) {
@@ -18,13 +18,10 @@ const userFriendsQuery = gql`
             ...UserList_edge
           }
         }
-
-        ...FriendsTabBarLabel_user
       }
     }
   }
   
-  ${FriendsTabBarLabel.fragments.user}
   ${UserList.fragments.edge}
 `;
 
@@ -42,9 +39,34 @@ const userFriendsQuery = gql`
 })
 @withNavigationFocus
 export default class UserFriends extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    tabBarLabel: <TabBarLabel userId={navigation.state.params.id} />,
-  });
+  static navigationOptions = {
+    tabBarLabel: 'Friends',
+  };
+
+  state = {
+    isRefreshing: false,
+  };
+
+  onItemPress = ({ node: { id } }) => {
+    const { navigation } = this.props;
+
+    navigation.navigate({ routeName: USER, params: { id }, key: id });
+  };
+
+  /**
+   * TODO: Move these common logic to a central place, to prevent copy & past
+   */
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
+  };
 
   shouldComponentUpdate({ isFocused }) {
     return isFocused;
@@ -52,15 +74,19 @@ export default class UserFriends extends Component {
 
   render() {
     const { data: { user, loading }, styleSheet: styles } = this.props;
-    const edges = user?.friends.edges || [];
+    const { isRefreshing } = this.state;
 
     return (
       <Container>
         <UserList
           contentContainerStyle={styles.list}
-          edges={edges}
+          edges={user?.friends.edges}
           loading={loading}
           noContentText="No friends"
+          refreshing={isRefreshing}
+          onRefresh={this.refresh}
+
+          onItemPress={this.onItemPress}
         />
       </Container>
     );

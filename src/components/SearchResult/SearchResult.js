@@ -46,6 +46,7 @@ export default class SearchResult extends Component {
     query: PropTypes.object.isRequired,
     children: PropTypes.func.isRequired,
     filterEdges: PropTypes.func.isRequired,
+    fetchPolicy: PropTypes.string,
     search: PropTypes.string,
     renderBlank: PropTypes.func,
     onSearchingStateChange: PropTypes.func,
@@ -54,6 +55,7 @@ export default class SearchResult extends Component {
 
   static defaultProps = {
     search: '',
+    fetchPolicy: 'network-only',
     renderBlank: noop,
     onSearchingStateChange: noop,
     onItemPress: noop,
@@ -74,7 +76,7 @@ export default class SearchResult extends Component {
     }
 
     try {
-      await client.query({ ...this.getQueryOptions(), fetchPolicy: 'network-only' });
+      await client.query(this.getQueryOptions());
     } catch {
       // Do nonthing...
     }
@@ -86,7 +88,8 @@ export default class SearchResult extends Component {
 
   renderResult = ({ data }) => {
     const { search, filterEdges, children: renderList, connectionPath } = this.props;
-    const unfilteredEdges = get(data, [connectionPath, 'edges'], this.lastValidResult);
+    const connection = get(data, connectionPath);
+    const unfilteredEdges = connection?.edges || this.lastValidResult;
     const edges = (unfilteredEdges || []).filter(edge => filterEdges(edge, search));
     const loading = unfilteredEdges === null;
     this.lastValidResult = unfilteredEdges;
@@ -135,11 +138,12 @@ export default class SearchResult extends Component {
   }
 
   getQueryOptions() {
-    const { query, search } = this.props;
+    const { query, search, fetchPolicy } = this.props;
 
     return {
       query,
       variables: { search, first: 50 },
+      fetchPolicy,
     };
   }
 

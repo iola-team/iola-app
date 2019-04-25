@@ -6,11 +6,6 @@ import { withStyleSheet as styleSheet } from '~theme';
 import logo from './logo.png';
 
 @styleSheet('Sparkle.SplashBackground', {
-  logo: {
-    resizeMode: 'contain',
-    position: 'absolute',
-  },
-
   content: {
     flex: 1,
     alignSelf: 'center',
@@ -19,8 +14,13 @@ import logo from './logo.png';
     paddingHorizontal: '10%',
     backgroundColor: '#5259FF',
   },
+
+  logo: {
+    resizeMode: 'contain',
+    position: 'absolute',
+  },
 })
-export default class LaunchScreen extends Component {
+export default class SplashBackground extends Component {
   constructor() {
     super();
 

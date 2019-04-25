@@ -88,20 +88,20 @@ export default class UserSearch extends Component {
   onItemPress = ({ node: { id } }) => {
     const { navigation } = this.props;
 
-    navigation.navigate(USER, { id });
+    navigation.navigate({ routeName: USER, params: { id }, key: id });
   };
 
   renderList = (props) => (
     <UserList
       {...props}
-      noContentText="No users found"
+      keyboardShouldPersistTaps="handled"
+      ListEmptyComponent={null} // Disable `no items`
 
       initialNumToRender={6}
     />
   );
 
   renderBlank = ({ onItemPress, recentIds }) => {
-    const { styleSheet: styles } = this.props;
     const recentEdgeSorter = (a, b) => recentIds.indexOf(a.node.id) - recentIds.indexOf(b.node.id);
 
     return (
@@ -114,22 +114,23 @@ export default class UserSearch extends Component {
                 /**
                  * TODO: Memo the sort result
                  */
-                edges={recentData?.users?.edges.sort(recentEdgeSorter) || []}
+                edges={recentData?.users?.edges.sort(recentEdgeSorter)}
 
                 loading={loadingRecent}
                 hasRecentItems={!!recentIds.length}
                 headerTitle="Online"
                 contentTitle="Recent"
-                noContentText="No recent users"
+                ListEmptyComponent={null} // Disable `no items`
                 onItemPress={onItemPress}
+                keyboardShouldPersistTaps="handled"
                 ListComponent={UserList}
                 headerList={(
                   <UsersRow
-                    style={styles.usersRow}
                     loading={loadingOnline}
-                    edges={onlineUsers?.edges || []}
+                    edges={onlineUsers?.edges}
                     onItemPress={onItemPress}
                     showsHorizontalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
                   />
                 )}
               />

@@ -13,7 +13,7 @@ const stories = storiesOf('Components/UsersRowItem', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({ centered: true }));
+stories.addDecorator(getContentDecorator({ centered: true, backgroundColor: '#FFFFFF' }));
 
 /**
  * Apollo decorator example
@@ -57,7 +57,7 @@ const userQuery = gql`
   query($id: ID!) {
     user: node(id: $id) {
       id
-      ...UserListItem_user
+      ...UsersRowItem_user
     }
   }
   

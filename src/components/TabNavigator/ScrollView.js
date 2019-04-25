@@ -1,13 +1,18 @@
 import React, { PureComponent } from 'react';
-import { ScrollView as ScrollViewRN, Animated, View as ViewRN } from 'react-native';
+import { Animated, View as ViewRN, StyleSheet } from 'react-native';
+import { ScrollView as ScrollViewRN } from 'react-native-gesture-handler';
+import { withNavigation } from 'react-navigation';
 import { View } from 'native-base';
 
+import RefreshControl from '../RefreshControl';
 import { TabBar, Header, Context } from './SceneView';
+import BarBackgroundView from '../BarBackgroundView';
 
-export default class ScrollView extends PureComponent {
+@withNavigation
+class ScrollView extends PureComponent {
   static contextType = Context;
 
-  unsubscribe = null;
+  unsubscribe = [];
   scrollRef = null;
 
   scrollTo = (y, animated = false) => {
@@ -27,24 +32,70 @@ export default class ScrollView extends PureComponent {
     onScrollEnd(y);
   }
 
-  componentDidMount() {
+  onRefresh = () => {
+    const { onRefresh } = this.props;
+
+    onRefresh();
+
     if (this.context) {
-      this.unsubscribe = this.context.addListener('scroll', this.scrollTo);
+      this.context.refetch();
     }
+  };
+
+  componentDidMount() {
+    this.unsubscribe = !this.context ? [] : [
+      this.context.addListener('scroll', this.scrollTo),
+    ];
   }
 
   componentWillUnmount() {
-    if (this.unsubscribe) {
-      this.unsubscribe();
+    this.unsubscribe.map(unsub => unsub());
+  }
+
+  getContentInset() {
+    const { contentInset = {}, navigation, inverted } = this.props;
+    const screenProps = navigation.getScreenProps();
+    let inset = { ...screenProps.contentInset, ...contentInset };
+
+    if (inverted) {
+      inset = { ...inset, top: inset.bottom, bottom: inset.top };
     }
+
+    return inset;
+  }
+
+  renderRefreshControl() {
+    const { refreshControl, refreshing, onRefresh } = this.props;
+
+    if (refreshControl) {
+      return refreshControl;
+    }
+
+    return onRefresh && (
+      <RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />
+    );
   }
   
   render() {
-    const { contentContainerStyle, ...restProps } = this.props;
-    const contentStyle = [contentContainerStyle, { flexGrow: 1 }];
+    const { contentContainerStyle = {}, ...restProps } = this.props;
+    const refreshControl = this.renderRefreshControl();
+    const contentInset = this.getContentInset();
+    const contentOffset = { y: -contentInset.top };
+    const contentStyle = [contentContainerStyle, {
+      // flexGrow: 1, // TODO: Check no items cases before removing this line
+    }];
 
     if (!this.context) {
-      return <ScrollViewRN contentContainerStyle={contentStyle} {...restProps} />;
+      return (
+        <ScrollViewRN
+          contentContainerStyle={contentStyle}
+          contentOffset={contentOffset}
+          contentInset={contentInset}
+
+          {...restProps}
+          refreshControl={refreshControl}
+        />
+      );
     }
 
     const {
@@ -53,9 +104,15 @@ export default class ScrollView extends PureComponent {
       headerHeight,
       contentHeight,
       onScroll: onScrollEvent,
+      bottomBarHeight,
     } = this.context;
 
-    const { onScroll, children, ...listProps } = restProps;
+    const {
+      onScroll,
+      children,
+      ...listProps
+    } = restProps;
+
     if (onScroll) {
       Animated.forkEvent(onScrollEvent, onScroll);
     }
@@ -88,12 +145,18 @@ export default class ScrollView extends PureComponent {
         ref={this.onRef}
         onScroll={onScrollEvent}
         onScrollEnd={this.onScrollEnd}
+        onScrollEndDrag={this.onScrollEnd}
         onMomentumScrollEnd={this.onScrollEnd}
+        refreshControl={refreshControl}
+
+        contentOffset={contentOffset}
+        contentInset={{ ...contentInset, bottom: bottomBarHeight }}
 
         scrollEventThrottle={1}
       >
         <Animated.View style={stickyStyle}>
-          <View highlight style={{ marginTop: -contentHeight, paddingTop: contentHeight }}>
+          <View style={{ marginTop: -contentHeight, paddingTop: contentHeight }}>
+            <BarBackgroundView style={StyleSheet.absoluteFill} />
             <Header />
             <TabBar />
           </View>
@@ -107,3 +170,6 @@ export default class ScrollView extends PureComponent {
     );
   }
 }
+
+export const renderScrollComponent = props => <ScrollView {...props} />;
+export default ScrollView;

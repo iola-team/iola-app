@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { useScreens } from 'react-native-screens';
 import {
   createBottomTabNavigator,
@@ -8,7 +9,7 @@ import {
 } from 'react-navigation';
 
 // Components
-import { ScreenHeader, BottomTabBar } from '~components';
+import { ScreenHeader, BottomTabBar, BarBackgroundView } from '~components';
 
 // Route names
 import * as routes from './routeNames';
@@ -16,6 +17,7 @@ import * as routes from './routeNames';
 // Screens
 import Channel from './Channel';
 import Channels from './Channels';
+import ChatSearch from './ChatSearch';
 import PendingApproval from './PendingApproval';
 import EmailVerification from './EmailVerification';
 import ForgotPassword from './ForgotPassword';
@@ -23,7 +25,7 @@ import Launch from './Launch';
 import MyFriends from './MyFriends';
 import MyInfo from './MyInfo';
 import MyPhotos from './MyPhotos';
-import ProfileEditInfo from './ProfileEditInfo';
+import ProfileEdit from './ProfileEdit';
 import Settings from './Settings';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -35,13 +37,8 @@ import Users from './Users';
 
 import createUserNavigator from './User';
 import createProfileNavigator from './Profile';
-import createProfileEditNavigator from './ProfileEdit';
 
-/**
- * TODO:
- * Temporary disabled screens, we need to figure out jumping header when moving between chats and profile screens.
- */
-// useScreens();
+useScreens();
 
 // Navigator
 const TabsNavigator = createBottomTabNavigator({
@@ -59,6 +56,9 @@ const TabsNavigator = createBottomTabNavigator({
   initialRouteName: routes.DASHBOARD,
   tabBarComponent: BottomTabBar,
   lazy: false,
+  tabBarOptions: {
+    barTransparent: true,
+  },
 });
 
 const RootNavigator = createSwitchNavigator({
@@ -98,13 +98,13 @@ const RootNavigator = createSwitchNavigator({
         [routes.USER_FRIENDS]: UserFriends,
       }),
     },
-    [routes.PROFILE_EDIT]: createProfileEditNavigator({
-      [routes.PROFILE_EDIT_INFO]: ProfileEditInfo,
-      [routes.SETTINGS]: Settings,
-    }),
+
+    [routes.PROFILE_EDIT]: ProfileEdit,
+    [routes.SETTINGS]: Settings,
 
     [routes.CHANNEL]: Channel,
-    [routes.USER_SEARCH]: UserSearch,
+    [routes.USER_SEARCH]: { screen: UserSearch, params: { isSearch: true } },
+    [routes.CHAT_SEARCH]: { screen: ChatSearch, params: { isSearch: true } },
   }, {
     headerLayoutPreset: 'center',
     headerMode: 'screen',
@@ -113,15 +113,15 @@ const RootNavigator = createSwitchNavigator({
     cardOverlayEnabled: true,
 
     transitionConfig: (to, from) => {
-      const toRoute = to.scene.route.routeName;
-      const fromRoute = from?.scene.route.routeName;
+      const toRoute = to.scene.route;
+      const fromRoute = from?.scene.route;
 
       /**
        * TODO: find a way to not hardcode rote names
        */
       const isSearchTransition = (
-        toRoute === routes.USER_SEARCH && fromRoute === routes.APPLICATION
-        || fromRoute === routes.USER_SEARCH && toRoute === routes.APPLICATION
+        toRoute.params?.isSearch && fromRoute?.routeName === routes.APPLICATION
+        || fromRoute?.params?.isSearch && toRoute.routeName === routes.APPLICATION
       );
 
       return !isSearchTransition ? {} : {
@@ -133,6 +133,8 @@ const RootNavigator = createSwitchNavigator({
 
     defaultNavigationOptions: {
       header: props => <ScreenHeader {...props} />,
+      headerTransparent: true,
+      headerBackground: <BarBackgroundView />,
     },
   }),
 

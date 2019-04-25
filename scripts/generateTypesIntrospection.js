@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import fs from 'fs';
-import { DEV_PLATFORM_URL, DEV_URL_PARAMETERS, INTEGRATION_PATH } from 'react-native-dotenv';
+import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
 
 const fragmentsFile = process.argv[2];
 
@@ -10,7 +10,7 @@ if (!fragmentsFile) {
   process.exit();
 }
 
-fetch(`${DEV_PLATFORM_URL}/${INTEGRATION_PATH}/graphql${DEV_URL_PARAMETERS}`, {
+fetch(`${DEV_PLATFORM_URL}/${INTEGRATION_PATH}/graphql`, {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({

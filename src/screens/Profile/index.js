@@ -11,6 +11,7 @@ export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
 
   navigationOptions: {
     headerTransparent: true,
+    headerBackground: null,
     headerRight: <LogoutButton />,
     tabBarIcon: ({ tintColor: color }) => (
       <Icon name="user-bar" style={{ color, fontSize: 20 }} />

@@ -7,8 +7,8 @@ import update from 'immutability-helper';
 import { UserList } from '~components';
 
 @graphql(gql`
-  query users($cursor: Cursor = null) {
-    users(first: 20 after: $cursor) {
+  query users($first: Int $cursor: Cursor) {
+    users(first: $first after: $cursor) {
       edges {
         ...UserList_edge
       }
@@ -21,7 +21,13 @@ import { UserList } from '~components';
   }
   
   ${UserList.fragments.edge}
-`)
+`, {
+  options: {
+    variables: {
+      first: 30,
+    },
+  },
+})
 export default class UsersConnection extends Component {
   static propTypes = {
     search: PropTypes.string,
@@ -33,45 +39,46 @@ export default class UsersConnection extends Component {
     onItemPress: () => {},
   };
 
-  shouldComponentUpdate({ data }) {
-    const { users, networkStatus } = data;
-    const prev = this.props.data;
+  state = {
+    isRefreshing: false,
+  };
 
-    return prev.users !== users || prev.networkStatus !== networkStatus;
-  }
-
-  refresh = (vars = {}) => this.props.data.refetch(vars);
+  refresh = async () => {
+    const { data: { refetch } } = this.props;
+    
+    this.setState({ isRefreshing: true });
+    try {
+      await refetch({ cursor: null });
+    } catch {
+      // Pass...
+    }
+    this.setState({ isRefreshing: false });
+  };
 
   loadMore = ({ distanceFromEnd }) => {
     const { loading, fetchMore, users } = this.props.data;
 
-    if (loading) return;
-
-    const { pageInfo } = users;
-
-    if (!pageInfo.hasNextPage) return;
+    if (loading || !users.pageInfo.hasNextPage) {
+      return;
+    }
 
     this.fetchMorePromise = this.fetchMorePromise || fetchMore({
       variables: {
+        first: 50,
         cursor: users.pageInfo.endCursor,
       },
 
-      updateQuery: (prev, { fetchMoreResult: { users } }) => {
-        if (!users || !users.edges.length) {
-          return prev;
-        }
-
-        return update(prev, {
-          users: {
-            edges: {
-              $push: users.edges,
-            },
-            pageInfo: {
-              $merge: users.pageInfo,
-            },
+      updateQuery: (prev, { fetchMoreResult }) => update(prev, {
+        users: {
+          edges: {
+            $push: fetchMoreResult.users.edges,
           },
-        });
-      }
+          pageInfo: {
+            $set: fetchMoreResult.users.pageInfo,
+          },
+        },
+      }),
+
     }).then(() => {
       this.fetchMorePromise = null;
     });
@@ -79,16 +86,21 @@ export default class UsersConnection extends Component {
 
   render() {
     const { data: { users, loading }, onItemPress, ...listProps } = this.props;
+    const { isRefreshing } = this.state;
 
     return (
       <UserList
         {...listProps}
 
         loading={loading}
-        edges={users ? users.edges : []}
+        hasMore={users?.pageInfo.hasNextPage}
+        refreshing={isRefreshing}
+        edges={users?.edges}
         onItemPress={onItemPress}
         onRefresh={this.refresh}
         onEndReached={this.loadMore}
+
+        onEndReachedThreshold={2} // Two screens
       />
     );
   }

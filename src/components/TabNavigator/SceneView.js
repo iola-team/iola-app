@@ -1,5 +1,5 @@
 import React, { PureComponent, Component, createContext } from 'react';
-import { StyleSheet, View, Platform, Animated, Dimensions, SafeAreaView } from 'react-native';
+import { StyleSheet, View, Platform, Animated, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { without } from 'lodash';
@@ -31,7 +31,8 @@ export class Header extends Component {
       renderHeader, 
       scrollAnimatedValue, 
       shrinkAnimatedValue, 
-      shrinkAnimationHeight 
+      shrinkAnimationHeight,
+      addListener
     } = this.context;
 
     return renderHeader({
@@ -39,6 +40,7 @@ export class Header extends Component {
       scrollAnimatedValue,
       shrinkAnimatedValue,
       shrinkAnimationHeight,
+      addListener,
     });
   }
 }
@@ -105,17 +107,25 @@ export default class SceneView extends PureComponent {
 
   static defaultProps = {
     tabBarHeight: 0,
-    scrollOffset: 0,
+    scrollOffset: null,
     headerShrinkHeight: 0,
     bottomBarHeight: 0,
     topBarHeight: 0,
     headerHeight: 0,
   };
 
+  static getDerivedStateFromProps({ isFocused }, state) {
+    return {
+      ...state,
+      shouldRender: isFocused || state.shouldRender,
+    };
+  }
+
   subscribers = {
     focus: [],
     scroll: [],
     layout: [],
+    refetch: [],
   };
 
   contextValue = {};
@@ -135,6 +145,10 @@ export default class SceneView extends PureComponent {
     },
   );
 
+  state = {
+    shouldRender: false,
+  };
+
   constructor(...args) {
     super(...args);
 
@@ -147,13 +161,25 @@ export default class SceneView extends PureComponent {
     return () => without(this.subscribers, subscriber);
   }
 
+  refetch = () => Promise.all(this.subscribers.refetch.map(sub => sub()));
+
   componentDidUpdate(prevProps) {
     const { isFocused, scrollOffset } = this.props;
 
     if (isFocused !== prevProps.isFocused && isFocused) {
       this.subscribers.focus.map(sub => sub(isFocused));
-      this.subscribers.scroll.map(sub => sub(scrollOffset));
+
+      if (scrollOffset !== null) {
+        this.subscribers.scroll.map(sub => sub(scrollOffset));
+      }
     }
+  }
+
+  componentDidMount() {
+    /**
+     * Delay not focused tabs rendering to prevent navigation animation freezies
+     */
+    setTimeout(() => this.setState({ shouldRender: true }), 100);
   }
 
   createContext() {
@@ -166,9 +192,10 @@ export default class SceneView extends PureComponent {
       ...restProps
     } = this.props;
 
+    const shrinkHeight = headerShrinkHeight + getStatusBarHeight();
     const windowHeight = Dimensions.get('window').height;
-    const screenHeight = windowHeight - getStatusBarHeight() - bottomBarHeight - topBarHeight;
-    const shrinkAnimationHeight = headerHeight ? headerHeight - headerShrinkHeight : 0;
+    const screenHeight = windowHeight - bottomBarHeight - topBarHeight;
+    const shrinkAnimationHeight = headerHeight ? headerHeight - shrinkHeight : 0;
     const shrinkAnimatedValue = shrinkAnimationHeight ? this.scrollAnimatedValue.interpolate({
       inputRange: [0, shrinkAnimationHeight],
       outputRange: [1, 0],
@@ -178,26 +205,30 @@ export default class SceneView extends PureComponent {
       ...restProps,
 
       // Values
+      bottomBarHeight,
+      topBarHeight,
       headerHeight,
       tabBarHeight,
-      headerShrinkHeight,
+      headerShrinkHeight: shrinkHeight,
       shrinkAnimatedValue,
       shrinkAnimationHeight,
-      contentHeight: screenHeight - tabBarHeight - headerShrinkHeight,
+      contentHeight: screenHeight - shrinkHeight - tabBarHeight,
       scrollAnimatedValue: this.scrollAnimatedValue,
 
       // Handlers
       addListener: this.addListener,
       onScroll: this.onScroll,
+      refetch: this.refetch,
     };
   }
 
   render() {
     const { isFocused, route, renderScene } = this.props;
+    const { shouldRender } = this.state;
 
     return (
       <Context.Provider value={this.contextValue}>
-        <SafeAreaView
+        <View
           style={styles.container}
           collapsable={false}
           removeClippedSubviews={
@@ -208,9 +239,9 @@ export default class SceneView extends PureComponent {
           pointerEvents={isFocused ? 'auto' : 'none'}
         >
           <View style={isFocused ? styles.attached : styles.detached}>
-            {renderScene({ route })}
+            {shouldRender && renderScene({ route })}
           </View>
-        </SafeAreaView>
+        </View>
       </Context.Provider>
     );
   }

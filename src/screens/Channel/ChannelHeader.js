@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { View } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import { ScreenHeader, UserAvatar } from '~components';
+import { USER } from '../routeNames';
 
 const userQuery = gql`
   query ChannelWithUserQuery($userId: ID!) {
@@ -25,6 +27,7 @@ const chatQuery = gql`
     me {
       id
     }
+
     chat: node(id: $chatId) {
       id
       ...on Chat {
@@ -66,7 +69,6 @@ const chatQuery = gql`
   },
 })
 export default class ChannelHeader extends Component {
-
   getUser() {
     const { userData, chatData } = this.props;
 
@@ -79,26 +81,32 @@ export default class ChannelHeader extends Component {
     }
 
     const { chat, me } = chatData;
-    const [ user ] = chat.participants.filter(({ id }) => id !== me.id);
+    const [ user = chat.participants[0] ] = chat.participants.filter(({ id }) => id !== me.id);
 
     return user;
   }
 
-  renderRight() {
-    const { styleSheet } = this.props;
+  renderRight = () => {
+    const { styleSheet, navigation } = this.props;
     const user = this.getUser();
 
     return user && (
-      <UserAvatar user={user} style={styleSheet.avatar} />
+      <View style={styleSheet.avatar}>
+        <UserAvatar
+          user={user}
+          onPress={() => navigation.navigate(USER, { id: user.id })}
+          foreground
+        />
+      </View>
     );
-  }
+  };
 
   render() {
     const user = this.getUser();
     const title = user && user.name || '';
 
     return (
-      <ScreenHeader {...this.props} title={title} renderRight={::this.renderRight} />
+      <ScreenHeader {...this.props} title={title} renderRight={this.renderRight} />
     );
   }
 }

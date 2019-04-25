@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
-import { NetworkStatus } from 'apollo-client';
 import update from 'immutability-helper';
 import uuid from 'uuid';
 import { View } from 'native-base';
@@ -9,7 +8,6 @@ import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import ChatFooter from '../ChatFooter';
-import Shadow from '../Shadow';
 import MessageList from '../MessageList';
 import UserAvatar from '../UserAvatar';
 import MessageUpdateSubscription from '../MessageUpdateSubscription';
@@ -47,12 +45,19 @@ const connectionFragment = gql`
 `;
 
 const chatQuery = gql`
-  query ChatMessagesQuery($chatId: ID, $recipientId: ID, $first: Int = 20 $last: Int $after: Cursor $before: Cursor) {
+  query ChatMessagesQuery(
+    $chatId: ID
+    $recipientId: ID
+    $first: Int = 20
+    $last: Int
+    $after: Cursor
+    $before: Cursor
+  ) {
     me {
       id
       chat(id: $chatId, recipientId: $recipientId) {
         id
-        messages(last: $last after: $after first: $first before: $before) {
+        messages(last: $last after: $after first: $first before: $before) @connection(key: "ChatMessagesConnection") {
           ...Chat_messages
         }
       }
@@ -67,16 +72,16 @@ const chatQuery = gql`
 
 const startChatMutation = gql`
   mutation StartChatMessageMutation(
-  $input: MessageInput!
-  $chatId: ID
-  $recipientId: ID
+    $input: MessageInput!
+    $chatId: ID
+    $recipientId: ID
   ) {
     addMessage(input: $input) {
       user {
         id
         chat(id: $chatId, recipientId: $recipientId) {
           id
-          messages(first: 20) {
+          messages(first: 20) @connection(key: "ChatMessagesConnection") {
             ...Chat_messages
           }
         }
@@ -228,12 +233,14 @@ export default class Chat extends Component {
 
   async startChat(content) {
     const {
+      chatId,
       recipientId,
       data: { me },
       startChatMutation,
     } = this.props;
 
     const variables = {
+      chatId,
       recipientId,
       input: {
         recipientIds: [recipientId],
@@ -378,15 +385,16 @@ export default class Chat extends Component {
     this.startSubscriptions();
   }
 
-  onSend = async (text) => {
+  onSend = (text) => {
     const { data: { me } } = this.props;
+    const input = { text, image: null };
 
     if (me.chat) {
-      await this.addMessage({ text });
+      this.addMessage(input);
     } else {
-      await this.startChat({ text });
+      this.startChat(input);
     }
-  }
+  };
 
   getItemSide = ({ user }) => this.props.data.me.id === user.id ? 'right' : 'left';
   onMessagesRead = (nodes) => {
@@ -418,6 +426,7 @@ export default class Chat extends Component {
       styleSheet: styles,
       children,
       data: { me },
+      ...props
     } = this.props;
 
     const {
@@ -427,17 +436,16 @@ export default class Chat extends Component {
 
     return (
       <View style={[styles.root, style]}>
-        <Shadow top bottom inset style={styles.list}>
-          <MessageList
-            edges={edges}
-            loadingMore={hasMore}
-            getItemSide={this.getItemSide}
-            onRead={this.onMessagesRead}
-            inverted
-          />
-        </Shadow>
+        <MessageList
+          {...props}
+          edges={edges}
+          loadingMore={hasMore}
+          getItemSide={this.getItemSide}
+          onRead={this.onMessagesRead}
+          inverted
+        />
 
-        <ChatFooter style={styles.footer} onSend={this.onSend} />
+        <ChatFooter disabled={!me} style={styles.footer} onSend={this.onSend} />
         {me && <MessageUpdateSubscription userId={me.id} />}
       </View>
     );

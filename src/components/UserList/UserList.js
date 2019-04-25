@@ -28,9 +28,10 @@ export default class UserList extends Component {
   static propTypes = {
     edges: PropTypes.arrayOf(
       fragmentProp(edgeFragment).isRequired
-    ).isRequired,
+    ),
     onItemPress: PropTypes.func,
     loading: PropTypes.bool,
+    hasMore: PropTypes.bool,
     noContentText: PropTypes.string,
     noContentStyle: PropTypes.object,
   };
@@ -38,8 +39,10 @@ export default class UserList extends Component {
   static defaultProps = {
     onItemPress: () => {},
     loading: false,
-    noContentText: null,
-    noContentStyle: null,
+    hasMore: false,
+    edges: null,
+    noContentText: undefined,
+    noContentStyle: undefined,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -56,7 +59,7 @@ export default class UserList extends Component {
     );
   };
 
-  getPlaceholders = () => range(3).map(index => ({
+  getPlaceholders = count => range(count).map(index => ({
     key: index.toString(),
   }));
 
@@ -64,6 +67,7 @@ export default class UserList extends Component {
     const {
       edges,
       loading,
+      hasMore,
       styleSheet: styles,
       noContentText,
       noContentStyle,
@@ -71,11 +75,23 @@ export default class UserList extends Component {
       ...listProps
     } = this.props;
 
-    const data = loading && !edges.length ? this.getPlaceholders() : edges;
+    const isLoaded = edges !== null;
+    const data = !isLoaded && loading ? this.getPlaceholders(3) : edges;
 
     return (
       <FlatList
-        ListEmptyComponent={<NoContent style={noContentStyle} icon="comments-empty-state" text={noContentText} />}
+        ListEmptyComponent={(
+          <NoContent
+            style={noContentStyle}
+            icon="users-empty-state"
+            text={noContentText === undefined ? 'No users' : noContentText}
+          />
+        )}
+
+        /**
+         * Render load more placeholder
+         */
+        ListFooterComponent={!!edges?.length && hasMore && <UserListItem />}
 
         {...listProps}
         data={data}

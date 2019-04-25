@@ -15,9 +15,7 @@ import { withStyleSheet } from '~theme';
     marginTop: 10,
   },
 
-  headerList: {
-    paddingLeft: 16,
-  },
+  headerList: {},
 
   sectionDelim: {
     height: 1,
@@ -28,7 +26,6 @@ import { withStyleSheet } from '~theme';
 export default class SearchBlank extends PureComponent {
   static propTypes = {
     ListComponent: PropTypes.func.isRequired,
-
     headerTitle: PropTypes.string,
     contentTitle: PropTypes.string,
     hasRecentItems: PropTypes.bool,
@@ -73,7 +70,7 @@ export default class SearchBlank extends PureComponent {
 
             {hasRecentItems && (
               <>
-                <View style={styles.sectionDelim} />
+                {headerList && <View style={styles.sectionDelim} />}
                 {contentTitle && <Text style={styles.sectionHeader}>{contentTitle}</Text>}
               </>
             )}

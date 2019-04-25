@@ -6,7 +6,6 @@ import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import ChatListItem from '../ChatListItem';
-import MessageUpdateSubscription from '../MessageUpdateSubscription';
 import { FlatList, NoContent } from '../TabNavigator';
 
 const userFragment = gql`
@@ -41,14 +40,18 @@ export default class ChatList extends Component {
     unreadCounts: PropTypes.arrayOf(PropTypes.number),
     loading: PropTypes.bool,
     onItemPress: PropTypes.func,
+    noContentText: PropTypes.string,
+    noContentStyle: PropTypes.object,
   };
 
   static defaultProps = {
     user: null,
-    edges: [],
+    edges: null,
     loading: false,
     onItemPress: () => {},
     unreadCounts: [],
+    noContentText: undefined,
+    noContentStyle: undefined,
   };
 
   renderItem = ({ item, index }) => {
@@ -65,28 +68,32 @@ export default class ChatList extends Component {
     );
   }
 
-  getPlaceholders = () => range(3).map(index => ({
+  getPlaceholders = count => range(count).map(index => ({
     key: index.toString(),
   }));
 
   extractItemKey = ({ node, key }) => key || node.id;
 
   render() {
-    const { edges, loading, user, ...listProps } = this.props;
-    const listData = loading && !edges.length ? this.getPlaceholders() : edges;
+    const { edges, loading, user, noContentText, noContentStyle, ...listProps } = this.props;
+    const isLoaded = edges !== null;
+    const data = !isLoaded && loading ? this.getPlaceholders(3) : edges;
 
     return (
-      <>
-        <FlatList
-          {...listProps}
-          data={listData}
-          keyExtractor={this.extractItemKey}
-          renderItem={this.renderItem}
-          ListEmptyComponent={<NoContent text="You have no chats" icon="chats-empty-state" />}
-        />
+      <FlatList
+        ListEmptyComponent={(
+          <NoContent 
+            style={noContentStyle}
+            icon="chats-empty-state"
+            text={noContentText === undefined ? 'No chats' : noContentText}
+          />
+        )}
 
-        {user && <MessageUpdateSubscription userId={user.id} />}
-      </>
+        {...listProps}
+        data={data}
+        keyExtractor={this.extractItemKey}
+        renderItem={this.renderItem}
+      />
     );
   }
 }

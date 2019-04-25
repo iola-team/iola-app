@@ -2,8 +2,9 @@ import React from 'react';
 import { range } from 'lodash';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { withKnobs } from '@storybook/addon-knobs';
+import { boolean, withKnobs } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
+import { action } from '@storybook/addon-actions';
 import faker from 'faker';
 import delay from 'promise-delay';
 import { connectionFromArray } from 'graphql-relay';
@@ -106,10 +107,33 @@ const usersQuery = gql`
 stories.add('Full flow', () => (
   <Query query={usersQuery}>
     {({ loading, data }) => (
-      <UserList edges={loading ? [] : data.users.edges} loading={loading} />
+      <UserList
+        edges={data.users?.edges}
+        loading={loading || boolean('Is loading', false)}
+        hasMore={boolean('Has more', true)}
+        refreshing={boolean('Is refreshing')}
+        onRefresh={action('onRefresh')}
+      />
     )}
   </Query>
 ));
 
-stories.add('Initial Load', () => <UserList edges={[]} loading />);
-stories.add('No Items', () => <UserList edges={[]} noContentText="No Users" />);
+stories.add('Initial Load', () => (
+  <UserList
+    loading
+    hasMore={boolean('Has more', false)}
+    refreshing={boolean('Is refreshing')}
+    onRefresh={action('onRefresh')}
+  />
+));
+
+stories.add('No Items', () => (
+  <UserList
+    edges={[]}
+    noContentText="No Users"
+    hasMore={boolean('Has more', false)}
+    loading={boolean('Is loading', false)}
+    refreshing={boolean('Is refreshing', false)}
+    onRefresh={action('onRefresh')}
+  />
+));
