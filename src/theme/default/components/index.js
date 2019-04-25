@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import { merge, forEach } from 'lodash';
 import getTheme from 'native-base/src/theme/components';
 
@@ -485,6 +486,10 @@ export default (variables => ({
 
     'Sparkle.RefreshControl': {
       color: variables.brandPrimary,
+    },
+
+    'Sparkle.BarBackgroundView': {
+      backgroundColor: variables.foregroundColor,
     },
 
     'Sparkle.AvatarInput': {
