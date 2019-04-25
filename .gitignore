@@ -1,8 +1,9 @@
 # OSX
 .DS_Store
 
-# Xcode
-build/
+# iOS
+ios/build/
+ios/Pods/
 *.pbxuser
 !default.pbxuser
 *.mode1v3
@@ -21,12 +22,11 @@ DerivedData
 project.xcworkspace
 
 # Android
-android/passwords.properties
-android/.gradle/
-android/app/build/*
-!android/app/build/build.gradle
-android/app/src/main/assets/index.android.bundle
 android/build/
+android/app/build/
+android/.gradle/
+android/gradle.properties
+android/app/src/main/assets/index.android.bundle
 android/local.properties
 *.iml
 

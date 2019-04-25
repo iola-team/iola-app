@@ -3,7 +3,7 @@
 
 ## Install
   - `yarn`
-  - `cp .env.sample .env` and modify the `.env` file
+  - Copy the .env file `cp .env.sample .env` and modify it
 
 
 ## Development
@@ -46,6 +46,7 @@ Investigate this: https://reactnativetesting.io/
 
 ## Production
 0) Setup the production environment:
+  - nvm with Node.js v10.15.3: `nvm install 10.15.3` (used in prod build: `/usr/local/opt/nvm/versions/node/v10.15.3/bin/node`)
   - Android:
     1) `cp android/passwords.properties.sample android/passwords.properties` and fill it
   - iOS:
