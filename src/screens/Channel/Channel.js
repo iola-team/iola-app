@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'native-base';
-import { KeyboardAvoidingView } from 'react-native';
 
-import { Chat } from '~components';
+import { Chat, KeyboardAvoidingView } from '~components';
 import { withStyleSheet as styleSheet } from '~theme';
 import ChannelHeader from './ChannelHeader';
 
@@ -28,7 +27,7 @@ export default class Channel extends Component {
 
     return (
       <Container>
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" enabled>
+        <KeyboardAvoidingView>
           <Chat chatId={chatId} recipientId={userId} contentInset={{ bottom: 0 }} />
         </KeyboardAvoidingView>
       </Container>

@@ -8,6 +8,7 @@ import { PanGestureHandler, State } from 'react-native-gesture-handler';
 import { withStyleSheet as styleSheet } from '~theme';
 import BackdropHeader from './BackdropHeader';
 import Overlay from '../Overlay';
+import KeyboardAvoidingView from '../KeyboardAvoidingView';
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -201,28 +202,31 @@ export default class Backdrop extends PureComponent {
 
     return (
       <Overlay visible={active} onRequestClose={onRequestClose}>
-        <Animated.View style={[styles.backdrop, backdropStyle]} />
-        <Animated.View style={[styles.body, bodyStyle]}>
-          <View style={styles.bodyBackground} />
+        {/* TODO: Improve keyboard avoiding logic for better UX */}
+        <KeyboardAvoidingView>
+          <Animated.View style={[styles.backdrop, backdropStyle]} />
+          <Animated.View style={[styles.body, bodyStyle]}>
+            <View style={styles.bodyBackground} />
 
-          <PanGestureHandler
-            onGestureEvent={this.onGestureEvent}
-            onHandlerStateChange={this.onHandlerStateChange}
-          >
-            <Animated.View>
-              <BackdropHeader
-                style={styles.header}
-                title={title}
-                leftElement={headerLeft}
-                rightElement={headerRight}
-              />
-            </Animated.View>
-          </PanGestureHandler>
+            <PanGestureHandler
+              onGestureEvent={this.onGestureEvent}
+              onHandlerStateChange={this.onHandlerStateChange}
+            >
+              <Animated.View>
+                <BackdropHeader
+                  style={styles.header}
+                  title={title}
+                  leftElement={headerLeft}
+                  rightElement={headerRight}
+                />
+              </Animated.View>
+            </PanGestureHandler>
 
-          <View style={{ height }}>
-            {children}
-          </View>
-        </Animated.View>
+            <View style={{ height }}>
+              {children}
+            </View>
+          </Animated.View>
+        </KeyboardAvoidingView>
       </Overlay>
     );
   }

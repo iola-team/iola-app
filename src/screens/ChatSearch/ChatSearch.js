@@ -116,6 +116,7 @@ export default class ChatSearch extends Component {
 
         user={me}
         ListEmptyComponent={null} // Disable `no items`
+        keyboardShouldPersistTaps="handled"
 
         initialNumToRender={6}
       />
@@ -143,6 +144,7 @@ export default class ChatSearch extends Component {
             hasRecentItems={!!recentIds.length}
             contentTitle="Recent"
             onItemPress={onItemPress}
+            keyboardShouldPersistTaps="handled"
             ListEmptyComponent={null} // Disable `no items`
             ListComponent={ChatList}
           />

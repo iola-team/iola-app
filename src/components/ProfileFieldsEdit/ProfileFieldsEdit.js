@@ -1,12 +1,13 @@
-import React, { createRef, Component } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { noop } from 'lodash';
-import { View, Text, Toast } from 'native-base';
+import { Toast } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
+import { KeyboardAvoidingView } from '~components';
 import ProfileFieldForm from '../ProfileFieldForm';
 
 const userFragment = gql`
@@ -118,14 +119,16 @@ export default class ProfileFieldsEdit extends Component {
     const { user, onFormReady, ...props } = this.props;
 
     return (
-      <ProfileFieldForm
-        {...props}
-        fields={user?.profile.accountType.fields}
-        values={user?.profile.values}
-        onSubmit={this.onSubmit}
-        onSubmitError={this.onSubmitError}
-        onFormReady={onFormReady}
-      />
+      <KeyboardAvoidingView>
+        <ProfileFieldForm
+          {...props}
+          fields={user?.profile.accountType.fields}
+          values={user?.profile.values}
+          onSubmit={this.onSubmit}
+          onSubmitError={this.onSubmitError}
+          onFormReady={onFormReady}
+        />
+      </KeyboardAvoidingView>
     );
   }
 }

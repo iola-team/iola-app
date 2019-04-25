@@ -19,6 +19,7 @@ import ImageCommentsList from './ImageCommentsList';
 import ImagePicker from './ImagePicker';
 import ImageProgress from './ImageProgress';
 import ImageView from './ImageView';
+import KeyboardAvoidingView from './KeyboardAvoidingView';
 import LogoutButton from './LogoutButton';
 import NoContent from './NoContent';
 import PhotoEdit from './PhotoEdit';
@@ -68,6 +69,7 @@ export {
   ImagePicker,
   ImageProgress,
   ImageView,
+  KeyboardAvoidingView,
   LogoutButton,
   NoContent,
   PhotoEdit,
