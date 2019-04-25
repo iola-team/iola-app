@@ -94,6 +94,7 @@ export default class UserSearch extends Component {
   renderList = (props) => (
     <UserList
       {...props}
+      keyboardShouldPersistTaps="handled"
       ListEmptyComponent={null} // Disable `no items`
 
       initialNumToRender={6}
@@ -121,6 +122,7 @@ export default class UserSearch extends Component {
                 contentTitle="Recent"
                 ListEmptyComponent={null} // Disable `no items`
                 onItemPress={onItemPress}
+                keyboardShouldPersistTaps="handled"
                 ListComponent={UserList}
                 headerList={(
                   <UsersRow
@@ -128,6 +130,7 @@ export default class UserSearch extends Component {
                     edges={onlineUsers?.edges}
                     onItemPress={onItemPress}
                     showsHorizontalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
                   />
                 )}
               />
