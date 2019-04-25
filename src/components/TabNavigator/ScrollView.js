@@ -88,11 +88,11 @@ class ScrollView extends PureComponent {
     if (!this.context) {
       return (
         <ScrollViewRN
+          {...restProps}
+
           contentContainerStyle={contentStyle}
           contentOffset={contentOffset}
           contentInset={contentInset}
-
-          {...restProps}
           refreshControl={refreshControl}
         />
       );
