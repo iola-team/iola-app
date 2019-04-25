@@ -44,21 +44,18 @@ Investigate this: https://reactnativetesting.io/
   - Destructuring: in one line if length < 100 but in multiple lines if has default values
 
 
-## Production
-0) Setup the production environment:
-  - nvm with Node.js v10.15.3: `nvm install 10.15.3` (used in prod build: `/usr/local/opt/nvm/versions/node/v10.15.3/bin/node`)
-  - Android:
-    1) `cp android/passwords.properties.sample android/passwords.properties` and fill it
-  - iOS:
-    1) @TODO
-1) Test the release app version (build the apk file + install it on emulator/device):
-  - Android:
+## Demo/Production
+0) Setup the environment:
+  - [Install Fastlane](https://docs.fastlane.tools/getting-started/ios/setup/)
+  - Android: `cp android/passwords.properties.sample android/passwords.properties` and fill it  
+1) Test the release app version:
+  - Android
     1) Uninstall the previous version of the app you already have installed
-    2) Install it on the device: `yarn release:test:android`
-  - iOS: @TODO
+    2) Build the .apk file + install it on emulator/device: `yarn release:test:android`
+  - iOS: `yarn fastlane:ios:beta`
 2) Build the release app version (build the apk file):
   - Android: `yarn release:build:android`
-  - iOS: @TODO: https://medium.com/@andr3wjack/versioning-react-native-apps-407469707661
+  - iOS: @TODO
 
 ## For future customizations
   - Change the app icon:
