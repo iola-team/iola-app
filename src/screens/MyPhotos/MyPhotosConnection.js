@@ -58,7 +58,7 @@ const deletePhotoMutation = gql`
 })
 export default class MyFriendsConnection extends PureComponent {
   static propTypes = {
-    addButtonStyle: PropTypes.object.isRequired,
+    addButtonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
     data: PropTypes.object,
     skip: PropTypes.bool,
   };
