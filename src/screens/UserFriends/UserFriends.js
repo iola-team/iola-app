@@ -6,6 +6,7 @@ import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { UserList } from '~components';
+import { USER } from '../routeNames';
 
 const userFriendsQuery = gql`
   query UserFriendsQuery($id: ID!) {
@@ -46,6 +47,12 @@ export default class UserFriends extends Component {
     isRefreshing: false,
   };
 
+  onItemPress = ({ node: { id } }) => {
+    const { navigation } = this.props;
+
+    navigation.navigate({ routeName: USER, params: { id }, key: id });
+  };
+
   /**
    * TODO: Move these common logic to a central place, to prevent copy & past
    */
@@ -78,6 +85,8 @@ export default class UserFriends extends Component {
           noContentText="No friends"
           refreshing={isRefreshing}
           onRefresh={this.refresh}
+
+          onItemPress={this.onItemPress}
         />
       </Container>
     );

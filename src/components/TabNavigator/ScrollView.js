@@ -52,6 +52,18 @@ class ScrollView extends PureComponent {
     this.unsubscribe.map(unsub => unsub());
   }
 
+  getContentInset() {
+    const { contentInset = {}, navigation, inverted } = this.props;
+    const screenProps = navigation.getScreenProps();
+    let inset = { ...screenProps.contentInset, ...contentInset };
+
+    if (inverted) {
+      inset = { ...inset, top: inset.bottom, bottom: inset.top };
+    }
+
+    return inset;
+  }
+
   renderRefreshControl() {
     const { refreshControl, refreshing, onRefresh } = this.props;
 
@@ -65,16 +77,10 @@ class ScrollView extends PureComponent {
   }
   
   render() {
-    const { contentContainerStyle = {}, contentInset = {}, navigation, ...restProps } = this.props;
+    const { contentContainerStyle = {}, ...restProps } = this.props;
     const refreshControl = this.renderRefreshControl();
-    const screenProps = navigation.getScreenProps();
-    let inset = { ...screenProps.contentInset, ...contentInset };
-
-    if (restProps.inverted) {
-      inset = { ...inset, top: inset.bottom, bottom: inset.top };
-    }
-
-    const contentOffset = { y: -inset.top };
+    const contentInset = this.getContentInset();
+    const contentOffset = { y: -contentInset.top };
     const contentStyle = [contentContainerStyle, {
       // flexGrow: 1, // TODO: Check no items cases before removing this line
     }];
@@ -84,7 +90,7 @@ class ScrollView extends PureComponent {
         <ScrollViewRN
           contentContainerStyle={contentStyle}
           contentOffset={contentOffset}
-          contentInset={inset}
+          contentInset={contentInset}
 
           {...restProps}
           refreshControl={refreshControl}
@@ -139,11 +145,12 @@ class ScrollView extends PureComponent {
         ref={this.onRef}
         onScroll={onScrollEvent}
         onScrollEnd={this.onScrollEnd}
+        onScrollEndDrag={this.onScrollEnd}
         onMomentumScrollEnd={this.onScrollEnd}
         refreshControl={refreshControl}
 
         contentOffset={contentOffset}
-        contentInset={{ ...inset, bottom: bottomBarHeight }}
+        contentInset={{ ...contentInset, bottom: bottomBarHeight }}
 
         scrollEventThrottle={1}
       >

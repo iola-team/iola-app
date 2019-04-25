@@ -12,7 +12,7 @@ export default class TabNavigatorView extends Component {
   };
 
   state = {
-    scrollOffset: 0,
+    scrollOffset: null,
   };
 
   renderHeader = (props = {}) => {
