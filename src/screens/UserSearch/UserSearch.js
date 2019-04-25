@@ -88,7 +88,7 @@ export default class UserSearch extends Component {
   onItemPress = ({ node: { id } }) => {
     const { navigation } = this.props;
 
-    navigation.navigate(USER, { id });
+    navigation.navigate({ routeName: USER, params: { id }, key: id });
   };
 
   renderList = (props) => (

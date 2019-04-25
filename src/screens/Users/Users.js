@@ -24,7 +24,12 @@ export default class DashboardAll extends PureComponent {
     ),
   };
 
-  onItemPress = ({ node }) => this.props.navigation.navigate(USER, { id: node.id });
+  onItemPress = ({ node: { id } }) => {
+    const { navigation } = this.props;
+
+    navigation.navigate({ routeName: USER, params: { id }, key: id });
+  };
+
   onSearchPress = () => this.props.navigation.navigate(USER_SEARCH);
 
   render() {
