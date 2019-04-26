@@ -1679,7 +1679,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = iola;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iola.app/iola";
 			};
@@ -1729,7 +1729,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iola.app/iola";
 			};
@@ -1766,7 +1766,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = iola;
 				VERSIONING_SYSTEM = "apple-generic";
 				LIBRARY_SEARCH_PATHS = (
@@ -1806,7 +1806,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = iola;
 				VERSIONING_SYSTEM = "apple-generic";
 				LIBRARY_SEARCH_PATHS = (
@@ -1900,7 +1900,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = "iola Storybook";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -1954,7 +1954,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = iola;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iola.app/iola";
 			};
