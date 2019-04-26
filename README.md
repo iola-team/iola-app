@@ -47,6 +47,9 @@ Investigate this: https://reactnativetesting.io/
 ## Demo/Production
 0) Setup the environment:
   - [Install Fastlane](https://docs.fastlane.tools/getting-started/ios/setup/)
+  - Fill the `FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD` in the .env file:
+    - Go to https://appleid.apple.com/account/manage
+    - Click "Generate Password…" link under the APP-SPECIFIC PASSWORDS section
   - Android: `cp android/passwords.properties.sample android/passwords.properties` and fill it  
 1) Test the release app version:
   - Android
