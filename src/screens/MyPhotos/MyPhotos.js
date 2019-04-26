@@ -36,11 +36,12 @@ export default class UserPhotos extends Component {
 
   render() {
     const { navigation, styleSheet: styles } = this.props;
+    const { contentInset } = navigation.getScreenProps();
 
     return (
       <Container>
         <MyPhotosConnection
-          addButtonStyle={styles.add}
+          addButtonStyle={[styles.add, { marginBottom: contentInset.bottom }]}
           contentContainerStyle={styles.list}
           noContentStyle={styles.noContent}
         />

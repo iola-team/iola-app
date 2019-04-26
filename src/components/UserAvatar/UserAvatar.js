@@ -26,16 +26,7 @@ const userFragment = gql`
   ${UserOnlineStatus.fragments.user}
 `;
 
-@withStyle('Sparkle.UserAvatar', {
-  'Sparkle.Placeholder': {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 8,
-
-    'NativeBase.Thumbnail': {
-      opacity: 0,
-    },
-  },
-
+const thumbnailStyle = {
   'NativeBase.ViewNB': {
     'NativeBase.ViewNB': {
       position: 'absolute',
@@ -66,6 +57,23 @@ const userFragment = gql`
       },
     },
   },
+};
+
+@withStyle('Sparkle.UserAvatar', {
+  'Sparkle.Placeholder': {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 8,
+
+    'NativeBase.Thumbnail': {
+      opacity: 0,
+    },
+  },
+
+  'Sparkle.TouchableOpacity': {
+    ...thumbnailStyle,
+  },
+
+  ...thumbnailStyle,
 })
 export default class UserAvatar extends Component {
   static propTypes = {

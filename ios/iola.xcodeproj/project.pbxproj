@@ -65,6 +65,7 @@
 		FD3A298476184E929F669C45 /* libRNCNetInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 785CC30C9DE241B1BB1B1796 /* libRNCNetInfo.a */; };
 		FD4201197F8C460D9F58A484 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C46EC94349684473AF8A2CEB /* libSplashScreen.a */; };
 		836BBD028AD447D88E497122 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 52E5F7484F824ACFA5DDB659 /* libRNFirebase.a */; };
+		A78557D6B42F428E87636B70 /* libRNBlur.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7C4B2FFEC174AFF947D2D4B /* libRNBlur.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -562,6 +563,8 @@
 		FC90654E1573494DA84B1190 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		F391471A54704B50A0DC7094 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; name = "RNFirebase.xcodeproj"; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		52E5F7484F824ACFA5DDB659 /* libRNFirebase.a */ = {isa = PBXFileReference; name = "libRNFirebase.a"; path = "libRNFirebase.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		80771FE1DCE8436FAAAAF2B2 /* RNBlur.xcodeproj */ = {isa = PBXFileReference; name = "RNBlur.xcodeproj"; path = "../node_modules/@react-native-community/blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		C7C4B2FFEC174AFF947D2D4B /* libRNBlur.a */ = {isa = PBXFileReference; name = "libRNBlur.a"; path = "libRNBlur.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -607,6 +610,7 @@
 				FD3A298476184E929F669C45 /* libRNCNetInfo.a in Frameworks */,
 				09FC8E88BD97CC533B9ED1CD /* libPods-iola.a in Frameworks */,
 				836BBD028AD447D88E497122 /* libRNFirebase.a in Frameworks */,
+				A78557D6B42F428E87636B70 /* libRNBlur.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -937,6 +941,7 @@
 				1ACDA9323EF04E1C95CD24C5 /* RNCAsyncStorage.xcodeproj */,
 				4D430804F6FB41E493B6D473 /* RNCNetInfo.xcodeproj */,
 				F391471A54704B50A0DC7094 /* RNFirebase.xcodeproj */,
+				80771FE1DCE8436FAAAAF2B2 /* RNBlur.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1620,7 +1625,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export DEVELOPMENT_BUILD_CONFIGURATIONS=\"+(Storybook|Debug)\"\nexport NODE_BINARY=node\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh";
+			shellScript = "export DEVELOPMENT_BUILD_CONFIGURATIONS=\"+(Storybook|Debug)\"\nexport NODE_BINARY=/usr/local/opt/nvm/versions/node/v10.15.3/bin/node\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh";
 		};
 		9341490529C265D20A6B5DE5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1732,6 +1737,7 @@
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart",
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
+					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = iolaTests/Info.plist;
@@ -1758,7 +1764,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = iola;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iola.app/iola";
 			};
@@ -1785,6 +1791,7 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
 				);
 				INFOPLIST_FILE = iolaTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1809,7 +1816,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iola.app/iola";
 			};
@@ -1838,6 +1845,7 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
 				);
 				INFOPLIST_FILE = iola/Info.plist;
 				IS_STORYBOOK = "";
@@ -1847,7 +1855,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = iola;
 				VERSIONING_SYSTEM = "apple-generic";
 				LIBRARY_SEARCH_PATHS = (
@@ -1879,6 +1887,7 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
 				);
 				INFOPLIST_FILE = iola/Info.plist;
 				IS_STORYBOOK = "";
@@ -1888,7 +1897,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = iola;
 				VERSIONING_SYSTEM = "apple-generic";
 				LIBRARY_SEARCH_PATHS = (
@@ -1973,6 +1982,7 @@
 					"$(SRCROOT)/../node_modules/react-native-restart/ios/RCTRestart",
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
+					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = iola/Info.plist;
@@ -1983,7 +1993,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = "iola Storybook";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -2013,6 +2023,7 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/async-storage/ios",
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
 				);
 				INFOPLIST_FILE = iolaTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2038,7 +2049,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = app.iola.iola;
+				PRODUCT_BUNDLE_IDENTIFIER = team.iola.iola;
 				PRODUCT_NAME = iola;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iola.app/iola";
 			};

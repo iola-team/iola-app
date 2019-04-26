@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground } from 'react-native';
+import { ImageBackground, SafeAreaView } from 'react-native';
 import { Container, Text, View } from 'native-base';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -79,17 +79,19 @@ export default class EmailVerificationScreen extends Component {
     return (
       <Container>
         <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
-          <View style={styles.content}>
-            <View style={styles.header}>
-              <Icon style={styles.icon} name="envelope" />
-              <Text style={styles.title}>Account Pending Approval</Text>
-              <Text style={styles.description}>
-                Your account is currently pending approval.{'\n'}
-                Please wait until the review is completed by administration.
-              </Text>
+          <SafeAreaView style={{ flex: 1 }}>
+            <View style={styles.content}>
+              <View style={styles.header}>
+                <Icon style={styles.icon} name="envelope" />
+                <Text style={styles.title}>Account Pending Approval</Text>
+                <Text style={styles.description}>
+                  Your account is currently pending approval.{'\n'}
+                  Please wait until the review is completed by administration.
+                </Text>
+              </View>
+              <LogoutButton button bordered />
             </View>
-            <LogoutButton button bordered />
-          </View>
+          </SafeAreaView>
         </ImageBackground>
         <Query query={meQuery}>
           {({ data: { me }, loading }) => !loading && (
