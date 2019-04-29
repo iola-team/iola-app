@@ -29,13 +29,15 @@ export default class MyFriends extends Component {
   }
 
   render() {
-    const { styleSheet: styles } = this.props;
+    const { styleSheet: styles, screenProps } = this.props;
 
     return (
       <Container>
         <MyFriendsConnection
           contentContainerStyle={styles.list}
           onItemPress={this.onItemPress}
+
+          contentInset={screenProps.contentInset}
         />
       </Container>
     );

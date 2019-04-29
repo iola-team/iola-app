@@ -120,7 +120,7 @@ export default class UserPhotos extends Component {
   }
 
   render() {
-    const { data: { user, loading }, styleSheet: styles } = this.props;
+    const { data: { user, loading }, styleSheet: styles, screenProps } = this.props;
     const { isRefreshing } = this.state;
     const edges = user?.photos.edges;
 
@@ -137,6 +137,7 @@ export default class UserPhotos extends Component {
               noContentStyle={styles.noContent}
               refreshing={isRefreshing}
               onRefresh={this.refresh}
+              contentInset={{ ...screenProps.contentInset, bottom: 0 }}
 
               /**
                * TODO: Review these optimizations
