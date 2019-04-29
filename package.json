@@ -32,7 +32,7 @@
     "release:build:android": "cd android && ./gradlew assembleApplication",
     "release:test:android": "cd android && ./gradlew installApplicationRelease --stacktrace",
     "xcode:schemes": "react-native-schemes-manager all",
-    "fastlane:ios:beta": "fastlane ios beta"
+    "fastlane:ios:beta": "bundle exec fastlane ios beta"
   },
   "scripts-info": {
     "info": "Displays information about the scripts",

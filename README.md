@@ -46,11 +46,16 @@ Investigate this: https://reactnativetesting.io/
 
 ## Demo/Production
 0) Setup the environment:
-  - [Install Fastlane](https://docs.fastlane.tools/getting-started/ios/setup/)
-  - Fill the `FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD` in the .env file:
-    - Go to https://appleid.apple.com/account/manage
-    - Click "Generate Password…" link under the APP-SPECIFIC PASSWORDS section
-  - Android: `cp android/passwords.properties.sample android/passwords.properties` and fill it  
+  - Common:
+    - nvm with Node.js v10.15.3: `nvm install 10.15.3` (used in prod build: `/usr/local/opt/nvm/versions/node/v10.15.3/bin/node`) // @DEPRECATED
+    - [Install Fastlane](https://docs.fastlane.tools/getting-started/ios/setup/)
+    - Fill the `FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD` in the .env file:
+      - Go to https://appleid.apple.com/account/manage
+      - Click "Generate Password…" link under the "APP-SPECIFIC PASSWORDS" section
+  - Android: `cp android/passwords.properties.sample android/passwords.properties` and fill it
+  - iOS:
+    - Install [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#installation)
+    - Run `pod install`
 1) Test the release app version:
   - Android
     1) Uninstall the previous version of the app you already have installed
