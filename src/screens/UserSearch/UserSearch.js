@@ -91,17 +91,23 @@ export default class UserSearch extends Component {
     navigation.navigate({ routeName: USER, params: { id }, key: id });
   };
 
-  renderList = (props) => (
-    <UserList
-      {...props}
-      keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={null} // Disable `no items`
+  renderList = (props) => {
+    const { screenProps } = this.props;
 
-      initialNumToRender={6}
-    />
-  );
+    return (
+      <UserList
+        {...props}
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={null} // Disable `no items`
+        contentInset={{ ...screenProps.contentInset, bottom: 0 }}
+
+        initialNumToRender={6}
+      />
+    );
+  };
 
   renderBlank = ({ onItemPress, recentIds }) => {
+    const { screenProps } = this.props;
     const recentEdgeSorter = (a, b) => recentIds.indexOf(a.node.id) - recentIds.indexOf(b.node.id);
 
     return (
@@ -124,6 +130,8 @@ export default class UserSearch extends Component {
                 onItemPress={onItemPress}
                 keyboardShouldPersistTaps="handled"
                 ListComponent={UserList}
+                contentInset={{ ...screenProps.contentInset, bottom: 0 }}
+
                 headerList={(
                   <UsersRow
                     loading={loadingOnline}

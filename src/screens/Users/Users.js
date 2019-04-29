@@ -33,7 +33,7 @@ export default class DashboardAll extends PureComponent {
   onSearchPress = () => this.props.navigation.navigate(USER_SEARCH);
 
   render() {
-    const { styleSheet: styles } = this.props;
+    const { styleSheet: styles, screenProps } = this.props;
 
     return (
       <Container>
@@ -49,6 +49,7 @@ export default class DashboardAll extends PureComponent {
           )}
 
           onItemPress={this.onItemPress}
+          contentInset={screenProps.contentInset}
         />
       </Container>
     );

@@ -108,7 +108,7 @@ export default class ChatSearch extends Component {
   };
 
   renderList = (props) => {
-    const { data: { me } } = this.props;
+    const { data: { me }, screenProps } = this.props;
 
     return (
       <ChatList
@@ -117,6 +117,7 @@ export default class ChatSearch extends Component {
         user={me}
         ListEmptyComponent={null} // Disable `no items`
         keyboardShouldPersistTaps="handled"
+        contentInset={screenProps.contentInset}
 
         initialNumToRender={6}
       />
@@ -124,7 +125,7 @@ export default class ChatSearch extends Component {
   };
 
   renderBlank = ({ onItemPress, recentIds }) => {
-    const { data: { me } } = this.props;
+    const { data: { me }, screenProps } = this.props;
     const recentEdgeFilter = ({ node }) => recentIds.includes(node.id);
     const recentEdgeSorter = (a, b) => recentIds.indexOf(a.node.id) - recentIds.indexOf(b.node.id);
 
@@ -147,6 +148,8 @@ export default class ChatSearch extends Component {
             keyboardShouldPersistTaps="handled"
             ListEmptyComponent={null} // Disable `no items`
             ListComponent={ChatList}
+
+            contentInset={screenProps.contentInset}
           />
         )}
       </Query>

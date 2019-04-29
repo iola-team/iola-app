@@ -10,7 +10,7 @@ const stories = storiesOf('Components/Shadow', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({ centered: true, backgroundColor: '#F8F9FB' }));
+stories.addDecorator(getContentDecorator({ centered: true, backgroundColor: '#F3F4F7' }));
 
 const Content = (props) => (
   <View padder style={{ backgroundColor: '#FFFFFF' }} {...props}>

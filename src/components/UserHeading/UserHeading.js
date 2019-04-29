@@ -60,7 +60,7 @@ const headerHeight = 350 + 10;
 
   placeholder: {
     borderRadius: 4,
-    backgroundColor: '#F8F9FB',
+    backgroundColor: '#F3F4F7',
   },
 
   onlineStatus: {
@@ -97,7 +97,7 @@ const headerHeight = 350 + 10;
   'NativeBase.ViewNB': {
     'Sparkle.UserAvatar': {
       'Sparkle.Placeholder': {
-        backgroundColor: '#F8F9FB',
+        backgroundColor: '#F3F4F7',
       },
     },
   },

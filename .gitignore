@@ -24,10 +24,11 @@ project.xcworkspace
 # Android
 android/build/
 android/app/build/
-android/.gradle/
-android/gradle.properties
 android/app/src/main/assets/index.android.bundle
 android/local.properties
+android/passwords.properties
+android/gradle.properties
+android/.gradle/
 *.iml
 
 # node.js
@@ -45,9 +46,9 @@ buck-out/
 # screenshots whenever they are needed.
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/
-*/fastlane/report.xml
-*/fastlane/Preview.html
-*/fastlane/screenshots
+/fastlane/report.xml
+/fastlane/Preview.html
+/fastlane/screenshots
 
 # Bundle artifact
 *.jsbundle

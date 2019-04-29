@@ -70,7 +70,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
   container: {
     flexGrow: 1,
     paddingHorizontal: 15,
-    backgroundColor: '#F8F9FB',
+    backgroundColor: '#F3F4F7',
   },
 })
 @graphql(meQuery)
