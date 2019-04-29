@@ -68,9 +68,9 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
   },
 
   container: {
+    flex: 1,
     flexGrow: 1,
-    paddingHorizontal: 15,
-    backgroundColor: '#F3F4F7',
+    backgroundColor: '#F8F9FB',
   },
 })
 @graphql(meQuery)
@@ -252,10 +252,8 @@ export default class ImageComments extends Component {
         )}
       >
         <>
-          <View style={{ flex: 1 }}>
-            <View style={styles.container}>
-              <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
-            </View>
+          <View style={styles.container}>
+            <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
           </View>
           {this.renderFooter()}
         </>

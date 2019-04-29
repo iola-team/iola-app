@@ -73,7 +73,7 @@ export default class ImageCommentsList extends Component {
         data={data}
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 15 }}
         ListEmptyComponent={(
           <NoContent icon="comments-empty-state" text={emptyStateText} inverted />
         )}
