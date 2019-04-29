@@ -40,7 +40,7 @@ const userFragment = gql`
     alignItems: 'center',
 
     'NativeBase.ViewNB': {
-      backgroundColor: '#F8F9FB',
+      backgroundColor: '#F3F4F7',
 
       '.avatar': {
         width: 40,

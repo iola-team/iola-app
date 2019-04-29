@@ -12,7 +12,7 @@ const stories = storiesOf('Components/MessageItem', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({ padder: true, backgroundColor: '#F8F9FB' }));
+stories.addDecorator(getContentDecorator({ padder: true, backgroundColor: '#F3F4F7' }));
 
 const messages = [
   {
