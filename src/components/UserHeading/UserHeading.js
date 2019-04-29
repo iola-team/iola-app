@@ -39,6 +39,7 @@ const headerHeight = 350 + 10;
   },
 
   avatar: {
+    marginHorizontal: 'auto',
     marginBottom: 25,
   },
 
