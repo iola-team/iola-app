@@ -35,7 +35,7 @@ export default class UserPhotos extends Component {
   }
 
   render() {
-    const { navigation, styleSheet: styles } = this.props;
+    const { navigation, styleSheet: styles, screenProps } = this.props;
     const { contentInset } = navigation.getScreenProps();
 
     return (
@@ -44,6 +44,8 @@ export default class UserPhotos extends Component {
           addButtonStyle={[styles.add, { marginBottom: contentInset.bottom }]}
           contentContainerStyle={styles.list}
           noContentStyle={styles.noContent}
+
+          contentInset={screenProps.contentInset}
         />
       </Container>
     );

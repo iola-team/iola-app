@@ -73,7 +73,7 @@ export default class UserFriends extends Component {
   }
 
   render() {
-    const { data: { user, loading }, styleSheet: styles } = this.props;
+    const { data: { user, loading }, styleSheet: styles, screenProps } = this.props;
     const { isRefreshing } = this.state;
 
     return (
@@ -85,8 +85,9 @@ export default class UserFriends extends Component {
           noContentText="No friends"
           refreshing={isRefreshing}
           onRefresh={this.refresh}
-
           onItemPress={this.onItemPress}
+
+          contentInset={{ ...screenProps.contentInset, bottom: 0 }}
         />
       </Container>
     );

@@ -122,7 +122,7 @@ stories.add('Default', () => (
   <Query query={userQuery} variables={{ id: 'User:2' }}>
     {({ loading, data: { user } }) => (
       <PhotoList
-        edges={loading ? [] : user.photos.edges}
+        edges={user?.photos.edges}
         loading={loading}
       />
     )}
@@ -133,14 +133,14 @@ stories.add('Full flow', () => (
   <Query query={userQuery} variables={{ id: 'User:1' }}>
     {({ loading, data: { user } }) => (
       <PhotoList
-        edges={loading ? [] : user.photos.edges}
+        edges={user?.photos.edges}
         loading={loading}
       />
     )}
   </Query>
 ));
 
-stories.add('Initial Load', () => <PhotoList loading edges={[]} />);
+stories.add('Initial Load', () => <PhotoList loading />);
 stories.add('No items', () => (
   <PhotoList
     edges={[]}

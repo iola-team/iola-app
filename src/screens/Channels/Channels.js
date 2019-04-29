@@ -50,7 +50,7 @@ export default class Channels extends Component {
   onSearchPress = () => this.props.navigation.navigate(CHAT_SEARCH);
 
   render() {
-    const { styleSheet: styles, data: { me, users, loading } } = this.props;
+    const { styleSheet: styles, data: { me, users, loading }, screenProps } = this.props;
 
     return (
       <Container>
@@ -73,6 +73,8 @@ export default class Channels extends Component {
           )}
           userId={me?.id}
           onItemPress={this.onChatPress}
+
+          contentInset={screenProps.contentInset}
         />
       </Container>
     );
