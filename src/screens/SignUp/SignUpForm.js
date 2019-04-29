@@ -12,7 +12,7 @@ import { FormTextInput, Spinner } from '~components';
 
 const validateEmailQuery = gql`
   query validateEmailQuery($email: String = "") {
-    users(email: $email) {
+    users(filter: { email: $email }) {
       totalCount
     }
   }
