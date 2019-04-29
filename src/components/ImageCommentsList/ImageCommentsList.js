@@ -7,6 +7,7 @@ import { range } from 'lodash';
 
 import ImageCommentsItem from '../ImageCommentsItem';
 import NoContent from '../NoContent';
+import RefreshControl from '../RefreshControl';
 
 const edgeFragment = gql`
   fragment ImageCommentsList_edge on CommentEdge {
@@ -62,9 +63,8 @@ export default class ImageCommentsList extends Component {
   }
 
   render() {
-    const { edges, loading, listRef, ...listProps } = this.props;
+    const { edges, loading, refreshing, onRefresh, listRef, ...listProps } = this.props;
     const data = loading && !edges.length ? this.getPlaceholders() : edges;
-    const emptyStateText = 'No comments yet\nBe the first to comment';
 
     return (
       <FlatList
@@ -74,8 +74,9 @@ export default class ImageCommentsList extends Component {
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 15 }}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListEmptyComponent={(
-          <NoContent icon="comments-empty-state" text={emptyStateText} inverted />
+          <NoContent icon="comments-empty-state" text="No comments yet\nBe the first to comment" inverted />
         )}
         removeClippedSubviews // "Sometimes image doesn't show (only Android)" issue: https://github.com/facebook/react-native/issues/17096
         inverted={loading || edges.length}
