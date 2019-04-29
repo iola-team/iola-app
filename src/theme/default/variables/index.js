@@ -10,7 +10,7 @@ export default assign(defaultVariables, {
   cardDefaultBg: 'transparent',
   foregroundColor: '#FFFFFF',
   highlightColor: '#F3F4F7',
-  placeholderColor: '#F3F4F7',
+  placeholderColor: '#FFFFFF',
   textColor: '#35373E',
   titleFontColor: '#35373E',
   toolbarDefaultBg: 'transparent',

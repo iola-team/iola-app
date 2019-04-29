@@ -49,6 +49,7 @@ Investigate this: https://reactnativetesting.io/
   - Common:
     - nvm with Node.js v10.15.3: `nvm install 10.15.3` (used in prod build: `/usr/local/opt/nvm/versions/node/v10.15.3/bin/node`) // @DEPRECATED
     - [Install Fastlane](https://docs.fastlane.tools/getting-started/ios/setup/)
+    - `bundle install`
     - Fill the `FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD` in the .env file:
       - Go to https://appleid.apple.com/account/manage
       - Click "Generate Password…" link under the "APP-SPECIFIC PASSWORDS" section
