@@ -48,7 +48,7 @@ export default class UserInfo extends Component {
   }
 
   render() {
-    const { data: { loading, me } } = this.props;
+    const { data: { loading, me }, screenProps } = this.props;
     const { isRefreshing } = this.state;
 
     return (
@@ -57,8 +57,9 @@ export default class UserInfo extends Component {
           loading={loading}
           user={me}
           refreshing={isRefreshing}
-
           onRefresh={this.refresh}
+
+          contentInset={screenProps.contentInset}
         />
       </Container>
     );

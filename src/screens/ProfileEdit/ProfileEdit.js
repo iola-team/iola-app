@@ -85,7 +85,7 @@ export default class ProfileEditScreen extends Component {
   }
 
   render() {
-    const { data: { loading, me }, styleSheet: styles } = this.props;
+    const { data: { loading, me }, styleSheet: styles, screenProps } = this.props;
 
     return (
       <Container>
@@ -100,7 +100,7 @@ export default class ProfileEditScreen extends Component {
           onSaveEnd={this.onSaveEnd}
 
           ListHeaderComponent={<AvatarEdit style={styles.avatar} user={me} loading={loading} />}
-          contentInset={{ bottom: 0 }}
+          contentInset={{ ...screenProps.contentInset, bottom: 0 }}
         />
       </Container>
     );

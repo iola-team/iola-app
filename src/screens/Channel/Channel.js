@@ -23,12 +23,17 @@ export default class Channel extends Component {
   });
 
   render() {
+    const { screenProps } = this.props;
     const { chatId, userId } = propsToVariables(this.props);
 
     return (
       <Container>
         <KeyboardAvoidingView>
-          <Chat chatId={chatId} recipientId={userId} contentInset={{ bottom: 0 }} />
+          <Chat
+            chatId={chatId}
+            recipientId={userId}
+            contentInset={{ ...screenProps.contentInset, bottom: 0 }}
+          />
         </KeyboardAvoidingView>
       </Container>
     );
