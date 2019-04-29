@@ -101,6 +101,7 @@ class SignInForm extends Component {
                 placeholder="Email or login"
                 customStyle={styles.login}
                 error={error}
+                autoCapitalize="none"
                 {...this.props}
               />
 

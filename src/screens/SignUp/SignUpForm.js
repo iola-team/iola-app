@@ -109,7 +109,7 @@ class SignUpForm extends Component {
 
     return (
       <Form>
-        <FormTextInput name="name" placeholder="Full Name" {...this.props} />
+        <FormTextInput name="name" placeholder="Full Name" autoCapitalize="words" {...this.props} />
 
         <ApolloConsumer>
           {client => (
@@ -118,6 +118,7 @@ class SignUpForm extends Component {
               placeholder="Email"
               onChangeText={text => this.onChangeEmail(text, client)}
               secondaryErrorText={emailIsDuplicated && 'Email is taken'}
+              autoCapitalize="none"
               {...this.props}
             />
           )}
