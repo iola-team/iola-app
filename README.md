@@ -56,7 +56,7 @@ Investigate this: https://reactnativetesting.io/
   - Android: `cp android/passwords.properties.sample android/passwords.properties` and fill it
   - iOS:
     - Install [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#installation)
-    - Run `pod install`
+    - `pod install`
 1) Test the release app version:
   - Android
     1) Uninstall the previous version of the app you already have installed

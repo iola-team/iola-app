@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
 import uuid from 'uuid/v4';
 
-import { withStyleSheet as styleSheet } from '~theme';
+import { withStyleSheet } from '~theme';
 import ImageCommentsConnection from './ImageCommentsConnection';
 import Avatar from '../UserAvatar';
 import Backdrop from '../Backdrop';
@@ -50,7 +50,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
   }
 `;
 
-@styleSheet('Sparkle.ImageComments', {
+@withStyleSheet('Sparkle.ImageComments', {
   titleRow: {
     flexDirection: 'row',
   },
@@ -68,9 +68,8 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
   },
 
   container: {
+    flex: 1,
     flexGrow: 1,
-    paddingHorizontal: 15,
-    backgroundColor: '#F3F4F7',
   },
 })
 @graphql(meQuery)
@@ -252,10 +251,8 @@ export default class ImageComments extends Component {
         )}
       >
         <>
-          <View style={{ flex: 1 }}>
-            <View style={styles.container}>
-              <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
-            </View>
+          <View style={styles.container}>
+            <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
           </View>
           {this.renderFooter()}
         </>
