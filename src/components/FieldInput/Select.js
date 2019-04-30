@@ -7,13 +7,7 @@ import FieldInput from './FieldInput';
 import ListPicker from '../ListPicker';
 import TouchableOpacity from '../TouchableOpacity';
 
-@withStyleSheet('Sparkle.SelectInput', {
-  button: {
-    flex: 1,
-    minHeight: 50,
-    justifyContent: 'center',
-  }
-})
+@withStyleSheet('Sparkle.SelectInput')
 export default class Select extends Component {
   state = {
     isPickerVisible: false,
@@ -58,7 +52,7 @@ export default class Select extends Component {
           isLoading={isUndefined(rawValue)}
           {...props}
         >
-          <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>
+          <TouchableOpacity onPress={this.showPicker}>
             <Text note={!value.length}>
               {value.length ? selectedLabels.join(', ') : placeholder}
             </Text>
