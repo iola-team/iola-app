@@ -30,6 +30,7 @@ class ForgotPasswordForm extends Component {
           placeholder="Email"
           secondaryErrorText={emailDoesNotExist && 'Email does not exist'}
           autoCapitalize="none"
+          keyboardType="email-address"
           {...this.props}
         />
 

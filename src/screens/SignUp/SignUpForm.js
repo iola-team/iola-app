@@ -119,6 +119,7 @@ class SignUpForm extends Component {
               onChangeText={text => this.onChangeEmail(text, client)}
               secondaryErrorText={emailIsDuplicated && 'Email is taken'}
               autoCapitalize="none"
+              keyboardType="email-address"
               {...this.props}
             />
           )}
