@@ -28,10 +28,10 @@ export default class FieldInputContainer extends Component {
 
   render() {
     const { type, ...props } = this.props;
-    const Component = types[type];
+    const Field = types[type];
 
     return (
-      <Component {...props} />
+      <Field {...props} />
     );
   }
 }

@@ -8,13 +8,7 @@ import FieldInput from './FieldInput';
 import DatePicker from '../DatePicker';
 import TouchableOpacity from '../TouchableOpacity';
 
-@withStyleSheet('Sparkle.DateInput', {
-  button: {
-    flex: 1,
-    minHeight: 50,
-    justifyContent: 'center',
-  }
-})
+@withStyleSheet('Sparkle.DateInput')
 export default class DateInput extends PureComponent {
   state = {
     isPickerVisible: false,
@@ -54,7 +48,7 @@ export default class DateInput extends PureComponent {
         isLoading={isUndefined(value)}
         {...props}
       >
-        <TouchableOpacity style={styleSheet.button} onPress={this.showPicker}>
+        <TouchableOpacity onPress={this.showPicker}>
           {
             value ? (
               <Moment element={Text} format="MMMM D, YYYY">{value}</Moment>

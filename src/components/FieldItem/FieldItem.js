@@ -8,26 +8,38 @@ const iconTheme = {
     opacity: 0.5,
   },
 
-  fontSize: 22,
+  fontSize: 18,
 };
 
 export default withStyle('Sparkle.FieldItem', {
   'NativeBase.Label': {
+    fontSize: 14,
     flex: 1,
     color: '#585A61',
     fontWeight: '600',
     paddingRight: 5,
+    paddingVertical: 15,
     flexWrap: 'wrap',
   },
 
   'NativeBase.Body': {
     'NativeBase.Input': {
+      height: null,
       padding: 0,
+      paddingVertical: 15,
     },
 
     'NativeBase.Text': {
       fontSize: 14,
-      paddingVertical: 5,
+      paddingVertical: 15,
+    },
+
+    'Sparkle.TouchableOpacity': {
+      flex: 1,
+
+      'NativeBase.Text': {
+        fontSize: 14,
+      },
     },
 
     flex: 2,
@@ -45,6 +57,10 @@ export default withStyle('Sparkle.FieldItem', {
         ...iconTheme,
 
         margin: 0,
+      },
+
+      'NativeBase.Text': {
+        fontSize: 14,
       },
 
       alignSelf: 'stretch',
@@ -65,10 +81,9 @@ export default withStyle('Sparkle.FieldItem', {
     borderBottomWidth: 0,
   },
 
-  minHeight: 50,
   flex: 1,
   flexDirection: 'row',
-  alignItems: 'center',
+  alignItems: 'flex-start',
   borderBottomWidth: StyleSheet.hairlineWidth,
   borderBottomColor: '#C9C9C9',
 })(ViewRN);

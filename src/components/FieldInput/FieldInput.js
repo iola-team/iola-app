@@ -60,7 +60,7 @@ export default class FieldInput extends PureComponent {
     const { isLoading, error } = this.props;
     const { isToastVisible } = this.state;
 
-    if (isLoading) return <Spinner size={20} />;
+    if (isLoading) return <Spinner size="small" />;
 
     if (error) {
       return (

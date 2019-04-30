@@ -5,13 +5,7 @@ import { Input } from 'native-base';
 import { withStyleSheet as styleSheet } from '~theme';
 import FieldInput from './FieldInput';
 
-@styleSheet('Sparkle.TextInput', {
-  button: {
-    flex: 1,
-    minHeight: 50,
-    justifyContent: 'center',
-  }
-})
+@styleSheet('Sparkle.TextInput')
 export default class TextInput extends Component {
   onDone = value => {
     const { onChange } = this.props;

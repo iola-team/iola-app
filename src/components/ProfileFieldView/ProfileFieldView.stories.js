@@ -166,7 +166,7 @@ const values = [
     field: find(fields, { id: 'Field:5' }),
     data: {
       presentation: 'TEXT',
-      value: 'Multi-line text value',
+      value: 'To see your Storybook stories on the device, you should start your mobile app for the platform of your choice.',
     },
   },
   {
