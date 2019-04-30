@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { isFunction, get } from 'lodash';
+import { isFunction } from 'lodash';
 
 import Select from './Select';
 import Text from './Text';
@@ -59,11 +59,11 @@ export default class ProfileFieldInput extends Component {
       data: value && value.data,
     };
 
-    const Component = getFieldComponent(props);
+    const Field = getFieldComponent(props);
 
-    return isFunction(Component.formOptions)
-      ? Component.formOptions(props)
-      : Component.formOptions || {};
+    return isFunction(Field.formOptions)
+      ? Field.formOptions(props)
+      : Field.formOptions || {};
   };
 
   static fragments = {
@@ -77,12 +77,17 @@ export default class ProfileFieldInput extends Component {
     value: fragmentProp(valueFragment),
   };
 
+  static defaultProps = {
+    input: null,
+    value: null,
+  };
+
   render() {
     const { value, field, input, ...props } = this.props;
-    const Component = getFieldComponent(this.props);
+    const Field = getFieldComponent(this.props);
 
     return (
-      <Component
+      <Field
         {...props}
         input={input}
         field={field}

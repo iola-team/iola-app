@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
@@ -28,6 +27,10 @@ const valueFragment = gql`
 `;
 
 export default class ProfileFieldViewSelect extends PureComponent {
+  static fieldOptions = {
+    isEmpty: ({ arrayValue }) => !arrayValue.length,
+  };
+
   static fragments = {
     field: fieldFragment,
     data: valueFragment,
@@ -36,6 +39,10 @@ export default class ProfileFieldViewSelect extends PureComponent {
   static propTypes = {
     field: fragmentProp(fieldFragment).isRequired,
     data: fragmentProp(valueFragment),
+  };
+
+  static defaultProps = {
+    data: null,
   };
 
   render() {
@@ -51,7 +58,7 @@ export default class ProfileFieldViewSelect extends PureComponent {
         type="select"
         options={options}
         label={label}
-        value={data && data.arrayValue}
+        value={data?.arrayValue}
       />
     );
   }

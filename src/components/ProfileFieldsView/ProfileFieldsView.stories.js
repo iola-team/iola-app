@@ -260,6 +260,24 @@ const values = [
       value: true,
     },
   },
+
+  {
+    id: 'Value:9',
+    field: find(fields, { id: 'Field:9' }),
+    data: {
+      presentation: 'TEXT',
+      value: 'roman@banan.com',
+    },
+  },
+
+  {
+    id: 'Value:10',
+    field: find(fields, { id: 'Field:10' }),
+    data: {
+      presentation: 'TEXT',
+      value: 'http://banan.com',
+    },
+  },
 ];
 
 const users = [
@@ -280,7 +298,7 @@ const users = [
         id: 'AccountType:1',
         fields,
       },
-      values: [],
+      values: values.slice(0, 4),
     },
   },
   {
@@ -455,5 +473,5 @@ const WithData = ({ userId: id }) => (
 
 // Stories
 stories.add('With filled data', () => <WithData userId="User:1" />);
-stories.add('No data', () => <WithData userId="User:2" />);
+stories.add('Partial data', () => <WithData userId="User:2" />);
 stories.add('Loading', () => <ProfileFieldsView loading />);

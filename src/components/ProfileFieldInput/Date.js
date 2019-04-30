@@ -56,6 +56,11 @@ export default class FieldDate extends PureComponent {
     data: fragmentProp(valueFragment),
   };
 
+  static defaultProps = {
+    input: null,
+    data: null,
+  };
+
   render() {
     const { field, data, input, ...props } = this.props;
     const value = input || data && new Date(data.dateValue); // TODO: handle custom scalars on graph layer

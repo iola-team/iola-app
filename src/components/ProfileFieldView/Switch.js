@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
@@ -19,6 +18,10 @@ const valueFragment = gql`
 `;
 
 export default class ProfileFieldViewSwitch extends PureComponent {
+  static fieldOptions = {
+    isEmpty: ({ booleanValue }) => booleanValue === null,
+  };
+
   static fragments = {
     field: fieldFragment,
     data: valueFragment,
@@ -27,6 +30,10 @@ export default class ProfileFieldViewSwitch extends PureComponent {
   static propTypes = {
     field: fragmentProp(fieldFragment).isRequired,
     data: fragmentProp(valueFragment),
+  };
+
+  static defaultProps = {
+    data: null,
   };
 
   render() {
@@ -41,7 +48,7 @@ export default class ProfileFieldViewSwitch extends PureComponent {
         {...props}
         type="switch"
         label={label}
-        value={data && data.booleanValue}
+        value={data?.booleanValue}
       />
     );
   }

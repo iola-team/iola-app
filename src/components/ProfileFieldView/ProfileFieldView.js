@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
+import { isFunction, noop } from 'lodash';
 
 import Select from './Select';
 import Text from './Text';
@@ -49,9 +49,22 @@ const valueFragment = gql`
   ${Switch.fragments.data}
 `;
 
-const getFieldComponent = ({ field }) => types[field.presentation];
+const getFieldComponent = ({ presentation }) => types[presentation];
 
 export default class ProfileFieldView extends Component {
+  static fieldOptions(field) {
+    const Field = getFieldComponent(field);
+
+    const { isEmpty = noop, ...options } = isFunction(Field.fieldOptions)
+      ? Field.fieldOptions(field)
+      : Field.fieldOptions || {};
+
+    return {
+      ...options,
+      isEmpty: ({ data }) => !!(!data || isEmpty(data)),
+    };
+  };
+
   static fragments = {
     field: fieldFragment,
     value: valueFragment,
@@ -68,13 +81,13 @@ export default class ProfileFieldView extends Component {
 
   render() {
     const { value, field, ...props } = this.props;
-    const FieldComponent = getFieldComponent(this.props);
+    const Field = getFieldComponent(field);
 
     return (
-      <FieldComponent
+      <Field
         {...props}
         field={field}
-        data={value && value.data}
+        data={value?.data}
       />
     );
   }
