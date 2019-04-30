@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
@@ -25,6 +24,10 @@ const dataFragment = gql`
 `;
 
 export default class ProfileFieldViewText extends PureComponent {
+  static fieldOptions = {
+    isEmpty: ({ stringValue }) => !stringValue?.trim().length,
+  };
+
   static fragments = {
     field: fieldFragment,
     data: dataFragment,
@@ -33,6 +36,10 @@ export default class ProfileFieldViewText extends PureComponent {
   static propTypes = {
     field: fragmentProp(fieldFragment).isRequired,
     data: fragmentProp(dataFragment),
+  };
+
+  static defaultProps = {
+    data: null,
   };
 
   render() {
@@ -49,7 +56,7 @@ export default class ProfileFieldViewText extends PureComponent {
         secure={secure}
         multiline={multiline}
         label={label}
-        value={data && data.stringValue}
+        value={data?.stringValue}
       />
     );
   }

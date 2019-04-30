@@ -32,7 +32,7 @@ export default class ProfileFieldInputSelect extends PureComponent {
   static formOptions({ field, data }) {
     return {
       validationSchema: Yup.array(),
-      initialValue: data && data.arrayValue,
+      initialValue: data?.arrayValue,
       transformResult: value => ({ arrayValue: value }),
     };
   }
@@ -48,6 +48,11 @@ export default class ProfileFieldInputSelect extends PureComponent {
     onError: PropTypes.func.isRequired,
     field: fragmentProp(fieldFragment).isRequired,
     data: fragmentProp(dataFragment),
+  };
+
+  static defaultProps = {
+    input: null,
+    data: null,
   };
 
   render() {

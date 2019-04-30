@@ -50,18 +50,24 @@ export default class ProfileFieldsView extends PureComponent {
     <ProfileFieldView {...props} key={field.id} field={field} />
   );
 
+  filterItems = ({ field, value }) => {
+    const { isEmpty } = ProfileFieldView.fieldOptions(field);
+
+    return !isEmpty(value);
+  };
+
   render() {
-    const { style, user, loading, ...props } = this.props;
+    const { user, loading, ...props } = this.props;
 
     return (
       <ProfileFieldList
         {...props}
 
         loading={loading}
-        style={style}
         fields={user?.profile.accountType.fields}
         values={user?.profile.values}
         renderItem={this.renderItem}
+        filterItems={this.filterItems}
       />
     );
   }

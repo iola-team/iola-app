@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
@@ -19,6 +18,10 @@ const dataFragment = gql`
 `;
 
 export default class ProfileFieldViewDate extends PureComponent {
+  static fieldOptions = {
+    isEmpty: ({ dateValue }) => !dateValue,
+  };
+
   static fragments = {
     field: fieldFragment,
     data: dataFragment,
@@ -27,6 +30,10 @@ export default class ProfileFieldViewDate extends PureComponent {
   static propTypes = {
     field: fragmentProp(fieldFragment).isRequired,
     data: fragmentProp(dataFragment),
+  };
+
+  static defaultProps = {
+    data: null,
   };
 
   render() {
@@ -41,7 +48,7 @@ export default class ProfileFieldViewDate extends PureComponent {
         {...props}
         type="date"
         label={label}
-        value={data && data.dateValue}
+        value={data?.dateValue}
       />
     );
   }

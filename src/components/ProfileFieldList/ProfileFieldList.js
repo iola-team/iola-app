@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { View as ViewRN } from 'react-native';
 import { groupBy, map, get } from 'lodash';
 
 import FieldList from '../FieldList';
@@ -40,13 +39,20 @@ export default class ProfileFieldList extends PureComponent {
     values: PropTypes.arrayOf(
       fragmentProp(valueFragment).isRequired
     ),
+
+    filterItems: PropTypes.func,
   };
 
   static defaultProps = {
     fields: null,
     values: null,
+    filterItems: () => true,
   };
 
+
+  /**
+   * TODO: Memo result
+   */
   buildSections(fields, values) {
     return map(
       groupBy(fields, 'section.id'),
@@ -63,13 +69,14 @@ export default class ProfileFieldList extends PureComponent {
   }
 
   buildItems(fields, values) {
+    const { filterItems } = this.props;
     const valuesByField = this.buildValues(fields, values);
 
     return fields.map((field, index) => ({
       field,
       value: valuesByField[field.id],
       last: fields.length === (index + 1),
-    }));
+    })).filter(filterItems);
   }
 
   buildValues(fields, values) {
