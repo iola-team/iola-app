@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
 import uuid from 'uuid/v4';
 
-import { withStyleSheet as styleSheet } from '~theme';
+import { withStyleSheet } from '~theme';
 import ImageCommentsConnection from './ImageCommentsConnection';
 import Avatar from '../UserAvatar';
 import Backdrop from '../Backdrop';
@@ -50,7 +50,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
   }
 `;
 
-@styleSheet('Sparkle.ImageComments', {
+@withStyleSheet('Sparkle.ImageComments', {
   titleRow: {
     flexDirection: 'row',
   },
@@ -70,7 +70,6 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
   container: {
     flex: 1,
     flexGrow: 1,
-    backgroundColor: '#F8F9FB',
   },
 })
 @graphql(meQuery)
