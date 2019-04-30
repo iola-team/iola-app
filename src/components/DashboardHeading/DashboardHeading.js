@@ -32,7 +32,7 @@ const userFragment = gql`
     alignSelf: 'stretch',
     alignItems: 'center',
     paddingBottom: 30,
-    backgroundColor: '#F8F9FB',
+    backgroundColor: '#F3F4F7',
   },
 
   content: {

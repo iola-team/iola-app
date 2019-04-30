@@ -39,7 +39,7 @@ const iconMargin = 17;
 
   '.inverted': {
     'NativeBase.ViewNB': {
-      backgroundColor: '#F8F9FB',
+      backgroundColor: '#F3F4F7',
 
       'NativeBase.Icon': {
         color: '#F1F2F7',

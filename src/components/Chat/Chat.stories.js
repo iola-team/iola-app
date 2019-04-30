@@ -19,7 +19,7 @@ const stories = storiesOf('Components/Chat', module);
 // Decorators
 stories.addDecorator(withKnobs);
 stories.addDecorator(getContainerDecorator({
-  backgroundColor: '#F8F9FB',
+  backgroundColor: '#F3F4F7',
 }));
 
 const subscriptions = new PubSub();

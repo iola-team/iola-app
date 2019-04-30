@@ -25,7 +25,7 @@ import TouchableOpacity from '../TouchableOpacity';
     alignItems: 'center',
     borderRadius:  8,
 
-    backgroundColor: '#F8F9FB',
+    backgroundColor: '#F3F4F7',
   },
 
   icon: {
