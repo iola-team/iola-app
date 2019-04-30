@@ -43,11 +43,7 @@ export default class DateInput extends PureComponent {
     } = this.props;
 
     return (
-      <FieldInput
-        label={label}
-        isLoading={isUndefined(value)}
-        {...props}
-      >
+      <FieldInput label={label} {...props}>
         <TouchableOpacity onPress={this.showPicker}>
           {
             value ? (

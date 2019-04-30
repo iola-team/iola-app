@@ -51,8 +51,8 @@ export default class ProfileFieldInputSelect extends PureComponent {
   };
 
   static defaultProps = {
-    input: null,
-    data: null,
+    input: undefined,
+    data: undefined,
   };
 
   render() {
@@ -66,7 +66,7 @@ export default class ProfileFieldInputSelect extends PureComponent {
         type="select"
         placeholder="Not specified"
         label={field.label}
-        value={input || data && data.arrayValue}
+        value={input === undefined ? data?.arrayValue : input}
       />
     );
   }

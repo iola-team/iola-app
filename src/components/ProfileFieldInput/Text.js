@@ -59,7 +59,7 @@ export default class ProfileFieldInputText extends PureComponent {
 
     return {
       validationSchema,
-      initialValue: data && data.stringValue,
+      initialValue: data?.stringValue,
       transformResult: value => ({ stringValue: value }),
     };
   }
@@ -78,6 +78,12 @@ export default class ProfileFieldInputText extends PureComponent {
     data: fragmentProp(dataFragment),
   };
 
+  static defaultProps = {
+    input: undefined,
+    error: undefined,
+    data: undefined,
+  };
+
   render() {
     const { field, data, input, ...props } = this.props;
 
@@ -89,7 +95,7 @@ export default class ProfileFieldInputText extends PureComponent {
         type="text"
         placeholder="Enter here..."
         label={field.label}
-        value={input || data && data.stringValue}
+        value={input === undefined ? data?.stringValue : input}
       />
     );
   }
