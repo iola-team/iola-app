@@ -61,7 +61,7 @@ export default class ProfileFieldView extends Component {
 
     return {
       ...options,
-      isEmpty: ({ data }) => !!(data && isEmpty(data)),
+      isEmpty: ({ data }) => !!(!data || isEmpty(data)),
     };
   };
 
