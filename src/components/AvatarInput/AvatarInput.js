@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
-import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import { Image, Alert } from 'react-native';
+import { Image } from 'react-native';
 import { Text, View, Button } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import ImagePicker from '../ImagePicker';
 import Placeholder from '../Placeholder';
+import ActionSheet from '../ActionSheet';
 
 @withStyleSheet('Sparkle.AvatarInput', {
   root: {
@@ -14,7 +14,6 @@ import Placeholder from '../Placeholder';
   },
 
   imageHolder: {
-    backgroundColor: '#F0F2F7',
     borderRadius: 8,
     overflow: 'hidden',
   },
@@ -22,6 +21,10 @@ import Placeholder from '../Placeholder';
   image: {
     width: 80,
     height: 80,
+  },
+
+  placeholder: {
+    color: '#FFFFFF',
   },
 
   buttons: {
@@ -39,6 +42,7 @@ import Placeholder from '../Placeholder';
 })
 export default class AvatarInput extends PureComponent {
   static propTypes = {
+    loading: PropTypes.bool, 
     value: PropTypes.string,
     defaultValue: PropTypes.string,
     onChange: PropTypes.func,
@@ -46,12 +50,14 @@ export default class AvatarInput extends PureComponent {
   };
 
   static defaultProps = {
+    loading: false,
     value: undefined,
     defaultValue: undefined,
     onChange: () => {},
     onDelete: () => {},
   };
 
+  actionSheet = React.createRef();
   state = {
     image: undefined,
   }
@@ -62,33 +68,23 @@ export default class AvatarInput extends PureComponent {
     };
   }
 
-  onImageChange([selectedImage]) {
+  onImageChange = ([selectedImage]) => {
     this.setState({
-      image: get(selectedImage, 'path'),
+      image: selectedImage?.path,
     });
 
     this.props.onChange(selectedImage);
   }
 
-  onDeletePress(reset) {
+  onDeletePress = () => this.actionSheet.current.show();
+  onDelete = (reset) => {
     const { onDelete } = this.props;
 
-    Alert.alert(
-      'Are you sure?',
-      'This action cannot be undone!',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          onPress: () => reset().then(onDelete),
-          style: 'destructive'
-        },
-      ],
-      {
-        cancelable: false
-      },
-    );
-  }
+    reset();
+    onDelete();
+
+    this.setState({ image: null });
+  };
 
   renderInput({ pick, reset }) {
     const { style, styleSheet: styles, loading, value } = this.props;
@@ -105,7 +101,7 @@ export default class AvatarInput extends PureComponent {
       <View style={[styles.root, style]}>
         <View style={styles.imageHolder}>
           {loading
-            ? <Placeholder style={styles.image} />
+            ? <Placeholder style={[styles.image, styles.placeholder]} />
             : <Image style={styles.image} source={{ uri: avatarUrl }} />
           }
         </View>
@@ -129,10 +125,24 @@ export default class AvatarInput extends PureComponent {
                       block
                       secondary
                       bordered
-                      onPress={() => this.onDeletePress(reset)}
+                      onPress={this.onDeletePress}
                     >
                       <Text>Delete</Text>
                     </Button>
+
+                    <ActionSheet
+                      ref={this.actionSheet}
+                      title="Are you sure?"
+                      message="This action cannot be undone!"
+                      options={[
+                        'Cancel',
+                        'Delete Avatar',
+                      ]}
+
+                      cancelButtonIndex={0}
+                      destructiveButtonIndex={1}
+                      onPress={(buttonIndex) => buttonIndex && this.onDelete(reset)}
+                    />
                   </>
                 ) : (
                   <Button style={styles.button} block onPress={pick}>
@@ -154,7 +164,7 @@ export default class AvatarInput extends PureComponent {
         crop
         width={500}
         height={500}
-        onChange={::this.onImageChange}
+        onChange={this.onImageChange}
       >
         {({ pick }, [image], reset) => this.renderInput({
           pick,
