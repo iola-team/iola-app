@@ -26,10 +26,6 @@ const myPhotosQuery = gql`
 const addPhotoMutation = gql`
   mutation addUserPhotoMutation($input: UserPhotoCreateInput!) {
     result: addUserPhoto(input: $input) {
-      user {
-        id
-        ...PhotosTabBarLabel_user
-      }
       edge {
         ...PhotoList_edge
       }
@@ -107,21 +103,20 @@ export default class MyFriendsConnection extends PureComponent {
         },
       },
     };
-    const update = (cache, { data: { result: { deletedId } } }) => {
-      const data = cache.readQuery({ query: myPhotosQuery });
-
-      remove(me.photos.edges, edge => edge.node.id === deletedId);
-
-      cache.writeQuery({
-        query: myPhotosQuery,
-        data,
-      });
-    };
 
     deletePhoto({
       variables: { id: photoId },
       optimisticResponse,
-      update,
+      update: (cache, { data: { result: { deletedId } } }) => {
+        const data = cache.readQuery({ query: myPhotosQuery });
+  
+        remove(me.photos.edges, edge => edge.node.id === deletedId);
+  
+        cache.writeQuery({
+          query: myPhotosQuery,
+          data,
+        });
+      },
     });
   };
 

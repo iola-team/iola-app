@@ -493,7 +493,7 @@ export default (variables => ({
     },
 
     'Sparkle.AvatarInput': {
-      imageHolder: {
+      placeholder: {
         backgroundColor: variables.placeholderColor,
       },
     },

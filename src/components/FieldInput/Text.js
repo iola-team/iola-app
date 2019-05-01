@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { isUndefined } from 'lodash';
 import { Input } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
@@ -7,13 +6,6 @@ import FieldInput from './FieldInput';
 
 @styleSheet('Sparkle.TextInput')
 export default class TextInput extends Component {
-  onDone = value => {
-    const { onChange } = this.props;
-
-    this.hidePicker();
-    onChange(value);
-  }
-
   render() {
     const {
       value,
@@ -22,12 +14,18 @@ export default class TextInput extends Component {
       secure,
       multiline,
       placeholder,
+      keyboardType,
+      autoCapitalize,
+      autoCorrect,
       ...props
     } = this.props;
 
     return (
-      <FieldInput isLoading={isUndefined(value)} {...props}>
+      <FieldInput {...props}>
         <Input
+          autoCorrect={autoCorrect}
+          autoCapitalize={autoCapitalize}
+          keyboardType={keyboardType}
           multiline={multiline}
           onChangeText={onChange}
           value={value}

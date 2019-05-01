@@ -36,7 +36,7 @@ stories.add('Select', () => {
     <Section>
       <StatefulInput
         defaultValue={['1']}
-        isLoading={isLoading}
+        loading={isLoading}
         error={error}
         label="Select"
         type="select"
@@ -58,7 +58,7 @@ stories.add('Select + Error', () => {
     <Section>
       <StatefulInput
         defaultValue={['1']}
-        isLoading={isLoading}
+        loading={isLoading}
         error={error}
         label="Select"
         type="select"
@@ -80,7 +80,7 @@ stories.add('Multi-select', () => {
     <Section>
       <StatefulInput
         defaultValue={['1', '2']}
-        isLoading={isLoading}
+        loading={isLoading}
         error={error}
         label="Multi-select"
         type="select"
@@ -103,7 +103,7 @@ stories.add('Text', () => {
     <Section>
       <StatefulInput
         defaultValue="Default value"
-        isLoading={isLoading}
+        loading={isLoading}
         error={error}
         type="text"
         label="Real name"
@@ -121,7 +121,7 @@ stories.add('Password', () => {
     <Section>
       <StatefulInput
         defaultValue="123"
-        isLoading={isLoading}
+        loading={isLoading}
         error={error}
         type="text"
         secure
@@ -140,7 +140,7 @@ stories.add('Textarea', () => {
     <Section>
       <StatefulInput
         type="text"
-        isLoading={isLoading}
+        loading={isLoading}
         error={error}
         multiline
         label="Textarea"
@@ -158,7 +158,7 @@ stories.add('Switch', () => {
     <Section>
       <StatefulInput
         defaultValue={false}
-        isLoading={isLoading}
+        loading={isLoading}
         error={error}
         type="switch"
         label="Switch"
@@ -175,7 +175,7 @@ stories.add('Date', () => {
     <Section>
       <StatefulInput
         defaultValue={new Date('March 7, 1986 00:00:00')}
-        isLoading={isLoading}
+        loading={isLoading}
         error={error}
         type="date"
         label="Date"

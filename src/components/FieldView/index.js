@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { noop } from 'lodash';
 
 import Select from './Select';
 import Text from './Text';
@@ -22,10 +21,10 @@ export default class FieldViewContainer extends Component {
 
   render() {
     const { type, ...props } = this.props;
-    const Component = types[type];
+    const Field = types[type];
 
     return (
-      <Component {...props} />
+      <Field {...props} />
     );
   }
 }

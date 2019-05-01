@@ -78,8 +78,8 @@ export default class ProfileFieldInput extends Component {
   };
 
   static defaultProps = {
-    input: null,
-    value: null,
+    input: undefined,
+    value: undefined,
   };
 
   render() {
@@ -91,7 +91,7 @@ export default class ProfileFieldInput extends Component {
         {...props}
         input={input}
         field={field}
-        data={value && value.data}
+        data={value?.data}
       />
     );
   }

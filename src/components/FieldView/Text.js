@@ -1,17 +1,59 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import { Linking } from 'react-native';
 import { Text } from 'native-base';
 
-import { withStyle } from '~theme';
+import { withStyleSheet } from '~theme';
 import FieldView from './FieldView';
+import TouchableOpacity from '../TouchableOpacity';
 
-@withStyle('Sparkle.TextView')
+@withStyleSheet('Sparkle.TextView', {
+  linkText: {
+    color: '#5F96F2',
+  },
+})
 export default class TextView extends Component {
+  state = {
+    isLink: false,
+  };
+
+  onLinkPress = () => Linking.openURL(this.getUrl());
+  renderLink() {
+    const { styleSheet: styles, value } = this.props;
+
+    return (
+      <TouchableOpacity onPress={this.onLinkPress}>
+        <Text style={styles.linkText}>{value}</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  getUrl() {
+    const { value, displayType } = this.props;
+
+    if (!['url', 'email'].includes(displayType)) {
+      return null;
+    }
+
+    return `${displayType === 'email' ? 'mailto:' : ''}${value}`;
+  }
+
+  componentDidMount() {
+    const url = this.getUrl();
+
+    if (url) {
+      Linking.canOpenURL(url).then((isLink) => this.setState({ isLink }));
+    }
+  }
+
   render() {
     const {
       value,
       secure,
+      displayType,
       ...props
     } = this.props;
+
+    const { isLink } = this.state;
 
     /**
      * TODO: handle secure presentation properly
@@ -20,9 +62,11 @@ export default class TextView extends Component {
       <FieldView
         {...props}
       >
-        <Text>
-          {value && (secure ? 'Secure' : value)}
-        </Text>
+        {isLink ? this.renderLink() : (
+          <Text>
+            {value && (secure ? 'Secure' : value)}
+          </Text>
+        )}
       </FieldView>
     );
   }
