@@ -88,6 +88,8 @@ export default class FormTextInput extends Component {
     onChangeText: PropTypes.func,
     secureTextEntry: PropTypes.bool,
     infoText: PropTypes.string,
+    textContentType: PropTypes.string,
+    autoCapitalize: PropTypes.string,
   };
 
   static defaultProps = {
@@ -141,6 +143,7 @@ export default class FormTextInput extends Component {
       secureTextEntry,
       infoText,
       textContentType,
+      autoCapitalize,
     } = this.props;
     const { isFocused, isPasswordIsShown } = this.state;
     const value = values[name] || '';
@@ -184,6 +187,7 @@ export default class FormTextInput extends Component {
           onBlur={::this.onBlur}
           isValid={isValid}
           textContentType={textContentType}
+          autoCapitalize={autoCapitalize}
         />
         <View style={[styles.infoContent, !secureTextEntry && { position: 'relative', right: 0 }]}>
           {isValid ? FieldInfo : FieldError}
