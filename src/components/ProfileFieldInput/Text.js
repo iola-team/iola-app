@@ -96,14 +96,18 @@ export default class ProfileFieldInputText extends PureComponent {
   render() {
     const { field, data, input, ...props } = this.props;
     const { format, fieldConfigs } = field.configs;
-    const keyboardType = format && keyboardTypes[format];
+    const extraProps = ['URL', 'EMAIL'].includes(format) ? {
+      keyboardType: keyboardTypes[format],
+      autoCapitalize: false,
+      autoCorrect: false,
+    } : {};
 
     return (
       <FieldInput
         {...props}
         {...fieldConfigs}
+        {...extraProps}
 
-        keyboardType={keyboardType || 'default'}
         type="text"
         placeholder="Enter here..."
         label={field.label}
