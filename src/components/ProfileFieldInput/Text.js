@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import * as Yup from 'yup';
+import { Platform } from 'react-native';
 
 import FieldInput from '../FieldInput';
 
@@ -29,6 +30,14 @@ const dataFragment = gql`
     stringValue: value
   }
 `;
+
+const keyboardTypes = {
+  'EMAIL': 'email-address',
+  'URL': Platform.select({
+    ios: 'url',
+    default: 'default',
+  }),
+};
 
 export default class ProfileFieldInputText extends PureComponent {
   static formOptions({ field, data }) {
@@ -86,11 +95,18 @@ export default class ProfileFieldInputText extends PureComponent {
 
   render() {
     const { field, data, input, ...props } = this.props;
+    const { format, fieldConfigs } = field.configs;
+    const extraProps = ['URL', 'EMAIL'].includes(format) ? {
+      keyboardType: keyboardTypes[format],
+      autoCapitalize: false,
+      autoCorrect: false,
+    } : {};
 
     return (
       <FieldInput
         {...props}
-        {...field.configs}
+        {...fieldConfigs}
+        {...extraProps}
 
         type="text"
         placeholder="Enter here..."
