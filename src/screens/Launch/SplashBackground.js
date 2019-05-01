@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, Easing, Dimensions, Image } from 'react-native';
+import { Animated, Dimensions, Easing, Image, PixelRatio } from 'react-native';
 import { Container, View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
@@ -11,7 +11,6 @@ import logo from './logo.png';
     alignSelf: 'center',
     minWidth: 320,
     width: '100%',
-    paddingHorizontal: '10%',
     backgroundColor: '#5259FF',
   },
 
@@ -24,16 +23,22 @@ export default class SplashBackground extends Component {
   constructor() {
     super();
 
-    const logoWidthScale = 25.5 / 100;
     const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
     const { height: logoAssetHeight, width: logoAssetWidth } = Image.resolveAssetSource(logo);
-    const contentPaddingHorizontal = 0.1 * 2; // see content.paddingHorizontal in the styles
-    const contentWidth = screenWidth * (1 - contentPaddingHorizontal);
-    const getCoefficient = scale => screenWidth * scale / logoAssetWidth;
-    const logoWidth = logoAssetWidth * getCoefficient(logoWidthScale);
-    const logoHeight = logoAssetHeight * getCoefficient(logoWidthScale);
-    const logoLeft = contentWidth / 2 - logoWidth / 2;
-    const logoTop = screenHeight / 2 - logoHeight;
+    const paddingHorizontal = 120;
+    const logoRatio = (screenWidth - paddingHorizontal * 2) / screenWidth;
+    const pixelRatio = PixelRatio.get();
+    const logoWidthMax = 240 * pixelRatio;
+    let logoWidth = logoAssetWidth * logoRatio;
+    let logoHeight = logoAssetHeight * logoRatio;
+
+    if (logoWidth > logoWidthMax) {
+      logoWidth = logoWidthMax;
+      logoHeight *= logoWidth / logoWidthMax;
+    }
+
+    const logoLeft = screenWidth / 2 - logoWidth / 2;
+    const logoTop = screenHeight / 2 - logoHeight / 2;
 
     this.logoSizeFinishScale = 0.7;
     this.logo = {
