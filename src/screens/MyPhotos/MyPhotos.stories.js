@@ -4,7 +4,7 @@ import faker from 'faker';
 import delay from 'promise-delay';
 import { find, range, without, uniqueId, orderBy } from 'lodash';
 import { storiesOf } from '@storybook/react-native';
-import { withKnobs, number } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 import { connectionFromArray } from 'graphql-relay';
 import { createAppContainer } from 'react-navigation';
 
@@ -153,7 +153,7 @@ const App = () => {
 
   const Navigator = createAppContainer(TabNavigator);
 
-  return <Navigator />;
+  return <Navigator screenProps={{ contentInset: { top: 0, bottom: 0 } }} />;
 };
 
 stories.add('Default', () => <App />);
