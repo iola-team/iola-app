@@ -14,12 +14,14 @@ export default class TextInput extends Component {
       secure,
       multiline,
       placeholder,
+      keyboardType,
       ...props
     } = this.props;
 
     return (
       <FieldInput {...props}>
         <Input
+          keyboardType={keyboardType}
           multiline={multiline}
           onChangeText={onChange}
           value={value}
