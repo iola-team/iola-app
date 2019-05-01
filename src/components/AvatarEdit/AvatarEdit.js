@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { get } from 'lodash';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
@@ -7,6 +6,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import { View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
+import UserAvatar from '../UserAvatar';
 import AvatarInput from '../AvatarInput';
 
 const userFragment = gql`
@@ -16,7 +16,11 @@ const userFragment = gql`
       id
       url
     }
+
+    ...UserAvatar_user
   }
+
+  ${UserAvatar.fragments.user}
 `;
 
 const addAvatarMutation = gql`
@@ -103,7 +107,7 @@ export default class AvatarEdit extends PureComponent {
         style={[styleSheet.root, style]}
       >
         <AvatarInput
-          defaultValue={get(user, 'avatar.url')}
+          defaultValue={user?.avatar?.url}
           loading={loading}
           onChange={this.onChange}
           onDelete={this.onDelete}
