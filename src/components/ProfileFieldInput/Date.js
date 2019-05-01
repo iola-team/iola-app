@@ -57,13 +57,13 @@ export default class FieldDate extends PureComponent {
   };
 
   static defaultProps = {
-    input: null,
-    data: null,
+    input: undefined,
+    data: undefined,
   };
 
   render() {
     const { field, data, input, ...props } = this.props;
-    const value = input || data && new Date(data.dateValue); // TODO: handle custom scalars on graph layer
+    const value = input === undefined ? data && new Date(data.dateValue) : input; // TODO: handle custom scalars on graph layer
 
     return (
       <FieldInput

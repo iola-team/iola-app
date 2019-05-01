@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import * as Yup from 'yup';
-import { isUndefined } from 'lodash';
 
 import FieldInput from '../FieldInput';
 
@@ -41,6 +40,11 @@ export default class ProfileFieldInputSwitch extends PureComponent {
     data: fragmentProp(dataFragment),
   };
 
+  static defaultProps = {
+    input: undefined,
+    data: undefined,
+  };
+
   render() {
     const { field, data, input, ...props } = this.props;
 
@@ -50,7 +54,7 @@ export default class ProfileFieldInputSwitch extends PureComponent {
 
         type="switch"
         label={field.label}
-        value={isUndefined(input) ? data && data.booleanValue : input}
+        value={input === undefined ? data?.booleanValue : input}
       />
     );
   }
