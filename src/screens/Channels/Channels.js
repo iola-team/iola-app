@@ -47,6 +47,7 @@ export default class Channels extends Component {
   onChatPress = ({ node }) => this.props.navigation.navigate(CHANNEL, { chatId: node.id });
   onUserPress = ({ node }) => this.props.navigation.navigate(CHANNEL, { userId: node.id });
   onSearchPress = () => this.props.navigation.navigate(CHAT_SEARCH);
+  onRefresh = () => this.props.data.refetch();
 
   render() {
     const { styleSheet: styles, data: { me, loading }, screenProps } = this.props;
@@ -74,6 +75,7 @@ export default class Channels extends Component {
           )}
           userId={me?.id}
           onItemPress={this.onChatPress}
+          onRefresh={this.onRefresh}
 
           contentInset={screenProps.contentInset}
         />
