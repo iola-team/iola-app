@@ -8,7 +8,6 @@ import Icon from '../Icon';
 
 const AnimatedView = Animated.createAnimatedComponent(View);
 const AnimatedText = Animated.createAnimatedComponent(Text);
-const iconMargin = 17;
 
 @withStyle('Sparkle.NoContent', {
   flex: 1,
@@ -20,7 +19,7 @@ const iconMargin = 17;
     justifyContent: 'center',
     width: 120,
     height: 120,
-    marginBottom: iconMargin,
+    marginBottom: 16,
     borderRadius: 60,
     backgroundColor: '#FFFFFF',
 
@@ -72,7 +71,7 @@ export default class NoContent extends Component {
       transform: [{
         translateY: iconScale.interpolate({
           inputRange: [0, 1],
-          outputRange: [-120, 0],
+          outputRange: [-90, 0],
         }),
       }]
     };

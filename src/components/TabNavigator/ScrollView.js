@@ -44,6 +44,13 @@ class ScrollView extends PureComponent {
   };
 
   componentDidMount() {
+    if (this.context) {
+      const { top } = this.getContentInset();
+      const { scrollAnimatedValue } = this.context;
+
+      scrollAnimatedValue.setValue(-top);
+    }
+
     this.unsubscribe = !this.context ? [] : [
       this.context.addListener('scroll', this.scrollTo),
     ];
@@ -77,7 +84,7 @@ class ScrollView extends PureComponent {
     const { contentContainerStyle = {}, ...restProps } = this.props;
     const refreshControl = this.renderRefreshControl();
     const contentInset = this.getContentInset();
-    const contentOffset = contentInset && { y: -contentInset.top };
+    const contentOffset = { y: -contentInset.top };
     const contentStyle = [contentContainerStyle, {
       // flexGrow: 1, // TODO: Check no items cases before removing this line
     }];
