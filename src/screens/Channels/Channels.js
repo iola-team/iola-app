@@ -67,6 +67,8 @@ export default class Channels extends Component {
                 loading={loading}
                 edges={me?.friends.edges}
                 onItemPress={this.onUserPress}
+
+                noContentText="No friends online"
               />
             </View>
           )}

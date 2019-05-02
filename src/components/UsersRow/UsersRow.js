@@ -8,6 +8,7 @@ import { FlatList } from 'react-native';
 import { withStyle } from '~theme';
 
 import UsersRowItem from '../UsersRowItem';
+import NoContent from '../NoContent';
 
 const edgeFragment = gql`
   fragment UsersRow_edge on Edge {
@@ -20,7 +21,9 @@ const edgeFragment = gql`
   ${UsersRowItem.fragments.user}
 `;
 
-@withStyle('Sparkle.UsersRow')
+@withStyle('Sparkle.UsersRow', {
+  height: 70,
+})
 export default class UsersRow extends Component {
   static fragments = {
     edge: edgeFragment,
@@ -32,12 +35,14 @@ export default class UsersRow extends Component {
     ),
     onItemPress: PropTypes.func,
     loading: PropTypes.bool,
+    noContentText: PropTypes.string,
   };
 
   static defaultProps = {
     onItemPress: () => {},
     loading: false,
     edges: null,
+    noContentText: undefined,
   };
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -62,6 +67,7 @@ export default class UsersRow extends Component {
     const {
       edges,
       loading,
+      noContentText,
       ...listProps
     } = this.props;
 
@@ -73,11 +79,16 @@ export default class UsersRow extends Component {
         {...listProps}
 
         horizontal
+        contentContainerStyle={{ flexGrow: 1 }}
         showsHorizontalScrollIndicator={false}
 
         data={data}
         renderItem={this.renderItem}
         keyExtractor={this.extractItemKey}
+
+        ListEmptyComponent={(
+          <NoContent text={noContentText === undefined ? 'No users' : noContentText} />
+        )}
       />
     );
   }
