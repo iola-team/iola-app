@@ -19,8 +19,23 @@ import { CHANNEL, CHAT_SEARCH } from '../routeNames';
     marginTop: -999,
   },
 })
+/**
+ * TODO: refactor the component to not use this `me` query just to read `me.id`
+ */
 @graphql(gql`
-  query ChannelsQuery {
+  query {
+    me {
+      id
+    }
+  }
+`, {
+  name: 'meData',
+  options: {
+    fetchPolicy: 'cache-first',
+  },
+})
+@graphql(gql`
+  query MyOnlineFriendsQuery {
     me {
       id
       friends (filter: { online: true }) {
@@ -50,7 +65,12 @@ export default class Channels extends Component {
   onRefresh = () => this.props.data.refetch();
 
   render() {
-    const { styleSheet: styles, data: { me, loading }, screenProps } = this.props;
+    const {
+      styleSheet: styles,
+      data: { me: { friends } = {}, loading: loadingFriends }, 
+      meData: { me, loading: loadingMe }, 
+      screenProps,
+    } = this.props;
 
     return (
       <Container>
@@ -65,14 +85,16 @@ export default class Channels extends Component {
 
 
               <UsersRow
-                loading={loading}
-                edges={me?.friends.edges}
+                loading={loadingFriends}
+                edges={friends?.edges}
                 onItemPress={this.onUserPress}
 
                 noContentText="No friends online"
               />
             </View>
           )}
+
+          loading={loadingMe}
           userId={me?.id}
           onItemPress={this.onChatPress}
           onRefresh={this.onRefresh}

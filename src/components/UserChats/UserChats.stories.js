@@ -561,4 +561,4 @@ stories.add('Empty list', () => {
   return <ChatList userId="User:3" />;;
 });
 
-stories.add('Loading', () => <ChatList />);
+stories.add('Loading', () => <ChatList loading />);

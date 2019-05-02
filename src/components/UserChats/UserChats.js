@@ -69,12 +69,14 @@ const subscriptionQuery = gql`
 export default class UserChats extends Component {
   static propTypes = {
     userId: PropTypes.string,
+    loading: PropTypes.bool,
     onRefresh: PropTypes.func,
     refreshing: PropTypes.bool,
   };
 
   static defaultProps = {
     userId: null,
+    loading: false,
     onRefresh: noop,
     refreshing: false,
   };
@@ -145,7 +147,7 @@ export default class UserChats extends Component {
   }
 
   render() {
-    const { data, ...props } = this.props;
+    const { data, loading, ...props } = this.props;
     const { isRefreshing } = this.state;
     const edges = data?.user?.chats.edges;
     const unreadCounts = edges?.map(edge => edge.node.unreadMessages.totalCount) || [];
@@ -156,7 +158,7 @@ export default class UserChats extends Component {
           {...props}
 
           refreshing={isRefreshing || props.refreshing}
-          loading={data?.loading}
+          loading={loading || data?.loading}
           user={data?.user}
           unreadCounts={unreadCounts}
           edges={edges}
