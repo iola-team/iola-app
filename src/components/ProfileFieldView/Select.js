@@ -28,7 +28,7 @@ const valueFragment = gql`
 
 export default class ProfileFieldViewSelect extends PureComponent {
   static fieldOptions = {
-    isEmpty: ({ arrayValue }) => !arrayValue.length,
+    isEmpty: ({ arrayValue }) => !arrayValue?.length,
   };
 
   static fragments = {
