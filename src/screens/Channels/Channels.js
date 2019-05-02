@@ -23,11 +23,10 @@ import { CHANNEL, CHAT_SEARCH } from '../routeNames';
   query ChannelsQuery {
     me {
       id
-    }
-
-    users(filter: { online: true }, first: 100) {
-      edges {
-        ...UsersRow_edge
+      friends (filter: { online: true }) {
+        edges {
+          ...UsersRow_edge
+        }
       }
     }
   }
@@ -50,7 +49,7 @@ export default class Channels extends Component {
   onSearchPress = () => this.props.navigation.navigate(CHAT_SEARCH);
 
   render() {
-    const { styleSheet: styles, data: { me, users, loading }, screenProps } = this.props;
+    const { styleSheet: styles, data: { me, loading }, screenProps } = this.props;
 
     return (
       <Container>
@@ -66,7 +65,7 @@ export default class Channels extends Component {
 
               <UsersRow
                 loading={loading}
-                edges={users?.edges || []}
+                edges={me?.friends.edges}
                 onItemPress={this.onUserPress}
               />
             </View>
