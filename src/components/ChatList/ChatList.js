@@ -55,11 +55,12 @@ export default class ChatList extends Component {
   };
 
   renderItem = ({ item, index }) => {
-    const { onItemPress, user, unreadCounts } = this.props;
+    const { onItemPress, user, unreadCounts, edges } = this.props;
     const { node } = item;
 
     return (
       <ChatListItem
+        last={(index + 1) === edges?.length}
         unreadMessagesCount={unreadCounts[index]}
         currentUserId={user?.id}
         chat={node}

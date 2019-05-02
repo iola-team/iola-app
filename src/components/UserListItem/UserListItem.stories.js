@@ -1,7 +1,7 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
-import { withKnobs } from '@storybook/addon-knobs';
+import { withKnobs, boolean } from '@storybook/addon-knobs';
 import { storiesOf } from '@storybook/react-native';
 import faker from 'faker';
 import delay from 'promise-delay';
@@ -76,7 +76,7 @@ const style = {
 };
 
 stories.add('Default', () => withData('User:1', ({ user }) => (
-  <UserListItem user={user} style={style} />
+  <UserListItem user={user} style={style} last={boolean('Is last', false)} />
 )));
 
 stories.add('Loading', () => <UserListItem user={null} style={style} />);

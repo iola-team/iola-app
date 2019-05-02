@@ -11,8 +11,8 @@ import { withStyleSheet } from '~theme';
 
   sectionHeader: {
     marginLeft: 16,
-    marginBottom: 10,
-    marginTop: 10,
+    marginTop: 16,
+    fontWeight: '600',
   },
 
   headerList: {},
@@ -28,14 +28,14 @@ export default class SearchBlank extends PureComponent {
     ListComponent: PropTypes.func.isRequired,
     headerTitle: PropTypes.string,
     contentTitle: PropTypes.string,
-    hasRecentItems: PropTypes.bool,
+    hasContent: PropTypes.bool,
     headerList: PropTypes.element,
   };
 
   static defaultProps = {
     headerTitle: null,
     contentTitle: null,
-    hasRecentItems: true,
+    hasContent: false,
     headerList: null,
   };
 
@@ -45,7 +45,7 @@ export default class SearchBlank extends PureComponent {
       contentTitle,
       headerList,
       ListComponent,
-      hasRecentItems,
+      hasContent,
       style,
       styleSheet: styles,
       ...props
@@ -68,7 +68,7 @@ export default class SearchBlank extends PureComponent {
               </>
             )}
 
-            {hasRecentItems && (
+            {hasContent && (
               <>
                 {headerList && <View style={styles.sectionDelim} />}
                 {contentTitle && <Text style={styles.sectionHeader}>{contentTitle}</Text>}

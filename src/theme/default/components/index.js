@@ -285,6 +285,19 @@ export default (variables => ({
           paddingVertical: 15,
         },
       },
+
+      '.last': {
+        /**
+         * Hide bottom border of last item in list
+         * Overriding `borderBottomWidth` did not work, so had to hack it
+         */
+        "NativeBase.Body": {
+          borderBottomColor: 'rgba(0, 0, 0, 0)',
+        },
+        "NativeBase.Right": {
+          borderBottomColor: 'rgba(0, 0, 0, 0)',
+        },
+      },
     },
 
     'NativeBase.Card': {
