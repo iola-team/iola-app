@@ -80,7 +80,7 @@ const imageCommentsItemFragment = gql`
   },
 
   placeholderContent: {
-    backgroundColor: '#E4E8EF',
+    backgroundColor: '#FFFFFF',
     elevation: 0,
   },
 
@@ -88,7 +88,7 @@ const imageCommentsItemFragment = gql`
     width: 40,
     height: 40,
     borderRadius: 8,
-    backgroundColor: '#E4E8EF',
+    backgroundColor: '#FFFFFF',
   },
 })
 export default class ImageCommentsItem extends Component {

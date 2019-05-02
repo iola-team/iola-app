@@ -28,6 +28,8 @@ const userFragment = gql`
 
 const thumbnailStyle = {
   'NativeBase.ViewNB': {
+    alignSelf: 'flex-start',
+
     'NativeBase.ViewNB': {
       position: 'absolute',
       right: -5,
