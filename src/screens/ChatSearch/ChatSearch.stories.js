@@ -17,7 +17,7 @@ stories.addDecorator(getContainerDecorator());
 const createUser = (data = {}) => ({
   id: faker.random.uuid(),
   name: faker.name.findName(),
-  activityTime: faker.date.recent(),
+  isOnline: faker.random.boolean(),
   avatar: {
     id: faker.random.uuid(),
     url: faker.image.avatar(),
@@ -67,7 +67,7 @@ stories.addDecorator(getApolloDecorator({
     type User implements Node {
       id: ID!
       name: String!
-      activityTime: Date!
+      isOnline: Boolean!
       avatar: Avatar
       chats: UserChatsConnection!
     }

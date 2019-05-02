@@ -21,7 +21,7 @@ stories.addDecorator(getContainerDecorator());
 const createUser = ({ id = faker.random.uuid() } = {}) => ({
   id,
   name: faker.name.findName(),
-  activityTime: faker.date.recent(),
+  isOnline: faker.random.boolean(),
   avatar: {
     id: faker.random.uuid(),
     url: faker.image.avatar(),
@@ -48,7 +48,7 @@ const typeDefs = gql`
   type User implements Node {
     id: ID!
     name: String!
-    activityTime: Date!
+    isOnline: Boolean!
     avatar: Avatar
     friends(first: Int, after: Cursor, last: Int, before: Cursor): UserFriendsConnection!
   }
