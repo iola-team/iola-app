@@ -27,31 +27,31 @@ const userFragment = gql`
 `;
 
 const thumbnailStyle = {
-  'NativeBase.ViewNB': {
-    alignSelf: 'flex-start',
-
+  'NativeBase.ViewNB': { // This additional empty <View> is necessary for a valid markup
     'NativeBase.ViewNB': {
-      position: 'absolute',
-      right: -5,
-      bottom: -5,
-      padding: 2,
-      borderRadius: 5,
-    },
-
-    '.large': {
       'NativeBase.ViewNB': {
-        right: -11,
-        bottom: -11,
-        padding: 4,
-        borderRadius: 10,
+        position: 'absolute',
+        right: -5,
+        bottom: -5,
+        padding: 2,
+        borderRadius: 5,
+      },
 
-        'Sparkle.UserOnlineStatus': {
-          'NativeBase.ViewNB': {
-            'Sparkle.OnlineStatus': {
-              'NativeBase.ViewNB': {
-                width: 15,
-                height: 15,
-                borderRadius: 7,
+      '.large': {
+        'NativeBase.ViewNB': {
+          right: -11,
+          bottom: -11,
+          padding: 4,
+          borderRadius: 10,
+
+          'Sparkle.UserOnlineStatus': {
+            'NativeBase.ViewNB': {
+              'Sparkle.OnlineStatus': {
+                'NativeBase.ViewNB': {
+                  width: 15,
+                  height: 15,
+                  borderRadius: 7,
+                },
               },
             },
           },
@@ -125,10 +125,12 @@ export default class UserAvatar extends Component {
     };
     const uri = get(user, ['avatar', size], defaultUri);
     const thumbnail = (
-      <View {...borderSizeProps} style={style}>
-        <Thumbnail {...thumbnailProps} source={{ uri }} />
-        <View foreground={foreground} highlight={!foreground}>
-          <UserOnlineStatus user={user} />
+      <View>
+        <View {...borderSizeProps} style={style}>
+          <Thumbnail {...thumbnailProps} source={{ uri }} />
+          <View foreground={foreground} highlight={!foreground}>
+            <UserOnlineStatus user={user} />
+          </View>
         </View>
       </View>
     );
