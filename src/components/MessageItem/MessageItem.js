@@ -27,18 +27,19 @@ const messageFragment = gql`
   flexDirection: 'row',
 
   'Sparkle.UserAvatar': {
-    marginLeft: -40,
+    marginLeft: -48,
+    marginRight: 8,
   },
 
   '.hasAvatar': {
-    paddingLeft: 56,
+    paddingLeft: 48,
     paddingRight: 34,
   },
 
   '.right': {
     justifyContent: 'flex-end',
     alignSelf: 'flex-end',
-    paddingLeft: 56 + 34, // paddingLeft and paddingRight of .hasAvatar
+    paddingLeft: 48 + 34, // paddingLeft and paddingRight of .hasAvatar
   },
 
   '.last': {
@@ -73,7 +74,7 @@ export default class MessageItem extends Component {
 
     return (
       <ViewRN style={style}>
-        {showAvatar && <Avatar size="small" user={message.user} />}
+        {showAvatar && <Avatar size="medium" user={message.user} />}
         <MessageContent message={message} first={first} {...props} />
       </ViewRN>
     );
