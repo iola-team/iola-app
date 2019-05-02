@@ -19,10 +19,36 @@ import introspectionQueryResultData from './meta/fragmentTypes.json';
 
 disableFragmentWarnings();
 
+const defaultClientOptions = {
+  /**
+   * Default options for <Query /> component and graphql HOC
+   */
+  watchQuery: {
+    fetchPolicy: 'cache-and-network',
+    errorPolicy: 'none',
+  },
+
+  /**
+   * Default options for cilent.query() method
+   */
+  query: {
+    fetchPolicy: 'network-only',
+    errorPolicy: 'all',
+  },
+
+  /**
+   * Default options for mutations
+   */
+  mutate: {
+    errorPolicy: 'all',
+  },
+};
+
 export async function createClient({
   terminatingLink,
   persistorStorage = AsyncStorage,
   restoreCache = true,
+  defaultOptions = defaultClientOptions,
 }) {
   const fragmentMatcher = new IntrospectionFragmentMatcher({
     introspectionQueryResultData,
@@ -55,6 +81,11 @@ export async function createClient({
       terminatingLink,
     ]),
     cache,
+
+    /**
+     * Default query, mutation options
+     */
+    defaultOptions,
 
     /**
      * Client state configs
