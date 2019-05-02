@@ -7,6 +7,9 @@ import RefreshControl from '../RefreshControl';
 import { TabBar, Header, Context } from './SceneView';
 import BarBackgroundView from '../BarBackgroundView';
 
+/**
+ * TODO: Refactor this entire class. Most of the taken approaches require review.
+ */
 class ScrollView extends PureComponent {
   static contextType = Context;
   static defaultProps = {
@@ -15,6 +18,11 @@ class ScrollView extends PureComponent {
 
   unsubscribe = [];
   scrollRef = null;
+  state = {
+    layout: null,
+  };
+
+  onLayout = ({ nativeEvent: { layout } }) => this.setState({ layout });
 
   scrollTo = (y, animated = false) => {
     if (this.scrollRef) {
@@ -61,6 +69,13 @@ class ScrollView extends PureComponent {
       : contentInset;
   }
 
+  getContentMinHeight() {
+    const { layout } = this.state;
+    const { top, bottom } = this.getContentInset();
+
+    return layout && layout.height - top - bottom;
+  }
+
   renderRefreshControl() {
     const { refreshControl, refreshing, onRefresh } = this.props;
 
@@ -74,20 +89,22 @@ class ScrollView extends PureComponent {
   }
   
   render() {
+    const { layout } = this.state;
     const { contentContainerStyle = {}, ...restProps } = this.props;
     const refreshControl = this.renderRefreshControl();
     const contentInset = this.getContentInset();
     const contentOffset = contentInset && { y: -contentInset.top };
-    const contentStyle = [contentContainerStyle, {
-      // flexGrow: 1, // TODO: Check no items cases before removing this line
-    }];
 
     if (!this.context) {
       return (
         <ScrollViewRN
           {...restProps}
 
-          contentContainerStyle={contentStyle}
+          onLayout={this.onLayout}
+          contentContainerStyle={[contentContainerStyle, {
+            minHeight: this.getContentMinHeight(),
+            opacity: layout ? 1 : 0,
+          }]}
           contentOffset={contentOffset}
           contentInset={contentInset}
           refreshControl={refreshControl}
@@ -159,7 +176,7 @@ class ScrollView extends PureComponent {
           </View>
         </Animated.View>
 
-        <ViewRN style={[contentStyle, { minHeight: contentHeight }]}>
+        <ViewRN style={[contentContainerStyle, { minHeight: contentHeight }]}>
           {children}
         </ViewRN>
 
