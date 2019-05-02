@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { find, isUndefined } from 'lodash';
+import { find } from 'lodash';
 import { Text } from 'native-base';
 
 import { withStyleSheet } from '~theme';
@@ -47,11 +47,7 @@ export default class Select extends Component {
 
     return (
       <Fragment>
-        <FieldInput
-          label={label}
-          isLoading={isUndefined(rawValue)}
-          {...props}
-        >
+        <FieldInput label={label} {...props}>
           <TouchableOpacity onPress={this.showPicker}>
             <Text note={!value.length}>
               {value.length ? selectedLabels.join(', ') : placeholder}

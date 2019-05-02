@@ -100,7 +100,7 @@ export default class SignUpScreen extends Component {
             <Content>
               <Title>Please sign up</Title>
 
-              <SignUpForm onSubmit={() => navigate(LAUNCH)} />
+              <SignUpForm onSubmit={() => navigate(LAUNCH, { loading: true })} />
 
               <TermsContainer>
                 <TermsText>By signing up, you agree</TermsText>

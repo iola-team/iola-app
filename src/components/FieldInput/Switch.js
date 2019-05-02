@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { isUndefined } from 'lodash';
 import { Switch } from 'native-base';
 
 import FieldInput from './FieldInput';
@@ -19,10 +18,7 @@ export default class SwitchInput extends Component {
     } = this.props;
 
     return (
-      <FieldInput
-        isLoading={isUndefined(value)}
-        {...props}
-      >
+      <FieldInput {...props}>
         <Switch value={value} onValueChange={this.onChange} />
       </FieldInput>
     );

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { isArray, isUndefined } from 'lodash';
 import PropTypes from 'prop-types';
-import { Text } from 'native-base';
 import Picker from 'react-native-image-crop-picker';
 import FetchBlob from 'rn-fetch-blob';
 
@@ -61,7 +60,7 @@ export default class ImagePicker extends Component {
       const blob = await File.build(
         image.path.split('/').pop(),
         FetchBlob.wrap(image.path),
-        image.mime,
+        { type: image.mime },
       );
 
       return {

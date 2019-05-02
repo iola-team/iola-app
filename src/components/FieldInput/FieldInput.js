@@ -25,13 +25,13 @@ import Icon from '../Icon';
 export default class FieldInput extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
-    isLoading: PropTypes.bool,
+    loading: PropTypes.bool,
     error: PropTypes.string,
     last: PropTypes.bool,
   };
 
   static defaultProps = {
-    isLoading: false,
+    loading: false,
     error: '',
     last: false,
   };
@@ -57,10 +57,10 @@ export default class FieldInput extends PureComponent {
   };
 
   renderRight() {
-    const { isLoading, error } = this.props;
+    const { loading, error } = this.props;
     const { isToastVisible } = this.state;
 
-    if (isLoading) return <Spinner size="small" />;
+    if (loading) return <Spinner size="small" />;
 
     if (error) {
       return (

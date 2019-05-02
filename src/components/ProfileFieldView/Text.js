@@ -12,6 +12,7 @@ const fieldFragment = gql`
       ...on ProfileFieldTextConfigs {
         multiline
         secure
+        format
       }
     }
   }
@@ -22,6 +23,11 @@ const dataFragment = gql`
     stringValue: value
   }
 `;
+
+const displayTypes = {
+  'EMAIL': 'email',
+  'URL': 'url',
+};
 
 export default class ProfileFieldViewText extends PureComponent {
   static fieldOptions = {
@@ -44,7 +50,7 @@ export default class ProfileFieldViewText extends PureComponent {
 
   render() {
     const {
-      field: { label, configs: { secure, multiline } },
+      field: { label, configs: { secure, multiline, format } },
       data,
       ...props
     } = this.props;
@@ -53,6 +59,7 @@ export default class ProfileFieldViewText extends PureComponent {
       <FieldView
         {...props}
         type="text"
+        displayType={format && displayTypes[format]}
         secure={secure}
         multiline={multiline}
         label={label}

@@ -7,10 +7,6 @@ export default class ActionSheet extends Component {
   static propTypes = {
     options: PropTypes.array.isRequired,
     children: PropTypes.func,
-    cancelButtonIndex: PropTypes.number,
-    destructiveButtonIndex: PropTypes.number,
-    title: PropTypes.string,
-    message: PropTypes.string,
     onPress: PropTypes.func,
   };
 
@@ -26,7 +22,7 @@ export default class ActionSheet extends Component {
     this.actionSheet = ref;
   };
 
-  show({ onPress = noop } = {}) {
+  show = ({ onPress = noop } = {}) => {
     this.actionSheet.show();
     this.onPressCallback = onPress;
   }
@@ -43,7 +39,7 @@ export default class ActionSheet extends Component {
 
     return (
       <>
-        {children(::this.show)}
+        {children(this.show)}
 
         <ActionSheetRN
           {...props}
