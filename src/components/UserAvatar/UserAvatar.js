@@ -3,6 +3,7 @@ import { get, noop } from 'lodash';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import { View as ViewRN } from 'react-native';
 import { Thumbnail, View } from 'native-base';
 
 import { withStyle } from '~theme';
@@ -27,31 +28,29 @@ const userFragment = gql`
 `;
 
 const thumbnailStyle = {
-  'NativeBase.ViewNB': { // This additional empty <View> is necessary for a valid markup
+  'NativeBase.ViewNB': {
     'NativeBase.ViewNB': {
+      position: 'absolute',
+      right: -5,
+      bottom: -5,
+      padding: 2,
+      borderRadius: 5,
+    },
+
+    '.large': {
       'NativeBase.ViewNB': {
-        position: 'absolute',
-        right: -5,
-        bottom: -5,
-        padding: 2,
-        borderRadius: 5,
-      },
+        right: -11,
+        bottom: -11,
+        padding: 4,
+        borderRadius: 10,
 
-      '.large': {
-        'NativeBase.ViewNB': {
-          right: -11,
-          bottom: -11,
-          padding: 4,
-          borderRadius: 10,
-
-          'Sparkle.UserOnlineStatus': {
-            'NativeBase.ViewNB': {
-              'Sparkle.OnlineStatus': {
-                'NativeBase.ViewNB': {
-                  width: 15,
-                  height: 15,
-                  borderRadius: 7,
-                },
+        'Sparkle.UserOnlineStatus': {
+          'NativeBase.ViewNB': {
+            'Sparkle.OnlineStatus': {
+              'NativeBase.ViewNB': {
+                width: 15,
+                height: 15,
+                borderRadius: 7,
               },
             },
           },
@@ -125,14 +124,14 @@ export default class UserAvatar extends Component {
     };
     const uri = get(user, ['avatar', size], defaultUri);
     const thumbnail = (
-      <View>
-        <View {...borderSizeProps} style={style}>
+      <ViewRN style={style}>
+        <View {...borderSizeProps}>
           <Thumbnail {...thumbnailProps} source={{ uri }} />
           <View foreground={foreground} highlight={!foreground}>
             <UserOnlineStatus user={user} />
           </View>
         </View>
-      </View>
+      </ViewRN>
     );
 
     return onPress ? (
