@@ -3,6 +3,7 @@ import { get, noop } from 'lodash';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import { View as ViewRN } from 'react-native';
 import { Thumbnail, View } from 'native-base';
 
 import { withStyle } from '~theme';
@@ -28,8 +29,6 @@ const userFragment = gql`
 
 const thumbnailStyle = {
   'NativeBase.ViewNB': {
-    alignSelf: 'flex-start',
-
     'NativeBase.ViewNB': {
       position: 'absolute',
       right: -5,
@@ -125,12 +124,14 @@ export default class UserAvatar extends Component {
     };
     const uri = get(user, ['avatar', size], defaultUri);
     const thumbnail = (
-      <View {...borderSizeProps} style={style}>
-        <Thumbnail {...thumbnailProps} source={{ uri }} />
-        <View foreground={foreground} highlight={!foreground}>
-          <UserOnlineStatus user={user} />
+      <ViewRN style={style}>
+        <View {...borderSizeProps}>
+          <Thumbnail {...thumbnailProps} source={{ uri }} />
+          <View foreground={foreground} highlight={!foreground}>
+            <UserOnlineStatus user={user} />
+          </View>
         </View>
-      </View>
+      </ViewRN>
     );
 
     return onPress ? (
