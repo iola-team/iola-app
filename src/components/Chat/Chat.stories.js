@@ -18,36 +18,37 @@ const stories = storiesOf('Components/Chat', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContainerDecorator({
-  backgroundColor: '#F3F4F7',
-}));
+stories.addDecorator(getContainerDecorator({ backgroundColor: '#F3F4F7' }));
 
 const subscriptions = new PubSub();
 const users = [
   {
     id: 'User:1',
     name: 'Roman Banan',
+    isOnline: faker.random.boolean(),
     avatar: {
       id: 'Avatar:1',
-      url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
+      url: faker.image.avatar(),
     },
   },
 
   {
     id: 'User:2',
     name: 'Grey Rabbit',
+    isOnline: faker.random.boolean(),
     avatar: {
       id: 'Avatar:2',
-      url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
+      url: faker.image.avatar(),
     },
   },
 
   {
     id: 'User:3',
     name: 'Jk KK',
+    isOnline: faker.random.boolean(),
     avatar: {
       id: 'Avatar:3',
-      url: 'https://avatarfiles.alphacoders.com/458/45801.jpg',
+      url: faker.image.avatar(),
     },
   },
 ];
@@ -168,6 +169,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     avatar: Avatar
+    isOnline: Boolean!
     chat(id: ID, recipientId: ID): Chat
     chats(first: Int, after: Cursor, last: Int, before: Cursor): UserChatsConnection!
   }

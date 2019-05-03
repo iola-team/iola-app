@@ -28,7 +28,7 @@ const typeDefs = gql`
   type User {
     id: ID!
     name: String!
-    activityTime: Date!
+    isOnline: Boolean!
     avatar: Avatar!
     photos(first: Int, after: Cursor, last: Int, before: Cursor): UserPhotoConnection!
   }
@@ -137,17 +137,14 @@ const dataStore = (() => {
   const generateDate = () => (
     moment(faker.date.between(moment().subtract(3, 'hours').format(), moment())).format()
   );
-  const generateActivityTime = () => (
-    moment(faker.date.between(moment().subtract(10, 'minutes').format(), moment())).toDate()
-  );
   const users = Array.from({ length: 10 }).map((item, index) => ({
     id: `User:${index + 1}`,
     name: generateName(),
+    isOnline: faker.random.boolean(),
     avatar: {
       id: `Avatar:${index + 1}`,
       url: faker.image.avatar(),
     },
-    activityTime: generateActivityTime(),
   }));
   const images = shuffle(['https://images.unsplash.com/photo-1508138221679-760a23a2285b', 'https://images.unsplash.com/photo-1485550409059-9afb054cada4', 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308', 'https://images.unsplash.com/photo-1505678261036-a3fcc5e884ee', 'https://images.unsplash.com/photo-1519627398411-c86cd6daf9ac', 'https://images.unsplash.com/photo-1524050586923-77990e57ae14', 'https://images.unsplash.com/photo-1429087969512-1e85aab2683d', 'https://images.unsplash.com/photo-1523575518836-9166d367179f', 'https://images.unsplash.com/photo-1443106479821-1617f92e6983', 'https://images.unsplash.com/photo-1500462918059-b1a0cb512f1d', 'https://images.unsplash.com/photo-1494212062681-54f7aa085e11', 'https://images.unsplash.com/photo-1521318552330-5404359bc012']);
   const generateComments = () => {
