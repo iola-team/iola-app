@@ -26,7 +26,7 @@ const signUpUserMutation = gql`
         id
         name
         email
-        activityTime
+        isOnline
       }
     }
   }

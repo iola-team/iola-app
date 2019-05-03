@@ -43,7 +43,7 @@ const typeDefs = gql`
   type User {
     id: ID!
     name: String!
-    activityTime: Date!
+    isOnline: Boolean!
     avatar: Avatar
   }
 
@@ -57,7 +57,7 @@ const mocks = {
   User: () => delay(1000).then(() => ({
     id: faker.random.uuid(),
     name: faker.name.findName(),
-    activityTime: faker.date.recent(),
+    isOnline: faker.random.boolean(),
   })),
 
   Avatar: () => ({
