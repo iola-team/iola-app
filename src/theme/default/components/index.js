@@ -516,5 +516,15 @@ export default (variables => ({
         backgroundColor: variables.backgroundColor,
       },
     },
+
+    'Sparkle.ImageCommentsItem': {
+      placeholderContent: {
+        backgroundColor: variables.placeholderColor,
+      },
+
+      placeholderAvatar: {
+        backgroundColor: variables.placeholderColor,
+      },
+    },
   }),
 }));

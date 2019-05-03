@@ -29,8 +29,9 @@ const users = [
     name: 'Roman Banan',
     avatar: {
       id: 'Avatar:1',
-      url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
+      url: faker.image.avatar(),
     },
+    activityTime: faker.date.recent(),
   },
 
   {
@@ -38,8 +39,9 @@ const users = [
     name: 'Grey Rabbit',
     avatar: {
       id: 'Avatar:2',
-      url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
+      url: faker.image.avatar(),
     },
+    activityTime: faker.date.recent(),
   },
 
   {
@@ -47,8 +49,9 @@ const users = [
     name: 'Jk KK',
     avatar: {
       id: 'Avatar:3',
-      url: 'https://avatarfiles.alphacoders.com/458/45801.jpg',
+      url: faker.image.avatar(),
     },
+    activityTime: faker.date.recent(),
   },
 ];
 
@@ -168,6 +171,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     avatar: Avatar
+    activityTime: Date!
     chat(id: ID, recipientId: ID): Chat
     chats(first: Int, after: Cursor, last: Int, before: Cursor): UserChatsConnection!
   }
