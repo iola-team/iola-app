@@ -64,6 +64,22 @@ export default class Channels extends Component {
   onSearchPress = () => this.props.navigation.navigate(CHAT_SEARCH);
   onRefresh = () => this.props.data.refetch();
 
+  componentDidMount() {
+    const { navigation, data } = this.props;
+
+    /**
+     * TODO: Temporary solution, till we add online users `graphql` subscriptions
+     * https://gitlab.com/thisissparkle/messenger/issues/337
+     * 
+     */
+    navigation.addListener('didFocus', () => {
+      data.refetch();
+      data.startPolling(3000);
+    });
+
+    navigation.addListener('willBlur', () => data.stopPolling());
+  }
+
   render() {
     const {
       styleSheet: styles,
