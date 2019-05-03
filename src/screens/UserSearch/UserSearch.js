@@ -9,7 +9,6 @@ import {
   SearchBar,
   SearchResult,
   UserList,
-  UsersRow,
   SearchBlank,
   TouchableOpacity,
 } from '~components';
@@ -32,18 +31,6 @@ const searchQuery = gql`
 
   ${UserList.fragments.edge}
   ${SearchResult.fragments.connection}
-`;
-
-const onlineUsersQuery = gql`
-  query UserSearchOnlineQuery {
-    users(filter: { online: true }, first: 100) {
-      edges {
-        ...UsersRow_edge
-      }
-    }
-  }
-
-  ${UsersRow.fragments.edge}
 `;
 
 const recentUsersQuery = gql`
@@ -111,40 +98,25 @@ export default class UserSearch extends Component {
     const recentEdgeSorter = (a, b) => recentIds.indexOf(a.node.id) - recentIds.indexOf(b.node.id);
 
     return (
-      <Query query={onlineUsersQuery}>
-        {({ data: { users: onlineUsers }, loading: loadingOnline }) => (
-          <Query query={recentUsersQuery} variables={{ ids: recentIds }} skip={!recentIds.length}>
-            {({ data: recentData, loading: loadingRecent }) => (
+      <Query query={recentUsersQuery} variables={{ ids: recentIds }} skip={!recentIds.length}>
+        {({ data: recentData, loading: loadingRecent }) => (
 
-              <SearchBlank
-                /**
-                 * TODO: Memo the sort result
-                 */
-                edges={recentData?.users?.edges.sort(recentEdgeSorter)}
+          <SearchBlank
+            /**
+             * TODO: Memo the sort result
+             */
+            edges={recentData?.users?.edges.sort(recentEdgeSorter)}
 
-                loading={loadingRecent}
-                hasRecentItems={!!recentIds.length}
-                headerTitle="Online"
-                contentTitle="Recent"
-                ListEmptyComponent={null} // Disable `no items`
-                onItemPress={onItemPress}
-                keyboardShouldPersistTaps="handled"
-                ListComponent={UserList}
-                contentInset={{ ...screenProps.contentInset, bottom: 0 }}
+            loading={loadingRecent}
+            hasContent={!!recentIds.length}
+            contentTitle="Recent"
+            ListEmptyComponent={null} // Disable `no items`
+            onItemPress={onItemPress}
+            keyboardShouldPersistTaps="handled"
+            ListComponent={UserList}
+            contentInset={{ ...screenProps.contentInset, bottom: 0 }}
+          />
 
-                headerList={(
-                  <UsersRow
-                    loading={loadingOnline}
-                    edges={onlineUsers?.edges}
-                    onItemPress={onItemPress}
-                    showsHorizontalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handled"
-                  />
-                )}
-              />
-
-            )}
-          </Query>
         )}
       </Query>
     );

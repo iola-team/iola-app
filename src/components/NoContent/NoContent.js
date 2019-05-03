@@ -33,6 +33,7 @@ const AnimatedText = Animated.createAnimatedComponent(Text);
     textAlign: 'center',
     fontSize: 14,
     lineHeight: 20,
+    fontWeight: '600',
     color: '#C5CAD1',
   },
 
@@ -52,13 +53,14 @@ const AnimatedText = Animated.createAnimatedComponent(Text);
 })
 export default class NoContent extends Component {
   static propTypes = {
-    icon: PropTypes.string.isRequired,
+    icon: PropTypes.string,
     text: PropTypes.string,
     iconScale: PropTypes.object,
     inverted: PropTypes.bool,
   };
 
   static defaultProps = {
+    icon: null,
     text: null,
     iconScale: null,
     inverted: false,
@@ -78,10 +80,11 @@ export default class NoContent extends Component {
 
     return (
       <Animated.View {...props}>
-        <AnimatedView style={iconContainerStyle}>
-          <Icon name={icon} />
-        </AnimatedView>
-
+        {icon && (
+          <AnimatedView style={iconContainerStyle}>
+            <Icon name={icon} />
+          </AnimatedView>
+        )}
         {text && <AnimatedText style={labelStyle}>{text}</AnimatedText>}
       </Animated.View>
     );

@@ -19,15 +19,29 @@ import { CHANNEL, CHAT_SEARCH } from '../routeNames';
     marginTop: -999,
   },
 })
+/**
+ * TODO: refactor the component to not use this `me` query just to read `me.id`
+ */
 @graphql(gql`
-  query ChannelsQuery {
+  query {
     me {
       id
     }
-
-    users(filter: { online: true }, first: 100) {
-      edges {
-        ...UsersRow_edge
+  }
+`, {
+  name: 'meData',
+  options: {
+    fetchPolicy: 'cache-first',
+  },
+})
+@graphql(gql`
+  query MyOnlineFriendsQuery {
+    me {
+      id
+      friends (filter: { online: true }) {
+        edges {
+          ...UsersRow_edge
+        }
       }
     }
   }
@@ -48,9 +62,31 @@ export default class Channels extends Component {
   onChatPress = ({ node }) => this.props.navigation.navigate(CHANNEL, { chatId: node.id });
   onUserPress = ({ node }) => this.props.navigation.navigate(CHANNEL, { userId: node.id });
   onSearchPress = () => this.props.navigation.navigate(CHAT_SEARCH);
+  onRefresh = () => this.props.data.refetch();
+
+  componentDidMount() {
+    const { navigation, data } = this.props;
+
+    /**
+     * TODO: Temporary solution, till we add online users `graphql` subscriptions
+     * https://gitlab.com/thisissparkle/messenger/issues/337
+     * 
+     */
+    navigation.addListener('didFocus', () => {
+      data.refetch();
+      data.startPolling(3000);
+    });
+
+    navigation.addListener('willBlur', () => data.stopPolling());
+  }
 
   render() {
-    const { styleSheet: styles, data: { me, users, loading }, screenProps } = this.props;
+    const {
+      styleSheet: styles,
+      data: { me: { friends } = {}, loading: loadingFriends }, 
+      meData: { me, loading: loadingMe }, 
+      screenProps,
+    } = this.props;
 
     return (
       <Container>
@@ -65,14 +101,19 @@ export default class Channels extends Component {
 
 
               <UsersRow
-                loading={loading}
-                edges={users?.edges || []}
+                loading={loadingFriends}
+                edges={friends?.edges}
                 onItemPress={this.onUserPress}
+
+                noContentText="No friends online"
               />
             </View>
           )}
+
+          loading={loadingMe}
           userId={me?.id}
           onItemPress={this.onChatPress}
+          onRefresh={this.onRefresh}
 
           contentInset={screenProps.contentInset}
         />

@@ -137,6 +137,7 @@ export default class ChatListItem extends Component {
       currentUserId,
       unreadMessagesCount,
       onPress,
+      ...props
     } = this.props;
 
     if (!chat) {
@@ -148,7 +149,7 @@ export default class ChatListItem extends Component {
     const lastMessage = messages.edges[0].node;
 
     return (
-      <ListItem style={style} button avatar chatItem onPress={onPress}>
+      <ListItem {...props} style={style} button avatar chatItem onPress={onPress}>
         <Left>
           <UserAvatar user={recipient} />
         </Left>

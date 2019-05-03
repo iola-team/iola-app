@@ -142,14 +142,14 @@ export default class ChatSearch extends Component {
 
             user={me}
             loading={loading}
-            hasRecentItems={!!recentIds.length}
+            hasContent={!!recentIds.length}
             contentTitle="Recent"
             onItemPress={onItemPress}
             keyboardShouldPersistTaps="handled"
             ListEmptyComponent={null} // Disable `no items`
             ListComponent={ChatList}
 
-            contentInset={screenProps.contentInset}
+            contentInset={{ ...screenProps.contentInset, bottom: 0 }}
           />
         )}
       </Query>

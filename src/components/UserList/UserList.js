@@ -47,13 +47,14 @@ export default class UserList extends Component {
 
   extractItemKey = ({ node, key }) => key || node.id;
 
-  renderItem = ({ item }) => {
-    const { onItemPress } = this.props;
+  renderItem = ({ item, index }) => {
+    const { onItemPress, edges } = this.props;
     const { node } = item;
 
     return (
       <UserListItem
         user={node}
+        last={(index + 1) === edges?.length}
         onPress={() => onItemPress(item)}
       />
     );

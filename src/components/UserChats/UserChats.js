@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-import { filter } from 'lodash';
+import { filter, noop } from 'lodash';
 
 import ChatList from '../ChatList';
 import MessageUpdateSubscription from '../MessageUpdateSubscription';
@@ -69,10 +69,16 @@ const subscriptionQuery = gql`
 export default class UserChats extends Component {
   static propTypes = {
     userId: PropTypes.string,
+    loading: PropTypes.bool,
+    onRefresh: PropTypes.func,
+    refreshing: PropTypes.bool,
   };
 
   static defaultProps = {
     userId: null,
+    loading: false,
+    onRefresh: noop,
+    refreshing: false,
   };
 
   state = {
@@ -115,7 +121,7 @@ export default class UserChats extends Component {
   }
 
   refresh = async () => {
-    const { data: { refetch } } = this.props;
+    const { data: { refetch }, onRefresh } = this.props;
     
     this.setState({ isRefreshing: true });
     try {
@@ -123,6 +129,8 @@ export default class UserChats extends Component {
     } catch {
       // Pass...
     }
+
+    await onRefresh();
     this.setState({ isRefreshing: false });
   };
 
@@ -139,7 +147,7 @@ export default class UserChats extends Component {
   }
 
   render() {
-    const { data, ...restProps } = this.props;
+    const { data, loading, ...props } = this.props;
     const { isRefreshing } = this.state;
     const edges = data?.user?.chats.edges;
     const unreadCounts = edges?.map(edge => edge.node.unreadMessages.totalCount) || [];
@@ -147,10 +155,10 @@ export default class UserChats extends Component {
     return (
       <>
         <ChatList
-          {...restProps}
+          {...props}
 
-          refreshing={isRefreshing}
-          loading={data?.loading}
+          refreshing={isRefreshing || props.refreshing}
+          loading={loading || data?.loading}
           user={data?.user}
           unreadCounts={unreadCounts}
           edges={edges}
