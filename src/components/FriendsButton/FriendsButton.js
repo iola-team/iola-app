@@ -1,4 +1,4 @@
-import React, { Component, Fragment, createRef } from 'react';
+import React, { PureComponent, Fragment, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -49,7 +49,7 @@ const createOptimisticEdge = ({ userId, friendId, status = 'PENDING', friendship
     },
   },
 })
-export default class FriendsButton extends Component {
+export default class FriendsButton extends PureComponent {
   static createOptimisticEdge = createOptimisticEdge;
   static fragments = {
     edge: edgeFragment,
@@ -66,7 +66,7 @@ export default class FriendsButton extends Component {
   };
 
   static defaultProps = {
-    edge: null,
+    edge: undefined,
     disabled: false,
     loading: false,
   };
@@ -76,7 +76,11 @@ export default class FriendsButton extends Component {
   getFriendshipType() {
     const { edge } = this.props;
 
-    if (!edge) {
+    if (edge === undefined) {
+      return null;
+    }
+
+    if (edge === null) {
       return 'new';
     }
 
@@ -148,6 +152,7 @@ export default class FriendsButton extends Component {
     const { style, block, disabled, loading} = this.props;
     const friendshipType = this.getFriendshipType();
     const hasIcon = ['active', 'sent'].includes(friendshipType);
+    const showLoading = loading && friendshipType === null;
 
     return (
       <Fragment>
@@ -157,15 +162,15 @@ export default class FriendsButton extends Component {
           block={block}
           iconRight={hasIcon}
           style={style}
-          disabled={disabled || loading}
+          disabled={disabled || showLoading}
           onPress={this.onPress}
         >
-          <Text style={{ opacity: loading ? 0 : 1 }}>
+          <Text style={{ opacity: showLoading ? 0 : 1 }}>
             Friends
           </Text>
           {hasIcon && <Icon name='check' />}
         </Button>
-        {this.renderActionSheet(friendshipType)}
+        {friendshipType && this.renderActionSheet(friendshipType)}
       </Fragment>
     );
   }

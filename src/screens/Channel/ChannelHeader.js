@@ -70,20 +70,15 @@ const chatQuery = gql`
 })
 export default class ChannelHeader extends Component {
   getUser() {
-    const { userData, chatData } = this.props;
+    const { userData, chatData: { me, chat } = {} } = this.props;
 
     if (userData) {
       return userData.user;
     }
 
-    if (!chatData || chatData.loading) {
-      return null;
-    }
+    const [ user ] = chat?.participants.filter(({ id }) => id !== me.id) || [];
 
-    const { chat, me } = chatData;
-    const [ user = chat.participants[0] ] = chat.participants.filter(({ id }) => id !== me.id);
-
-    return user;
+    return user || chat?.participants[0];
   }
 
   renderRight = () => {

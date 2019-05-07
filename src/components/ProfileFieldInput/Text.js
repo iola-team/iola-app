@@ -98,7 +98,7 @@ export default class ProfileFieldInputText extends PureComponent {
     const { format, fieldConfigs } = field.configs;
     const extraProps = ['URL', 'EMAIL'].includes(format) ? {
       keyboardType: keyboardTypes[format],
-      autoCapitalize: false,
+      autoCapitalize: 'none',
       autoCorrect: false,
     } : {};
 

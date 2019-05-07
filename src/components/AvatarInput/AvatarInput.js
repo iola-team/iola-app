@@ -95,12 +95,13 @@ export default class AvatarInput extends PureComponent {
      */
     const defaultAvatarImage = 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg';
     const resultImage = value === undefined ? image : value;
+    const showLoading = !resultImage && loading;
     const avatarUrl = resultImage || defaultAvatarImage;
 
     return (
       <View style={[styles.root, style]}>
         <View style={styles.imageHolder}>
-          {loading
+          {showLoading
             ? <Placeholder style={[styles.image, styles.placeholder]} />
             : <Image style={styles.image} source={{ uri: avatarUrl }} />
           }
@@ -111,7 +112,7 @@ export default class AvatarInput extends PureComponent {
             Edit profile photo
           </Text>
 
-          {!loading && (
+          {!showLoading && (
             <View style={styles.buttons}>
               {
                 resultImage ? (
