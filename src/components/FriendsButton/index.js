@@ -145,7 +145,7 @@ export default class FriendsButtonContainer extends Component {
     return (
       <FriendsButton
         disabled={me?.id === userId}
-        edge={me?.friends.edges[0]}
+        edge={me?.friends && (me.friends.edges[0] || null)}
         loading={loading}
         onAcceptPress={this.onAddPress}
         onAddPress={this.onAddPress}
