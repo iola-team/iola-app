@@ -17,6 +17,9 @@ import Icon from '../Icon';
   transparent: {},
 
   icon: {
+    paddingLeft: 10,
+    paddingRight: 5,
+    paddingVertical: 5,
     fontSize: 16,
     color: '#BDC0CB',
   },
