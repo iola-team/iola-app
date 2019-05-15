@@ -15,7 +15,9 @@ const stories = storiesOf('Components/UsersRow', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContainerDecorator());
+stories.addDecorator(getContainerDecorator({
+  backgroundColor: '#FFFFFF',
+}));
 
 const createUser = ({ id = faker.random.uuid() } = {}) => ({
   id,
@@ -95,7 +97,7 @@ const usersQuery = gql`
   query UsersQuery {
     users {
       edges {
-        ...UserList_edge
+        ...UsersRow_edge
       }
     }
   }
@@ -106,7 +108,7 @@ const usersQuery = gql`
 stories.add('Full flow', () => (
   <Query query={usersQuery}>
     {({ loading, data }) => (
-      <UsersRow edges={data.users?.edges || []} loading={loading} />
+      <UsersRow edges={data?.users?.edges} loading={loading} />
     )}
   </Query>
 ));

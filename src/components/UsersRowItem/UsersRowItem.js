@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { View as ViewRN } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { View as ViewRN, StyleSheet } from 'react-native';
 import { View, Text } from 'native-base';
 
 import { withStyle } from '~theme';
@@ -25,6 +26,7 @@ const userFragment = gql`
   padding: 5,
 
   'Sparkle.TouchableOpacity': {
+    overflow: 'hidden',
     alignItems: 'center',
 
     'NativeBase.Text': {
@@ -94,7 +96,19 @@ export default class UserListItem extends Component {
       <ViewRN {...props}>
         <Touchable onPress={onPress}>
           <UserAvatar size="medium" user={user} foreground />
-          <Text numberOfLines={1} ellipsizeMode="clip">{user.name}</Text>
+          <ViewRN>
+            <Text numberOfLines={1} ellipsizeMode="clip">{user.name}</Text>
+            <LinearGradient
+              colors={['#FFF0', '#FFF']} // TODO: Add theme variables support
+              start={{x: 0, y: 0}}
+              end={{x: 1, y: 0}}
+              style={{
+                ...StyleSheet.absoluteFillObject,
+                width: 15,
+                left: null,
+              }}
+            />
+          </ViewRN>
         </Touchable>
       </ViewRN>
     );

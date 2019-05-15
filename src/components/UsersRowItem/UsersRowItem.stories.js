@@ -38,8 +38,13 @@ const typeDefs = gql`
   }
 `;
 
+const userIdToDelay = {
+  'User:1': 1000,
+  'User:2': 0,
+};
+
 const mocks = {
-  User: () => delay(1000).then(() => ({
+  User: (root, { id }) => delay(userIdToDelay[id]).then(() => ({
     id: faker.random.uuid(),
     name: faker.name.findName(),
     isOnline: faker.random.boolean(),
@@ -71,7 +76,11 @@ const withData = (id, render) => (
   </Query>
 );
 
-stories.add('Default', () => withData('User:1', ({ user }) => (
+stories.add('Default', () => withData('User:2', ({ user }) => (
+  <UsersRowItem user={user} />
+)));
+
+stories.add('Full flow', () => withData('User:1', ({ user }) => (
   <UsersRowItem user={user} />
 )));
 
