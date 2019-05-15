@@ -1,24 +1,49 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react-native';
-import { boolean, withKnobs } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
+import gql from 'graphql-tag';
 
+import { getApolloDecorator, getContentDecorator } from '~storybook';
 import Launch from './Launch';
 
 const stories = storiesOf('Screens/Launch', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
+stories.addDecorator(getContentDecorator());
+stories.addDecorator(getApolloDecorator({
+  typeDefs: gql`
+    type Query {
+      me: User!
+      config: Config!
+    }
+    
+    type User {
+      id: ID!
+      name: String!
+      isEmailVerified: Boolean!
+      isApproved: Boolean!
+    }
+    
+    type Config {
+      emailConfirmIsRequired: Boolean!
+      userApproveIsRequired: Boolean!
+    }
+  `,
+
+  resolvers: {
+    Query: {
+      me: () => ({ id: 'User:1', name: 'Grey Rabbit', isEmailVerified: true, isApproved: true }),
+      config: () => ({ emailConfirmIsRequired: false, userApproveIsRequired: false }),
+    },
+  },
+}));
 
 // Stories
 stories.add('Screen', () => {
-  // @TODO: try to do it with decorator in the future: https://github.com/storybooks/storybook/issues/340
   const mockedProps = {
-    data: {
-      loading: boolean('Loading', true),
-    },
-
     navigation: {
-      navigate: () => alert('Mocked navigation'),
+      navigate: () => null,
     },
   };
 
