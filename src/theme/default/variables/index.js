@@ -23,4 +23,5 @@ export default assign(defaultVariables, {
   fontSizeBase: 16,
   fontSizeH1: 30,
   inputFontSize: 14,
+  listItemPadding: 11, // Native base adds 5 px internally, so the result value is 16 px
 });
