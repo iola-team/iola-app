@@ -13,12 +13,17 @@ import TouchableOpacity from '../TouchableOpacity';
     backgroundColor: '#FFFFFF',
   },
 
-  input: {
+  inputWrap: {
     borderWidth: 0,
     borderRadius: 8,
-    height: 40,
     flex: 1,
     marginLeft: 18,
+    overflow: 'hidden',
+  },
+
+  input: {
+    height: 40,
+    paddingLeft: 15,
   },
 
   sendButton: {
@@ -64,8 +69,15 @@ export default class ChatFooter extends Component {
 
     return (
       <View style={[styles.root, style]}>
-        <Item rounded style={styles.input}>
-          <Input disabled={disabled} placeholder="Type Message" onChangeText={this.onChange} value={text} />
+        <Item rounded style={styles.inputWrap}>
+          <Input
+            style={styles.input}
+            disabled={disabled}
+            placeholderTextColor="#AFB2BF" // TODO: Add theme variable support
+            placeholder="Type Message"
+            onChangeText={this.onChange}
+            value={text}
+          />
         </Item>
         <TouchableOpacity disabled={disabled} style={styles.sendButton} onPress={this.onSend}>
           <Icon style={styles.sendIcon} name="send-message" />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { withKnobs } from '@storybook/addon-knobs';
+import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 
 import { getContainerDecorator } from '~storybook';
@@ -16,4 +17,4 @@ stories.addDecorator(getContainerDecorator({
 }));
 
 // Stories
-stories.add('Default', () => <ChatFooter />);
+stories.add('Default', () => <ChatFooter onSend={action('onSend')} />);

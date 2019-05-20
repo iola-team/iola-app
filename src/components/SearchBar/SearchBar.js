@@ -24,8 +24,6 @@ import TouchableOpacity from '../TouchableOpacity';
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderRadius:  8,
-
-    backgroundColor: '#F3F4F7',
   },
 
   icon: {
@@ -101,7 +99,7 @@ export default class SearchBar extends PureComponent {
             style={styles.input}
             autoFocus={autoFocus}
             placeholder={placeholder}
-            placeholderTextColor="#BDC0CB"
+            placeholderTextColor="#AFB2BF"
             value={value}
             onChangeText={onChangeText}
           />
