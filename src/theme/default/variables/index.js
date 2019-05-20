@@ -16,6 +16,7 @@ export default assign(defaultVariables, {
   toolbarDefaultBg: 'transparent',
   toolbarInputColor: '#F3F4F7',
   listBorderColor: 'rgba(189,192,203, 0.5)',
+  btnDisabledBg: '#E8EAF0',
 
   borderRadiusBase: 8,
   btnUppercaseAndroidText: false,
