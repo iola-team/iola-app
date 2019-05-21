@@ -7,7 +7,7 @@ import * as yup from 'yup';
 import { withFormik } from 'formik';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { FormTextInput } from '~components';
+import { FormTextInput, Spinner } from '~components';
 import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
 
 @styleSheet('Sparkle.WebsiteURLForm', {
@@ -78,8 +78,8 @@ class WebsiteURLForm extends Component {
 
   sanitizeURL = url => url.replace(/\/$/, '').replace(/(https?):\/\//, '');
 
-  async onSubmit() {
-    const { handleSubmit, onSubmit, values: { url } } = this.props;
+  onSubmit = async () => {
+    const { handleSubmit, onSubmit, setSubmitting, values: { url } } = this.props;
     const platformURL = `https://${this.sanitizeURL(url)}`;
     const healthURL = `${__DEV__ ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_PATH}/health`;
 
@@ -89,6 +89,8 @@ class WebsiteURLForm extends Component {
       return;
     }
 
+    setSubmitting(true);
+
     try {
       const { success } = await fetch(healthURL).then((response) => response.json());
 
@@ -97,11 +99,15 @@ class WebsiteURLForm extends Component {
       this.setState({ isValidURL: false });
     }
 
-    if (this.state.isValidURL) onSubmit({ url: platformURL });
+    if (this.state.isValidURL) {
+      await onSubmit({ url: platformURL });
+    }
+
+    setSubmitting(false);
   }
 
   render() {
-    const { styleSheet: styles } = this.props;
+    const { styleSheet: styles, isSubmitting } = this.props;
     const { isValidURL } = this.state;
 
     return (
@@ -116,6 +122,9 @@ class WebsiteURLForm extends Component {
             name="url"
             placeholder="Enter Website URL address"
             textContentType="URL"
+            autoCapitalize="none"
+            keyboardType="url"
+            autoCorrect={false}
             error={!isValidURL}
             onChangeText={this.onChangeText}
             customStyle={styles.url}
@@ -123,8 +132,9 @@ class WebsiteURLForm extends Component {
           />
         </View>
 
-        <Button style={styles.submit} onPress={::this.onSubmit} block bordered light>
-          <Text uppercase={false}>Continue</Text>
+        <Button style={styles.submit} onPress={this.onSubmit} block bordered light>
+          <Text>Continue</Text>
+          {isSubmitting && <Spinner />}
         </Button>
 
         {!isValidURL && (
