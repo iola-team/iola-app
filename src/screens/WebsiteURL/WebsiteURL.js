@@ -62,7 +62,7 @@ export default class WebsiteURLScreen extends Component {
     };
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     Animated.timing(this.logo.positionAnimatedValue, {
       toValue: 1,
       duration: 500,
@@ -78,7 +78,7 @@ export default class WebsiteURLScreen extends Component {
     }).start();
   }
 
-  async onSubmit({ url }) {
+  onSubmit = async ({ url }) => {
     try {
       await AsyncStorage.setItem('platformURL', url);
       this.props.onSubmit(url);
@@ -138,7 +138,7 @@ export default class WebsiteURLScreen extends Component {
           </View>
 
           <Animated.View style={{ marginTop, opacity: this.form.opacityAnimatedValue }}>
-            <WebsiteURLForm onSubmit={::this.onSubmit} />
+            <WebsiteURLForm onSubmit={this.onSubmit} />
           </Animated.View>
         </View>
       </Container>

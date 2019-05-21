@@ -75,21 +75,27 @@ class ApplicationRoot extends Component {
 
   render() {
     const { isReady, initWasLaunched } = this.state;
+
     const displayOnNotReady = (initWasLaunched)
       ? <SplashBackground />
+      /**
+       * TODO: Think of how to not use screens directly
+       */
       : <WebsiteURLScreen onSubmit={this.init} />;
 
-    return isReady ? (
-      <ApolloProvider client={this.apiClient}>
-        <Theme>
-          <ErrorBoundary onRequestRelaunch={this.onRequestRelaunch}>
-            <Root>
-              <Application onReady={this.onApplicationReady} onReset={this.onApplicationReset} />
-            </Root>
-          </ErrorBoundary>
-        </Theme>
-      </ApolloProvider>
-    ) : displayOnNotReady;
+    return (
+      <Theme>
+        {isReady ? (
+          <ApolloProvider client={this.apiClient}>
+            <ErrorBoundary onRequestRelaunch={this.onRequestRelaunch}>
+              <Root>
+                <Application onReady={this.onApplicationReady} onReset={this.onApplicationReset} />
+              </Root>
+            </ErrorBoundary>
+          </ApolloProvider>
+        ) : displayOnNotReady}
+      </Theme> 
+    );
   }
 }
 

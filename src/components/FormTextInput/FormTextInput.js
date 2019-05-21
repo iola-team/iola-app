@@ -74,7 +74,6 @@ import Icon from '../Icon';
 export default class FormTextInput extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
-    placeholder: PropTypes.string.isRequired,
     values: PropTypes.object,
     touched: PropTypes.object,
     error: PropTypes.bool,
@@ -88,8 +87,6 @@ export default class FormTextInput extends Component {
     onChangeText: PropTypes.func,
     secureTextEntry: PropTypes.bool,
     infoText: PropTypes.string,
-    textContentType: PropTypes.string,
-    autoCapitalize: PropTypes.string,
   };
 
   static defaultProps = {
@@ -133,7 +130,6 @@ export default class FormTextInput extends Component {
     const {
       styleSheet: styles,
       name,
-      placeholder,
       values,
       touched,
       error,
@@ -142,8 +138,7 @@ export default class FormTextInput extends Component {
       customStyle,
       secureTextEntry,
       infoText,
-      textContentType,
-      autoCapitalize,
+      ...props
     } = this.props;
     const { isFocused, isPasswordIsShown } = this.state;
     const value = values[name] || '';
@@ -171,13 +166,14 @@ export default class FormTextInput extends Component {
         regular
       >
         <Input
+          {...props}
+
           style={[
             styles.formInput,
             secureTextEntry && !isPasswordIsShown && { paddingRight: isTouched ? 80 : 50 },
             isFocused && { color: '#BCBFCA' },
             !isValid && { color: '#FF8787' },
           ]}
-          placeholder={placeholder}
           placeholderFontSize={16}
           placeholderTextColor={isValid ? '#FFFFFF' : '#FF8787'}
           secureTextEntry={secureTextEntry && !isPasswordIsShown}
@@ -186,8 +182,6 @@ export default class FormTextInput extends Component {
           onFocus={::this.onFocus}
           onBlur={::this.onBlur}
           isValid={isValid}
-          textContentType={textContentType}
-          autoCapitalize={autoCapitalize}
         />
         <View style={[styles.infoContent, !secureTextEntry && { position: 'relative', right: 0 }]}>
           {isValid ? FieldInfo : FieldError}
