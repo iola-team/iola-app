@@ -18,6 +18,10 @@ import { CHANNEL, CHAT_SEARCH } from '../routeNames';
     paddingTop: 999,
     marginTop: -999,
   },
+
+  headerListContent: {
+    paddingLeft: 10,
+  },
 })
 /**
  * TODO: refactor the component to not use this `me` query just to read `me.id`
@@ -104,6 +108,7 @@ export default class Channels extends Component {
                 loading={loadingFriends}
                 edges={friends?.edges}
                 onItemPress={this.onUserPress}
+                contentContainerStyle={styles.headerListContent}
 
                 noContentText="No friends online"
               />

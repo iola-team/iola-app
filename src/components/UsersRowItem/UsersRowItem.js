@@ -22,8 +22,8 @@ const userFragment = gql`
 `;
 
 @withStyle('Sparkle.UsersRowItem', {
-  width: 75,
-  padding: 5,
+  width: 68,
+  marginVertical: 5,
 
   'Sparkle.TouchableOpacity': {
     overflow: 'hidden',
@@ -31,6 +31,7 @@ const userFragment = gql`
 
     'NativeBase.Text': {
       fontSize: 12,
+      marginLeft: 7,
     },
 
     'Sparkle.UserAvatar': {
@@ -53,8 +54,9 @@ const userFragment = gql`
 
       '.name': {
         height: 12,
-        width: '100%',
+        alignSelf: 'stretch',
         borderRadius: 4,
+        marginHorizontal: 5,
       },
     },
   },

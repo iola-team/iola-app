@@ -68,6 +68,7 @@ export default class UsersRow extends Component {
       edges,
       loading,
       noContentText,
+      contentContainerStyle,
       ...listProps
     } = this.props;
 
@@ -79,7 +80,7 @@ export default class UsersRow extends Component {
         {...listProps}
 
         horizontal
-        contentContainerStyle={{ flexGrow: 1 }}
+        contentContainerStyle={[contentContainerStyle, { flexGrow: 1 }]}
         showsHorizontalScrollIndicator={false}
 
         data={data}

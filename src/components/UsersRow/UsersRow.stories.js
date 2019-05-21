@@ -74,8 +74,6 @@ const resolvers = {
       const users = range(30).map(() => createUser());
       const connection = connectionFromArray(users, args);
 
-      await delay(2000);
-
       return {
         ...connection,
         totalCount: users.length,
@@ -105,12 +103,19 @@ const usersQuery = gql`
   ${UsersRow.fragments.edge}
 `;
 
-stories.add('Full flow', () => (
+stories.add('Default', () => (
   <Query query={usersQuery}>
     {({ loading, data }) => (
-      <UsersRow edges={data?.users?.edges} loading={loading} />
+      <UsersRow
+        contentContainerStyle={{
+          paddingLeft: 10,
+        }}
+
+        edges={data?.users?.edges}
+        loading={loading}
+      />
     )}
   </Query>
 ));
 
-stories.add('Initial Load', () => <UsersRow edges={[]} loading />);
+stories.add('Loading', () => <UsersRow loading contentContainerStyle={{ paddingLeft: 10 }} />);
