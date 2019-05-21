@@ -86,12 +86,12 @@ export default class FriendListItem extends Component {
                   <Text>Accept</Text>
                 </Button>
 
-                <Button secondary onPress={onIgnorePress}>
+                <Button secondary bordered onPress={onIgnorePress}>
                   <Text>Ignore</Text>
                 </Button>
               </>
             ) : (
-              <Button secondary onPress={onCancelPress}>
+              <Button secondary bordered onPress={onCancelPress}>
                 <Text>Cancel</Text>
               </Button>
             )

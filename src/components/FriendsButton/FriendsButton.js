@@ -44,8 +44,14 @@ const createOptimisticEdge = ({ userId, friendId, status = 'PENDING', friendship
 
 @withStyle('Sparkle.FriendsButton', {
   'NativeBase.Button': {
+    '.hasIcon': {
+      'NativeBase.Text': {
+        paddingRight: 8,
+      },
+    },
+
     'NativeBase.Icon': {
-      fontSize: 12,
+      fontSize: 10,
     },
   },
 })
@@ -157,6 +163,7 @@ export default class FriendsButton extends PureComponent {
     return (
       <Fragment>
         <Button
+          hasIcon={hasIcon}
           secondary
           bordered
           block={block}

@@ -26,7 +26,9 @@ const buttons = [
 ];
 
 buttons.forEach(({ path, props: globalProps }) => {
-  const stories = storiesOf(path, module).addDecorator(getContentDecorator({ padder: true }));
+  const stories = storiesOf(path, module).addDecorator(getContentDecorator({
+    padder: true, backgroundColor: '#FFFFFF',
+  }));
 
   [
     ['Default', {}],
