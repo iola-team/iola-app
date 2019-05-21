@@ -497,6 +497,28 @@ export default (variables => ({
       },
     },
 
+    'Sparkle.UserList': {
+      '.searchResult': {
+        'Sparkle.UserListItem': {
+          'Sparkle.Placeholder': {
+            'NativeBase.ListItem': {
+              'NativeBase.Left': {
+                'NativeBase.ViewNB': {
+                  backgroundColor: variables.highlightColor,
+                },
+              },
+    
+              'NativeBase.Body': {
+                'NativeBase.ViewNB': {
+                  backgroundColor: variables.highlightColor,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+
     'Sparkle.UsersRowItem': {
       'Sparkle.Placeholder': {
         'NativeBase.ViewNB': {

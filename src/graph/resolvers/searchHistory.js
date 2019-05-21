@@ -7,12 +7,6 @@ const typeDefs = gql`
   }
 `;
 
-const historyQuery = gql`
-  {
-    searchHistory @client
-  }
-`;
-
 const resolvers = {
   User: {
     searchHistory: constant([])

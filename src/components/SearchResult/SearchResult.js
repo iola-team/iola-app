@@ -104,7 +104,12 @@ export default class SearchResult extends Component {
     const { renderBlank, historyKey } = this.props;
 
     return (
-      <Query fetchPolicy="cache-first" query={searchHistoryQuery} variables={{ key: historyKey }}>
+      <Query
+        fetchPolicy="cache-first"
+        errorPolicy="none"
+        query={searchHistoryQuery}
+        variables={{ key: historyKey }}
+      >
         {({ data }) => renderBlank({
           recentIds: data.me?.recentIds || [],
           onItemPress: this.onItemPress,
@@ -113,11 +118,11 @@ export default class SearchResult extends Component {
     );
   };
 
-  addHistoryRecord = ({ node }) => {
+  addHistoryRecord = async ({ node }) => {
     const { client, historyKey } = this.props;
     const query = searchHistoryQuery;
     const variables = { key: historyKey };
-    const data = client.readQuery({ query, variables });
+    const { data } = await client.query({ query, variables, fetchPolicy: 'cache-first' });
 
     client.writeQuery({
       query,

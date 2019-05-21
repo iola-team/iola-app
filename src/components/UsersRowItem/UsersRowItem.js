@@ -29,13 +29,18 @@ const userFragment = gql`
     overflow: 'hidden',
     alignItems: 'center',
 
-    'NativeBase.Text': {
-      fontSize: 12,
-      marginLeft: 7,
-    },
-
     'Sparkle.UserAvatar': {
       marginBottom: 6,
+    },
+
+    'NativeBase.ViewNB': {
+      alignSelf: 'stretch',
+      alignItems: 'center',
+
+      'NativeBase.Text': {
+        fontSize: 12,
+        marginLeft: 7,
+      },
     },
   },
 
@@ -98,7 +103,7 @@ export default class UserListItem extends Component {
       <ViewRN {...props}>
         <Touchable onPress={onPress}>
           <UserAvatar size="medium" user={user} foreground />
-          <ViewRN>
+          <View>
             <Text numberOfLines={1} ellipsizeMode="clip">{user.name}</Text>
             <LinearGradient
               colors={['#FFF0', '#FFF']} // TODO: Add theme variables support
@@ -110,7 +115,7 @@ export default class UserListItem extends Component {
                 left: null,
               }}
             />
-          </ViewRN>
+          </View>
         </Touchable>
       </ViewRN>
     );
