@@ -25,7 +25,7 @@ const messageFragment = gql`
 
 @withStyle('Sparkle.MessageContent', {
   marginBottom: 5,
-  borderRadius: 4,
+  borderRadius: 8,
   overflow: 'hidden',
 
   'Sparkle.ImageFit': {
@@ -43,14 +43,36 @@ const messageFragment = gql`
     },
   },
 
-  '.first': {
+  '.left': {
+    borderBottomLeftRadius: 4,
+    borderTopLeftRadius: 4,
+  },
+
+  '.right': {
+    borderTopRightRadius: 4,
+    borderBottomRightRadius: 4,
     borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
+    borderBottomLeftRadius: 8,
+  },
+
+  '.first': {
+    '.left': {
+      borderTopLeftRadius: 8,
+    },
+
+    '.right': {
+      borderTopRightRadius: 8,
+    },
   },
 
   '.last': {
-    borderBottomLeftRadius: 8,
-    borderBottomRightRadius: 8,
+    '.left': {
+      borderBottomLeftRadius: 8,
+    },
+
+    '.right': {
+      borderBottomRightRadius: 8,
+    },
   },
 })
 export default class MessageContent extends PureComponent {
