@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
-import { groupBy, orderBy, map, filter, get } from 'lodash';
+import { groupBy, map, noop } from 'lodash';
 
 import { withStyle } from '~theme';
 import MessageItem from '../MessageItem';
-import LoadMoreIndicator from '../LoadMoreIndicator';
 import { SectionList } from '../TabNavigator';
 import SectionHeader from './SectionHeader';
 
@@ -30,15 +29,19 @@ export default class MessageList extends Component {
   };
 
   static propTypes = {
-    edges: PropTypes.arrayOf(fragmentProp(edgeFragment).isRequired).isRequired,
-    getItemSide: PropTypes.func.isRequired,
+    edges: PropTypes.arrayOf(fragmentProp(edgeFragment).isRequired),
+    getItemSide: PropTypes.func,
     onRead: PropTypes.func,
     loadingMore: PropTypes.bool,
+    loading: PropTypes.bool,
   };
 
   static defaultProps = {
+    edges: null,
     loadingMore: false,
-    onRead: () => {},
+    loading: false,
+    onRead: noop,
+    getItemSide: noop,
   };
 
   splitToSections(edges) {
@@ -60,7 +63,7 @@ export default class MessageList extends Component {
     }));
   };
 
-  getKeyForItem = item => item.isSection ? item.key : item.node.id;
+  getKeyForItem = item => item.key || item.node.id;
   onViewableItemsChanged = ({ changed }) => {
     const { onRead } = this.props;
 
@@ -75,10 +78,14 @@ export default class MessageList extends Component {
   };
 
   renderItem = ({ item, index, section: { data: edges } }) => {
+    const { node, placeholder } = item;
+
+    if (placeholder) {
+      return <MessageItem loading {...placeholder} />;
+    }
+
     const { getItemSide, inverted } = this.props;
     const dir = inverted === true ? -1 : 1;
-
-    const { node } = item;
     const prevNode = edges[index - dir] && edges[index - dir].node;
     const nextNode = edges[index + dir] && edges[index + dir].node;
     const side = getItemSide(node);
@@ -98,20 +105,27 @@ export default class MessageList extends Component {
   };
 
   renderSectionHeader = ({ section }) => (
-    <SectionHeader time={section.time} />
+    section.time && <SectionHeader time={section.time} />
   );
 
   renderLoadIndicator = () => {
     const { loadingMore } = this.props;
 
-    return loadingMore && (
-      <LoadMoreIndicator />
-    );
+    return loadingMore && <SectionHeader loading />;
   };
 
+  getPlaceholders = () => [{
+    key: 'placeholderSection',
+    data: [
+      { key: 1, placeholder: { right: true } },
+      { key: 2, placeholder: { left: true, hasAvatar: true } },
+    ],
+  }];
+
   render() {
-    const { style, edges, inverted, ...listProps } = this.props;
-    const sections = this.splitToSections(edges);
+    const { edges, loading, inverted, ...listProps } = this.props;
+    const isLoaded = edges !== null;
+    const sections = !isLoaded && loading ? this.getPlaceholders() : this.splitToSections(edges);
 
     const sectionProps = {
       [inverted ? 'renderSectionFooter' : 'renderSectionHeader']: this.renderSectionHeader,
@@ -122,7 +136,6 @@ export default class MessageList extends Component {
         {...listProps}
         {...sectionProps}
 
-        style={style}
         inverted={inverted}
         stickySectionHeadersEnabled={false}
         sections={sections}

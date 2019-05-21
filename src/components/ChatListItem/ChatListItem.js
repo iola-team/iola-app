@@ -51,6 +51,8 @@ const chatFragment = gql`
 
   'Sparkle.Placeholder': {
     'NativeBase.ListItem': {
+      height: 72,
+
       'NativeBase.Left': {
         'NativeBase.ViewNB': {
           height: 40,
@@ -61,14 +63,17 @@ const chatFragment = gql`
       },
 
       'NativeBase.Body': {
-        'NativeBase.Text': {
-          lineHeight: 15,
+        'NativeBase.ViewNB': {
+          height: 16,
+          overflow: 'hidden',
           borderRadius: 4,
-          marginRight: 20,
           backgroundColor: '#FFFFFF',
+          marginRight: 16,
+          marginTop: 3,
+          marginBottom: 3,
 
           '.headline': {
-            marginTop: 3,
+            height: 20,
             width: '50%',
           },
         },
@@ -121,8 +126,8 @@ export default class ChatListItem extends Component {
             <View />
           </Left>
           <Body>
-            <Text headline>{" "}</Text>
-            <Text content>{" "}</Text>
+            <View headline />
+            <View content />
           </Body>
         </ListItem>
       </Placeholder>

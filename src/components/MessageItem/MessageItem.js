@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { View as ViewRN } from 'react-native';
+import { View } from 'native-base';
 
 import { withStyle } from '~theme';
 import MessageContent from './MessageContent';
 import Avatar from '../UserAvatar';
+import Placeholder from '../Placeholder';
 
 const messageFragment = gql`
   fragment MessageItem_message on Message {
@@ -45,6 +47,38 @@ const messageFragment = gql`
   '.last': {
     marginBottom: 15,
   },
+
+  'Sparkle.Placeholder': {
+    flexDirection: 'row',
+    marginBottom: 15,
+
+    'NativeBase.ViewNB': {
+      borderRadius: 8,
+
+      '.avatar': {
+        height: 40,
+        width: 40,
+
+        marginRight: 8,
+      },
+
+      '.content': {
+        width: '60%',
+        height: 46,
+      },
+    },
+
+    '.right': {
+      flexDirection: 'row-reverse',
+
+      'NativeBase.ViewNB': {
+        '.content': {
+          height: 90,
+          width: '80%',
+        },
+      },
+    },
+  },
 })
 export default class MessageItem extends Component {
   static fragments = {
@@ -52,7 +86,7 @@ export default class MessageItem extends Component {
   };
 
   static propTypes = {
-    message: fragmentProp(messageFragment).isRequired,
+    message: fragmentProp(messageFragment),
     left: PropTypes.bool,
     right: PropTypes.bool,
     last: PropTypes.bool,
@@ -61,6 +95,8 @@ export default class MessageItem extends Component {
   };
 
   static defaultProps = {
+    loading: false,
+    message: null,
     left: false,
     right: false,
     last: false,
@@ -68,9 +104,24 @@ export default class MessageItem extends Component {
     hasAvatar: false,
   };
 
+  renderPlaceholder() {
+    const { hasAvatar, left, right } = this.props;
+
+    return (
+      <Placeholder right={right} left={left}>
+        {hasAvatar && !right && <View avatar />}
+        <View content />
+      </Placeholder>
+    );
+  }
+  
   render() {
-    const { message, first, hasAvatar, style, ...props } = this.props;
+    const { message, first, hasAvatar, style, loading, ...props } = this.props;
     const showAvatar = hasAvatar && first;
+
+    if (loading && !message) {
+      return this.renderPlaceholder();
+    }
 
     return (
       <ViewRN style={style}>

@@ -48,7 +48,7 @@ const chatQuery = gql`
   query ChatMessagesQuery(
     $chatId: ID
     $recipientId: ID
-    $first: Int = 20
+    $first: Int
     $last: Int
     $after: Cursor
     $before: Cursor
@@ -187,6 +187,7 @@ const messageAddSubscription = gql`
     variables: {
       chatId,
       recipientId,
+      first: 50,
     },
     fetchPolicy: 'cache-and-network',
   }),
@@ -228,6 +229,7 @@ export default class Chat extends Component {
     return {
       edges: chat.messages.edges,
       hasMore: chat.messages.pageInfo.hasNextPage,
+      pageInfo: chat.messages.pageInfo,
     };
   }
 
@@ -420,29 +422,69 @@ export default class Chat extends Component {
     });
   };
 
+  loadMore = ({ distanceFromEnd }) => {
+    const { loading, fetchMore } = this.props.data;
+
+    if (loading) {
+      return;
+    }
+
+    const { pageInfo } = this.getConnection();
+
+    if (!pageInfo.hasNextPage) {
+      return;
+    }
+
+    this.fetchMorePromise = this.fetchMorePromise || fetchMore({
+      variables: {
+        first: 100,
+        after: pageInfo.endCursor,
+      },
+
+      updateQuery: (prev, { fetchMoreResult: result }) => update(prev, {
+        me : {
+          chat: {
+            messages: {
+              edges: {
+                $push: result.me.chat.messages.edges,
+              },
+
+              pageInfo: {
+                $set: result.me.chat.messages.pageInfo,
+              },
+            },
+          },
+        },
+      }),
+    }).then(() => {
+      this.fetchMorePromise = null;
+    });
+  };
+
   render() {
     const {
       style,
       styleSheet: styles,
       children,
-      data: { me },
+      data: { me, loading },
       ...props
     } = this.props;
 
-    const {
-      hasMore = false,
-      edges = [],
-    } = this.getConnection() || {};
+    const { hasMore = false, edges } = this.getConnection() || {};
 
     return (
       <View style={[styles.root, style]}>
         <MessageList
           {...props}
           edges={edges}
+          loading={loading}
           loadingMore={hasMore}
           getItemSide={this.getItemSide}
           onRead={this.onMessagesRead}
+          onEndReached={this.loadMore}
           inverted
+          onEndReachedThreshold={2} // Two screens
+          initialNumToRender={20}
         />
 
         <ChatFooter disabled={!me} style={styles.footer} onSend={this.onSend} />

@@ -26,6 +26,7 @@ const messages = [
     user: {
       id: 'User:1',
       name: 'Roman Banan',
+      isOnline: true,
       avatar: {
         id: 'Avatar:1',
         url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
@@ -44,6 +45,7 @@ const messages = [
     user: {
       id: 'User:1',
       name: 'Roman Banan',
+      isOnline: true,
       avatar: {
         id: 'Avatar:1',
         url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
@@ -62,6 +64,7 @@ const messages = [
     user: {
       id: 'User:1',
       name: 'Roman Banan',
+      isOnline: true,
       avatar: {
         id: 'Avatar:1',
         url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
@@ -80,6 +83,7 @@ const messages = [
     user: {
       id: 'User:1',
       name: 'Roman Banan',
+      isOnline: true,
       avatar: {
         id: 'Avatar:1',
         url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
@@ -98,6 +102,7 @@ const messages = [
     user: {
       id: 'User:1',
       name: 'Roman Banan',
+      isOnline: true,
       avatar: {
         id: 'Avatar:1',
         url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
@@ -116,6 +121,7 @@ const messages = [
     user: {
       id: 'User:1',
       name: 'Roman Banan',
+      isOnline: true,
       avatar: {
         id: 'Avatar:1',
         url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
@@ -134,6 +140,7 @@ const messages = [
     user: {
       id: 'User:1',
       name: 'Roman Banan',
+      isOnline: true,
       avatar: {
         id: 'Avatar:1',
         url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
@@ -159,6 +166,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     avatar: Avatar
+    isOnline: Boolean!
   }
 
   type MessageContent {
@@ -252,3 +260,12 @@ stories.add('Photo', () => {
 
   return getMessage(id, side);
 });
+
+stories.add('Loading', () => (
+  <MessageItem
+    loading
+    left={boolean('left')}
+    right={boolean('right')}
+    hasAvatar={boolean('hasAvatar')}
+  />
+));

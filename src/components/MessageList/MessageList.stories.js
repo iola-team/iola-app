@@ -24,6 +24,7 @@ const users = [
   {
     id: 'User:1',
     name: 'Roman Banan',
+    isOnline: true,
     avatar: {
       id: 'Avatar:1',
       url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',
@@ -33,6 +34,7 @@ const users = [
   {
     id: 'User:2',
     name: 'Grey Rabbit',
+    isOnline: false,
     avatar: {
       id: 'Avatar:2',
       url: 'https://media.glamour.com/photos/5a425fd3b6bcee68da9f86f8/master/w_644,c_limit/best-face-oil.png',
@@ -113,6 +115,7 @@ const typeDefs = gql`
   type User {
     id: ID!
     name: String!
+    isOnline: Boolean!
     avatar: Avatar
   }
 
@@ -229,7 +232,6 @@ stories.add('Fake messages', () => {
   );
 });
 
-// Stories
 stories.add('Numbered messages', () => {
   const variables = {
     id: 'Chat:2',
@@ -257,3 +259,5 @@ stories.add('Numbered messages', () => {
     </Query>
   );
 });
+
+stories.add('Loading', () => <MessageList inverted loading />);
