@@ -140,7 +140,7 @@ export default (variables => ({
       '.bordered': {
         '.secondary': {
           backgroundColor: null,
-        }
+        },
       },
 
       '.light': {
@@ -150,7 +150,7 @@ export default (variables => ({
       },
 
       '.secondary': {
-        borderColor: '#BDC0CB',
+        borderColor: '#E8EAF0',
         backgroundColor: variables.brandLight,
 
         'NativeBase.Text': {
@@ -175,7 +175,7 @@ export default (variables => ({
           'NativeBase.Text': {
             color: variables.textColor,
           },
-        }
+        },
       },
     },
 
@@ -530,5 +530,9 @@ export default (variables => ({
         backgroundColor: variables.placeholderColor,
       },
     },
+
+    'Sparkle.FieldItem': {
+      borderBottomColor: variables.listBorderColor,
+    }, 
   }),
 }));
