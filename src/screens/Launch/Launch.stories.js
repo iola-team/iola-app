@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { getApolloDecorator, getContentDecorator } from '~storybook';
 import Launch from './Launch';
 
-const stories = storiesOf('Screens/Launch', module);
+const stories = storiesOf('Screens/Launch, Loading', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
@@ -40,10 +40,25 @@ stories.addDecorator(getApolloDecorator({
 }));
 
 // Stories
-stories.add('Screen', () => {
+stories.add('Launch', () => {
   const mockedProps = {
     navigation: {
       navigate: () => null,
+    },
+  };
+
+  return <Launch {...mockedProps} />;
+});
+
+stories.add('Loading', () => {
+  const mockedProps = {
+    navigation: {
+      navigate: () => null,
+      state: {
+        params: {
+          loading: true,
+        },
+      },
     },
   };
 

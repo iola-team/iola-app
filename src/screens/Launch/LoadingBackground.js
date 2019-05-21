@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Text, View } from 'native-base';
+import { Container, View } from 'native-base';
 
 import { withStyle } from '~theme';
+import { Spinner } from '~components';
 
 @withStyle('Sparkle.LoadingBackground', {
   'NativeBase.Container': {
@@ -13,11 +14,7 @@ import { withStyle } from '~theme';
       minWidth: 320,
       width: '100%',
       paddingHorizontal: '10%',
-      backgroundColor: '#5259FF',
-
-      'NativeBase.Text': {
-        color: '#FFFFFF',
-      },
+      backgroundColor: '#FFFFFF',
     },
   },
 })
@@ -26,7 +23,7 @@ export default class LoadingBackground extends Component {
     return (
       <Container>
         <View>
-          <Text>Loading...</Text>{/* @TODO: Update this according to design */}
+          <Spinner size="large" />
         </View>
       </Container>
     );
