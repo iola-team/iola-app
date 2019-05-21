@@ -382,7 +382,7 @@ export default (variables => ({
 
     'Sparkle.SearchBar': {
       inputWrap: {
-        backgroundColor: variables.highlightColor,
+        backgroundColor: variables.toolbarInputColor,
       },
     },
 
@@ -392,6 +392,10 @@ export default (variables => ({
     'Sparkle.ChatFooter': {
       root: {
         backgroundColor: variables.foregroundColor,
+      },
+
+      inputWrap: {
+        backgroundColor: variables.toolbarInputColor,
       },
     },
 

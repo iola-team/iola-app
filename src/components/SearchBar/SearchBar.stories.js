@@ -9,7 +9,7 @@ const stories = storiesOf('Components/SearchBar', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator({ padder: true }));
+stories.addDecorator(getContentDecorator({ padder: true, backgroundColor: '#FFFFFF' }));
 
 stories.add('Default', () => (
   <SearchBar
