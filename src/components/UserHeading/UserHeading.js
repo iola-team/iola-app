@@ -59,7 +59,6 @@ const headerHeight = 350 + 10;
 
   placeholder: {
     borderRadius: 4,
-    backgroundColor: '#F3F4F7',
   },
 
   onlineStatus: {
@@ -91,14 +90,6 @@ const headerHeight = 350 + 10;
     fontWeight: '600',
     fontSize: 16,
     color: '#585A61',
-  },
-
-  'NativeBase.ViewNB': {
-    'Sparkle.UserAvatar': {
-      'Sparkle.Placeholder': {
-        backgroundColor: '#F3F4F7',
-      },
-    },
   },
 })
 export default class UserHeading extends PureComponent {
@@ -171,18 +162,24 @@ export default class UserHeading extends PureComponent {
 
         <View style={styles.info}>
           <View style={styles.infoLine}>
-            <Placeholder isActive={showLoading}>
-              <H2 style={showLoading ? [styles.placeholder, styles.namePlaceholder] : null}>
+            <Placeholder
+              isActive={showLoading}
+              style={showLoading ? [styles.placeholder, styles.namePlaceholder] : null}
+            >
+              <H2>
                 {showLoading ? ' ' : user.name}
               </H2>
             </Placeholder>
           </View>
 
           <View style={styles.infoLine}>
-            <Placeholder isActive={showLoading}>
+            <Placeholder
+              isActive={showLoading}
+              style={showLoading ? [styles.placeholder, styles.headlinePlaceholder] : null}
+            >
               <Text
                 note
-                style={showLoading ? [styles.placeholder, styles.headlinePlaceholder] : styles.headline}
+                style={styles.headline}
               >
                 {showLoading ? ' ' : user.info.headline}
               </Text>

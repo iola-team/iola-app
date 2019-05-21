@@ -15,7 +15,7 @@ const stories = storiesOf('Components/UserHeading', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContentDecorator());
+stories.addDecorator(getContentDecorator({ backgroundColor: '#FFFFFF' }));
 
 const typeDefs = gql`
   scalar Date
@@ -39,6 +39,7 @@ const typeDefs = gql`
     id: ID!
     name: String!
     info: UserInfo!
+    isOnline: Boolean!
     avatar: Avatar
   }
 `;
@@ -48,6 +49,7 @@ const dataStore = {
     {
       id: 'User:1',
       name: 'Roman Banan',
+      isOnline: true,
       avatar: {
         id: 'Avatar:1',
         url: 'http://endlesstheme.com/Endless1.5.1/img/user2.jpg',

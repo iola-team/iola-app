@@ -462,10 +462,14 @@ export default (variables => ({
     },
 
     'Sparkle.UserHeading': {
+      'placeholder': {
+        backgroundColor: variables.highlightColor,
+      },
+
       'NativeBase.ViewNB': {
         'Sparkle.UserAvatar': {
           'Sparkle.Placeholder': {
-            backgroundColor: variables.placeholderColor,
+            backgroundColor: variables.highlightColor,
           },
         },
       },
@@ -524,6 +528,14 @@ export default (variables => ({
 
       placeholderAvatar: {
         backgroundColor: variables.placeholderColor,
+      },
+    },
+
+    'Sparkle.MessageItem': {
+      'Sparkle.Placeholder': {
+        'NativeBase.ViewNB': {
+          backgroundColor: variables.placeholderColor,
+        },
       },
     },
   }),

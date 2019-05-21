@@ -466,20 +466,18 @@ export default class Chat extends Component {
       style,
       styleSheet: styles,
       children,
-      data: { me },
+      data: { me, loading },
       ...props
     } = this.props;
 
-    const {
-      hasMore = false,
-      edges = [],
-    } = this.getConnection() || {};
+    const { hasMore = false, edges } = this.getConnection() || {};
 
     return (
       <View style={[styles.root, style]}>
         <MessageList
           {...props}
           edges={edges}
+          loading={loading}
           loadingMore={hasMore}
           getItemSide={this.getItemSide}
           onRead={this.onMessagesRead}

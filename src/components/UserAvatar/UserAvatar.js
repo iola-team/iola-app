@@ -62,7 +62,6 @@ const thumbnailStyle = {
 
 @withStyle('Sparkle.UserAvatar', {
   'Sparkle.Placeholder': {
-    backgroundColor: '#FFFFFF',
     borderRadius: 8,
 
     'NativeBase.Thumbnail': {
@@ -109,11 +108,11 @@ export default class UserAvatar extends Component {
 
     if (loading) {
       return (
-        <View style={style}>
+        <ViewRN style={style}>
           <Placeholder {...sizeProps}>
             <Thumbnail {...thumbnailProps} source={{ uri: defaultUri }} />
           </Placeholder>
-        </View>
+        </ViewRN>
       );
     }
 
