@@ -35,7 +35,7 @@ const searchQuery = gql`
 
 const recentUsersQuery = gql`
   query UserSearchRecentQuery($ids: [ID!]) {
-    users(filter: { ids: $ids }) {
+    users(filter: { ids: $ids }) @connection(key: "UserSearchRecentUsersConnection") {
       edges {
         ...UserList_edge
       }
@@ -115,6 +115,7 @@ export default class UserSearch extends Component {
             keyboardShouldPersistTaps="handled"
             ListComponent={UserList}
             contentInset={{ ...screenProps.contentInset, bottom: 0 }}
+            searchResult
           />
 
         )}
