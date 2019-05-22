@@ -11798,6 +11798,11 @@ react-native-event-source@^1.0.2:
   resolved "https://registry.yarnpkg.com/react-native-event-source/-/react-native-event-source-1.0.2.tgz#575519287b8ca4e2ff50d37f4a91037c49f63edc"
   integrity sha512-VpCamJsMd0NX5VgU9kxAHPP+wJI5Iktix2W874HKF9PEJDZ/075LPLeDhuRCwdUtzWNpzrqoYxYAbv8PsHNuYg==
 
+react-native-fast-image@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-6.0.0.tgz#36adb4d27ae83fa7b43192438df95eb00027805c"
+  integrity sha512-9P/0gpCC4IuL2S9J6MPe/1OHprWCuUO7MKmgv+f0CsDYAQsn49yjqwhth1vVTQ8A//wPwVcBp7jEECMaV3/qhw==
+
 react-native-firebase@^5.3.1:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/react-native-firebase/-/react-native-firebase-5.3.1.tgz#cfd295f562249f6fcf5e3fb2c62894575ece2c7f"
