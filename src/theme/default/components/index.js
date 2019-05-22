@@ -86,7 +86,7 @@ export default (variables => ({
       }
     },
 
-    'NativeBase.Thumbnail': {
+    'Sparkle.Thumbnail': {
       width: 40,
       height: 40,
       borderRadius: variables.borderRadiusBase,

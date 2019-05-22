@@ -1,5 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+/**
+ * TODO: Think of migrating it to use `react-native-fast-image` instead of `react-native` Image
+ */
 import { Image, View } from 'react-native';
 
 import { withStyleSheet as styleSheet } from '~theme';

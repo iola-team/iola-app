@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { View as ViewRN } from 'react-native';
-import { Thumbnail, View } from 'native-base';
+import { View } from 'native-base';
 
 import { withStyle } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 import Placeholder from '../Placeholder';
 import UserOnlineStatus from '../UserOnlineStatus';
+import Thumbnail from '../Thumbnail';
 
 const userFragment = gql`
   fragment UserAvatar_user on User {
@@ -64,7 +65,7 @@ const thumbnailStyle = {
   'Sparkle.Placeholder': {
     borderRadius: 8,
 
-    'NativeBase.Thumbnail': {
+    'Sparkle.Thumbnail': {
       opacity: 0,
     },
   },

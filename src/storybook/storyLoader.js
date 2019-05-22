@@ -54,6 +54,7 @@ function loadStories() {
   require('../components/TabBarLabel/TabBarLabel.stories');
   require('../components/TabNavigator/TabNavigator.stories');
   require('../components/TextPicker/TextPicker.stories');
+  require('../components/Thumbnail/Thumbnail.stories');
   require('../components/UserChats/UserChats.stories');
   require('../components/UserHeading/UserHeading.stories');
   require('../components/UserList/UserList.stories');
@@ -123,6 +124,7 @@ const stories = [
   '../components/TabBarLabel/TabBarLabel.stories',
   '../components/TabNavigator/TabNavigator.stories',
   '../components/TextPicker/TextPicker.stories',
+  '../components/Thumbnail/Thumbnail.stories',
   '../components/UserChats/UserChats.stories',
   '../components/UserHeading/UserHeading.stories',
   '../components/UserList/UserList.stories',
