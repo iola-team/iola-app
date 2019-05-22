@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 import { getApolloDecorator, getContentDecorator } from '~storybook';
 import Launch from './Launch';
 
-const stories = storiesOf('Screens/Launch, Loading', module);
+const stories = storiesOf('Screens/Launch', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
