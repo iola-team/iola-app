@@ -40,10 +40,25 @@ stories.addDecorator(getApolloDecorator({
 }));
 
 // Stories
-stories.add('Screen', () => {
+stories.add('Launch', () => {
   const mockedProps = {
     navigation: {
       navigate: () => null,
+    },
+  };
+
+  return <Launch {...mockedProps} />;
+});
+
+stories.add('Loading', () => {
+  const mockedProps = {
+    navigation: {
+      navigate: () => null,
+      state: {
+        params: {
+          loading: true,
+        },
+      },
     },
   };
 

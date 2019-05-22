@@ -26,7 +26,6 @@ const userFragment = gql`
   marginVertical: 5,
 
   'Sparkle.TouchableOpacity': {
-    overflow: 'hidden',
     alignItems: 'center',
 
     'Sparkle.UserAvatar': {
@@ -34,12 +33,13 @@ const userFragment = gql`
     },
 
     'NativeBase.ViewNB': {
+      overflow: 'hidden',
+      marginHorizontal: 5,
       alignSelf: 'stretch',
       alignItems: 'center',
 
       'NativeBase.Text': {
         fontSize: 12,
-        marginLeft: 7,
       },
     },
   },

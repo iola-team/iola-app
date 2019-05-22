@@ -15,6 +15,10 @@ import UsersConnection from './UsersConnection';
     paddingTop: 999,
     marginTop: -999,
   },
+
+  searchBar: {
+    paddingTop: 0,
+  },
 })
 export default class DashboardAll extends PureComponent {
   static navigationOptions = {
@@ -41,7 +45,7 @@ export default class DashboardAll extends PureComponent {
           ListHeaderComponent={(
             <View foreground style={styles.listHeader}>
               <TouchableOpacity onPress={this.onSearchPress}>
-                <View padder pointerEvents="box-only">
+                <View style={styles.searchBar} padder pointerEvents="box-only">
                   <SearchBar placeholder="Search users" />
                 </View>
               </TouchableOpacity>
