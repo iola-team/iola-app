@@ -1,12 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Image } from 'react-native';
 import { Text, View, Button } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import ImagePicker from '../ImagePicker';
 import Placeholder from '../Placeholder';
 import ActionSheet from '../ActionSheet';
+import Image from '../Image';
 
 @withStyleSheet('Sparkle.AvatarInput', {
   root: {

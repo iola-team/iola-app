@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { get, noop } from 'lodash';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
