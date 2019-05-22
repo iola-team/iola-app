@@ -71,10 +71,12 @@ export default class PhotoList extends Component {
     const progress = node && itemsProgress[node.id];
 
     /**
-     * Forst 6 images have higher load priority
+     * First images have higher load priority
      * TODO: Do not use magic number - add a prop
      */
-    const priority = index < 6 ? 'normal' : 'low';
+    let priority = 'low';
+    if (index < 6) priority = 'normal';
+    if (index < 3) priority = 'high';
 
     return progress !== undefined || !node ? (
       <View style={styleSheet.item}>
