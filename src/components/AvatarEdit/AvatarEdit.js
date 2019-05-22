@@ -100,6 +100,7 @@ export default class AvatarEdit extends PureComponent {
 
   render() {
     const { style, styleSheet, user, loading } = this.props;
+    const avatarUrl = user?.avatar === null ? null : user?.avatar?.url;
 
     return (
       <View
@@ -107,7 +108,7 @@ export default class AvatarEdit extends PureComponent {
         style={[styleSheet.root, style]}
       >
         <AvatarInput
-          defaultValue={user?.avatar?.url}
+          defaultValue={avatarUrl}
           loading={loading}
           onChange={this.onChange}
           onDelete={this.onDelete}

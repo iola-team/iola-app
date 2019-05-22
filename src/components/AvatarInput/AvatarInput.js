@@ -95,7 +95,7 @@ export default class AvatarInput extends PureComponent {
      */
     const defaultAvatarImage = 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg';
     const resultImage = value === undefined ? image : value;
-    const showLoading = !resultImage && loading;
+    const showLoading = resultImage === undefined && loading;
     const avatarUrl = resultImage || defaultAvatarImage;
 
     return (
