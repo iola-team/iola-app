@@ -1,10 +1,19 @@
-import { Platform } from 'react-native';
 import { merge, forEach } from 'lodash';
 import getTheme from 'native-base/src/theme/components';
 
 export default (variables => ({
   ...variables,
   ...merge(getTheme(variables), {
+    'Sparkle.LoadingBackground': {
+      'NativeBase.Container': {
+        'NativeBase.ViewNB': {
+          'Sparkle.Spinner': {
+            color: variables.brandPrimary,
+          },
+        },
+      },
+    },
+
     'NativeBase.Container': {
       backgroundColor: variables.backgroundColor,
     },
@@ -570,6 +579,6 @@ export default (variables => ({
 
     'Sparkle.FieldItem': {
       borderBottomColor: variables.listBorderColor,
-    }, 
+    },
   }),
 }));
