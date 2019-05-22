@@ -55,7 +55,11 @@ const TabsNavigator = createBottomTabNavigator({
 }, {
   initialRouteName: routes.CHANNELS,
   tabBarComponent: BottomTabBar,
-  lazy: false,
+
+  /**
+   * TODO: Think about disabling lazy tabs loading
+   */
+  lazy: true,
   tabBarOptions: {
     barTransparent: true,
   },
