@@ -9,6 +9,7 @@ import Icon from '../Icon';
 
 @styleSheet('Sparkle.ScreenHeader', {
   header: {
+    height: 52,
     elevation: 0,
     borderBottomWidth: 0,
   },
@@ -31,13 +32,7 @@ import Icon from '../Icon';
   },
 })
 export default class ScreenHeader extends PureComponent {
-  static get HEIGHT() {
-    /**
-     * TODO: Find a way to not hardcode these numbers
-     */
-    return Platform.select({ ios: 44, android: 56, default: 0 });
-  }
-
+  static HEIGHT = 52;
   static propTypes = {
     renderLeft: PropTypes.func,
     renderRight: PropTypes.func,

@@ -22,6 +22,10 @@ import { CHANNEL, CHAT_SEARCH } from '../routeNames';
   headerListContent: {
     paddingLeft: 10,
   },
+
+  searchBar: {
+    paddingTop: 0,
+  },
 })
 /**
  * TODO: refactor the component to not use this `me` query just to read `me.id`
@@ -98,7 +102,7 @@ export default class Channels extends Component {
           ListHeaderComponent={(
             <View foreground style={styles.headerList}>
               <TouchableOpacity onPressIn={this.onSearchPress}>
-                <View padder pointerEvents="box-only">
+                <View style={styles.searchBar} padder pointerEvents="box-only">
                   <SearchBar placeholder="Search chats" />
                 </View>
               </TouchableOpacity>
