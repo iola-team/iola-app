@@ -7,6 +7,7 @@ import BarBackgroundView from '../BarBackgroundView';
 
 @styleSheet('Sparkle.BottomTabBar', {
   bar: {
+    height: 60,
     elevation: 0,
     borderTopWidth: 0,
   },
@@ -44,7 +45,7 @@ export default class BottomTabBar extends Component {
    *
    * TODO: try to not use magic number
    */
-  static HEIGHT = 49;
+  static HEIGHT = 60;
 
   render() {
     const { styleSheet: styles, barTransparent, ...props } = this.props;

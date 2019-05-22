@@ -53,7 +53,7 @@ const TabsNavigator = createBottomTabNavigator({
     bottomBarHeight: BottomTabBar.HEIGHT,
   }),
 }, {
-  initialRouteName: routes.DASHBOARD,
+  initialRouteName: routes.CHANNELS,
   tabBarComponent: BottomTabBar,
   lazy: false,
   tabBarOptions: {
