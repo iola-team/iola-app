@@ -403,6 +403,12 @@ export default (variables => ({
         'NativeBase.Text': {
           color: variables.brandPrimary,
         },
+
+        '.secondary': {
+          'NativeBase.Text': {
+            color: variables.toolbarBtnTextColor,
+          },
+        },
       },
     },
 
