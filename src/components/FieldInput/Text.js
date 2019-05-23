@@ -30,7 +30,7 @@ export default class TextInput extends Component {
           onChangeText={onChange}
           value={value}
           placeholder={placeholder}
-          placeholderTextColor="#a7a7a7"
+          placeholderTextColor="#a7a7a7" // TODO: use theme variable
           secureTextEntry={secure}
           onBlur={onFinishEditing}
         />

@@ -31,7 +31,6 @@ import TouchableOpacity from '../TouchableOpacity';
   },
 
   sendIcon: {
-    color: '#BDC0CB',
     fontSize: 30,
   },
 })

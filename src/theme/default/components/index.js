@@ -211,6 +211,20 @@ export default (variables => ({
       '.inverse': {
         color: variables.inverseTextColor,
       },
+
+      '.secondary': {
+        color: variables.secondaryTextColor,
+      },
+    },
+
+    'NativeBase.Icon': {
+      '.inverse': {
+        color: variables.inverseTextColor,
+      },
+
+      '.secondary': {
+        color: variables.secondaryTextColor,
+      },
     },
 
     'NativeBase.Header': {
@@ -237,7 +251,7 @@ export default (variables => ({
           },
 
           'NativeBase.Icon': {
-            color: '#BDC0CB',
+            color: variables.secondaryTextColor,
             fontSize: 18,
           },
         },
@@ -320,13 +334,13 @@ export default (variables => ({
 
           'NativeBase.Text': {
             fontWeight: null,
-            color: '#BDC0CB',
+            color: variables.secondaryTextColor,
           },
 
           'NativeBase.Icon': {
             width: 30,
             fontSize: 20,
-            color: '#BDC0CB',
+            color: variables.secondaryTextColor,
           },
         },
 
@@ -365,17 +379,21 @@ export default (variables => ({
     'Sparkle.Shadow': {},
 
     'Sparkle.ScreenHeader': {
-      opaqueHeader: {
+      opaque: {
         backgroundColor: variables.foregroundColor,
       },
 
-      transparentHeader: {
+      transparent: {
         backgroundColor: 'transparent',
+      },
+
+      icon: {
+        color: variables.toolbarBtnTextColor,
       },
 
       'NativeBase.Icon': {
         fontSize: 35,
-        color: '#BDC0CB',
+        color: variables.toolbarBtnTextColor,
         margin: 7,
       },
 
@@ -383,7 +401,7 @@ export default (variables => ({
         paddingHorizontal: variables.contentPadding,
 
         'NativeBase.Text': {
-          color: '#BDC0CB',
+          color: variables.brandPrimary,
         },
       },
     },
@@ -398,7 +416,7 @@ export default (variables => ({
     'Sparkle.TabBar': {},
     'Sparkle.BottomTabBar': {
       activeTintColor: variables.brandPrimary,
-      inactiveTintColor: '#959AA1',
+      inactiveTintColor: variables.toolbarBtnTextColor,
     },
 
     'Sparkle.ChatFooter': {
@@ -408,6 +426,10 @@ export default (variables => ({
 
       inputWrap: {
         backgroundColor: variables.toolbarInputColor,
+      },
+
+      sendIcon: {
+        color: variables.toolbarBtnTextColor,
       },
     },
 
@@ -579,6 +601,36 @@ export default (variables => ({
 
     'Sparkle.FieldItem': {
       borderBottomColor: variables.listBorderColor,
+    },
+
+    'Sparkle.BackdropHeader': {
+      'Sparkle.TouchableOpacity': {
+        'NativeBase.Text': {
+          color: variables.brandPrimary,
+        },
+
+        '.cancel': {
+          'NativeBase.Text': {
+            color: variables.toolbarBtnTextColor,
+          },
+        },
+      },
+    },
+
+    'Sparkle.BackButton': {
+      '.icon': {
+        color: variables.toolbarBtnTextColor,
+      },
+    },
+
+    'Sparkle.ImageView': {
+      indicator: {
+        color: variables.toolbarBtnTextColor,
+      },
+
+      headerIcon: {
+        color: variables.toolbarBtnTextColor,
+      },
     },
   }),
 }));

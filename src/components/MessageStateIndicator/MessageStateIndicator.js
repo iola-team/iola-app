@@ -14,7 +14,6 @@ import Icon from '../Icon';
     width: 12,
     marginRight: -3,
     fontSize: 8,
-    color: '#BDC0CB',
   },
 
   '.done': {
@@ -40,7 +39,7 @@ export default class MessageStateIndicator extends Component {
 
     return (
       <ViewRN style={flatStyle}>
-        <Icon style={colorStyle} name={done ? 'double-check' : 'check'} />
+        <Icon secondary style={colorStyle} name={done ? 'double-check' : 'check'} />
       </ViewRN>
     );
   }
