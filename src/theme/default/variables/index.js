@@ -13,13 +13,13 @@ export default assign(defaultVariables, {
   placeholderColor: '#FFFFFF',
   textColor: '#35373E',
   inverseTextColor: "#FFFFFF",
-  secondaryTextColor: 'red', // BDC0CB
+  secondaryTextColor: '#BDC0CB',
   titleFontColor: '#35373E',
   toolbarDefaultBg: 'transparent',
   toolbarInputColor: '#F3F4F7',
   listBorderColor: 'rgba(189,192,203, 0.5)',
   btnDisabledBg: '#E8EAF0',
-  toolbarBtnTextColor: 'green', // BDC0CB
+  toolbarBtnTextColor: '#BDC0CB',
 
   borderRadiusBase: 8,
   btnUppercaseAndroidText: false,
