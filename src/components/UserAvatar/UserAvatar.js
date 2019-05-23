@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
-import { propType as fragmentProp } from 'graphql-anywhere';
 import { View as ViewRN } from 'react-native';
 import { View } from 'native-base';
+import gql from 'graphql-tag';
+import { propType as fragmentProp } from 'graphql-anywhere';
+import { has } from 'lodash';
 
 import { withStyle } from '~theme';
+import defaultAvatar from './defaultAvatar.png'; // @TODO: Think about assets directory
 import TouchableOpacity from '../TouchableOpacity';
 import Placeholder from '../Placeholder';
 import UserOnlineStatus from '../UserOnlineStatus';
@@ -103,15 +104,13 @@ export default class UserAvatar extends Component {
       small: size === 'small',
       large: size === 'large',
     };
-
     const thumbnailProps = { ...props, ...sizeProps };
-    const defaultUri = 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg';
 
     if (loading) {
       return (
         <ViewRN style={style}>
           <Placeholder {...sizeProps}>
-            <Thumbnail {...thumbnailProps} source={{ uri: defaultUri }} />
+            <Thumbnail {...thumbnailProps} source={defaultAvatar} />
           </Placeholder>
         </ViewRN>
       );
@@ -122,11 +121,11 @@ export default class UserAvatar extends Component {
       medium: size === 'medium',
       large: size === 'large',
     };
-    const uri = get(user, ['avatar', size], defaultUri);
+    const source = has(user, ['avatar', size]) ? { uri: user.avatar[size] } : defaultAvatar;
     const thumbnail = (
       <ViewRN style={style}>
         <View {...borderSizeProps}>
-          <Thumbnail {...thumbnailProps} source={{ uri }} />
+          <Thumbnail {...thumbnailProps} source={source} />
           <View foreground={foreground} highlight={!foreground}>
             <UserOnlineStatus user={user} />
           </View>

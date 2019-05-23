@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, Button } from 'native-base';
 
 import { withStyleSheet } from '~theme';
+import defaultAvatar from './defaultAvatar.png'; // @TODO: Think about assets directory
 import ImagePicker from '../ImagePicker';
 import Placeholder from '../Placeholder';
 import ActionSheet from '../ActionSheet';
@@ -58,9 +59,10 @@ export default class AvatarInput extends PureComponent {
   };
 
   actionSheet = React.createRef();
+
   state = {
     image: undefined,
-  }
+  };
 
   static getDerivedStateFromProps({ defaultValue }, { image }) {
     return {
@@ -69,12 +71,9 @@ export default class AvatarInput extends PureComponent {
   }
 
   onImageChange = ([selectedImage]) => {
-    this.setState({
-      image: selectedImage?.path,
-    });
-
+    this.setState({ image: selectedImage?.path });
     this.props.onChange(selectedImage);
-  }
+  };
 
   onDeletePress = () => this.actionSheet.current.show();
   onDelete = (reset) => {
@@ -82,28 +81,22 @@ export default class AvatarInput extends PureComponent {
 
     reset();
     onDelete();
-
     this.setState({ image: null });
   };
 
   renderInput({ pick, reset }) {
     const { style, styleSheet: styles, loading, value } = this.props;
     const { image } = this.state;
-
-    /**
-     * TODO: use correct default avatar image
-     */
-    const defaultAvatarImage = 'http://www.puristaudiodesign.com/Data/images/misc/default-avatar.jpg';
     const resultImage = value === undefined ? image : value;
     const showLoading = resultImage === undefined && loading;
-    const avatarUrl = resultImage || defaultAvatarImage;
+    const source = resultImage ? { uri: resultImage } : defaultAvatar;
 
     return (
       <View style={[styles.root, style]}>
         <View style={styles.imageHolder}>
-          {showLoading
+          {(showLoading)
             ? <Placeholder style={[styles.image, styles.placeholder]} />
-            : <Image style={styles.image} source={{ uri: avatarUrl }} />
+            : <Image style={styles.image} source={source} />
           }
         </View>
 
