@@ -70,6 +70,14 @@ export default class PhotoList extends Component {
     const { node } = item;
     const progress = node && itemsProgress[node.id];
 
+    /**
+     * First images have higher load priority
+     * TODO: Do not use magic number - add a prop
+     */
+    let priority = 'low';
+    if (index < 6) priority = 'normal';
+    if (index < 3) priority = 'high';
+
     return progress !== undefined || !node ? (
       <View style={styleSheet.item}>
         <Item photo={node} progress={progress} />
@@ -80,7 +88,7 @@ export default class PhotoList extends Component {
         onPress={() => onItemPress({ item, index })}
         style={styleSheet.item}
       >
-        <Item photo={node} />
+        <Item photo={node} priority={priority} />
       </TouchableOpacity>
     );
   };

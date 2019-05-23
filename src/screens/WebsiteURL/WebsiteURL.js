@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+/**
+ * TODO: Think of migrating it to use `react-native-fast-image` instead of `react-native` Image
+ */
 import { Animated, Easing, Dimensions, Image } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Container, View } from 'native-base';

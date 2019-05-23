@@ -2,11 +2,12 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { Image, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { Card, CardItem, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
+import Image from '../Image';
 
 const userFragment = gql`
   fragment UserPhotosCard_user on User {

@@ -44,11 +44,13 @@ export default class PhotoListItem extends Component {
   };
 
   static propTypes = {
+    priority: PropTypes.string,
     photo: fragmentProp(photoFragment),
     progress: PropTypes.number,
   };
 
   static defaultProps = {
+    priority: undefined,
     photo: null,
     progress: null,
   };
@@ -60,13 +62,13 @@ export default class PhotoListItem extends Component {
   onLoad = () => this.setState({ loaded: true });
 
   render() {
-    const { photo, progress, ...props } = this.props;
+    const { photo, progress, priority, ...props } = this.props;
     const { loaded } = this.state;
 
     return progress === null || !photo ? (
       <View {...props}>
         {!loaded && <Placeholder isActive={!photo} />}
-        {photo && <Image source={{ uri: photo.url }} onLoadEnd={this.onLoad} />}
+        {photo && <Image source={{ uri: photo.url }} priority={priority} onLoadEnd={this.onLoad} />}
       </View>
     ) : (
       <ImageProgress {...props} active progress={progress} previewUrl={photo.url} />

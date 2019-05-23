@@ -13,6 +13,7 @@ import FriendList from './FriendList';
 import FriendsButton from './FriendsButton';
 import FriendsTabBarLabel from './FriendsTabBarLabel';
 import Icon from './Icon';
+import Image from './Image';
 import ImageComments from './ImageComments';
 import ImageCommentsConnection from './ImageComments/ImageCommentsConnection';
 import ImageCommentsList from './ImageCommentsList';
@@ -63,6 +64,7 @@ export {
   FriendsButton,
   FriendsTabBarLabel,
   Icon,
+  Image,
   ImageComments,
   ImageCommentsConnection,
   ImageCommentsList,

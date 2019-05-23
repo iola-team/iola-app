@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -26,6 +27,7 @@
 		17E963652271D5A900DD2CC2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 17E963642271D5A800DD2CC2 /* GoogleService-Info.plist */; };
 		19EEC6DDE7AA435DA7B203C2 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 191998FC87094F5BB07644AC /* FontAwesome5_Regular.ttf */; };
 		1F5D85BFB1C24F1D857A8F6F /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F58D6B3C90B49BEA9EA8B63 /* AntDesign.ttf */; };
+		22FF50F067A5496CB50A4196 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C33AF7AD94094A1A807C7C19 /* libFastImage.a */; };
 		247F828C667042A782771314 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F17FC3503E746A28467C3C5 /* libRNGestureHandler.a */; };
 		252F535550444260BEED2DBA /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DAD9443F3F141AE8BD1543E /* MaterialCommunityIcons.ttf */; };
 		2DC9366B89734D2994B75876 /* iola-icons-2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 005C749E881949BD8DFEAD90 /* iola-icons-2.ttf */; };
@@ -370,6 +372,13 @@
 			remoteGlobalIDString = B5027B1B2237B30F00F1AABA;
 			remoteInfo = "RNCNetInfo-tvOS";
 		};
+		38C892A3229563DE0035A8D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A9B718FE709A4B0093CB3D7A /* FastImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A287971D1DE0C0A60081BDFA;
+			remoteInfo = FastImage;
+		};
 		3DAD3E831DF850E9000B6D8A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */;
@@ -570,11 +579,13 @@
 		9F58D6B3C90B49BEA9EA8B63 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		9FC2BD0F4E774BCAAEEDF917 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		A11719A3B5434562AD6DDD16 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/native-base/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		A9B718FE709A4B0093CB3D7A /* FastImage.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = FastImage.xcodeproj; path = "../node_modules/react-native-fast-image/ios/FastImage.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B17988E829FC4584AEB86616 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		C038782D08F08D32D53102D4 /* Pods-iola.storybook.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iola.storybook.xcconfig"; path = "Target Support Files/Pods-iola/Pods-iola.storybook.xcconfig"; sourceTree = "<group>"; };
 		C13E517295AC45F4ADC1CDE7 /* libRNDeviceInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNDeviceInfo.a; sourceTree = "<group>"; };
 		C3272E3BD79821493BD99271 /* Pods-iolaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iolaTests.release.xcconfig"; path = "Target Support Files/Pods-iolaTests/Pods-iolaTests.release.xcconfig"; sourceTree = "<group>"; };
+		C33AF7AD94094A1A807C7C19 /* libFastImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libFastImage.a; sourceTree = "<group>"; };
 		C46EC94349684473AF8A2CEB /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
 		C7C4B2FFEC174AFF947D2D4B /* libRNBlur.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBlur.a; sourceTree = "<group>"; };
 		C913FE78E2884FD08555152D /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
@@ -632,6 +643,7 @@
 				09FC8E88BD97CC533B9ED1CD /* libPods-iola.a in Frameworks */,
 				836BBD028AD447D88E497122 /* libRNFirebase.a in Frameworks */,
 				A78557D6B42F428E87636B70 /* libRNBlur.a in Frameworks */,
+				22FF50F067A5496CB50A4196 /* libFastImage.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,6 +848,7 @@
 				467A346F786F484B99030C19 /* libRNCNetInfo-tvOS.a */,
 				52E5F7484F824ACFA5DDB659 /* libRNFirebase.a */,
 				C7C4B2FFEC174AFF947D2D4B /* libRNBlur.a */,
+				C33AF7AD94094A1A807C7C19 /* libFastImage.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -904,6 +917,14 @@
 			children = (
 				38864F7222423A9400D7A8C7 /* libRNCNetInfo.a */,
 				38864F7422423A9400D7A8C7 /* libRNCNetInfo-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		38C892A0229563DC0035A8D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				38C892A4229563DE0035A8D8 /* libFastImage.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -982,6 +1003,7 @@
 				4D430804F6FB41E493B6D473 /* RNCNetInfo.xcodeproj */,
 				F391471A54704B50A0DC7094 /* RNFirebase.xcodeproj */,
 				80771FE1DCE8436FAAAAF2B2 /* RNBlur.xcodeproj */,
+				A9B718FE709A4B0093CB3D7A /* FastImage.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1126,6 +1148,10 @@
 				{
 					ProductGroup = 3854E32121BFEADA0004F616 /* Products */;
 					ProjectRef = 854B3E8E0EAB40B2993BA140 /* BVLinearGradient.xcodeproj */;
+				},
+				{
+					ProductGroup = 38C892A0229563DC0035A8D8 /* Products */;
+					ProjectRef = A9B718FE709A4B0093CB3D7A /* FastImage.xcodeproj */;
 				},
 				{
 					ProductGroup = 3854E31B21BFEADA0004F616 /* Products */;
@@ -1527,6 +1553,13 @@
 			remoteRef = 38864F7322423A9400D7A8C7 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		38C892A4229563DE0035A8D8 /* libFastImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFastImage.a;
+			remoteRef = 38C892A3229563DE0035A8D8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1808,6 +1841,7 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 				);
 				INFOPLIST_FILE = iolaTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1827,6 +1861,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/iola\"",
 					"\"$(SRCROOT)/iola\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1861,6 +1896,7 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 				);
 				INFOPLIST_FILE = iolaTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1915,12 +1951,14 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 				);
 				INFOPLIST_FILE = iola/Info.plist;
 				IS_STORYBOOK = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/iola\"",
 					"\"$(SRCROOT)/iola\"",
 				);
 				OTHER_LDFLAGS = (
@@ -1957,12 +1995,14 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 				);
 				INFOPLIST_FILE = iola/Info.plist;
 				IS_STORYBOOK = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/iola\"",
 					"\"$(SRCROOT)/iola\"",
 				);
 				OTHER_LDFLAGS = (
@@ -2053,6 +2093,7 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
+					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 				);
 				INFOPLIST_FILE = iola/Info.plist;
 				IS_STORYBOOK = Yes;
@@ -2093,6 +2134,7 @@
 					"$(SRCROOT)/../node_modules/@react-native-community/netinfo/ios",
 					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 					"$(SRCROOT)/../node_modules/@react-native-community/blur/ios",
+					"$(SRCROOT)/../node_modules/react-native-fast-image/ios/FastImage/**",
 				);
 				INFOPLIST_FILE = iolaTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -2112,6 +2154,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/iola\"",
 					"\"$(SRCROOT)/iola\"",
 				);
 				OTHER_LDFLAGS = (

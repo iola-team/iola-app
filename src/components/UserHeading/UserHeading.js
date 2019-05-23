@@ -157,6 +157,7 @@ export default class UserHeading extends PureComponent {
           loading={showLoading}
           user={user}
           size="large"
+          priority="high"
           foreground
         />
 

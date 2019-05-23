@@ -2,16 +2,10 @@ import React, { PureComponent } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
-import { Image } from 'react-native';
-import {
-  View,
-  Icon,
-  Button,
-  Text,
-  H2,
-} from 'native-base';
+import { View, Button, Text, H2 } from 'native-base';
 
-import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
+import { withStyleSheet as styleSheet } from '~theme';
+import Image from '../Image';
 
 const userFragment = gql`
   fragment DashboardHeading_user on User {
