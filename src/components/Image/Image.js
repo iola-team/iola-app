@@ -13,7 +13,10 @@ const priorityMap = {
 @withStyle('Sparkle.Image')
 export default class Image extends PureComponent {
   static propTypes = {
-    source: PropTypes.object.isRequired,
+    source: PropTypes.oneOfType([
+      PropTypes.number, // local image
+      PropTypes.object, // remote image
+    ]).isRequired,
     priority: PropTypes.oneOf(['low', 'normal', 'high']),
   };
 
@@ -23,12 +26,8 @@ export default class Image extends PureComponent {
 
   render() {
     const { source, priority, ...props } = this.props;
+    const imageSource = typeof source === 'object' ? { priority: priorityMap[priority], ...source } : source;
 
-    const prioritySource = {
-      priority: priorityMap[priority],
-      ...source,
-    };
-
-    return <FastImage source={prioritySource} {...props} />;
+    return <FastImage source={imageSource} {...props} />;
   }
 }
