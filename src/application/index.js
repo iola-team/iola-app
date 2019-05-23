@@ -36,12 +36,14 @@ export default class Application extends Component {
   static propTypes = {
     onReady: PropTypes.func.isRequired,
     onReset: PropTypes.func.isRequired,
+    initWasTriggeredManually: PropTypes.bool.isRequired,
   };
 
   state = {
     isOnline: true,
     screenProps: {
       onApplicationReset: this.props.onReset,
+      applicationInitWasTriggeredManually: this.props.initWasTriggeredManually,
       contentInset: {
         top: ScreenHeader.HEIGHT + getStatusBarHeight(),
         bottom: BottomTabBar.HEIGHT,
