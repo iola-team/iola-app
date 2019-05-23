@@ -7,11 +7,11 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import { has } from 'lodash';
 
 import { withStyle } from '~theme';
+import defaultAvatar from './defaultAvatar.png'; // @TODO: Think about assets directory
 import TouchableOpacity from '../TouchableOpacity';
 import Placeholder from '../Placeholder';
 import UserOnlineStatus from '../UserOnlineStatus';
 import Thumbnail from '../Thumbnail';
-import defaultAvatar from './defaultAvatar.png';
 
 const userFragment = gql`
   fragment UserAvatar_user on User {
