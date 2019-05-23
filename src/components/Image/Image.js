@@ -25,8 +25,8 @@ export default class Image extends PureComponent {
     const { source, priority, ...props } = this.props;
 
     const prioritySource = {
-      ...source,
       priority: priorityMap[priority],
+      ...source,
     };
 
     return <FastImage source={prioritySource} {...props} />;
