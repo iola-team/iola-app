@@ -40,7 +40,7 @@ export default class LogoutButton extends Component {
         onPress={index => index && this.logout()}
       >
         {show => (
-          <TouchableOpacity {...this.props} onPress={() => show()}>
+          <TouchableOpacity secondary {...this.props} onPress={() => show()}>
             <Text>Logout</Text>
           </TouchableOpacity>
         )}

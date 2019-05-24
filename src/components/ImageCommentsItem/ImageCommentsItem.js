@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
+import { Text } from 'native-base';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import moment from 'moment';
@@ -71,7 +72,6 @@ const imageCommentsItemFragment = gql`
   createdAt: {
     fontSize: 14,
     lineHeight: 16,
-    color: '#BDC0CB',
   },
 
   placeholderContainer: {
@@ -135,7 +135,7 @@ export default class ImageCommentsItem extends Component {
           </View>
           {!!text && <Text style={styles.text}>{text}</Text>}
           {image && <ImageFit style={styles.image} url={image} maxHeight={192} maxWidth={192} />}
-          <Text style={styles.createdAt}>{dateFormatted}</Text>
+          <Text secondary style={styles.createdAt}>{dateFormatted}</Text>
         </View>
       </View>
     );

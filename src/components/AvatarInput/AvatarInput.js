@@ -101,7 +101,7 @@ export default class AvatarInput extends PureComponent {
         </View>
 
         <View style={styles.rightSection} horizontalPadder>
-          <Text note>
+          <Text secondary>
             Edit profile photo
           </Text>
 

@@ -15,7 +15,6 @@ import ScreenHeader from '../ScreenHeader';
 
   icon: {
     fontSize: 16,
-    color: '#BDC0CB',
   },
 })
 export default class BackButton extends PureComponent {

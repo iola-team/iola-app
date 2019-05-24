@@ -160,10 +160,10 @@ export default class ChatListItem extends Component {
         </Left>
         <Body>
           <Text name headline>{recipient.name}</Text>
-          <Text content numberOfLines={1}>{lastMessage.content.text}</Text>
+          <Text content secondary numberOfLines={1}>{lastMessage.content.text}</Text>
         </Body>
         <Right>
-          <Moment element={Text} format="HH:mm">{lastMessage.createdAt}</Moment>
+          <Moment secondary element={Text} format="HH:mm">{lastMessage.createdAt}</Moment>
           {this.renderStatus(lastMessage, unreadMessagesCount)}
         </Right>
       </ListItem>
