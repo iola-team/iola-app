@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -42,6 +42,12 @@ export default class MessageList extends Component {
     loading: false,
     onRead: noop,
     getItemSide: noop,
+  };
+
+  listRef = createRef();
+  viewabilityConfig = {
+    waitForInteraction: true,
+    itemVisiblePercentThreshold: 100,
   };
 
   splitToSections(edges) {
@@ -122,6 +128,40 @@ export default class MessageList extends Component {
     ],
   }];
 
+
+  /**
+   * TODO: Manually calling `recordInteraction` after 500 ms is a hacky solution,
+   * but the only working one at the moment. The problem is that `onViewableItemsChanged`
+   * works incorrectly when `contentInset` proerty is set on `ScrollView`
+   * 
+   * Need to review the logic after upgrading `react-native` to `v0.59.8`
+   */
+  recordInteraction() {
+    setTimeout(() => this.listRef.current.recordInteraction(), 500);
+  }
+
+  componentDidUpdate({ loading: wasLoading }) {
+    const { loading, edges } = this.props;
+
+    /**
+     * Trigger items viewability calculations when data is loaded
+     */
+    if (wasLoading && !loading && edges?.length > 0) {
+      this.recordInteraction();
+    }
+  }
+
+  componentDidMount() {
+    const { edges } = this.props;
+
+    /**
+     * Trigger items viewability calculations if data is loaded from cahce
+     */
+    if (edges?.length > 0) {
+      this.recordInteraction();
+    }
+  }
+
   render() {
     const { edges, loading, inverted, ...listProps } = this.props;
     const isLoaded = edges !== null;
@@ -133,6 +173,7 @@ export default class MessageList extends Component {
 
     return (
       <SectionList
+        ref={this.listRef}
         {...listProps}
         {...sectionProps}
 
@@ -142,6 +183,8 @@ export default class MessageList extends Component {
         keyExtractor={this.getKeyForItem}
         renderItem={this.renderItem}
         ListFooterComponent={this.renderLoadIndicator}
+
+        viewabilityConfig={this.viewabilityConfig}
         onViewableItemsChanged={this.onViewableItemsChanged}
       />
     );
