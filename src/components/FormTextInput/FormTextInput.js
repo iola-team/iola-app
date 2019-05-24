@@ -5,7 +5,6 @@ import { Input, Item, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
-
 import Icon from '../Icon';
 
 @styleSheet('Sparkle.FormTextInput', {
@@ -171,11 +170,11 @@ export default class FormTextInput extends Component {
           style={[
             styles.formInput,
             secureTextEntry && !isPasswordIsShown && { paddingRight: isTouched ? 80 : 50 },
-            isFocused && { color: '#BCBFCA' },
-            !isValid && { color: '#FF8787' },
+            isFocused && { color: '#BCBFCA' }, // @TODO: TextInput dynamic color issue: https://github.com/facebook/react-native/issues/20131
+            !isValid && { color: '#FF8787' }, // @TODO: TextInput dynamic color issue: https://github.com/facebook/react-native/issues/20131
           ]}
           placeholderFontSize={16}
-          placeholderTextColor={isValid ? '#FFFFFF' : '#FF8787'}
+          placeholderTextColor={isValid ? (isFocused ? '#BCBFCA' : '#FFFFFF') : '#FF8787'}
           secureTextEntry={secureTextEntry && !isPasswordIsShown}
           value={value}
           onChangeText={::this.onChangeText}
