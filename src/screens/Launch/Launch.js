@@ -60,7 +60,8 @@ export default class LaunchScreen extends Component {
   }
 
   render() {
-    const loading = get(this.props, 'navigation.state.params.loading', false);
+    const { screenProps: { applicationInitWasTriggeredManually } } = this.props;
+    const loading = applicationInitWasTriggeredManually || get(this.props, 'navigation.state.params.loading', false);
 
     return loading ? <LoadingBackground /> : <SplashBackground />;
   }
