@@ -401,7 +401,7 @@ export default class Chat extends Component {
   getItemSide = ({ user }) => this.props.data.me.id === user.id ? 'right' : 'left';
   onMessagesRead = (nodes) => {
     const { markMessagesAsRead, data: { me } } = this.props;
-
+    
     /**
      * Filter user own messages
      */

@@ -68,7 +68,7 @@ export default class MessageList extends Component {
     const { onRead } = this.props;
 
     const filterRead = ({ isViewable, item }) => (
-      isViewable && !item.isSection && item.node.status !== 'READ'
+      isViewable && !item.isSection && item.node && item.node.status !== 'READ'
     );
     const nodes = changed.filter(filterRead).map(({ item }) => item.node);
 
