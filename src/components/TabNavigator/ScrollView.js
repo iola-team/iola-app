@@ -7,6 +7,8 @@ import RefreshControl from '../RefreshControl';
 import { TabBar, Header, Context } from './SceneView';
 import BarBackgroundView from '../BarBackgroundView';
 
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollViewRN);
+
 /**
  * TODO: Refactor this entire class. Most of the taken approaches require review.
  */
@@ -22,16 +24,30 @@ class ScrollView extends PureComponent {
     layout: null,
   };
 
-  onLayout = ({ nativeEvent: { layout } }) => this.setState({ layout });
-
-  scrollTo = (y, animated = false) => {
-    if (this.scrollRef) {
-      this.scrollRef.getNode().scrollTo({ y, animated });
-    }
+  onRef = node => {
+    this.scrollRef = node;
   }
 
-  onRef = (ref) => {
-    this.scrollRef = ref;
+  getNode() {
+    if (this.scrollRef?.getScrollResponder) {
+      return this.scrollRef.getScrollResponder();
+    } 
+
+    if (this.scrollRef?.getNode) {
+      return this.scrollRef.getNode();
+    }
+
+    return this.scrollRef;
+  }
+
+  setNativeProps = (...args) => this.getNode().setNativeProps(...args);
+  onLayout = (...args) => {
+    const { onLayout } = this.props;
+    const [{ nativeEvent: { layout } }] = args;
+
+    this.setState({ layout });
+
+    return onLayout && onLayout(...args);
   }
 
   onScrollEnd = ({ nativeEvent: { contentOffset } }) => {
@@ -60,7 +76,9 @@ class ScrollView extends PureComponent {
     }
 
     this.unsubscribe = !this.context ? [] : [
-      this.context.addListener('scroll', this.scrollTo),
+      this.context.addListener('scroll', (y, animated = false) => {
+        this.getNode().scrollTo({ y, animated });
+      }),
     ];
   }
 
@@ -105,6 +123,7 @@ class ScrollView extends PureComponent {
     if (!this.context) {
       return (
         <ScrollViewRN
+          ref={this.onRef}
           {...restProps}
 
           onLayout={this.onLayout}
@@ -161,9 +180,10 @@ class ScrollView extends PureComponent {
     };
 
     return (
-      <Animated.ScrollView
-        {...listProps}
+      <AnimatedScrollView
         ref={this.onRef}
+
+        {...listProps}
         onScroll={onScrollEvent}
         onScrollEnd={this.onScrollEnd}
         onScrollEndDrag={this.onScrollEnd}
@@ -187,7 +207,7 @@ class ScrollView extends PureComponent {
           {children}
         </ViewRN>
 
-      </Animated.ScrollView>
+      </AnimatedScrollView>
     );
   }
 }
