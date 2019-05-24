@@ -32,7 +32,7 @@ const edgeFragment = gql`
       id
       ...on Photo {
         id
-        url
+        url(size: BIG)
       }
     }
   }
@@ -199,6 +199,10 @@ export const photoDetailsQuery = gql`
 })
 @graphql(meQuery)
 export default class ImageView extends Component {
+  static fragments = {
+    edge: edgeFragment,
+  };
+
   static propTypes = {
     children: PropTypes.func.isRequired,
     edges: PropTypes.arrayOf(

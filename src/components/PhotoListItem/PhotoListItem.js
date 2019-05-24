@@ -13,14 +13,21 @@ import ImageProgress from '../ImageProgress';
 const photoFragment = gql`
   fragment PhotoListItem_photo on Photo {
     id
-    url
+    thumbnailUrl: url(size: SMALL)
   }
 `;
 
 const createOptimisticPhoto = ({ id, url }) => ({
   __typename: 'Photo',
   id: id || uniqueId('OptimisticPhoto:'),
-  url
+  thumbnailUrl: url,
+
+  /**
+   * Add `url` along side `thumbnailUrl` to allow `ImageView` component to show optimistic photos.
+   * The problem is that the `url` field is not described in grqphql fragment
+   * TODO: It is not greate, so we need to refactor it someday...
+   */
+  url,
 });
 
 @withStyle('Sparkle.PhotoListItem', {
@@ -68,10 +75,10 @@ export default class PhotoListItem extends Component {
     return progress === null || !photo ? (
       <View {...props}>
         {!loaded && <Placeholder isActive={!photo} />}
-        {photo && <Image source={{ uri: photo.url }} priority={priority} onLoadEnd={this.onLoad} />}
+        {photo && <Image source={{ uri: photo.thumbnailUrl }} priority={priority} onLoadEnd={this.onLoad} />}
       </View>
     ) : (
-      <ImageProgress {...props} active progress={progress} previewUrl={photo.url} />
+      <ImageProgress {...props} active progress={progress} previewUrl={photo.thumbnailUrl} />
     );
   }
 }
