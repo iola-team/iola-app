@@ -13,12 +13,11 @@ import * as routes from '../routeNames';
   },
 
   content: {
-    flex: 1,
     alignSelf: 'center',
-    minWidth: 320,
     width: '100%',
-    paddingLeft: '10%',
-    paddingRight: '10%',
+    minWidth: 320,
+    paddingHorizontal: '10%',
+    paddingBottom: 30,
   },
 
   title: {
@@ -75,7 +74,7 @@ export default class SignInScreen extends Component {
       <Container>
         <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
           <SafeAreaView style={{ flex: 1 }}>
-            <Content padder contentContainerStyle={styles.content}>
+            <Content contentContainerStyle={styles.content}>
               <H1 style={styles.title}>Sign in</H1>
 
               <ApolloConsumer>
