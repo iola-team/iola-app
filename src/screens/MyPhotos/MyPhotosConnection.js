@@ -15,12 +15,14 @@ const myPhotosQuery = gql`
       photos {
         edges {
           ...PhotoList_edge
+          ...ImageView_edge
         }
       }
     }
   }
 
   ${PhotoList.fragments.edge}
+  ${ImageView.fragments.edge}
 `;
 
 const addPhotoMutation = gql`
@@ -28,11 +30,13 @@ const addPhotoMutation = gql`
     result: addUserPhoto(input: $input) {
       edge {
         ...PhotoList_edge
+        ...ImageView_edge
       }
     }
   }
 
   ${PhotoList.fragments.edge}
+  ${ImageView.fragments.edge}
 `;
 
 const deletePhotoMutation = gql`
