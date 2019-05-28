@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Dimensions, Text, View } from 'react-native';
-import { Badge } from 'native-base';
+import { Dimensions, View } from 'react-native';
+import { Badge, Text } from 'native-base';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import { graphql, Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -32,7 +32,7 @@ const edgeFragment = gql`
       id
       ...on Photo {
         id
-        url
+        url(size: BIG)
       }
     }
   }
@@ -85,7 +85,6 @@ export const photoDetailsQuery = gql`
     textAlign: 'center',
     fontSize: 14,
     lineHeight: 17,
-    color: '#BDC0CB',
     zIndex: 1,
   },
 
@@ -96,7 +95,6 @@ export const photoDetailsQuery = gql`
 
   headerIcon: {
     fontSize: 14,
-    color: '#BDC0CB',
   },
 
   backButton: {
@@ -118,7 +116,6 @@ export const photoDetailsQuery = gql`
     textAlign: 'center',
     fontSize: 14,
     lineHeight: 17,
-    color: '#BDC0CB',
   },
 
   footer: {
@@ -158,7 +155,6 @@ export const photoDetailsQuery = gql`
     paddingBottom: 19,
     fontSize: 14,
     lineHeight: 17,
-    color: '#BDC0CB',
   },
 
   actionsBlock: {
@@ -203,6 +199,10 @@ export const photoDetailsQuery = gql`
 })
 @graphql(meQuery)
 export default class ImageView extends Component {
+  static fragments = {
+    edge: edgeFragment,
+  };
+
   static propTypes = {
     children: PropTypes.func.isRequired,
     edges: PropTypes.arrayOf(
@@ -329,7 +329,7 @@ export default class ImageView extends Component {
                         </View>
                       )}
                       {!!caption && <Text style={styles.caption}>{caption}</Text>}
-                      <Text style={styles.dateTime}>{createdAt}</Text>
+                      <Text secondary style={styles.dateTime}>{createdAt}</Text>
                     </View>
 
                     <View style={styles.actionsBlock}>

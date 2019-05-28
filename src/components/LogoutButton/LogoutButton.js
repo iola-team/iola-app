@@ -25,22 +25,18 @@ export default class LogoutButton extends Component {
 
     await mutate();
     await client.resetStore();
-  }
+  };
 
   render() {
     return (
       <ActionSheet
-        options={[
-          'Cancel',
-          'Logout',
-        ]}
-
+        options={['Cancel', 'Logout']}
         cancelButtonIndex={0}
         destructiveButtonIndex={1}
         onPress={index => index && this.logout()}
       >
         {show => (
-          <TouchableOpacity {...this.props} onPress={() => show()}>
+          <TouchableOpacity secondary {...this.props} onPress={() => show()}>
             <Text>Logout</Text>
           </TouchableOpacity>
         )}

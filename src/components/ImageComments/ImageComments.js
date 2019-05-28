@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Dimensions } from 'react-native';
+import { View, Dimensions } from 'react-native';
+import { Text } from 'native-base';
 import { graphql, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
@@ -64,7 +65,6 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
 
   count: {
     fontSize: 16,
-    color: '#BDC0CB',
   },
 
   container: {
@@ -220,7 +220,7 @@ export default class ImageComments extends Component {
     return (
       <View style={styles.titleRow}>
         <Text style={styles.title}>Comments</Text>
-        {totalCount ? <Text style={styles.count}>{totalCount}</Text> : null}
+        {totalCount ? <Text secondary style={styles.count}>{totalCount}</Text> : null}
       </View>
     );
   }

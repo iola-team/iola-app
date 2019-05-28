@@ -38,14 +38,7 @@ import { withStyleSheet } from '~theme';
   },
 
   'Sparkle.TouchableOpacity': {
-    '.cancel': {
-      'NativeBase.Text': {
-        color: '#BDC0CB',
-      },
-    },
-
     'NativeBase.Text': {
-      color: '#5F96F2',
       fontSize: 14,
     },
 

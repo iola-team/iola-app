@@ -16,6 +16,7 @@ const userPhotosQuery = gql`
         photos {
           edges {
             ...PhotoList_edge
+            ...ImageView_edge
           }
         }
       }
@@ -23,6 +24,7 @@ const userPhotosQuery = gql`
   }
 
   ${PhotoList.fragments.edge}
+  ${ImageView.fragments.edge}
 `;
 
 const deletePhotoMutation = gql`

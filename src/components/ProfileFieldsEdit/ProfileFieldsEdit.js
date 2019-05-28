@@ -7,7 +7,7 @@ import { noop } from 'lodash';
 import { Toast } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { KeyboardAvoidingView } from '~components';
+import KeyboardAvoidingView from '../KeyboardAvoidingView';
 import ProfileFieldForm from '../ProfileFieldForm';
 
 const userFragment = gql`

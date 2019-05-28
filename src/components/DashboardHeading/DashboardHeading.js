@@ -49,9 +49,7 @@ const userFragment = gql`
     color: '#585A61',
   },
 
-  headline: {
-    color: '#BDC0CB',
-  },
+  headline: {},
 
   image: {
     height: 240,
@@ -66,7 +64,6 @@ const userFragment = gql`
 
   button: {
     width: 117,
-    borderColor: '#BDC0CB',
   },
 
   buttonText: {
@@ -98,7 +95,7 @@ export default class DashboardHeading extends PureComponent {
             <H2 inverse style={[styleSheet.infoLine, styleSheet.name]}>
               {user.name}
             </H2>
-            <Text note style={[styleSheet.infoLine, styleSheet.headline]}>
+            <Text secondary style={[styleSheet.infoLine, styleSheet.headline]}>
               {user.info.headline}
             </Text>
           </View>

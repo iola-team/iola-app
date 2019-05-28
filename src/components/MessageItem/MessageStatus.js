@@ -14,7 +14,6 @@ import MessageStateIndicator from '../MessageStateIndicator';
   marginBottom: -2,
 
   'NativeBase.Text': {
-    color: '#BDC0CB',
     fontSize: 10,
     lineHeight: 12,
   },
@@ -30,7 +29,6 @@ import MessageStateIndicator from '../MessageStateIndicator';
   },
 
   'Sparkle.MessageStateIndicator': {
-    color: '#BDC0CB',
     marginLeft: 5,
   },
 })
@@ -56,7 +54,7 @@ export default class MessageStatus extends PureComponent {
 
     return (
       <View style={flatStyle}>
-        <Moment style={colorStyle} element={Text} format="HH:mm">{time}</Moment>
+        <Moment secondary style={colorStyle} element={Text} format="HH:mm">{time}</Moment>
         {hasStatus && <MessageStateIndicator style={colorStyle} done={status === 'READ'} />}
       </View>
     );

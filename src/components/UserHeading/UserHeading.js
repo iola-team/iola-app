@@ -53,9 +53,7 @@ const headerHeight = 350 + 10;
     marginBottom: 5,
   },
 
-  headline: {
-    color: '#BDC0CB',
-  },
+  headline: {},
 
   placeholder: {
     borderRadius: 4,
@@ -179,7 +177,7 @@ export default class UserHeading extends PureComponent {
               style={showLoading ? [styles.placeholder, styles.headlinePlaceholder] : null}
             >
               <Text
-                note
+                secondary
                 style={styles.headline}
               >
                 {showLoading ? ' ' : user.info.headline}
