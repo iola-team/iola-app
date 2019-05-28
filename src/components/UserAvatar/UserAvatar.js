@@ -19,8 +19,8 @@ const userFragment = gql`
     avatar {
       id
       url
-      small: url
-      medium: url(size: MEDIUM)
+      small: url(size: SMALL)
+      medium: url(size: SMALL)
       large: url(size: MEDIUM)
     }
     ...UserOnlineStatus_user
