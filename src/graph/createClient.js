@@ -58,6 +58,7 @@ export async function createClient({
     fragmentMatcher,
     dataIdFromObject: object => object.id || null,
     cacheRedirects,
+    freezeResults: true,
   });
 
   const cachePersistor = new CachePersistor({
@@ -92,6 +93,11 @@ export async function createClient({
      */
     typeDefs: clientState.typeDefs,
     resolvers: clientState.resolvers,
+
+    /**
+     * Performance tweaks
+     */
+    assumeImmutableResults: true,
   });
 
   /**
