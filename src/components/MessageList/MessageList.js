@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -44,6 +44,12 @@ export default class MessageList extends Component {
     getItemSide: noop,
   };
 
+  listRef = createRef();
+  viewabilityConfig = {
+    waitForInteraction: false,
+    itemVisiblePercentThreshold: 100,
+  };
+
   splitToSections(edges) {
     const grouped = groupBy(edges, ({ node }) => {
       const createdAt = new Date(node.createdAt);
@@ -68,7 +74,7 @@ export default class MessageList extends Component {
     const { onRead } = this.props;
 
     const filterRead = ({ isViewable, item }) => (
-      isViewable && !item.isSection && item.node.status !== 'READ'
+      isViewable && !item.isSection && item.node && item.node.status !== 'READ'
     );
     const nodes = changed.filter(filterRead).map(({ item }) => item.node);
 
@@ -133,6 +139,7 @@ export default class MessageList extends Component {
 
     return (
       <SectionList
+        ref={this.listRef}
         {...listProps}
         {...sectionProps}
 
@@ -142,6 +149,8 @@ export default class MessageList extends Component {
         keyExtractor={this.getKeyForItem}
         renderItem={this.renderItem}
         ListFooterComponent={this.renderLoadIndicator}
+
+        viewabilityConfig={this.viewabilityConfig}
         onViewableItemsChanged={this.onViewableItemsChanged}
       />
     );
