@@ -77,16 +77,16 @@ class SignInForm extends Component {
   }
 
   onSubmit = async () => {
-    const { validateForm, setFieldTouched, setErrors, handleSubmit, isSubmitting, isValid } = this.props;
+    const { validateForm, setFieldTouched, setErrors, isSubmitting, submitForm } = this.props;
     const errors = await validateForm();
 
     setFieldTouched('login', true);
     setFieldTouched('password', true);
     setErrors(errors || {});
 
-    if (isSubmitting || !isValid) return;
+    if (isSubmitting || !!Object.keys(errors).length) return; // @TODO: if initial values are not setted "!!Object.keys(errors).length" can be replaced with "!isValid"
 
-    handleSubmit();
+    submitForm();
   };
 
   render() {

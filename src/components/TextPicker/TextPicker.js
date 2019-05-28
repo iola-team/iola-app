@@ -43,7 +43,7 @@ const itemShape = PropTypes.shape({
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: '#BDC0CB',
+    borderTopColor: '#AFB2BF',
   },
 
   headerButtonText: {

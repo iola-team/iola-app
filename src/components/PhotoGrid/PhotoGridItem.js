@@ -12,7 +12,7 @@ import { withStyle } from '~theme';
 
   '.placeholder': {
     borderWidth: 1,
-    borderColor: '#BDC0CB',
+    borderColor: '#AFB2BF',
     borderStyle: 'dashed',
   },
 })
