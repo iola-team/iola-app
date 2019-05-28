@@ -8,17 +8,29 @@ import { withStyleSheet } from '~theme';
 import { ProfileFieldsEdit, TouchableOpacity, AvatarEdit } from '~components';
 
 @graphql(gql`
-  query ProfileEditQuery {
+  query ProfileEditFieldsQuery {
     me {
       id
       ...ProfileFieldsEdit_user
-      ...AvatarEdit_user
     }
   }
 
   ${ProfileFieldsEdit.fragments.user}
+`, {
+  name: 'fieldsData',
+})
+@graphql(gql`
+  query ProfileEditAvatarQuery {
+    me {
+      id
+      ...AvatarEdit_user
+    }
+  }
+
   ${AvatarEdit.fragments.user}
-`)
+`, {
+  name: 'avatarData',
+})
 @withStyleSheet('Sparkle.ProfileEditScreen', {
   avatar: {
     marginTop: 15,
@@ -85,13 +97,13 @@ export default class ProfileEditScreen extends Component {
   }
 
   render() {
-    const { data: { loading, me }, styleSheet: styles, screenProps } = this.props;
+    const { fieldsData, avatarData, styleSheet: styles, screenProps } = this.props;
 
     return (
       <Container>
         <ProfileFieldsEdit
-          loading={loading}
-          user={me}
+          loading={fieldsData.loading}
+          user={fieldsData.me}
           onFormReady={(form) => {
             this.form = form;
           }}
@@ -99,7 +111,9 @@ export default class ProfileEditScreen extends Component {
           onSaveStart={this.onSaveStart}
           onSaveEnd={this.onSaveEnd}
 
-          ListHeaderComponent={<AvatarEdit style={styles.avatar} user={me} loading={loading} />}
+          ListHeaderComponent={(
+            <AvatarEdit style={styles.avatar} user={avatarData.me} loading={avatarData.loading} />
+          )}
           contentInset={{ ...screenProps.contentInset, bottom: 0 }}
         />
       </Container>
