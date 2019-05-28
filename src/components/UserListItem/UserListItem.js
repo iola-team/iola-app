@@ -7,15 +7,21 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import { withStyle } from '~theme';
 import UserAvatar from '../UserAvatar';
 import Placeholder from '../Placeholder';
+import UserHeading from '../UserHeading';
 
+/*
+ * TODO: Measure performance of the query with `UserHeading_user` fragment and without it.
+ */
 const userFragment = gql`
   fragment UserListItem_user on User {
     id
     name
     ...UserAvatar_user
+    ...UserHeading_user # Preload user screen data
   }
 
   ${UserAvatar.fragments.user}
+  ${UserHeading.fragments.user}
 `;
 
 @withStyle('Sparkle.UserListItem', {

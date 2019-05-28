@@ -1,4 +1,4 @@
-import { merge, forEach } from 'lodash';
+import { merge } from 'lodash';
 import getTheme from 'native-base/src/theme/components';
 
 export default (variables => ({
