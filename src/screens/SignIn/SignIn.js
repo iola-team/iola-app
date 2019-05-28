@@ -2,10 +2,28 @@ import React, { Component } from 'react';
 import { ImageBackground, SafeAreaView } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 import { ApolloConsumer } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import SignInForm from './SignInForm';
 import * as routes from '../routeNames';
+
+// @TODO: this is for test (try to speed up the Launch screen query); DELETE IT AFTER THE SPEED MEASURING
+const launchScreenQueryTest = gql`
+  query {
+    config {
+      emailConfirmIsRequired
+      userApproveIsRequired
+    }
+    
+    me {
+      id
+      name
+      isEmailVerified
+      isApproved
+    }
+  }
+`;
 
 @styleSheet('Sparkle.SignInScreen', {
   background: {
@@ -34,7 +52,7 @@ import * as routes from '../routeNames';
 export default class SignInScreen extends Component {
   state = { defaultEmail: '' };
 
-  onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }) => {
+  onSubmit = async ({ login, password }, { setSubmitting, status, setStatus }, apolloClient) => {
     const { authenticate, navigation: { navigate } } = this.props;
     let authenticated = false;
 
@@ -44,10 +62,14 @@ export default class SignInScreen extends Component {
       // @TODO: handle the error?
     }
 
+    if (authenticated) {
+      const { data } = await apolloClient.query({ query: launchScreenQueryTest }); // @TODO: this is for test (try to speed up the Launch screen query); DELETE IT AFTER THE SPEED MEASURING
+
+      navigate(routes.LAUNCH, { loading: true });
+    }
+
     setStatus({ ...status, success: authenticated });
     setSubmitting(false);
-
-    if (authenticated) navigate(routes.LAUNCH, { loading: true });
   };
 
   onForgotPassword = (login) => {
