@@ -84,11 +84,11 @@ export default class WebsiteURLScreen extends Component {
   onSubmit = async ({ url }) => {
     try {
       await AsyncStorage.setItem('platformURL', url);
-      this.props.onSubmit(url);
+      this.props.onSubmit(url, true);
     } catch (error) {
       // @TODO: display Error message?
     }
-  }
+  };
 
   render() {
     const { styleSheet: styles } = this.props;
@@ -134,7 +134,7 @@ export default class WebsiteURLScreen extends Component {
                       outputRange: [1, this.logoSizeFinishScale],
                     })
                   }
-                ]
+                ],
               }]}
               source={logo}
             />

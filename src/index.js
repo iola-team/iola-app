@@ -20,6 +20,7 @@ import Application from '~application';
 import { Root, ErrorBoundary } from '~components';
 import Storybook from '~storybook/UI';
 import SplashBackground from '~screens/Launch/SplashBackground';
+import LoadingBackground from '~screens/Launch/LoadingBackground';
 import WebsiteURLScreen from '~screens/WebsiteURL/WebsiteURL';
 /* eslint-enable */
 
@@ -27,6 +28,7 @@ class ApplicationRoot extends Component {
   state = {
     isReady: false,
     initWasLaunched: false,
+    initWasTriggeredManually: false,
   };
 
   apiClient = null;
@@ -47,8 +49,8 @@ class ApplicationRoot extends Component {
     RNRestart.Restart();
   };
 
-  init = async (platformURL) => {
-    this.setState({ initWasLaunched: true });
+  init = async (platformURL, initWasTriggeredManually = false) => {
+    this.setState({ initWasLaunched: true, initWasTriggeredManually });
 
     const url = `${__DEV__ ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_PATH}`;
     const apiURL = `${url}/graphql${__DEV__ ? DEV_URL_PARAMETERS_FOR_API : ''}`;
@@ -74,10 +76,10 @@ class ApplicationRoot extends Component {
   };
 
   render() {
-    const { isReady, initWasLaunched } = this.state;
-
+    const { isReady, initWasLaunched, initWasTriggeredManually } = this.state;
+    const LoadingScreenComponent = initWasTriggeredManually ? <LoadingBackground /> : <SplashBackground />;
     const displayOnNotReady = (initWasLaunched)
-      ? <SplashBackground />
+      ? LoadingScreenComponent
       /**
        * TODO: Think of how to not use screens directly
        */
@@ -89,7 +91,11 @@ class ApplicationRoot extends Component {
           <ApolloProvider client={this.apiClient}>
             <ErrorBoundary onRequestRelaunch={this.onRequestRelaunch}>
               <Root>
-                <Application onReady={this.onApplicationReady} onReset={this.onApplicationReset} />
+                <Application
+                  onReady={this.onApplicationReady}
+                  onReset={this.onApplicationReset}
+                  initWasTriggeredManually={initWasTriggeredManually}
+                />
               </Root>
             </ErrorBoundary>
           </ApolloProvider>
