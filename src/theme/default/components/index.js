@@ -638,5 +638,13 @@ export default (variables => ({
         color: variables.toolbarBtnTextColor,
       },
     },
+
+    'Sparkls.ErrorBoundary': {
+      'NativeBase.ViewNB': {
+        'NativeBase.H1': {
+          color: variables.brandPrimary,
+        },
+      },
+    },
   }),
 }));

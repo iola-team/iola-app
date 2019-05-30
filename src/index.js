@@ -3,9 +3,11 @@
 import './polyfill';
 
 import React, { Component } from 'react';
+import { Linking } from 'react-native';
 import { ApolloProvider } from 'react-apollo';
 import SplashScreen from 'react-native-splash-screen';
 import {
+  ISSUE_REPORT_URL,
   INTEGRATION_PATH,
   DEV_PLATFORM_URL,
   DEV_URL_PARAMETERS_FOR_API,
@@ -49,6 +51,14 @@ class ApplicationRoot extends Component {
     RNRestart.Restart();
   };
 
+  onReportPress = async () => {
+    const canOpen = await Linking.canOpenURL(ISSUE_REPORT_URL);
+
+    if (canOpen) {
+      Linking.openURL(ISSUE_REPORT_URL);
+    }
+  };
+
   init = async (platformURL, initWasTriggeredManually = false) => {
     this.setState({ initWasLaunched: true, initWasTriggeredManually });
 
@@ -89,7 +99,10 @@ class ApplicationRoot extends Component {
       <Theme>
         {isReady ? (
           <ApolloProvider client={this.apiClient}>
-            <ErrorBoundary onRequestRelaunch={this.onRequestRelaunch}>
+            <ErrorBoundary
+              onRequestRelaunch={this.onRequestRelaunch}
+              onReportPress={this.onReportPress}
+            >
               <Root>
                 <Application
                   onReady={this.onApplicationReady}

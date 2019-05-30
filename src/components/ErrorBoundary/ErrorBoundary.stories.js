@@ -32,13 +32,20 @@ class ThrowError extends Component {
 }
 
 stories.add('Default', () => (
-  <ErrorBoundary onRequestRelaunch={action('onRequestRelaunch')}>
+  <ErrorBoundary
+    onRequestRelaunch={action('onRequestRelaunch')}
+    onReportPress={action('onReportPress')}
+  >
     <ThrowError />
   </ErrorBoundary>
 ));
 
 stories.add('Handled error', () => (
-  <ErrorBoundary onRequestRelaunch={action('onRequestRelaunch')} onError={() => true}>
+  <ErrorBoundary
+    onRequestRelaunch={action('onRequestRelaunch')}
+    onReportPress={action('onReportPress')}
+    onError={() => true}
+  >
     <ThrowError />
   </ErrorBoundary>
 ));
