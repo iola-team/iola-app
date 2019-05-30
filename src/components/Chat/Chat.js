@@ -153,12 +153,22 @@ const createOptimisticMessageEdge = (content, user) => ({
 
 const markMessagesAsReadMutation = gql`
   mutation MarkChatMessageAsReadMutation(
-  $input: MarkMessagesAsReadInput!
+    $userId: ID!
+    $input: MarkMessagesAsReadInput!
   ) {
     markMessagesAsRead(input: $input) {
       node {
         id
         status
+      }
+
+      chat {
+        id
+        messages(filter: {
+          notReadBy: $userId
+        }) {
+          totalCount
+        }
       }
     }
   }
@@ -405,18 +415,23 @@ export default class Chat extends Component {
     /**
      * Filter user own messages
      */
-    const messageIds = nodes.filter(({ user }) => user.id !== me.id).map(node => node.id);
+    const nodesToUpdate = nodes.filter(({ user }) => user.id !== me.id);
+    const messageIds = nodesToUpdate.map(node => node.id);
     if (!messageIds.length) {
       return;
     }
 
     const variables = {
+      userId: me.id,
       input: {
         userId: me.id,
         messageIds,
       },
     };
 
+    /**
+     * TODO: Think of adding optimistic update
+     */
     markMessagesAsRead({
       variables,
     });
