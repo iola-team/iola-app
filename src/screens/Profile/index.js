@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { createHeadingTabsNavigator, Icon, LogoutButton, ScreenHeader } from '~components';
+import { createHeadingTabsNavigator, TabBarIcon, LogoutButton, ScreenHeader } from '~components';
 import ProfileHeading from './ProfileHeading';
 
 export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
@@ -14,7 +14,7 @@ export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
     headerBackground: null,
     headerRight: <LogoutButton />,
     tabBarIcon: ({ tintColor: color }) => (
-      <Icon name="user-bar" style={{ color, fontSize: 20 }} />
+      <TabBarIcon name="user-bar" style={{ color }} />
     ),
   },
 });

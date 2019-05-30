@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Container, View } from 'native-base';
 
-import { Icon, SearchBar, TouchableOpacity } from '~components';
+import { TabBarIcon, SearchBar, TouchableOpacity } from '~components';
 import { withStyleSheet } from '~theme';
 import { USER, USER_SEARCH } from '../routeNames';
 import UsersConnection from './UsersConnection';
@@ -24,7 +24,7 @@ export default class DashboardAll extends PureComponent {
   static navigationOptions = {
     title: 'Users',
     tabBarIcon: ({ tintColor: color }) => (
-      <Icon name="dashboard-bar" style={{ color, fontSize: 25 }} />
+      <TabBarIcon name="dashboard-bar" style={{ color, fontSize: 25 }} />
     ),
   };
 
