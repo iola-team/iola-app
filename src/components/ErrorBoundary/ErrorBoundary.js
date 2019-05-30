@@ -20,7 +20,7 @@ import Image from '../Image';
       flex: 2,
 
       'Sparkle.Image': {
-        width: 56.6,
+        width: 59,
         height: 54,
         marginBottom: 20,
       },
