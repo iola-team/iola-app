@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { ImageBackground, TouchableOpacity, SafeAreaView } from 'react-native';
-import { Container, Text, View } from 'native-base';
+import { Container, Content, Text, View } from 'native-base';
+
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
-import { LAUNCH } from '../routeNames';
 import SignUpForm from './SignUpForm';
+import { LAUNCH } from '../routeNames';
 
 const Title = connectToStyleSheet('title', Text);
 const Background = connectToStyleSheet('background', ImageBackground).withProps({
   source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
 });
-const Content = connectToStyleSheet('content', View);
 const TermsContainer = connectToStyleSheet('termsContainer', View);
 const TermsText = connectToStyleSheet('termsText', Text);
 const TermsSubcontainer = connectToStyleSheet('termsSubcontainer', View);
@@ -26,10 +26,10 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
   },
 
   content: {
-    flex: 1,
     alignSelf: 'center',
-    minWidth: 320,
     width: '100%',
+    minWidth: 320,
+    paddingBottom: 30,
     paddingHorizontal: '10%',
   },
 
@@ -91,13 +91,16 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 })
 export default class SignUpScreen extends Component {
   render() {
-    const { navigation: { goBack, navigate } } = this.props;
+    const {
+      navigation: { goBack, navigate },
+      styleSheet: styles,
+    } = this.props;
 
     return (
       <Container>
         <Background>
           <SafeAreaView style={{ flex: 1 }}>
-            <Content>
+            <Content contentContainerStyle={styles.content}>
               <Title>Please sign up</Title>
 
               <SignUpForm onSubmit={() => navigate(LAUNCH, { loading: true })} />

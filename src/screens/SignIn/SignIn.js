@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ImageBackground, SafeAreaView } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
-import { ApolloConsumer } from 'react-apollo';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import SignInForm from './SignInForm';
@@ -13,12 +12,11 @@ import * as routes from '../routeNames';
   },
 
   content: {
-    flex: 1,
     alignSelf: 'center',
-    minWidth: 320,
     width: '100%',
-    paddingLeft: '10%',
-    paddingRight: '10%',
+    minWidth: 320,
+    paddingHorizontal: '10%',
+    paddingBottom: 30,
   },
 
   title: {
@@ -45,10 +43,12 @@ export default class SignInScreen extends Component {
       // @TODO: handle the error?
     }
 
+    if (authenticated) {
+      navigate(routes.LAUNCH, { loading: true });
+    }
+
     setStatus({ ...status, success: authenticated });
     setSubmitting(false);
-
-    if (authenticated) navigate(routes.LAUNCH, { loading: true });
   };
 
   onForgotPassword = (login) => {
@@ -75,18 +75,14 @@ export default class SignInScreen extends Component {
       <Container>
         <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
           <SafeAreaView style={{ flex: 1 }}>
-            <Content padder contentContainerStyle={styles.content}>
+            <Content contentContainerStyle={styles.content}>
               <H1 style={styles.title}>Sign in</H1>
 
-              <ApolloConsumer>
-                {apolloClient => (
-                  <SignInForm
-                    defaultEmail={this.state.defaultEmail}
-                    onSubmit={(values, formikBag) => this.onSubmit(values, formikBag, apolloClient)}
-                    onForgotPassword={login => this.onForgotPassword(login)}
-                  />
-                )}
-              </ApolloConsumer>
+              <SignInForm
+                defaultEmail={this.state.defaultEmail}
+                onSubmit={(values, formikBag) => this.onSubmit(values, formikBag)}
+                onForgotPassword={login => this.onForgotPassword(login)}
+              />
 
               <Button
                 style={styles.button}

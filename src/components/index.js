@@ -37,6 +37,7 @@ import Shadow from './Shadow';
 import Spinner from './Spinner';
 import TabBar from './TabBar';
 import TabBarLabel from './TabBarLabel';
+import TabBarIcon from './TabBarIcon';
 import TouchableOpacity from './TouchableOpacity';
 import UserAvatar from './UserAvatar';
 import UserBriefCard from './UserBriefCard';
@@ -86,6 +87,7 @@ export {
   Shadow,
   Spinner,
   TabBarLabel,
+  TabBarIcon,
   TouchableOpacity,
   UserAvatar,
   UserBriefCard,

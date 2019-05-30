@@ -9,7 +9,7 @@ import { withStyle } from '~theme';
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#BDC0CB',
+    backgroundColor: '#AFB2BF',
 
     '.online': {
       backgroundColor: '#3BC486',

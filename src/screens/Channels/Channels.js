@@ -4,7 +4,8 @@ import { graphql } from 'react-apollo';
 import { Container, View } from 'native-base';
 
 import { withStyleSheet } from '~theme';
-import { UserChats, Icon, SearchBar, UsersRow, TouchableOpacity } from '~components';
+import { UserChats, SearchBar, UsersRow, TouchableOpacity } from '~components';
+import TabBarIcon from './TabBarIcon';
 import { CHANNEL, CHAT_SEARCH } from '../routeNames';
 
 @withStyleSheet('Sparkle.ChannelsScreen', {
@@ -60,7 +61,7 @@ export default class Channels extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'Chats',
     tabBarIcon: ({ focused, tintColor }) => (
-      <Icon name="chats-bar" style={{ color: tintColor, fontSize: 20 }} />
+      <TabBarIcon style={{ color: tintColor }} />
     ),
     headerStyle: {
       borderBottomWidth: 0,

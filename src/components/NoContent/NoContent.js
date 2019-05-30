@@ -47,7 +47,7 @@ const AnimatedText = Animated.createAnimatedComponent(Text);
     },
 
     'NativeBase.Text': {
-      color: '#BDC0CB',
+      color: '#AFB2BF',
     },
   },
 })
