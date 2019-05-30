@@ -76,18 +76,21 @@ class SignInForm extends Component {
     return !isSubmitting && !!submitCount && !token && !status.changed;
   }
 
+  onSubmit = async () => {
+    const { validateForm, setFieldTouched, setErrors, isSubmitting, submitForm } = this.props;
+    const errors = await validateForm();
+
+    setFieldTouched('login', true);
+    setFieldTouched('password', true);
+    setErrors(errors || {});
+
+    if (isSubmitting || !!Object.keys(errors).length) return; // @TODO: if initial values are not setted "!!Object.keys(errors).length" can be replaced with "!isValid"
+
+    submitForm();
+  };
+
   render() {
-    const {
-      styleSheet: styles,
-      values: {
-        login,
-      },
-      onForgotPassword,
-      handleSubmit,
-      isValid,
-      isSubmitting,
-    } = this.props;
-    const disabled = !(isValid || login);
+    const { values: { login }, onForgotPassword, isSubmitting, styleSheet: styles } = this.props;
 
     return (
       <Query query={readTokenQuery}>
@@ -124,7 +127,7 @@ class SignInForm extends Component {
                 {error && <Text style={styles.commonError}>Wrong login or password</Text>}
               </View>
 
-              <Button onPress={handleSubmit} disabled={disabled} style={styles.submit} block>
+              <Button onPress={this.onSubmit} style={styles.submit} block>
                 <Text>Sign in</Text>
                 {isSubmitting && <Spinner style={styles.spinner} />}
               </Button>
@@ -142,10 +145,11 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
+  validationSchema,
   enableReinitialize: true,
+  validateOnBlur: false,
   mapPropsToValues: ({ defaultEmail }) => defaultEmail
     ? ({ login: defaultEmail, password: '' })
     : __DEV__ ? ({ login: DEV_LOGIN, password: DEV_PASSWORD }) : ({ login: '', password: '' }),
   handleSubmit: (values, { props, ...formikBag }) => props.onSubmit(values, formikBag),
-  validationSchema,
 })(SignInForm);

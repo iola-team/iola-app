@@ -31,6 +31,9 @@ const userFragment = gql`
 
 const thumbnailStyle = {
   'NativeBase.ViewNB': {
+    borderWidth: 1,
+    borderColor: '#E8EAF0',
+
     'NativeBase.ViewNB': {
       position: 'absolute',
       right: -5,
@@ -40,11 +43,13 @@ const thumbnailStyle = {
     },
 
     '.large': {
+      borderRadius: 8,
+
       'NativeBase.ViewNB': {
         right: -11,
         bottom: -11,
         padding: 4,
-        borderRadius: 10,
+        borderRadius: 8,
 
         'Sparkle.UserOnlineStatus': {
           'NativeBase.ViewNB': {
