@@ -78,8 +78,25 @@ class SignUpForm extends Component {
   }
 
   async onSubmit(signUpUser) {
-    const { values: { name, email, password }, storeToken, onSubmit, setSubmitting } = this.props;
+    const {
+      isValid,
+      onSubmit,
+      setErrors,
+      setFieldTouched,
+      setSubmitting,
+      storeToken,
+      validateForm,
+      values: { name, email, password },
+    } = this.props;
+    const errors = await validateForm();
     let success = false;
+
+    setFieldTouched('name', true);
+    setFieldTouched('email', true);
+    setFieldTouched('password', true);
+    setErrors(errors || {});
+
+    if (!isValid) return;
 
     setSubmitting(true);
 
@@ -104,12 +121,17 @@ class SignUpForm extends Component {
   }
 
   render() {
-    const { styleSheet: styles, isValid, isSubmitting } = this.props;
+    const { styleSheet: styles, isSubmitting } = this.props;
     const { emailIsDuplicated } = this.state;
 
     return (
       <Form>
-        <FormTextInput name="name" placeholder="Full Name" autoCapitalize="words" {...this.props} />
+        <FormTextInput
+          name="name"
+          placeholder="Full Name"
+          autoCapitalize="words"
+          {...this.props}
+        />
 
         <ApolloConsumer>
           {client => (
@@ -120,6 +142,7 @@ class SignUpForm extends Component {
               secondaryErrorText={emailIsDuplicated && 'Email is taken'}
               autoCapitalize="none"
               keyboardType="email-address"
+              useCheckmarkIconOnValidValue
               {...this.props}
             />
           )}
@@ -138,7 +161,7 @@ class SignUpForm extends Component {
             <Button
               style={styles.submit}
               onPress={() => this.onSubmit(signUpUser)}
-              disabled={!(isValid && !emailIsDuplicated)}
+              disabled={emailIsDuplicated}
               block
             >
               <Text>Sign up</Text>
@@ -157,4 +180,4 @@ const validationSchema = yup.object().shape({
   password: yup.string().required('Password is required').min(4, 'Password is too short'),
 });
 
-export default withFormik({ validationSchema })(SignUpForm);
+export default withFormik({ validationSchema, validateOnBlur: false })(SignUpForm);

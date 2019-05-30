@@ -188,7 +188,7 @@ export const photoDetailsQuery = gql`
     height: 16,
     marginLeft: 7,
     paddingVertical: 0,
-    backgroundColor: '#BDC0CB',
+    backgroundColor: '#AFB2BF',
   },
 
   actionBadgeText: {

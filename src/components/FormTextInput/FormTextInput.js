@@ -1,11 +1,10 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { Input, Item, Text } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
-
 import Icon from '../Icon';
 
 @styleSheet('Sparkle.FormTextInput', {
@@ -87,6 +86,7 @@ export default class FormTextInput extends Component {
     onChangeText: PropTypes.func,
     secureTextEntry: PropTypes.bool,
     infoText: PropTypes.string,
+    useCheckmarkIconOnValidValue: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -95,6 +95,7 @@ export default class FormTextInput extends Component {
     secureTextEntry: false,
     status: {},
     infoText: '',
+    useCheckmarkIconOnValidValue: false,
   };
 
   state = {
@@ -138,6 +139,7 @@ export default class FormTextInput extends Component {
       customStyle,
       secureTextEntry,
       infoText,
+      useCheckmarkIconOnValidValue,
       ...props
     } = this.props;
     const { isFocused, isPasswordIsShown } = this.state;
@@ -146,13 +148,19 @@ export default class FormTextInput extends Component {
     const errorText = isTouched && errors[name] ? errors[name] : secondaryErrorText;
     const isValid = !error && !errorText;
     const FieldError = errorText ? <Text style={styles.errorText}>{errorText}</Text> : null;
-    const FieldInfo = isTouched ? (
-      <Icon style={[styles.checkMark, isFocused && { color: '#BCBFCA' }]} name="check" />
-    ) : value.length ? null : (
-      <Text style={[styles.infoText, isFocused && { color: '#BCBFCA' }]}>
-        {infoText}
-      </Text>
-    );
+    let FieldInfo = null;
+
+    if (isTouched && value.length && useCheckmarkIconOnValidValue) {
+      FieldInfo = <Icon style={[styles.checkMark, isFocused && { color: '#BCBFCA' }]} name="check" />;
+    }
+
+    if (!isTouched && !value.length) {
+      FieldInfo = (
+        <Text style={[styles.infoText, isFocused && { color: '#BCBFCA' }]}>
+          {infoText}
+        </Text>
+      );
+    }
 
     return (
       <Item
@@ -160,7 +168,7 @@ export default class FormTextInput extends Component {
           styles.formItem,
           customStyle,
           isFocused && { backgroundColor: '#FFFFFF', borderColor: '#FFFFFF' },
-          !isValid && { borderColor: '#FF8787', backgroundColor: '#FFE0E0' },
+          !isValid && { borderColor: '#FFE0E0', backgroundColor: '#FFE0E0' },
         ]}
         pointerEvents="none"
         regular
@@ -171,11 +179,11 @@ export default class FormTextInput extends Component {
           style={[
             styles.formInput,
             secureTextEntry && !isPasswordIsShown && { paddingRight: isTouched ? 80 : 50 },
-            isFocused && { color: '#BCBFCA' },
-            !isValid && { color: '#FF8787' },
+            isFocused && { color: '#BCBFCA' }, // @TODO: TextInput dynamic color issue: https://github.com/facebook/react-native/issues/20131
+            !isValid && { color: '#FF8787' }, // @TODO: TextInput dynamic color issue: https://github.com/facebook/react-native/issues/20131
           ]}
           placeholderFontSize={16}
-          placeholderTextColor={isValid ? '#FFFFFF' : '#FF8787'}
+          placeholderTextColor={isValid ? (isFocused ? '#BCBFCA' : '#FFFFFF') : '#FF8787'}
           secureTextEntry={secureTextEntry && !isPasswordIsShown}
           value={value}
           onChangeText={::this.onChangeText}
@@ -187,25 +195,16 @@ export default class FormTextInput extends Component {
           {isValid ? FieldInfo : FieldError}
         </View>
         {secureTextEntry && (
-          <Fragment>
-            <View
+          <TouchableOpacity onPress={::this.onShowPassword} style={styles.showPassword}>
+            <Icon
               style={[
-                styles.verticalLine,
-                isFocused && { backgroundColor: '#BCBFCA' },
-                !isValid && { backgroundColor: '#FF8787' },
+                styles.showPasswordIcon,
+                isFocused && { color: '#BCBFCA' },
+                !isValid && { color: '#FF8787' },
               ]}
+              name={isPasswordIsShown ? 'eye-crossed' : 'eye'}
             />
-            <TouchableOpacity onPress={::this.onShowPassword} style={styles.showPassword}>
-              <Icon
-                style={[
-                  styles.showPasswordIcon,
-                  isFocused && { color: '#BCBFCA' },
-                  !isValid && { color: '#FF8787' },
-                ]}
-                name={isPasswordIsShown ? 'eye-crossed' : 'eye'}
-              />
-            </TouchableOpacity>
-          </Fragment>
+          </TouchableOpacity>
         )}
       </Item>
     );
