@@ -31,9 +31,6 @@ const userFragment = gql`
 
 const thumbnailStyle = {
   'NativeBase.ViewNB': {
-    borderWidth: 1,
-    borderColor: '#E8EAF0',
-
     'NativeBase.ViewNB': {
       position: 'absolute',
       right: -5,
@@ -43,6 +40,8 @@ const thumbnailStyle = {
     },
 
     '.large': {
+      borderWidth: 1,
+      borderColor: '#E8EAF0',
       borderRadius: 8,
 
       'NativeBase.ViewNB': {
