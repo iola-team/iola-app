@@ -1,23 +1,28 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, Subscription } from 'react-apollo';
 import gql from 'graphql-tag';
 import { sumBy } from 'lodash';
 
 import { TabBarIcon as Icon } from '~components';
 
-@graphql(gql`
-  query {
-    me {
-      id
+const subscriptionQuery = gql`
+  subscription ChannelsMessageAddSubscription($userId: ID!) {
+    onMessageAdd(userId: $userId) {
+      chatEdge {
+        node {
+          id
+          unreadMessages: messages(filter: {
+            notReadBy: $userId
+          }) {
+            totalCount
+          }
+        }
+      }
     }
   }
-`, {
-  name: 'meData',
-  options: {
-    fetchPolicy: 'cache-first',
-  },
-})
-@graphql(gql`
+`;
+
+const countsQuery = gql`
   query ChannelsCountQuery($userId: ID!) {
     me {
       id
@@ -35,7 +40,21 @@ import { TabBarIcon as Icon } from '~components';
       }
     }
   }
+`;
+
+@graphql(gql`
+  query {
+    me {
+      id
+    }
+  }
 `, {
+  name: 'meData',
+  options: {
+    fetchPolicy: 'cache-first',
+  },
+})
+@graphql(countsQuery, {
   skip: ({ meData: { me } }) => !me?.id,
   options: ({ meData: { me } }) => ({
     variables: {
@@ -48,6 +67,11 @@ export default class TabBarIcon extends Component {
     const { data: { me }, ...props } = this.props;
     const count = sumBy(me?.chats.edges || [], 'node.messages.totalCount');
     
-    return <Icon {...props} count={count} name="chats-bar" />;
+    return (
+      <>
+        <Icon {...props} count={count} name="chats-bar" />
+        {me && <Subscription subscription={subscriptionQuery} variables={{ userId: me.id }} />}
+      </>
+    );
   }
 }
