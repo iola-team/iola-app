@@ -9,14 +9,21 @@ import Image from '../Image';
 
 @withStyle('Sparkls.ErrorBoundary', {
   flex: 1,
-  justifyContent: 'space-between',
   marginHorizontal: 30,
 
   'NativeBase.ViewNB': {
     alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
 
     '.topSection': {
-      marginTop: 130,
+      flex: 2,
+
+      'Sparkle.Image': {
+        width: 56.6,
+        height: 54,
+        marginBottom: 20,
+      },
 
       'NativeBase.H1': {
         textAlign: 'center',
@@ -25,7 +32,7 @@ import Image from '../Image';
     },
 
     '.bottomSection': {
-      marginBottom: 50,
+      flex: 1,
 
       'NativeBase.Text': {
         textAlign: 'center',
@@ -33,25 +40,10 @@ import Image from '../Image';
       },
     },
 
-    'Sparkle.Image': {
-      width: 56.6,
-      height: 54,
-      marginBottom: 20,
-    },
-
     'NativeBase.Button': {
       marginHorizontal: 50,
     },
   },
-
-  'NativeBase.Text': {
-    fontSize: 24,
-    marginBottom: 50,
-  },
-
-  'NativeBase.Button': {
-    alignSelf: 'center',
-  }
 })
 export default class ErrorBoundary extends Component {
   static propTypes = {
