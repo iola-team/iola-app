@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { createHeadingTabsNavigator, TabBarIcon, LogoutButton, ScreenHeader } from '~components';
+import { createHeadingTabsNavigator, LogoutButton, ScreenHeader } from '~components';
 import ProfileHeading from './ProfileHeading';
+import TabBarIcon from './TabBarIcon';
 
 export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
   ...config,
