@@ -199,7 +199,7 @@ export default class MyFriendsConnection extends PureComponent {
       optimisticResponse: {
         result: {
           __typename: 'DeleteFriendPayload',
-          user: FriendsTabBarLabel.createOptimisticUser(me, { requests: -1 }),
+          user: FriendsTabBarLabel.createOptimisticUser(me),
           deletedId: friendship.id,
         },
       },

@@ -16,7 +16,7 @@ const userFragment = gql`
   }
 `;
 
-const createOptimisticUser = (user, { requests = 0 }) => update(user, {
+const createOptimisticUser = (user, { requests = 0 } = {}) => update(user, {
   friendRequests: {
     totalCount: { $set: Math.max(user.friendRequests.totalCount + requests, 0) },
   },
