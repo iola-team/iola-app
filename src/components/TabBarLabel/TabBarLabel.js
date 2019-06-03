@@ -19,7 +19,6 @@ import { withStyle } from '~theme';
       fontWeight: 'bold',
     },
 
-    backgroundColor: '#AFB2BF',
     marginLeft: 5,
     height: 20,
     paddingHorizontal: 4,

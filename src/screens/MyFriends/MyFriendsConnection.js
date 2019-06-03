@@ -3,6 +3,7 @@ import { withNavigation } from 'react-navigation';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
+import update from 'immutability-helper';
 import { get, filter } from 'lodash';
 
 import { FriendList, FriendsTabBarLabel } from '~components';
@@ -25,6 +26,26 @@ const userFriendsQuery = gql`
   
   ${FriendsTabBarLabel.fragments.user}
   ${FriendList.fragments.edge}
+`;
+
+const addFriendSubscription = gql`
+  subscription MyFriendsAddSubscription($userId: ID!) {
+    onFriendshipAdd(userId: $userId) {
+      edge {
+        ...FriendList_edge
+      }
+    }
+  }
+
+  ${FriendList.fragments.edge}
+`;
+
+const deleteFriendSubscription = gql`
+  subscription MyFriendsDeleteSubscription($userId: ID!) {
+    onFriendshipDelete(userId: $userId) {
+      deletedId
+    }
+  }
 `;
 
 const addFriendMutation = gql`
@@ -69,17 +90,21 @@ const createAddFriendOptimistic = (user, { friendship, status, requests }) => ({
   },
 });
 
+const removeFromList = (data, toDeleteId) => update(data, {
+  me: {
+    friends: {
+      edges: {
+        $set: filter(data.me.friends.edges, ({ friendship: { id } }) => (
+          toDeleteId !== id
+        )),
+      },
+    },
+  },
+});
+
 const removeFromCache = (cache, toDeleteId) => {
   const data = cache.readQuery({ query: userFriendsQuery });
-
-  /**
-   * Remove friendship from cache
-   */
-  data.me.friends.edges = filter(data.me.friends.edges, ({ friendship: { id } }) => (
-    toDeleteId !== id
-  ));
-
-  cache.writeQuery({ query: userFriendsQuery, data });
+  cache.writeQuery({ query: userFriendsQuery, data: removeFromList(data, toDeleteId) });
 };
 
 @graphql(userFriendsQuery, {
@@ -174,7 +199,7 @@ export default class MyFriendsConnection extends PureComponent {
       optimisticResponse: {
         result: {
           __typename: 'DeleteFriendPayload',
-          user: FriendsTabBarLabel.createOptimisticUser(me, { requests: -1 }),
+          user: FriendsTabBarLabel.createOptimisticUser(me),
           deletedId: friendship.id,
         },
       },
@@ -192,6 +217,46 @@ export default class MyFriendsConnection extends PureComponent {
 
     this.unsubscribeFromFocus = navigation.addListener('willFocus', () => {
       if (data) data.refetch();
+    });
+  }
+
+  componentDidUpdate({ data: prevData }) {
+    const { data } = this.props;
+
+    if (data.me?.id && !prevData.me?.id) {
+      this.startSubscriptions(data.me.id);
+    }
+  }
+
+  startSubscriptions(userId) {
+    const variables = { userId };
+
+    this.props.data.subscribeToMore({
+      document: addFriendSubscription,
+      variables,
+      updateQuery: (prev, { subscriptionData }) => {
+        const { onFriendshipAdd: payload } = subscriptionData.data;
+
+        return update(prev, {
+          me: {
+            friends: {
+              edges: {
+                $unshift: [payload.edge],
+              },
+            },
+          },
+        });
+      },
+    });
+
+    this.props.data.subscribeToMore({
+      document: deleteFriendSubscription,
+      variables,
+      updateQuery: (prev, { subscriptionData }) => {
+        const { onFriendshipDelete: { deletedId } } = subscriptionData.data;
+
+        return removeFromList(prev, deletedId);
+      },
     });
   }
 
