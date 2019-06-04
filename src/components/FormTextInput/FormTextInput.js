@@ -196,7 +196,7 @@ export default class FormTextInput extends Component {
           onBlur={::this.onBlur}
           isValid={isValid}
         />
-        <View style={[styles.infoContent, !secureTextEntry && { position: 'relative', right: 0 }]}>
+        <View pointerEvents="none" style={[styles.infoContent, !secureTextEntry && { position: 'relative', right: 0 }]}>
           {isValid ? FieldInfo : FieldError}
         </View>
         {secureTextEntry && (
