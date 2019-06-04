@@ -102,6 +102,8 @@ export default class SearchBar extends PureComponent {
             placeholderTextColor="#AFB2BF"
             value={value}
             onChangeText={onChangeText}
+            returnKeyType="search"
+            enablesReturnKeyAutomatically
           />
 
           {!!value && (
