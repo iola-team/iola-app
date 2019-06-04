@@ -31,6 +31,11 @@ class ForgotPasswordForm extends Component {
           secondaryErrorText={emailDoesNotExist && 'Email does not exist'}
           autoCapitalize="none"
           keyboardType="email-address"
+          textContentType="emailAddress"
+          returnKeyType="send"
+          enablesReturnKeyAutomatically
+          onSubmitEditing={() => !disabled && handleSubmit()}
+
           {...this.props}
         />
 
