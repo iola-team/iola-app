@@ -5,16 +5,17 @@ import { storiesOf } from '@storybook/react-native';
 
 import { getContainerDecorator } from '~storybook';
 import ChatFooter from './ChatFooter';
+import KeyboardAvoidingView from '../KeyboardAvoidingView';
 
 const stories = storiesOf('Components/ChatFooter', module);
 
 // Decorators
 stories.addDecorator(withKnobs);
-stories.addDecorator(getContainerDecorator({
-  style: {
-    justifyContent: 'flex-end',
-  },
-}));
+stories.addDecorator(getContainerDecorator());
 
 // Stories
-stories.add('Default', () => <ChatFooter onSend={action('onSend')} />);
+stories.add('Default', () => (
+  <KeyboardAvoidingView style={{ justifyContent: 'flex-end' }}>
+    <ChatFooter onSend={action('onSend')} />
+  </KeyboardAvoidingView>
+));
