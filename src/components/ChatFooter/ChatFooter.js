@@ -11,6 +11,7 @@ import TouchableOpacity from '../TouchableOpacity';
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
+    paddingVertical: 10,
   },
 
   inputWrap: {
@@ -22,12 +23,16 @@ import TouchableOpacity from '../TouchableOpacity';
   },
 
   input: {
-    height: 40,
+    lineHeight: 18,
     paddingLeft: 15,
+    paddingTop: 9,
+    paddingBottom: 13,
   },
 
   sendButton: {
-    padding: 18,
+    paddingHorizontal: 18,
+    alignSelf: 'flex-end',
+    marginBottom: 5,
   },
 
   sendIcon: {
@@ -70,6 +75,7 @@ export default class ChatFooter extends Component {
       <View style={[styles.root, style]}>
         <Item rounded style={styles.inputWrap}>
           <Input
+            multiline
             style={styles.input}
             disabled={disabled}
             placeholderTextColor="#AFB2BF" // TODO: Add theme variable support

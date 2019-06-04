@@ -103,6 +103,10 @@ export default class FormTextInput extends Component {
     isPasswordIsShown: false,
   };
 
+  inputRef = null;
+
+  focus = () => this.inputRef._root.focus();
+
   onFocus() {
     this.setState({ isFocused: true });
   }
@@ -174,6 +178,7 @@ export default class FormTextInput extends Component {
         regular
       >
         <Input
+          ref={ref => this.inputRef = ref}
           {...props}
 
           style={[
@@ -191,7 +196,7 @@ export default class FormTextInput extends Component {
           onBlur={::this.onBlur}
           isValid={isValid}
         />
-        <View style={[styles.infoContent, !secureTextEntry && { position: 'relative', right: 0 }]}>
+        <View pointerEvents="none" style={[styles.infoContent, !secureTextEntry && { position: 'relative', right: 0 }]}>
           {isValid ? FieldInfo : FieldError}
         </View>
         {secureTextEntry && (
