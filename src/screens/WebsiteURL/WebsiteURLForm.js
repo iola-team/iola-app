@@ -129,6 +129,10 @@ class WebsiteURLForm extends Component {
             onChangeText={this.onChangeText}
             customStyle={styles.url}
             {...this.props}
+
+            enablesReturnKeyAutomatically
+            returnKeyType="go"
+            onSubmitEditing={this.onSubmit}
           />
         </View>
 
