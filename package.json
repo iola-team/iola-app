@@ -109,7 +109,7 @@
     "react-native-confirmation-code-input": "^1.0.4",
     "react-native-device-info": "^2.0.2",
     "react-native-event-source": "^1.0.5",
-    "react-native-fast-image": "^6.0.1",
+    "react-native-fast-image": "5.4.2",
     "react-native-gesture-handler": "^1.2.1",
     "react-native-image-crop-picker": "^0.24.1",
     "react-native-image-zoom-viewer": "^2.2.26",
