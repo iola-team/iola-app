@@ -1,7 +1,7 @@
 import { ApolloLink, Observable } from 'apollo-link';
 import { print } from 'graphql/language/printer';
 import URL from 'url-parse';
-import { isString, isObject, trim, isEmpty, without, memoize, find, isEqual } from 'lodash';
+import { isString, isObject, trim, without, memoize, find, isEqual, throttle } from 'lodash';
 
 const addPathPart = (url, parts) => {
   const urlObject = new URL(url);
@@ -26,6 +26,7 @@ export class SubscriptionClient {
 
     this.eventSource = null;
     this.subscriptions = {};
+    this.restartQueue = [];
   }
 
   get started() {
@@ -62,15 +63,13 @@ export class SubscriptionClient {
     }
   };
 
-  async getSubscription(operation) {
-    const subscription = find(this.subscriptions, ({ query, variables }) => (
+  getSubscription(operation) {
+    return find(this.subscriptions, ({ query, variables }) => (
       query === operation.query && isEqual(variables, operation.variables)
     ));
-
-    if (subscription) {
-      return subscription;
-    }
-
+  }
+  
+  async createSubscription(operation, handlers = []) {
     const { subscriptionId } = await this.request(this.uri, 'POST', operation);
     this.subscriptions[subscriptionId] = this.subscriptions[subscriptionId] || {
       subscriptionId,
@@ -78,6 +77,12 @@ export class SubscriptionClient {
       variables: operation.variables,
       handlers: [],
     };
+
+    const oldHandlers = this.subscriptions[subscriptionId].handlers;
+    this.subscriptions[subscriptionId].handlers = [
+      ...oldHandlers,
+      ...handlers,
+    ];
 
     return this.subscriptions[subscriptionId];
   }
@@ -119,12 +124,34 @@ export class SubscriptionClient {
     return lastEventId;
   }
 
+
+  scheduleRestart(promise) {
+    this.restartQueue.push(promise);
+    this.delayedRestart();
+  };
+
+  delayedRestart = throttle(() => {
+    if (!this.restartQueue) {
+      return;
+    }
+
+    const [ ...promises ] = this.restartQueue;
+    this.restartQueue = [];
+
+    Promise.all(promises).then(() => this.restart());
+  }, 500, {
+    leading: false,
+    trailing: true,
+  });
+
   async restart() {
     const lastEventId = await this.stop();
 
-    if (!isEmpty(this.subscriptions)) {
-      return this.start(lastEventId);
+    if (Object.keys(this.subscriptions).length) {
+      await this.start(lastEventId);
     }
+
+    return this;
   }
 
   async subscribe(operation, handler) {
@@ -147,18 +174,21 @@ export class SubscriptionClient {
       );
     }
 
-    const { subscriptionId, handlers } = await this.getSubscription(operation);
+    let subscription = this.getSubscription(operation);
 
-    handlers.push(handler);
+    if (!subscription) {
+      const subscriptionPromise = this.createSubscription(operation, [ handler ]);
+      this.scheduleRestart(subscriptionPromise);
+      subscription = await subscriptionPromise;
+    } else {
+      subscription.handlers.push(handler);
+    }
 
-    await this.restart();
-
-    return subscriptionId;
+    return subscription.subscriptionId;
   }
 
   async unsubscribe(subscriptionId, handler) {
-    const subId = await Promise.resolve(subscriptionId);
-    const subscription = this.subscriptions[subId];
+    const subscription = this.subscriptions[subscriptionId];
 
     if (!subscription) {
       return;
@@ -170,10 +200,11 @@ export class SubscriptionClient {
       return;
     }
 
-    delete this.subscriptions[subId];
+    delete this.subscriptions[subscriptionId];
 
-    await this.request(addPathPart(this.uri, [subId]), 'DELETE');
-    await this.restart();
+    const deletePromise = this.request(addPathPart(this.uri, [subscriptionId]), 'DELETE');
+    this.scheduleRestart(deletePromise);
+    await deletePromise;
   }
 
   async unsubscribeAll() {
@@ -194,7 +225,7 @@ export default class Sse extends ApolloLink {
   request(opertaion) {
     return new Observable(observer => {
       const handler = data => observer.next({ data });
-      const subscriptionId = this.subscriptionClient.subscribe(
+      const subscriptionPromise = this.subscriptionClient.subscribe(
         {
           ...opertaion,
           query: printQuery(opertaion.query),
@@ -202,7 +233,9 @@ export default class Sse extends ApolloLink {
         handler,
       );
 
-      return () => this.subscriptionClient.unsubscribe(subscriptionId, handler);
+      return () => subscriptionPromise.then(subscriptionId => (
+        this.subscriptionClient.unsubscribe(subscriptionId, handler)
+      ));
     });
   }
 }
