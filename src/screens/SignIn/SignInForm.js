@@ -91,8 +91,6 @@ class SignInForm extends Component {
     submitForm();
   };
 
-  onLoginReturnPress = () => this.passwordInput._root.focus();
-
   render() {
     const { values: { login }, onForgotPassword, isSubmitting, styleSheet: styles } = this.props;
 
@@ -113,7 +111,7 @@ class SignInForm extends Component {
                 textContentType="username"
                 returnKeyType="next"
                 blurOnSubmit={false}
-                onSubmitEditing={this.onLoginReturnPress}
+                onSubmitEditing={() => this.passwordInput._root.focus()}
                 {...this.props}
               />
 

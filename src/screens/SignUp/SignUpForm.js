@@ -58,6 +58,8 @@ class SignUpForm extends Component {
   };
 
   state = { emailIsDuplicated: false };
+  emailInput = null;
+  passwordInput = null;
 
   validateEmail = debounce(this.onValidateEmail, 200);
 
@@ -125,39 +127,55 @@ class SignUpForm extends Component {
     const { emailIsDuplicated } = this.state;
 
     return (
-      <Form>
-        <FormTextInput
-          name="name"
-          placeholder="Full Name"
-          autoCapitalize="words"
-          {...this.props}
-        />
-
-        <ApolloConsumer>
-          {client => (
+      <Mutation mutation={signUpUserMutation}>
+        {signUpUser => (
+          <Form>
             <FormTextInput
-              name="email"
-              placeholder="Email"
-              onChangeText={text => this.onChangeEmail(text, client)}
-              secondaryErrorText={emailIsDuplicated && 'Email is taken'}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              useCheckmarkIconOnValidValue
+              name="name"
+              placeholder="Full Name"
+              autoCapitalize="words"
               {...this.props}
+
+              textContentType="name"
+              returnKeyType="next"
+              blurOnSubmit={false}
+              onSubmitEditing={() => this.emailInput._root.focus()}
             />
-          )}
-        </ApolloConsumer>
 
-        <FormTextInput
-          name="password"
-          placeholder="Password"
-          infoText="At least 4 characters"
-          secureTextEntry
-          {...this.props}
-        />
+            <ApolloConsumer>
+              {client => (
+                <FormTextInput
+                  ref={ref => this.emailInput = ref}
+                  name="email"
+                  placeholder="Email"
+                  onChangeText={text => this.onChangeEmail(text, client)}
+                  secondaryErrorText={emailIsDuplicated && 'Email is taken'}
+                  autoCapitalize="none"
+                  keyboardType="email-address"
+                  useCheckmarkIconOnValidValue
+                  {...this.props}
 
-        <Mutation mutation={signUpUserMutation}>
-          {signUpUser => (
+                  textContentType="emailAddress"
+                  returnKeyType="next"
+                  blurOnSubmit={false}
+                  onSubmitEditing={() => this.passwordInput._root.focus()}
+                />
+              )}
+            </ApolloConsumer>
+
+            <FormTextInput
+              ref={ref => this.passwordInput = ref}
+              name="password"
+              placeholder="Password"
+              infoText="At least 4 characters"
+              secureTextEntry
+              {...this.props}
+
+              textContentType="password"
+              returnKeyType="go"
+              onSubmitEditing={() => !emailIsDuplicated && this.onSubmit(signUpUser)}
+            />
+
             <Button
               style={styles.submit}
               onPress={() => this.onSubmit(signUpUser)}
@@ -167,9 +185,9 @@ class SignUpForm extends Component {
               <Text>Sign up</Text>
               {isSubmitting && <Spinner style={styles.spinner} />}
             </Button>
-          )}
-        </Mutation>
-      </Form>
+          </Form>
+        )}
+      </Mutation>
     );
   }
 }
