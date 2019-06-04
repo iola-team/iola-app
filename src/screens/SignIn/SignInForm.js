@@ -70,6 +70,8 @@ class SignInForm extends Component {
     defaultEmail: '',
   };
 
+  passwordInput = null;
+
   isAuthIsValid(token) {
     const { isSubmitting, submitCount, status } = this.props;
 
@@ -89,6 +91,8 @@ class SignInForm extends Component {
     submitForm();
   };
 
+  onLoginReturnPress = () => this.passwordInput._root.focus();
+
   render() {
     const { values: { login }, onForgotPassword, isSubmitting, styleSheet: styles } = this.props;
 
@@ -106,16 +110,22 @@ class SignInForm extends Component {
                 error={error}
                 autoCapitalize="none"
                 keyboardType="email-address"
+                returnKeyType="next"
+                blurOnSubmit={false}
+                onSubmitEditing={this.onLoginReturnPress}
                 {...this.props}
               />
 
               <FormTextInput
+                ref={ref => this.passwordInput = ref}
                 name="password"
                 placeholder="Password"
                 infoText="At least 4 characters"
                 customStyle={styles.password}
                 error={error}
                 secureTextEntry
+                returnKeyType="go"
+                onSubmitEditing={this.onSubmit}
                 {...this.props}
               />
 
