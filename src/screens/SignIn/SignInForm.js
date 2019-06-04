@@ -110,6 +110,7 @@ class SignInForm extends Component {
                 error={error}
                 autoCapitalize="none"
                 keyboardType="email-address"
+                textContentType="username"
                 returnKeyType="next"
                 blurOnSubmit={false}
                 onSubmitEditing={this.onLoginReturnPress}
@@ -124,6 +125,7 @@ class SignInForm extends Component {
                 customStyle={styles.password}
                 error={error}
                 secureTextEntry
+                textContentType="password"
                 returnKeyType="go"
                 onSubmitEditing={this.onSubmit}
                 {...this.props}
