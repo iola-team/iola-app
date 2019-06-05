@@ -7,7 +7,7 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import { has } from 'lodash';
 
 import { withStyle } from '~theme';
-import defaultAvatar from './defaultAvatar.png'; // @TODO: Think about assets directory
+import defaultAvatar from './defaultAvatar.png'; // TODO: Think about assets directory
 import TouchableOpacity from '../TouchableOpacity';
 import Placeholder from '../Placeholder';
 import UserOnlineStatus from '../UserOnlineStatus';

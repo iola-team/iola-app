@@ -8,7 +8,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { Icon, Spinner, UserUpdateSubscription } from '~components';
 import EmailVerificationForm from './EmailVerificationForm';
 import * as routes from '../routeNames';
-import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
+import imageBackground from './background.jpg'; // TODO: Make it dynamic with admin plugin
 
 const meQuery = gql`
   query meQuery {
@@ -124,7 +124,7 @@ export default class EmailVerificationScreen extends Component {
   }
 
   onSuccess() {
-    // @TODO: Iteration 2 (Email Verification with short code)
+    // TODO: Iteration 2 (Email Verification with short code)
   }
 
   onUserUpdate = ({ isEmailVerified }) => {

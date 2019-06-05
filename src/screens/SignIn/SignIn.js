@@ -41,7 +41,7 @@ export default class SignInScreen extends Component {
     try {
       authenticated = await authenticate(login, password);
     } catch (error) {
-      // @TODO: handle the error?
+      // TODO: handle the error?
     }
 
     if (authenticated) {

@@ -130,7 +130,7 @@ export default class ImageCommentsConnection extends Component {
 
                   /**
                    * Skip messages of current user
-                   * @TODO: Case when currently logged in user sends messages from web
+                   * TODO: Case when currently logged in user sends messages from web
                    */
                   if (payload.edge.node.user.id === me.id) {
                     return prev;

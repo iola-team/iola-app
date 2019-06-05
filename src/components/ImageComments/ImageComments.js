@@ -156,7 +156,7 @@ export default class ImageComments extends Component {
             __typename: 'Comment',
             id: uuid(),
             text,
-            image: null, // @TODO: Add photo upload ability
+            image: null, // TODO: Add photo upload ability
             createdAt: new Date().toISOString(),
             user: {
               ...me,
@@ -215,7 +215,7 @@ export default class ImageComments extends Component {
 
   renderTitle() {
     const { totalCount, styleSheet: styles } = this.props;
-    // @TODO: add subscription for totalCount without opened modal?
+    // TODO: add subscription for totalCount without opened modal?
 
     return (
       <View style={styles.titleRow}>
