@@ -4,14 +4,13 @@ import { Button, Container, Text, Toast, View } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
+import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { Icon } from '~components';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
-const Background = connectToStyleSheet('background', ImageBackground).withProps({
-  source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
-});
+const Background = connectToStyleSheet('background', ImageBackground).withProps({ source: imageBackground });
 const Content = connectToStyleSheet('content', View);
 const Header = connectToStyleSheet('header', View);
 const LockIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'lock' });
