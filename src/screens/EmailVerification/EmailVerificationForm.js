@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Text } from 'native-base';
-// import CodeInput from 'react-native-confirmation-code-input'; // @TODO: Iteration 2
+// import CodeInput from 'react-native-confirmation-code-input'; // TODO: Iteration 2
 
 import { withStyleSheet as styleSheet, withStyle } from '~theme';
 import { LogoutButton, TouchableOpacity } from '~components';
 
-// @TODO: Iteration 2
+// TODO: Iteration 2
 /*
 const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode, onFulfill }) => ({
   compareWithCode,
@@ -19,7 +19,7 @@ const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode
 */
 
 @styleSheet('Sparkle.EmailVerificationForm', {
-  // @TODO: Iteration 2 (Email Verification with short code)
+  // TODO: Iteration 2 (Email Verification with short code)
   /*
   code: {
     width: 40,
@@ -56,10 +56,10 @@ export default class ForgotPasswordForm extends Component {
     isSubmitting: PropTypes.bool.isRequired,
   };
 
-  // @TODO: Iteration 2 (Email Verification with short code)
+  // TODO: Iteration 2 (Email Verification with short code)
   /*
   async onSubmit(code) {
-    const isValid = (code === '12345'); // @TODO
+    const isValid = (code === '12345'); // TODO
 
     if (isValid) {
       this.props.onSuccess();
@@ -79,7 +79,7 @@ export default class ForgotPasswordForm extends Component {
 
     return (
       <Form>
-        {/* // @TODO: Iteration 2 (Email Verification with short code)
+        {/* // TODO: Iteration 2 (Email Verification with short code)
         <Code
           onFulfill={::this.onSubmit}
           activeColor={styles.code.color}
