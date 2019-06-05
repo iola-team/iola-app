@@ -126,7 +126,7 @@ export const photoDetailsQuery = gql`
     paddingTop: 25,
     paddingHorizontal: 17,
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(46, 48, 55, 0.3)',
+    backgroundColor: 'rgba(46, 48, 55, 0.85)',
     zIndex: 1,
   },
 
@@ -392,7 +392,7 @@ export default class ImageView extends Component {
               failImageSource="https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif" /* TODO */
               loadingRender={() => <View style={styles.spinnerContainer}><Spinner /></View>}
               footerContainerStyle={{ width: '100%' }}
-              backgroundColor="rgba(46, 48, 55, 0.95)"
+              backgroundColor="rgba(46, 48, 55, 0.85)"
               pageAnimateTime={400}
               enablePreload
             />
