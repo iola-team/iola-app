@@ -116,7 +116,7 @@ class SignUpForm extends Component {
       await storeToken(result.accessToken);
       success = !!result.accessToken;
     } catch (error) {
-      alert('Something went wrong'); // @TODO
+      alert('Something went wrong'); // TODO
     }
 
     if (success) onSubmit();

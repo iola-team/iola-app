@@ -8,7 +8,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { Icon, LogoutButton, UserUpdateSubscription } from '~components';
 import * as routes from '../routeNames';
 
-// @TODO: Make it dynamical with admin plugin
+// TODO: Make it dynamical with admin plugin
 const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
 
 const meQuery = gql`

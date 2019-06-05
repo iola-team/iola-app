@@ -9,7 +9,7 @@ import { Icon, Spinner, UserUpdateSubscription } from '~components';
 import EmailVerificationForm from './EmailVerificationForm';
 import * as routes from '../routeNames';
 
-// @TODO: Make it dynamical with admin plugin
+// TODO: Make it dynamical with admin plugin
 const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
 
 const meQuery = gql`
@@ -126,7 +126,7 @@ export default class EmailVerificationScreen extends Component {
   }
 
   onSuccess() {
-    // @TODO: Iteration 2 (Email Verification with short code)
+    // TODO: Iteration 2 (Email Verification with short code)
   }
 
   onUserUpdate = ({ isEmailVerified }) => {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Text, View, Button } from 'native-base';
 
 import { withStyleSheet } from '~theme';
-import defaultAvatar from './defaultAvatar.png'; // @TODO: Think about assets directory
+import defaultAvatar from './defaultAvatar.png'; // TODO: Think about assets directory
 import ImagePicker from '../ImagePicker';
 import Placeholder from '../Placeholder';
 import ActionSheet from '../ActionSheet';

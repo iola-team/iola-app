@@ -23,7 +23,7 @@ const resolvers = {
   },
 };
 
-// @TODO: try to do it with decorator in the future: https://github.com/storybooks/storybook/issues/340
+// TODO: try to do it with decorator in the future: https://github.com/storybooks/storybook/issues/340
 const mockedProps = {
   navigation: {
     navigate: () => alert('Mocked navigation'),

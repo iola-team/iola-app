@@ -12,7 +12,7 @@ const fetch = new Fetch({
    * Accept Self-Signed SSL Certificates
    * https://github.com/joltup/rn-fetch-blob#self-signed-ssl-server
    *
-   * @TODO: "trusty: true" is dangerous option but we use it because of this issue:
+   * TODO: "trusty: true" is dangerous option but we use it because of this issue:
    * "java.security.cert.CertPathValidatorException: Trust anchor for certification path not found"
    * https://github.com/facebook/react-native/issues/6058
    */

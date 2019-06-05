@@ -123,7 +123,7 @@ export default class ForgotPasswordScreen extends Component {
   async onSubmit({ email }, { setSubmitting }) {
     const { sendResetPasswordInstructions } = this.props;
     let success = false;
-    let errorMessage = 'Something went wrong.'; // @TODO: Add details to the message (maybe add the link "Send the request to Technical Support?)"
+    let errorMessage = 'Something went wrong.'; // TODO: Add details to the message (maybe add the link "Send the request to Technical Support?)"
 
     setSubmitting(true);
 
@@ -141,7 +141,7 @@ export default class ForgotPasswordScreen extends Component {
           break;
       }
     } catch ($error) {
-      // @TODO
+      // TODO
     }
 
     setSubmitting(false);
