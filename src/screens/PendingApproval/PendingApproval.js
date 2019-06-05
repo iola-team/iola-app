@@ -7,9 +7,7 @@ import gql from 'graphql-tag';
 import { withStyleSheet as styleSheet } from '~theme';
 import { Icon, LogoutButton, UserUpdateSubscription } from '~components';
 import * as routes from '../routeNames';
-
-// @TODO: Make it dynamical with admin plugin
-const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
+import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
 
 const meQuery = gql`
   query meQuery {
@@ -78,7 +76,7 @@ export default class EmailVerificationScreen extends Component {
 
     return (
       <Container>
-        <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
+        <ImageBackground style={styles.background} source={imageBackground}>
           <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.content}>
               <View style={styles.header}>
