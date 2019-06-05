@@ -113,8 +113,8 @@ export default class ImageCommentsConnection extends Component {
 
     return (
       <Query query={meQuery}>
-        {({ loading: loadingMeQuery, data: { me } }) => loadingMeQuery ? null : (
-          <Query query={photoCommentsQuery} variables={{ id: photoId }}>
+        {({ data: { me } }) => (
+          <Query query={photoCommentsQuery} variables={{ id: photoId }} fetchPolicy="cache-and-network">
             {({ loading, data, fetchMore, refetch, networkStatus, subscribeToMore }) => {
               const refreshing = networkStatus === NetworkStatus.refetch;
               const edges = get(data, 'photo.comments.edges', []);

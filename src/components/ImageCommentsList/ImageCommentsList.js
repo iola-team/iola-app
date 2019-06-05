@@ -64,7 +64,7 @@ export default class ImageCommentsList extends Component {
 
   render() {
     const { edges, loading, refreshing, onRefresh, listRef, ...listProps } = this.props;
-    const data = loading && !edges.length ? this.getPlaceholders() : edges;
+    const data = edges.length ? edges : (loading ? this.getPlaceholders() : edges);
     const emptyStateText = 'No comments yet\nBe the first to comment'; // For \n symbol work keep the text in the var
 
     return (
