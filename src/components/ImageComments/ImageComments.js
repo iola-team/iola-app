@@ -5,6 +5,7 @@ import { Text } from 'native-base';
 import { graphql, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { isFunction, isUndefined, noop } from 'lodash';
+import update from 'immutability-helper';
 import uuid from 'uuid/v4';
 
 import { withStyleSheet } from '~theme';
@@ -175,20 +176,27 @@ export default class ImageComments extends Component {
           query: photoCommentsQuery,
           variables: { id: photoId },
         });
-
-        data.photo.comments.edges.unshift({
+        const newCommentEdge = {
           __typename: 'CommentEdge',
           node: {
             ...addPhotoComment.node,
             user: me,
           },
           cursor: 'first',
-        });
+        };
 
         cache.writeQuery({
           query: photoCommentsQuery,
           variables: { id: photoId },
-          data,
+          data: update(data, {
+            photo: {
+              comments: {
+                edges: {
+                  $unshift: [newCommentEdge],
+                },
+              },
+            },
+          }),
         });
 
         cache.writeQuery({
