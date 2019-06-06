@@ -1,6 +1,16 @@
 import React from 'react';
-import { KeyboardAvoidingView } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
+
+const defaultProps = Platform.select({
+  ios: { behavior: 'padding' },
+  default: {},      
+});
 
 export default ({ style, ...props }) => (
-  <KeyboardAvoidingView behavior="padding" {...props} style={[{ flex: 1 }, style]} />
+  <KeyboardAvoidingView
+    {...defaultProps}
+    {...props}
+
+    style={[{ flex: 1 }, style]}
+  />
 );
