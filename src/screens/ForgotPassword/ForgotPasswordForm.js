@@ -4,7 +4,7 @@ import { withFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, Form, Text } from 'native-base';
 
-import { FormTextInput } from '~components';
+import { FormTextInput, Spinner } from '~components';
 
 class ForgotPasswordForm extends Component {
   static propTypes = {
@@ -19,7 +19,7 @@ class ForgotPasswordForm extends Component {
   state = { emailDoesNotExist: false };
 
   render() {
-    const { isValid, handleSubmit, defaultEmail } = this.props;
+    const { isValid, handleSubmit, defaultEmail, isSubmitting } = this.props;
     const { emailDoesNotExist } = this.state;
     const disabled = !(isValid && !emailDoesNotExist || defaultEmail);
 
@@ -41,6 +41,7 @@ class ForgotPasswordForm extends Component {
 
         <Button onPress={handleSubmit} disabled={disabled} block>
           <Text>Get new password</Text>
+          {isSubmitting && <Spinner />}
         </Button>
       </Form>
     );
