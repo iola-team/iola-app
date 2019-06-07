@@ -45,7 +45,7 @@ export default class Application extends Component {
       onApplicationReset: this.props.onReset,
       applicationInitWasTriggeredManually: this.props.initWasTriggeredManually,
       contentInset: {
-        top: ScreenHeader.HEIGHT + getStatusBarHeight(),
+        top: ScreenHeader.HEIGHT + getStatusBarHeight(true),
         bottom: BottomTabBar.HEIGHT,
       },
     },

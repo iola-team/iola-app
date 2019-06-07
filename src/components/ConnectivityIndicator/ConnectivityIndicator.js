@@ -53,7 +53,7 @@ export default class ConnectivityIndicator extends Component {
     const { isOnline, children, styleSheet: styles, style, ...props } = this.props;
     const { backgroundColor } = StyleSheet.flatten(styles.offlineStatusBar);
 
-    const statusBarHeight = getStatusBarHeight();
+    const statusBarHeight = getStatusBarHeight(true);
     const platformStyles = Platform.select({
       ios: {
         marginTop: -statusBarHeight,
