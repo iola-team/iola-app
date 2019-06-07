@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import { Linking } from 'react-native';
 import { Text } from 'native-base';
 
-import { withStyleSheet } from '~theme';
+import { withStyle } from '~theme';
 import FieldView from './FieldView';
 import TouchableOpacity from '../TouchableOpacity';
 
-@withStyleSheet('Sparkle.TextView', {
-  linkText: {
-    color: '#5F96F2',
-  },
-})
+@withStyle('Sparkle.TextView')
 export default class TextView extends Component {
   state = {
     isLink: false,
@@ -21,8 +17,8 @@ export default class TextView extends Component {
     const { styleSheet: styles, value } = this.props;
 
     return (
-      <TouchableOpacity onPress={this.onLinkPress}>
-        <Text style={styles.linkText}>{value}</Text>
+      <TouchableOpacity primary onPress={this.onLinkPress}>
+        <Text>{value}</Text>
       </TouchableOpacity>
     );
   }
