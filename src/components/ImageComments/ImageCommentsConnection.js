@@ -113,10 +113,9 @@ export default class ImageCommentsConnection extends Component {
 
     return (
       <Query query={meQuery}>
-        {({ loading: loadingMeQuery, data: { me } }) => loadingMeQuery ? null : (
+        {({ data: { me } }) => (
           <Query query={photoCommentsQuery} variables={{ id: photoId }}>
-            {({ loading, data, fetchMore, refetch, networkStatus, subscribeToMore }) => {
-              const refreshing = networkStatus === NetworkStatus.refetch;
+            {({ loading, data, fetchMore, networkStatus, subscribeToMore }) => {
               const edges = get(data, 'photo.comments.edges', []);
               const onEndReached = () => loading ? null : this.handleLoadMore(data, fetchMore);
               const subscribeToNewComments = () => subscribeToMore({
@@ -156,9 +155,7 @@ export default class ImageCommentsConnection extends Component {
                   photoId={photoId}
                   onItemPress={onItemPress}
                   loading={loading}
-                  refreshing={refreshing}
                   edges={edges}
-                  onRefresh={refetch}
                   listRef={listRef}
                   onEndReached={onEndReached}
                   onEndReachedThreshold={2}
