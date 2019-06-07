@@ -63,7 +63,7 @@ export default class ImageCommentsList extends Component {
   }
 
   render() {
-    const { edges, loading, refreshing, onRefresh, listRef, ...listProps } = this.props;
+    const { edges, loading, listRef, ...listProps } = this.props;
     const data = edges.length ? edges : (loading ? this.getPlaceholders() : edges);
     const emptyStateText = 'No comments yet\nBe the first to comment'; // For \n symbol work keep the text in the var
 
@@ -75,7 +75,6 @@ export default class ImageCommentsList extends Component {
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 15 }}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListEmptyComponent={<NoContent icon="comments-empty-state" text={emptyStateText} inverted />}
         removeClippedSubviews // "Sometimes image doesn't show (only Android)" issue: https://github.com/facebook/react-native/issues/17096
         inverted={loading || edges.length}
