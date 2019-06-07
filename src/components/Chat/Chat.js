@@ -60,6 +60,9 @@ const chatQuery = gql`
         messages(last: $last after: $after first: $first before: $before) @connection(key: "ChatMessagesConnection") {
           ...Chat_messages
         }
+        participants {
+          id
+        }
       }
       
       ...UserAvatar_user
@@ -136,12 +139,12 @@ const addMessageMutation = gql`
   ${chatMessagesEdgeFragment}
 `;
 
-const createOptimisticMessageEdge = (content, user) => ({
+const createOptimisticMessageEdge = (content, user, status = null) => ({
   __typename: 'MessageEdge',
   node: {
     __typename: 'Message',
     id: uuid(),
-    status: null,
+    status,
     createdAt: new Date(),
     content: {
       __typename: 'MessageContent',
@@ -408,14 +411,28 @@ export default class Chat extends Component {
     }
   };
 
+  getInterlocutorIds = () => {
+    const { data: { me } } = this.props;
+    const ids = me?.chat.participants
+      .filter(({ id }) => id !== me.id)
+      .map(user => user.id);
+
+    /**
+     * No interlocutors means user is chatting with himself.
+     */
+    return ids.length ? ids : [ me.id ];
+  }
+
   getItemSide = ({ user }) => this.props.data.me.id === user.id ? 'right' : 'left';
+
   onMessagesRead = (nodes) => {
     const { markMessagesAsRead, data: { me } } = this.props;
-    
+    const interlocutors = this.getInterlocutorIds();
+
     /**
      * Filter user own messages
      */
-    const nodesToUpdate = nodes.filter(({ user }) => user.id !== me.id);
+    const nodesToUpdate = nodes.filter(({ user }) => interlocutors.includes(user.id));
     const messageIds = nodesToUpdate.map(node => node.id);
     if (!messageIds.length) {
       return;
