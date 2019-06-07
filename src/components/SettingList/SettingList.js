@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Linking } from 'react-native';
-import { Text, List, ListItem, Icon } from 'native-base';
+import { Text, List, ListItem, Right, Body, Icon } from 'native-base';
 
 import { ScrollView } from '../TabNavigator';
 
@@ -19,12 +19,22 @@ export default class SettingList extends Component {
     return (
       <ScrollView {...props}>
         <List>
-          <ListItem button first onPress={this.openUrl(policyUrl)}>
-            <Text>Privacy Policy</Text>
+          <ListItem icon button first onPress={this.openUrl(policyUrl)}>
+            <Body>
+              <Text>Privacy Policy</Text>
+            </Body>
+            <Right>
+              <Icon name="ios-arrow-forward" />
+            </Right>
           </ListItem>
 
-          <ListItem button last onPress={this.openUrl(termsUrl)}>
-            <Text>Terms of Use</Text>
+          <ListItem icon button last onPress={this.openUrl(termsUrl)}>
+            <Body>
+              <Text>Terms of Use</Text>
+            </Body>
+            <Right>
+              <Icon name="ios-arrow-forward" />
+            </Right>
           </ListItem>
         </List>
       </ScrollView>
