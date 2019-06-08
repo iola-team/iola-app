@@ -86,7 +86,7 @@ export default class WebsiteURLScreen extends Component {
       await AsyncStorage.setItem('platformURL', url);
       this.props.onSubmit(url, true);
     } catch (error) {
-      // @TODO: display Error message?
+      // TODO: display Error message?
     }
   };
 

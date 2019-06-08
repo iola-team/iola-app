@@ -126,7 +126,7 @@ export const photoDetailsQuery = gql`
     paddingTop: 25,
     paddingHorizontal: 17,
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(46, 48, 55, 0.3)',
+    backgroundColor: 'rgba(46, 48, 55, 0.85)',
     zIndex: 1,
   },
 
@@ -284,7 +284,7 @@ export default class ImageView extends Component {
               const photoId = photo?.id || '';
               const totalCount = photo?.comments?.totalCount || 0;
               const createdAt = this.getDateHumanized(photo?.createdAt || 0);
-              // const totalCountLikes = 0; // @TODO: Likes
+              // const totalCountLikes = 0; // TODO: Likes
 
               return (
                 <>
@@ -314,7 +314,7 @@ export default class ImageView extends Component {
                             onPress={show}
                             style={[styles.headerButton, styles.meatballMenu]}
                           >
-                            <Icon style={styles.headerIcon} name="emoji" /* @TODO: meatball icon */ />
+                            <Icon style={styles.headerIcon} name="emoji" /* TODO: meatball icon */ />
                           </TouchableOpacity>
                         )}
                       </ActionSheet>
@@ -350,7 +350,7 @@ export default class ImageView extends Component {
                         )}
                       </ImageComments>
 
-                      {/* @TODO: Likes
+                      {/* TODO: Likes
                       <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
                         <Icon name="like" style={styles.actionIcon} />
                         <ActionText>Like</ActionText>
@@ -389,10 +389,10 @@ export default class ImageView extends Component {
               onChange={::this.onChange}
               onSwipeDown={::this.onClose}
               renderIndicator={() => null}
-              failImageSource="https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif" /* @TODO */
+              failImageSource="https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif" /* TODO */
               loadingRender={() => <View style={styles.spinnerContainer}><Spinner /></View>}
               footerContainerStyle={{ width: '100%' }}
-              backgroundColor="rgba(46, 48, 55, 0.95)"
+              backgroundColor="rgba(46, 48, 55, 0.85)"
               pageAnimateTime={400}
               enablePreload
             />

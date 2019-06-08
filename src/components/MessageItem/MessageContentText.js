@@ -21,7 +21,7 @@ const contentFragment = gql`
 
   'NativeBase.Text': {
     fontSize: 16,
-    lineHeight: 19,
+    lineHeight: 22,
   },
 
   '.inverse': {

@@ -13,7 +13,7 @@ import Spinner from '../Spinner';
   spinnerContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#CCCCCC', // @TODO: Request to Head of Design Department is pending
+    backgroundColor: '#CCCCCC', // TODO: Request to Head of Design Department is pending
   },
 })
 export default class ImageFit extends PureComponent {
@@ -65,8 +65,8 @@ export default class ImageFit extends PureComponent {
   render() {
     const { styleSheet: styles, url, style, maxWidth, maxHeight } = this.props;
     const { loading, failedToLoad, width, height } = this.state;
-    // @TODO: add spinner while image is loading
-    // @TODO: add cache system like here:
+    // TODO: add spinner while image is loading
+    // TODO: add cache system like here:
     // https://github.com/vivaxy/react-native-auto-height-image/blob/master/cache.js
 
     if (loading) {

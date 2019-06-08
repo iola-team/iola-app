@@ -4,14 +4,13 @@ import { Button, Container, Text, Toast, View } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
+import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { Icon } from '~components';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
-const Background = connectToStyleSheet('background', ImageBackground).withProps({
-  source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
-});
+const Background = connectToStyleSheet('background', ImageBackground).withProps({ source: imageBackground });
 const Content = connectToStyleSheet('content', View);
 const Header = connectToStyleSheet('header', View);
 const LockIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'lock' });
@@ -123,7 +122,7 @@ export default class ForgotPasswordScreen extends Component {
   async onSubmit({ email }, { setSubmitting }) {
     const { sendResetPasswordInstructions } = this.props;
     let success = false;
-    let errorMessage = 'Something went wrong.'; // @TODO: Add details to the message (maybe add the link "Send the request to Technical Support?)"
+    let errorMessage = 'Something went wrong.'; // TODO: Add details to the message (maybe add the link "Send the request to Technical Support?)"
 
     setSubmitting(true);
 
@@ -141,7 +140,7 @@ export default class ForgotPasswordScreen extends Component {
           break;
       }
     } catch ($error) {
-      // @TODO
+      // TODO
     }
 
     setSubmitting(false);

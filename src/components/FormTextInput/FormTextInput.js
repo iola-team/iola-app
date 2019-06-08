@@ -184,8 +184,8 @@ export default class FormTextInput extends Component {
           style={[
             styles.formInput,
             secureTextEntry && !isPasswordIsShown && { paddingRight: isTouched ? 80 : 50 },
-            isFocused && { color: '#BCBFCA' }, // @TODO: TextInput dynamic color issue: https://github.com/facebook/react-native/issues/20131
-            !isValid && { color: '#FF8787' }, // @TODO: TextInput dynamic color issue: https://github.com/facebook/react-native/issues/20131
+            isFocused && { color: '#BCBFCA' }, // TODO: TextInput dynamic color issue: https://github.com/facebook/react-native/issues/20131
+            !isValid && { color: '#FF8787' }, // TODO: TextInput dynamic color issue: https://github.com/facebook/react-native/issues/20131
           ]}
           placeholderFontSize={16}
           placeholderTextColor={isValid ? (isFocused ? '#BCBFCA' : '#FFFFFF') : '#FF8787'}

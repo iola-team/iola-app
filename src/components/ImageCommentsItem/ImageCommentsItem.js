@@ -76,7 +76,7 @@ const imageCommentsItemFragment = gql`
 
   placeholderContainer: {
     flex: 1,
-    height: 88, // @TODO: "magic number issue" - imageComment height
+    height: 88, // TODO: "magic number issue" - imageComment height
   },
 
   placeholderContent: {

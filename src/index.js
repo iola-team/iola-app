@@ -41,7 +41,7 @@ class ApplicationRoot extends Component {
 
       if (platformURL) this.init(platformURL);
     } catch (error) {
-      // @TODO: display Error message?
+      // TODO: display Error message?
     }
 
     SplashScreen.hide();
@@ -81,7 +81,7 @@ class ApplicationRoot extends Component {
       await AsyncStorage.removeItem('platformURL');
       this.setState({ isReady: false, initWasLaunched: false });
     } catch (error) {
-      // @TODO: display Error message?
+      // TODO: display Error message?
     }
   };
 

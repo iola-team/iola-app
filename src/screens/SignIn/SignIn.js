@@ -5,6 +5,7 @@ import { Button, Container, Content, Text, H1 } from 'native-base';
 import { withStyleSheet as styleSheet } from '~theme';
 import SignInForm from './SignInForm';
 import * as routes from '../routeNames';
+import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
 
 @styleSheet('Sparkle.SignInScreen', {
   background: {
@@ -40,7 +41,7 @@ export default class SignInScreen extends Component {
     try {
       authenticated = await authenticate(login, password);
     } catch (error) {
-      // @TODO: handle the error?
+      // TODO: handle the error?
     }
 
     if (authenticated) {
@@ -69,11 +70,10 @@ export default class SignInScreen extends Component {
       screenProps: { onApplicationReset },
       styleSheet: styles,
     } = this.props;
-    const backgroundURL = 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg';
 
     return (
       <Container>
-        <ImageBackground style={styles.background} source={{ uri: backgroundURL }}>
+        <ImageBackground style={styles.background} source={imageBackground}>
           <SafeAreaView style={{ flex: 1 }}>
             <Content contentContainerStyle={styles.content}>
               <H1 style={styles.title}>Sign in</H1>

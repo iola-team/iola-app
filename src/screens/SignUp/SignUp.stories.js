@@ -26,7 +26,7 @@ const resolvers = {
 // Decorators
 stories.addDecorator(getApolloDecorator({ typeDefs, resolvers }));
 
-// @TODO: try to do it with decorator in the future: https://github.com/storybooks/storybook/issues/340
+// TODO: try to do it with decorator in the future: https://github.com/storybooks/storybook/issues/340
 const mockedProps = {
   navigation: {
     navigate: () => alert('Mocked navigation'),
@@ -42,5 +42,5 @@ const mockedProps = {
 };
 
 // Stories
-// @TODO: Looks like we need to mock the mutations...
+// TODO: Looks like we need to mock the mutations...
 stories.add('Screen', () => <SignUp {...mockedProps} />);

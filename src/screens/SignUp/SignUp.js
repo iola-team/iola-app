@@ -5,11 +5,10 @@ import { Container, Content, Text, View } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import SignUpForm from './SignUpForm';
 import { LAUNCH } from '../routeNames';
+import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
 
 const Title = connectToStyleSheet('title', Text);
-const Background = connectToStyleSheet('background', ImageBackground).withProps({
-  source: { uri: 'https://blog.oxforddictionaries.com/wp-content/uploads/mountain-names.jpg' },
-});
+const Background = connectToStyleSheet('background', ImageBackground).withProps({ source: imageBackground });
 const TermsContainer = connectToStyleSheet('termsContainer', View);
 const TermsText = connectToStyleSheet('termsText', Text);
 const TermsSubcontainer = connectToStyleSheet('termsSubcontainer', View);

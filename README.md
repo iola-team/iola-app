@@ -24,11 +24,11 @@
   - React Developer Tools
     - install: `npm install -g react-devtools`
     - run: `react-devtools`
-3) `yarn postinstall` // @TODO: remove when Apollo fix this: https://github.com/apollographql/apollo-client/issues/3236
+3) `yarn postinstall` // TODO: remove when Apollo fix this: https://github.com/apollographql/apollo-client/issues/3236
 
 ### Tests
 Investigate this: https://reactnativetesting.io/
-@TODO: Fill this section
+TODO: Fill this section
 
 ### Troubleshooting
 1. How to debug the subscriptions
@@ -64,7 +64,7 @@ Investigate this: https://reactnativetesting.io/
   - iOS: `yarn fastlane:ios:beta`
 2) Build the release app version (build the apk file):
   - Android: `yarn release:build:android`
-  - iOS: @TODO
+  - iOS: TODO
 
 ## For future customizations
   - Change the app icon:

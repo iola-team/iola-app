@@ -86,7 +86,7 @@ class SignInForm extends Component {
     setFieldTouched('password', true);
     setErrors(errors || {});
 
-    if (isSubmitting || !!Object.keys(errors).length) return; // @TODO: if initial values are not setted "!!Object.keys(errors).length" can be replaced with "!isValid"
+    if (isSubmitting || !!Object.keys(errors).length) return; // TODO: if initial values are not setted "!!Object.keys(errors).length" can be replaced with "!isValid"
 
     submitForm();
   };
