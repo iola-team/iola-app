@@ -192,7 +192,7 @@ export default class SceneView extends PureComponent {
       ...restProps
     } = this.props;
 
-    const shrinkHeight = headerShrinkHeight + getStatusBarHeight();
+    const shrinkHeight = headerShrinkHeight + getStatusBarHeight(true);
     const windowHeight = Dimensions.get('window').height;
     const screenHeight = windowHeight - bottomBarHeight - topBarHeight;
     const shrinkAnimationHeight = headerHeight ? headerHeight - shrinkHeight : 0;
