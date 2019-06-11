@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity, SafeAreaView } from 'react-native';
+import { ImageBackground, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native';
 import { Button, Container, Text, Toast, View } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
-import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
+import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { Icon } from '~components';
@@ -27,6 +27,11 @@ const SignInButton = connectToStyleSheet('signInButton', Button);
     flex: 1,
   },
 
+  backgroundShadow: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(46, 46, 46, 0.4)',
+  },
+
   content: {
     flex: 1,
     alignSelf: 'center',
@@ -44,12 +49,13 @@ const SignInButton = connectToStyleSheet('signInButton', Button);
   lockIcon: {
     width: 48,
     height: 48,
-    borderRadius: 25,
+    borderRadius: 24,
     fontSize: 23,
     lineHeight: 48,
     textAlign: 'center',
     color: '#BCBFCA',
     backgroundColor: '#FFFFFF',
+    overflow: 'hidden', // without it borderRadius won't work on iOS
   },
 
   title: {
@@ -176,6 +182,7 @@ export default class ForgotPasswordScreen extends Component {
     return (
       <Container>
         <Background>
+          <View style={styles.backgroundShadow} />
           <SafeAreaView style={{ flex: 1 }}>
             <Content>
               <Header>

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity, SafeAreaView } from 'react-native';
+import { ImageBackground, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native';
 import { Container, Content, Text, View } from 'native-base';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import SignUpForm from './SignUpForm';
 import { LAUNCH } from '../routeNames';
-import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
+import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
 
 const Title = connectToStyleSheet('title', Text);
 const Background = connectToStyleSheet('background', ImageBackground).withProps({ source: imageBackground });
@@ -22,6 +22,11 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 @styleSheet('Sparkle.SignUpScreen', {
   background: {
     flex: 1,
+  },
+
+  backgroundShadow: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(46, 46, 46, 0.4)',
   },
 
   content: {
@@ -98,6 +103,7 @@ export default class SignUpScreen extends Component {
     return (
       <Container>
         <Background>
+          <View style={styles.backgroundShadow} />
           <SafeAreaView style={{ flex: 1 }}>
             <Content contentContainerStyle={styles.content}>
               <Title>Please sign up</Title>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ImageBackground, SafeAreaView } from 'react-native';
+import { ImageBackground, SafeAreaView, StyleSheet } from 'react-native';
 import { Container, Text, View } from 'native-base';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { withStyleSheet as styleSheet } from '~theme';
 import { Icon, LogoutButton, UserUpdateSubscription } from '~components';
 import * as routes from '../routeNames';
-import imageBackground from './background.jpg'; // TODO: Make it dynamic with admin plugin
+import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
 
 const meQuery = gql`
   query meQuery {
@@ -20,6 +20,11 @@ const meQuery = gql`
 @styleSheet('Sparkle.PendingApprovalScreen', {
   background: {
     flex: 1,
+  },
+
+  backgroundShadow: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(46, 46, 46, 0.4)',
   },
 
   content: {
@@ -77,6 +82,7 @@ export default class EmailVerificationScreen extends Component {
     return (
       <Container>
         <ImageBackground style={styles.background} source={imageBackground}>
+          <View style={styles.backgroundShadow} />
           <SafeAreaView style={{ flex: 1 }}>
             <View style={styles.content}>
               <View style={styles.header}>
