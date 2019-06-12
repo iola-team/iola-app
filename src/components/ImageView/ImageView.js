@@ -49,28 +49,6 @@ const edgeFragment = gql`
   }
 `;
 
-export const photoDetailsQuery = gql`
-  query photoDetailsQuery($id: ID!) {
-    photo: node(id: $id) {
-      ...on Photo {
-        id
-        url
-        caption
-        createdAt
-
-        user {
-          id
-          name
-        }
-
-        comments @connection(key: "PhotoCommentsConnection") {
-          totalCount
-        }
-      }
-    }
-  }
-`;
-
 @styleSheet('Sparkle.ImageView', {
   spinnerContainer: {
     margin: 'auto',

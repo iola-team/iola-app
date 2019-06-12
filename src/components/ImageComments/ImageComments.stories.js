@@ -14,7 +14,6 @@ import uuid from 'uuid/v4';
 import { getApolloDecorator, getContentDecorator } from '~storybook';
 import { createConnection } from '~storybook/decorators/Apollo';
 import ImageComments from './ImageComments';
-import { photoDetailsQuery } from '../ImageView/ImageView';
 
 const stories = storiesOf('Components/ImageComments', module);
 const subscriptions = new PubSub();
@@ -276,6 +275,18 @@ stories.add('Empty State', () => (
     )}
   </ImageComments>
 ));
+
+export const photoDetailsQuery = gql`
+  query photoDetailsQuery($id: ID!) {
+    photo: node(id: $id) {
+      ...on Photo {
+        comments @connection(key: "PhotoCommentsConnection") {
+          totalCount
+        }
+      }
+    }
+  }
+`;
 
 stories.add('Fake Comments', () => {
   const photoId = 'Photo:2';
