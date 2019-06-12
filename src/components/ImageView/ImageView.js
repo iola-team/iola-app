@@ -33,6 +33,17 @@ const edgeFragment = gql`
       ...on Photo {
         id
         url(size: BIG)
+        caption
+        createdAt
+        
+        user {
+          id
+          name
+        }
+
+        comments @connection(key: "PhotoCommentsConnection") {
+          totalCount
+        }
       }
     }
   }
@@ -264,111 +275,87 @@ export default class ImageView extends Component {
   renderControls() {
     const { edges, data: { me }, styleSheet: styles } = this.props;
     const { index } = this.state;
-    const { node: { id } } = edges[index];
+    const { node: { id, caption, createdAt, comments } } = edges[index];
     const totalCountImages = edges.length;
-
-    /*
-     * firstPhotoId is using for optimization:
-     * Currently, all photos in she slider will have the same user data
-     * (so we don't need to get it for every photo)
-     */
-    const firstPhotoId = get(edges, `[0].node.id`, null);
+    const firstPhotoData = edges[0].node;
+    // const totalCountLikes = 0; // TODO: Likes
 
     return (
-      <Query query={photoDetailsQuery} variables={{ id: firstPhotoId }} skip={!id}>
-        {({ data: firstPhotoData }) => (
-          <Query query={photoDetailsQuery} variables={{ id }}>
-            {({ loading, data }) => {
-              const photo = data?.photo;
-              const caption = photo?.caption || '';
-              const photoId = photo?.id || '';
-              const totalCount = photo?.comments?.totalCount || 0;
-              const createdAt = this.getDateHumanized(photo?.createdAt || 0);
-              // const totalCountLikes = 0; // TODO: Likes
+      <>
+        <View style={styles.header}>
+          <TouchableOpacity
+            onPress={::this.onClose}
+            style={[styles.headerButton, styles.backButton]}
+          >
+            <Icon style={styles.headerIcon} name="back" />
+          </TouchableOpacity>
 
-              return (
-                <>
-                  <View style={styles.header}>
-                    <TouchableOpacity
-                      onPress={::this.onClose}
-                      style={[styles.headerButton, styles.backButton]}
-                    >
-                      <Icon style={styles.headerIcon} name="back" />
-                    </TouchableOpacity>
+          {totalCountImages > 1 && (
+            <Text style={styles.indicator}>
+              {`${index + 1} of ${totalCountImages}`}
+            </Text>
+          )}
 
-                    {totalCountImages > 1 && (
-                      <Text style={styles.indicator}>
-                        {`${index + 1} of ${totalCountImages}`}
-                      </Text>
-                    )}
+          {me.id === firstPhotoData.user.id && (
+            <ActionSheet
+              options={['Cancel', 'Delete']}
+              cancelButtonIndex={0}
+              destructiveButtonIndex={1}
+              onPress={index => index === 1 && this.onDelete(id)}
+            >
+              {show => (
+                <TouchableOpacity
+                  onPress={show}
+                  style={[styles.headerButton, styles.meatballMenu]}
+                >
+                  <Icon style={styles.headerIcon} name="emoji" /* TODO: meatball icon */ />
+                </TouchableOpacity>
+              )}
+            </ActionSheet>
+          )}
+        </View>
 
-                    {me.id === firstPhotoData?.photo?.user?.id && (
-                      <ActionSheet
-                        options={['Cancel', 'Delete']}
-                        cancelButtonIndex={0}
-                        destructiveButtonIndex={1}
-                        onPress={index => index === 1 && this.onDelete(photoId)}
-                      >
-                        {show => (
-                          <TouchableOpacity
-                            onPress={show}
-                            style={[styles.headerButton, styles.meatballMenu]}
-                          >
-                            <Icon style={styles.headerIcon} name="emoji" /* TODO: meatball icon */ />
-                          </TouchableOpacity>
-                        )}
-                      </ActionSheet>
-                    )}
-                  </View>
+        <View style={styles.footer}>
+          <View>
+            <View style={styles.nameBlock}>
+              <Text style={styles.name}>{firstPhotoData.user.name}</Text>
+            </View>
+            {!!caption && <Text style={styles.caption}>{caption}</Text>}
+            <Text secondary style={styles.dateTime}>{this.getDateHumanized(createdAt)}</Text>
+          </View>
 
-                  <View style={styles.footer}>
-                    <View>
-                      {firstPhotoData?.photo && (
-                        <View style={styles.nameBlock}>
-                          <Text style={styles.name}>{firstPhotoData.photo.user.name}</Text>
-                        </View>
-                      )}
-                      {!!caption && <Text style={styles.caption}>{caption}</Text>}
-                      <Text secondary style={styles.dateTime}>{createdAt}</Text>
-                    </View>
+          <View style={styles.actionsBlock}>
+            <ImageComments photoId={id} totalCount={comments.totalCount}>
+              {onShowImageComments => (
+                <TouchableOpacity
+                  onPress={onShowImageComments}
+                  style={[styles.actionButton, styles.buttonComments]}
+                >
+                  <Icon name="chats-bar" style={styles.actionIcon} />
+                  <Text style={styles.actionText}>Comment</Text>
+                  {!comments.totalCount ? null : (
+                    <Badge style={styles.actionBadge}>
+                      <Text style={styles.actionBadgeText}>{comments.totalCount}</Text>
+                    </Badge>
+                  )}
+                </TouchableOpacity>
+              )}
+            </ImageComments>
 
-                    <View style={styles.actionsBlock}>
-                      <ImageComments photoId={photoId} totalCount={totalCount}>
-                        {onShowImageComments => (
-                          <TouchableOpacity
-                            onPress={onShowImageComments}
-                            style={[styles.actionButton, styles.buttonComments]}
-                          >
-                            <Icon name="chats-bar" style={styles.actionIcon} />
-                            <Text style={styles.actionText}>Comment</Text>
-                            {!totalCount ? null : (
-                              <Badge style={styles.actionBadge}>
-                                <Text style={styles.actionBadgeText}>{totalCount}</Text>
-                              </Badge>
-                            )}
-                          </TouchableOpacity>
-                        )}
-                      </ImageComments>
-
-                      {/* TODO: Likes
-                      <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
-                        <Icon name="like" style={styles.actionIcon} />
-                        <ActionText>Like</ActionText>
-                        {totalCountLikes ? (
-                          <ActionBadge>
-                            <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
-                          </ActionBadge>
-                        ) : null}
-                      </TouchableOpacity>
-                      */}
-                    </View>
-                  </View>
-                </>
-              );
-            }}
-          </Query>
-        )}
-      </Query>
+            {/* TODO: Likes
+            <TouchableOpacity onPress={() => alert('Like')} style={styles.actionButton}>
+              <Icon name="like" style={styles.actionIcon} />
+              <ActionText>Like</ActionText>
+              {totalCountLikes ? (
+                <ActionBadge>
+                  <ActionBadgeText>{totalCountLikes}</ActionBadgeText>
+                </ActionBadge>
+              ) : null}
+            </TouchableOpacity>
+            */}
+          </View>
+        </View>
+      </>
     );
   }
 

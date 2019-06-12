@@ -112,10 +112,17 @@ export default class MyFriendsConnection extends PureComponent {
       variables: { id: photoId },
       optimisticResponse,
       update: (cache, { data: { result: { deletedId } } }) => {
-        const data = cache.readQuery({ query: myPhotosQuery });
-  
-        remove(me.photos.edges, edge => edge.node.id === deletedId);
-  
+        const cachedData = cache.readQuery({ query: myPhotosQuery });
+        const data = update(cachedData, {
+          me: {
+            photos: {
+              edges: {
+                $set: cachedData.me.photos.edges.filter(({ node }) => node.id !== deletedId),
+              },
+            },
+          },
+        });
+
         cache.writeQuery({
           query: myPhotosQuery,
           data,
@@ -180,7 +187,6 @@ export default class MyFriendsConnection extends PureComponent {
           {onShowImage => (
             <PhotoList
               {...props}
-
               refreshing={isRefreshing}
               onRefresh={this.refresh}
               itemsProgress={photoProgress}
