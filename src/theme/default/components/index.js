@@ -196,6 +196,8 @@ export default (variables => ({
     },
 
     'NativeBase.H2': {
+      fontWeight: '600',
+
       '.inverse': {
         color: variables.inverseTextColor,
       },
@@ -314,10 +316,10 @@ export default (variables => ({
          * Hide bottom border of last item in list
          * Overriding `borderBottomWidth` did not work, so had to hack it
          */
-        "NativeBase.Body": {
+        'NativeBase.Body': {
           borderBottomColor: 'rgba(0, 0, 0, 0)',
         },
-        "NativeBase.Right": {
+        'NativeBase.Right': {
           borderBottomColor: 'rgba(0, 0, 0, 0)',
         },
       },

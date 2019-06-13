@@ -19,7 +19,7 @@ export default class SettingList extends Component {
     return (
       <ScrollView {...props}>
         <List>
-          <ListItem icon button first onPress={this.openUrl(policyUrl)}>
+          <ListItem onPress={this.openUrl(policyUrl)} icon button first>
             <Body>
               <Text>Privacy Policy</Text>
             </Body>
@@ -28,7 +28,7 @@ export default class SettingList extends Component {
             </Right>
           </ListItem>
 
-          <ListItem icon button last onPress={this.openUrl(termsUrl)}>
+          <ListItem onPress={this.openUrl(termsUrl)} icon button last>
             <Body>
               <Text>Terms of Use</Text>
             </Body>
