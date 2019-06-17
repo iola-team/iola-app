@@ -154,7 +154,7 @@ export default class ChatListItem extends Component {
     const lastMessage = messages.edges[0].node;
 
     return (
-      <ListItem {...props} style={style} button avatar chatItem onPress={onPress}>
+      <ListItem {...props} style={style} onPress={onPress} button avatar chatItem>
         <Left>
           <UserAvatar user={recipient} />
         </Left>
