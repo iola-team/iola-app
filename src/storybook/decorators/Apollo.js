@@ -4,7 +4,7 @@ import { ApolloProvider } from 'react-apollo';
 import { setContext } from "apollo-link-context";
 import { ApolloLink, Observable, split } from 'apollo-link';
 import { SchemaLink } from 'apollo-link-schema';
-import { subscribe } from 'graphql';
+import { subscribe } from 'graphql/subscription';
 import { getMainDefinition } from 'apollo-utilities';
 import MockAsyncStorage from 'mock-async-storage';
 import delay from 'promise-delay';

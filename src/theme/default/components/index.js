@@ -285,12 +285,16 @@ export default (variables => ({
 
         'NativeBase.Badge': {
           height: null,
+          width: null,
           minWidth: 18,
-          paddingHorizontal: 2.5,
+          paddingHorizontal: 2,
+          paddingVertical: 0,
+          borderRadius: 9,
 
           'NativeBase.Text': {
+            fontWeight: 'bold',
             fontSize: 10,
-            lineHeight: 11,
+            lineHeight: 18,
           },
         },
       },
