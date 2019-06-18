@@ -92,6 +92,7 @@ export default class ChatSearch extends Component {
     ),
     headerTitleContainerStyle: {
       left: 16, // TODO: Move this value to theme somehow
+      right: 70,
     },
     headerLeft: null,
     headerRight: (

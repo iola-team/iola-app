@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Platform } from 'react-native';
 import { View, Item, Input } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
@@ -23,20 +24,27 @@ import TouchableOpacity from '../TouchableOpacity';
   },
 
   input: {
+    minHeight: 48,
     lineHeight: 18,
     paddingLeft: 15,
-    paddingTop: 9,
-    paddingBottom: 13,
+
+    ...Platform.select({
+      ios: {
+        paddingVertical: 13,
+      },
+      default: {},
+    }),
   },
 
   sendButton: {
-    paddingHorizontal: 18,
+    height: 48,
+    paddingHorizontal: 16,
     alignSelf: 'flex-end',
-    marginBottom: 5,
+    justifyContent: 'center',
   },
 
   sendIcon: {
-    fontSize: 30,
+    fontSize: 28,
   },
 })
 export default class ChatFooter extends Component {

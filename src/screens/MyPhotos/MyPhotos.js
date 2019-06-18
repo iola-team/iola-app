@@ -18,6 +18,7 @@ import MyPhotosConnection from './MyPhotosConnection';
     width: 56,
     height: 56,
     elevation: 5,
+    zIndex: 2,
   },
 
   noContent: {

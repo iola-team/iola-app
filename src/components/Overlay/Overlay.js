@@ -7,6 +7,7 @@ import { withStyle } from '~theme';
 
 @withStyle('Sparkle.Overlay', {
   ...StyleSheet.absoluteFillObject,
+  zIndex: 3,
 })
 export default class Overlay extends Component {
   static propTypes = {

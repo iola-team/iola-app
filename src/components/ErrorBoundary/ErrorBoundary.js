@@ -101,7 +101,7 @@ export default class ErrorBoundary extends Component {
           <Image source={imageSource} />
           <H1>Oops! Something went wrong</H1>
           <Button block onPress={this.onRequestRelaunch}>
-            <Text>Relaunch the apllication</Text>
+            <Text>Relaunch Application</Text>
           </Button>
         </View>
         <View bottomSection>

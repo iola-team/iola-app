@@ -12,6 +12,13 @@ const iconTheme = {
 };
 
 export default withStyle('Sparkle.FieldItem', {
+  minHeight: 50,
+  flex: 1,
+  flexDirection: 'row',
+  alignItems: 'flex-start',
+  borderBottomWidth: StyleSheet.hairlineWidth,
+  borderBottomColor: '#C9C9C9',
+
   'NativeBase.Label': {
     fontSize: 14,
     flex: 1,
@@ -26,12 +33,12 @@ export default withStyle('Sparkle.FieldItem', {
     'NativeBase.Input': {
       height: null,
       padding: 0,
-      paddingVertical: 15,
+      paddingVertical: 10,
     },
 
     'NativeBase.Text': {
       fontSize: 14,
-      paddingVertical: 15,
+      paddingVertical: 10,
     },
 
     'Sparkle.TouchableOpacity': {
@@ -80,10 +87,4 @@ export default withStyle('Sparkle.FieldItem', {
   '.last': {
     borderBottomWidth: 0,
   },
-
-  flex: 1,
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  borderBottomWidth: StyleSheet.hairlineWidth,
-  borderBottomColor: '#C9C9C9',
 })(ViewRN);
