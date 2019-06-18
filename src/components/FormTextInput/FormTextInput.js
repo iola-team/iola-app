@@ -14,7 +14,7 @@ import Icon from '../Icon';
     paddingLeft: 10,
     paddingRight: 15,
     borderRadius: 8,
-    borderColor: 'rgba(255, 255, 255, .6)',
+    borderColor: 'rgba(255, 255, 255, .5)',
   },
 
   formInput: {
@@ -27,15 +27,6 @@ import Icon from '../Icon';
     position: 'absolute',
     top: 2,
     right: 48 + 17,
-  },
-
-  verticalLine: {
-    position: 'absolute',
-    right: 48,
-    top: 0,
-    width: 1,
-    height: 50,
-    backgroundColor: 'rgba(255, 255, 255, .6)',
   },
 
   showPassword: {

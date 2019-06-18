@@ -45,17 +45,17 @@ const thumbnailStyle = {
       borderRadius: 8,
 
       'NativeBase.ViewNB': {
-        right: -11,
-        bottom: -11,
-        padding: 4,
-        borderRadius: 8,
+        right: -10,
+        bottom: -10,
+        padding: 3,
+        borderRadius: 10,
 
         'Sparkle.UserOnlineStatus': {
           'NativeBase.ViewNB': {
             'Sparkle.OnlineStatus': {
               'NativeBase.ViewNB': {
-                width: 15,
-                height: 15,
+                width: 14,
+                height: 14,
                 borderRadius: 7,
               },
             },

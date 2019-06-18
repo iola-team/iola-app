@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { ImageBackground, SafeAreaView } from 'react-native';
-import { Button, Container, Content, Text, H1 } from 'native-base';
+import { ImageBackground, SafeAreaView, StyleSheet } from 'react-native';
+import { Button, Container, Content, Text, H1, View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import SignInForm from './SignInForm';
@@ -10,6 +10,11 @@ import imageBackground from './background.jpg'; // @TODO: Make it dynamic with a
 @styleSheet('Sparkle.SignInScreen', {
   background: {
     flex: 1,
+  },
+
+  backgroundShadow: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(46, 46, 46, 0.4)',
   },
 
   content: {
@@ -74,6 +79,7 @@ export default class SignInScreen extends Component {
     return (
       <Container>
         <ImageBackground style={styles.background} source={imageBackground}>
+          <View style={styles.backgroundShadow} />
           <SafeAreaView style={{ flex: 1 }}>
             <Content contentContainerStyle={styles.content}>
               <H1 style={styles.title}>Sign in</H1>

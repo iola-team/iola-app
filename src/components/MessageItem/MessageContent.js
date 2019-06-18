@@ -25,7 +25,7 @@ const messageFragment = gql`
 
 @withStyle('Sparkle.MessageContent', {
   marginBottom: 5,
-  borderRadius: 8,
+  borderRadius: 16,
   overflow: 'hidden',
 
   'Sparkle.ImageFit': {
@@ -44,34 +44,34 @@ const messageFragment = gql`
   },
 
   '.left': {
-    borderBottomLeftRadius: 4,
-    borderTopLeftRadius: 4,
+    borderBottomLeftRadius: 8,
+    borderTopLeftRadius: 8,
   },
 
   '.right': {
-    borderTopRightRadius: 4,
-    borderBottomRightRadius: 4,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
+    borderTopLeftRadius: 16,
+    borderBottomLeftRadius: 16,
   },
 
   '.first': {
     '.left': {
-      borderTopLeftRadius: 8,
+      borderTopLeftRadius: 16,
     },
 
     '.right': {
-      borderTopRightRadius: 8,
+      borderTopRightRadius: 16,
     },
   },
 
   '.last': {
     '.left': {
-      borderBottomLeftRadius: 8,
+      borderBottomLeftRadius: 16,
     },
 
     '.right': {
-      borderBottomRightRadius: 8,
+      borderBottomRightRadius: 16,
     },
   },
 })
