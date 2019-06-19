@@ -16,7 +16,7 @@ const fetch = new Fetch({
    * "java.security.cert.CertPathValidatorException: Trust anchor for certification path not found"
    * https://github.com/facebook/react-native/issues/6058
    */
-  trusty: true,
+  // trusty: true,
 
   auto: true,
   binaryContentTypes : [
