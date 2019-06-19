@@ -137,18 +137,18 @@ export default (variables => ({
 
       '.transparent': {
         '.secondary': {
-          backgroundColor: null,
+          backgroundColor: 'transparent',
         },
 
         '.disabled': {
-          backgroundColor: null,
+          backgroundColor: 'transparent',
           opacity: 0.3,
         }
       },
 
       '.bordered': {
         '.secondary': {
-          backgroundColor: null,
+          backgroundColor: 'transparent',
         },
       },
 
