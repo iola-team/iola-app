@@ -67,7 +67,7 @@ const edgeFragment = gql`
 
   header: {
     position: 'absolute',
-    top: getStatusBarHeight(),
+    top: getStatusBarHeight(true),
     left: 0,
     right: 0,
     flexDirection: 'row',

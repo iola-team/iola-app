@@ -68,7 +68,7 @@ const messageFragment = gql`
       },
     },
 
-    '.right': {
+    '.rightSide': {
       flexDirection: 'row-reverse',
 
       'NativeBase.ViewNB': {
@@ -108,7 +108,7 @@ export default class MessageItem extends Component {
     const { hasAvatar, left, right } = this.props;
 
     return (
-      <Placeholder right={right} left={left}>
+      <Placeholder rightSide={right} leftSide={left}>
         {hasAvatar && !right && <View avatar />}
         <View content />
       </Placeholder>

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Animated, View as ViewRN, StyleSheet } from 'react-native';
+import { Animated, View as ViewRN, StyleSheet, Platform } from 'react-native';
 import { ScrollView as ScrollViewRN } from 'react-native-gesture-handler';
 import { View } from 'native-base';
 
@@ -72,7 +72,7 @@ class ScrollView extends PureComponent {
       const { top } = this.getContentInset();
       const { scrollAnimatedValue } = this.context;
 
-      scrollAnimatedValue.setValue(-top);
+      scrollAnimatedValue.setOffset(Platform.select({ ios: 0, default: -top }));
     }
 
     this.unsubscribe = !this.context ? [] : [
@@ -80,6 +80,7 @@ class ScrollView extends PureComponent {
         this.getNode().scrollTo({ y, animated });
       }),
     ];
+   
   }
 
   componentWillUnmount() {
@@ -101,39 +102,67 @@ class ScrollView extends PureComponent {
     return layout && layout.height - top - bottom;
   }
 
+  getScrollViewProps() {
+    const refreshControl = this.renderRefreshControl();
+    let contentInset = this.getContentInset();
+
+    if (this.context) {
+      const { bottomBarHeight } = this.context;
+
+      contentInset = { ...contentInset, bottom: bottomBarHeight };
+    }
+
+    const contentOffset = { y: -contentInset.top };
+
+    return {
+      refreshControl,
+
+      ...Platform.select({
+        ios: {
+          contentInset,
+          contentOffset,
+        },
+
+        default: {
+          contentContainerStyle: {
+            paddingTop: contentInset.top,
+            paddingBottom: contentInset.bottom,
+          },
+        },
+      })
+    };
+  }
+
   renderRefreshControl() {
     const { refreshControl, refreshing, onRefresh } = this.props;
+    const { top } = this.getContentInset();
 
     if (refreshControl) {
       return refreshControl;
     }
 
     return onRefresh && (
-      <RefreshControl refreshing={refreshing} onRefresh={this.onRefresh} />
+      <RefreshControl progressViewOffset={top} refreshing={refreshing} onRefresh={this.onRefresh} />
     );
   }
   
   render() {
     const { layout } = this.state;
     const { contentContainerStyle = {}, ...restProps } = this.props;
-    const refreshControl = this.renderRefreshControl();
-    const contentInset = this.getContentInset();
-    const contentOffset = { y: -contentInset.top };
+    const scrollViewProps = this.getScrollViewProps();
 
     if (!this.context) {
       return (
         <ScrollViewRN
           ref={this.onRef}
           {...restProps}
+          {...scrollViewProps}
 
           onLayout={this.onLayout}
           contentContainerStyle={[contentContainerStyle, {
             minHeight: this.getContentMinHeight(),
             opacity: layout ? 1 : 0,
-          }]}
-          contentOffset={contentOffset}
-          contentInset={contentInset}
-          refreshControl={refreshControl}
+          }, scrollViewProps.contentContainerStyle]}
         />
       );
     }
@@ -144,7 +173,7 @@ class ScrollView extends PureComponent {
       headerHeight,
       contentHeight,
       onScroll: onScrollEvent,
-      bottomBarHeight,
+      tabBarHeight,
     } = this.context;
 
     const {
@@ -157,6 +186,7 @@ class ScrollView extends PureComponent {
       Animated.forkEvent(onScrollEvent, onScroll);
     }
 
+    const { top } = this.getContentInset();
     const topOffset = headerHeight && headerHeight - headerShrinkHeight;
 
     /**
@@ -167,7 +197,10 @@ class ScrollView extends PureComponent {
      */
     const scrollHeight = 1000000000;
     const stickyStyle = {
-      zIndex: 1,
+      ...StyleSheet.absoluteFillObject,
+      bottom: null,
+      top: Platform.select({ ios: 0, default: top }),
+
       transform: [
         {
           translateY: scrollAnimatedValue.interpolate({
@@ -184,17 +217,21 @@ class ScrollView extends PureComponent {
         ref={this.onRef}
 
         {...listProps}
+        {...scrollViewProps}
+
         onScroll={onScrollEvent}
         onScrollEnd={this.onScrollEnd}
         onScrollEndDrag={this.onScrollEnd}
         onMomentumScrollEnd={this.onScrollEnd}
-        refreshControl={refreshControl}
-
-        contentOffset={contentOffset}
-        contentInset={{ ...contentInset, bottom: bottomBarHeight }}
 
         scrollEventThrottle={1}
+        removeClippedSubviews={false}
       >
+        <ViewRN style={{ height: headerHeight + tabBarHeight }} />
+        <ViewRN style={[contentContainerStyle, { minHeight: contentHeight }]}>
+          {children}
+        </ViewRN>
+
         <Animated.View style={stickyStyle}>
           <View style={{ marginTop: -contentHeight, paddingTop: contentHeight }}>
             <BarBackgroundView style={StyleSheet.absoluteFill} />
@@ -202,11 +239,6 @@ class ScrollView extends PureComponent {
             <TabBar />
           </View>
         </Animated.View>
-
-        <ViewRN style={[contentContainerStyle, { minHeight: contentHeight }]}>
-          {children}
-        </ViewRN>
-
       </AnimatedScrollView>
     );
   }

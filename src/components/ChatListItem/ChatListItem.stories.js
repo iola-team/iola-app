@@ -256,7 +256,7 @@ stories.add('Default', () => {
     'READ': 'Chat:2',
   }, 'Chat:1');
 
-  const unreadCount = number('Unread count', 0);
+  const unreadCount = number('Unread count', 1);
 
   return (
     <Query query={chatQuery} variables={{ id: chatId }}>

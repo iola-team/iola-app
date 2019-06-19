@@ -78,7 +78,7 @@ const headerHeight = 350 + 10;
   navBarBg: {
     ...StyleSheet.absoluteFillObject,
     bottom: null,
-    top: getStatusBarHeight(),
+    top: getStatusBarHeight(true),
     height: ScreenHeader.HEIGHT,
     justifyContent: 'center',
     alignItems: 'center',

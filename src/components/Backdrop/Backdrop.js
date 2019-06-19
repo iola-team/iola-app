@@ -147,7 +147,7 @@ export default class Backdrop extends PureComponent {
 
   getScreenBounds() {
     const modalHeight = this.getHeight();
-    const statusBarHeight = getStatusBarHeight();
+    const statusBarHeight = getStatusBarHeight(true);
 
     return [
       modalHeight - windowHeight + statusBarHeight,
