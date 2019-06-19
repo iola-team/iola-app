@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+  <base-config cleartextTrafficPermitted="true">
+    <trust-anchors>
+        <certificates src="system" />
+        <certificates src="user" />
+
+        <!-- 
+          TODO: Remove custom CA when it will be possible
+          We should use this custom CA for `Beta 1` only
+          We need to figure out how to handle self-signed certificates
+         -->
+        <certificates src="@raw/iola_ca"/>
+    </trust-anchors>
+  </base-config>
+</network-security-config>
