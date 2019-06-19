@@ -6,11 +6,9 @@
         <certificates src="user" />
 
         <!-- 
-          TODO: Remove custom CA when it will be possible
-          We should use this custom CA for `Beta 1` only
-          We need to figure out how to handle self-signed certificates
+          https://letsencrypt.org Certificate Authority
          -->
-        <certificates src="@raw/iola_ca"/>
+        <certificates src="@raw/letsencrypt_ca"/>
     </trust-anchors>
   </base-config>
 </network-security-config>
