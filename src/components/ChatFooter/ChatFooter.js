@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Platform } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { View, Item, Input } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
@@ -80,7 +81,7 @@ export default class ChatFooter extends Component {
     const { text } = this.state;
 
     return (
-      <View style={[styles.root, style]}>
+      <SafeAreaView style={[styles.root, style]}>
         <Item rounded style={styles.inputWrap}>
           <Input
             multiline
@@ -95,7 +96,7 @@ export default class ChatFooter extends Component {
         <TouchableOpacity disabled={disabled} style={styles.sendButton} onPress={this.onSend}>
           <Icon style={styles.sendIcon} name="send-message" />
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 }

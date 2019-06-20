@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { noop } from 'lodash';
+import { getInset } from 'react-native-safe-area-view';
 import { Container, Text } from 'native-base';
 
 import { withStyleSheet } from '~theme';
@@ -114,7 +115,7 @@ export default class ProfileEditScreen extends Component {
           ListHeaderComponent={(
             <AvatarEdit style={styles.avatar} user={avatarData.me} loading={avatarData.loading} />
           )}
-          contentInset={{ ...screenProps.contentInset, bottom: 0 }}
+          contentInset={{ ...screenProps.contentInset, bottom: getInset('bottom') }}
         />
       </Container>
     );

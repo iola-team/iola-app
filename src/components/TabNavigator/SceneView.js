@@ -2,6 +2,7 @@ import React, { PureComponent, Component, createContext } from 'react';
 import { StyleSheet, View, Platform, Animated, Dimensions } from 'react-native';
 import PropTypes from 'prop-types';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { getInset } from 'react-native-safe-area-view';
 import { without } from 'lodash';
 
 import BaseNoContent from '../NoContent';
@@ -212,7 +213,7 @@ export default class SceneView extends PureComponent {
       headerShrinkHeight: shrinkHeight,
       shrinkAnimatedValue,
       shrinkAnimationHeight,
-      contentHeight: screenHeight - shrinkHeight - tabBarHeight,
+      contentHeight: screenHeight - shrinkHeight - tabBarHeight - getInset('bottom'),
       scrollAnimatedValue: this.scrollAnimatedValue,
 
       // Handlers

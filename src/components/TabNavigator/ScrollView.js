@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Animated, View as ViewRN, StyleSheet, Platform } from 'react-native';
 import { ScrollView as ScrollViewRN } from 'react-native-gesture-handler';
+import { getInset } from 'react-native-safe-area-view';
 import { View } from 'native-base';
 
 import RefreshControl from '../RefreshControl';
@@ -109,7 +110,7 @@ class ScrollView extends PureComponent {
     if (this.context) {
       const { bottomBarHeight } = this.context;
 
-      contentInset = { ...contentInset, bottom: bottomBarHeight };
+      contentInset = { ...contentInset, bottom: bottomBarHeight + getInset('bottom') };
     }
 
     const contentOffset = { y: -contentInset.top };
