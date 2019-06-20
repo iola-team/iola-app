@@ -7,6 +7,7 @@ import { Text } from 'native-base';
 import { AppState } from 'react-native';
 import NetInfo from "@react-native-community/netinfo";
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { getInset } from 'react-native-safe-area-view';
 
 import Navigator from '~screens';
 import { ROOT_QUERY } from '~graph';
@@ -46,7 +47,7 @@ export default class Application extends Component {
       applicationInitWasTriggeredManually: this.props.initWasTriggeredManually,
       contentInset: {
         top: ScreenHeader.HEIGHT + getStatusBarHeight(true),
-        bottom: BottomTabBar.HEIGHT,
+        bottom: BottomTabBar.HEIGHT + getInset('bottom'),
       },
     },
   };
