@@ -119,7 +119,6 @@ class SignInForm extends Component {
                 ref={ref => this.passwordInput = ref}
                 name="password"
                 placeholder="Password"
-                infoText="At least 4 characters"
                 customStyle={styles.password}
                 error={error}
                 secureTextEntry
@@ -150,8 +149,8 @@ class SignInForm extends Component {
 }
 
 const validationSchema = yup.object().shape({
-  login: yup.string().required('Email or login is required').min(3, 'Email or login is too short'),
-  password: yup.string().required('Password is required').min(4, 'Password is too short'),
+  login: yup.string().required('Email or login is required'),
+  password: yup.string().required('Password is required'),
 });
 
 export default withFormik({
