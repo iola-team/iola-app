@@ -127,7 +127,7 @@ class WebsiteURLForm extends Component {
           <FormTextInput
             disabled={!!lockedUrl}
             name="url"
-            placeholder="Enter Website URL address"
+            placeholder="Enter website URL address"
             textContentType="URL"
             autoCapitalize="none"
             keyboardType="url"
