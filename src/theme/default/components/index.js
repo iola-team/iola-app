@@ -1,4 +1,5 @@
 import { merge } from 'lodash';
+import { StyleSheet } from 'react-native';
 import getTheme from 'native-base/src/theme/components';
 
 export default (variables => ({
@@ -99,6 +100,8 @@ export default (variables => ({
       width: 40,
       height: 40,
       borderRadius: variables.borderRadiusBase,
+      borderColor: '#E8EAF0',
+      borderWidth: StyleSheet.hairlineWidth,
 
       '.small': {
         width: 32,
@@ -107,9 +110,14 @@ export default (variables => ({
       },
 
       '.large': {
+        borderWidth: 0,
         borderRadius: variables.borderRadiusBase,
         height: 168,
         width: 168,
+
+        '.default': {
+          borderWidth: 1,
+        },
       },
     },
 
@@ -518,6 +526,11 @@ export default (variables => ({
 
       'NativeBase.ViewNB': {
         'Sparkle.UserAvatar': {
+          'Sparkle.Thumbnail': {
+            'Sparkle.Image': {
+              backgroundColor: variables.highlightColor,
+            },
+          },
           'Sparkle.Placeholder': {
             backgroundColor: variables.highlightColor,
           },
@@ -651,6 +664,10 @@ export default (variables => ({
           color: variables.brandPrimary,
         },
       },
+    },
+
+    'Sparkle.Image': {
+      backgroundColor: variables.placeholderColor,
     },
   }),
 }));

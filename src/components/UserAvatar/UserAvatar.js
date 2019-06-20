@@ -31,33 +31,25 @@ const userFragment = gql`
 
 const thumbnailStyle = {
   'NativeBase.ViewNB': {
-    'NativeBase.ViewNB': {
-      position: 'absolute',
-      right: -5,
-      bottom: -5,
-      padding: 2,
-      borderRadius: 5,
-    },
+    position: 'absolute',
+    right: -5,
+    bottom: -5,
+    padding: 2,
+    borderRadius: 5,
 
     '.large': {
-      borderWidth: 1,
-      borderColor: '#E8EAF0',
-      borderRadius: 8,
+      right: -10,
+      bottom: -10,
+      padding: 3,
+      borderRadius: 10,
 
-      'NativeBase.ViewNB': {
-        right: -10,
-        bottom: -10,
-        padding: 3,
-        borderRadius: 10,
-
-        'Sparkle.UserOnlineStatus': {
-          'NativeBase.ViewNB': {
-            'Sparkle.OnlineStatus': {
-              'NativeBase.ViewNB': {
-                width: 14,
-                height: 14,
-                borderRadius: 7,
-              },
+      'Sparkle.UserOnlineStatus': {
+        'NativeBase.ViewNB': {
+          'Sparkle.OnlineStatus': {
+            'NativeBase.ViewNB': {
+              width: 14,
+              height: 14,
+              borderRadius: 7,
             },
           },
         },
@@ -120,19 +112,14 @@ export default class UserAvatar extends Component {
       );
     }
 
-    const borderSizeProps = {
-      small: size === 'small',
-      medium: size === 'medium',
-      large: size === 'large',
-    };
-    const source = has(user, ['avatar', size]) ? { uri: user.avatar[size] } : defaultAvatar;
+    const isDefault = !has(user, ['avatar', size]);
+    const source = isDefault ? defaultAvatar : { uri: user.avatar[size] };
+
     const thumbnail = (
       <ViewRN style={style}>
-        <View {...borderSizeProps}>
-          <Thumbnail {...thumbnailProps} source={source} />
-          <View foreground={foreground} highlight={!foreground}>
-            <UserOnlineStatus user={user} />
-          </View>
+        <Thumbnail {...thumbnailProps} source={source} default={isDefault} />
+        <View {...sizeProps} foreground={foreground} highlight={!foreground}>
+          <UserOnlineStatus user={user} />
         </View>
       </ViewRN>
     );
