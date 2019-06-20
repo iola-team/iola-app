@@ -85,6 +85,10 @@ class ApplicationRoot extends Component {
     }
   };
 
+  onError = () => {
+    this.apiClient.clearStore();
+  };
+
   render() {
     const { isReady, initWasLaunched, initWasTriggeredManually } = this.state;
     const LoadingScreenComponent = initWasTriggeredManually ? <LoadingBackground /> : <SplashBackground />;
@@ -100,6 +104,7 @@ class ApplicationRoot extends Component {
         {isReady ? (
           <ApolloProvider client={this.apiClient}>
             <ErrorBoundary
+              onError={this.onError}
               onRequestRelaunch={this.onRequestRelaunch}
               onReportPress={this.onReportPress}
             >

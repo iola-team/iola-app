@@ -10,6 +10,11 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { FormTextInput, Spinner } from '~components';
 import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
 
+/**
+ * TODO: Remove after `Beta 1`
+ */
+const lockedUrl = 'demo.iola.app/oxwall';
+
 @styleSheet('Sparkle.WebsiteURLForm', {
   row: {
     flexDirection: 'row',
@@ -61,6 +66,7 @@ import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
     fontSize: 14,
     lineHeight: 17,
     color: '#FFFFFF',
+    textAlign: 'center',
   },
 })
 class WebsiteURLForm extends Component {
@@ -119,6 +125,7 @@ class WebsiteURLForm extends Component {
             </Text>
           </View>
           <FormTextInput
+            disabled={!!lockedUrl}
             name="url"
             placeholder="Enter Website URL address"
             textContentType="URL"
@@ -141,11 +148,19 @@ class WebsiteURLForm extends Component {
           {isSubmitting && <Spinner />}
         </Button>
 
+        {lockedUrl && (
+          <Text style={[styles.error, { marginHorizontal: 10 }]}>
+            Changing the website URl is disabled for
+            <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#FFFFFF' }}> Beta 1 </Text>
+            testing period.
+          </Text>
+        )}
+
         {!isValidURL && (
           <Text style={styles.error}>
-            Please make sure the Website URL address you have entered supports the iola messenger.
+            Please make sure the website URL address you have entered supports iola.
             {'\n\n'}
-            For more info please contact your Website Administrator.
+            For more info please contact the website administrator.
           </Text>
         )}
       </Form>
@@ -158,7 +173,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: () => ({ url: __DEV__ ? 'DEV_PLATFORM_URL will be used' : '' }),
+  mapPropsToValues: () => ({ url: __DEV__ ? 'DEV_PLATFORM_URL will be used' : lockedUrl }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(WebsiteURLForm);

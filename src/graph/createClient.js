@@ -111,11 +111,12 @@ export async function createClient({
 
   const writeDefaults = () => cache.writeData({ data: clientState.defaults });
 
+  client.onClearStore(() => cachePersistor.purge());
   client.onResetStore(() => {
     cachePersistor.purge();
     writeDefaults();
   });
-
+  
   writeDefaults();
 
   if (restoreCache) {
