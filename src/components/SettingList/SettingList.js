@@ -1,25 +1,26 @@
 import React, { Component } from 'react';
 import { Linking } from 'react-native';
 import { Text, List, ListItem, Right, Body, Icon } from 'native-base';
+import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from 'react-native-dotenv';
 
 import { ScrollView } from '../TabNavigator';
 
 export default class SettingList extends Component {
-  openUrl = url => () => Linking.openURL(url);
+  openUrl = async (url) => {
+    const canOpen = await Linking.canOpenURL(url);
+
+    if (canOpen) {
+      Linking.openURL(url);
+    }
+  };
 
   render() {
     const { ...props } = this.props;
 
-    /**
-     * TODO: retreave this urls from website configs
-     */
-    const termsUrl = 'http://demo.oxpro.org/oxwall/terms-of-use';
-    const policyUrl = 'http://demo.oxpro.org/oxwall/privacy-policy';
-
     return (
       <ScrollView {...props}>
         <List>
-          <ListItem onPress={this.openUrl(policyUrl)} icon button first>
+          <ListItem onPress={() => this.openUrl(PRIVACY_POLICY_URL)} icon button first>
             <Body>
               <Text>Privacy Policy</Text>
             </Body>
@@ -28,9 +29,9 @@ export default class SettingList extends Component {
             </Right>
           </ListItem>
 
-          <ListItem onPress={this.openUrl(termsUrl)} icon button last>
+          <ListItem onPress={() =>this.openUrl(TERMS_AND_CONDITIONS_URL)} icon button last>
             <Body>
-              <Text>Terms of Use</Text>
+              <Text>Terms and Conditions</Text>
             </Body>
             <Right>
               <Icon name="ios-arrow-forward" />

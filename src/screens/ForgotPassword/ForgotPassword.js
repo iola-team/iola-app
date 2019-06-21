@@ -175,6 +175,7 @@ export default class ForgotPasswordScreen extends Component {
   }
 
   render() {
+    const { styleSheet: styles } = this.props;
     const { email, emailWasSent } = this.state;
     const defaultLogin = get(this.props, 'navigation.state.params.defaultLogin');
     const defaultEmail = /^.+@.+\..+$/.test(defaultLogin) ? defaultLogin : '';
