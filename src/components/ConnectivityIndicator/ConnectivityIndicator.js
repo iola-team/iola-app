@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { View, Text } from 'native-base';
-import { StyleSheet, StatusBar, SafeAreaView, Platform } from 'react-native';
+import { getStatusBarHeight, getInset } from 'react-native-safe-area-view';
+import { StyleSheet, StatusBar, Platform } from 'react-native';
 
 import { withStyleSheet } from '~theme';
 
@@ -12,11 +12,12 @@ import { withStyleSheet } from '~theme';
   },
 
   offlineIndicator: {
+    ...StyleSheet.absoluteFillObject,
+    bottom: null,
+
     backgroundColor: '#F95356',
     alignItems: 'center',
     padding: 5,
-    marginTop: -50,
-    paddingTop: 50,
   },
 
   offlineIndicatorText: {
@@ -29,6 +30,10 @@ import { withStyleSheet } from '~theme';
 
   content: {
     flex: 1,
+  },
+
+  offlineContent: {
+    marginTop: 25,
   },
 
   /**
@@ -53,31 +58,28 @@ export default class ConnectivityIndicator extends Component {
     const { isOnline, children, styleSheet: styles, style, ...props } = this.props;
     const { backgroundColor } = StyleSheet.flatten(styles.offlineStatusBar);
 
-    const statusBarHeight = getStatusBarHeight(true);
-    const platformStyles = Platform.select({
-      ios: {
-        marginTop: -statusBarHeight,
-        paddingTop: statusBarHeight,
-      },
-      default: {},
-    });
+    const platformStyles = !isOnline && {
+      paddingTop: getStatusBarHeight(),
+    };
 
     return (
       <View style={[styles.root, style]} {...props}>
-        {!isOnline && (
-          <>
-            <StatusBar backgroundColor={backgroundColor} barStyle="light-content" />
-            <View style={[styles.offlineIndicator, platformStyles]}>
-              <Text style={styles.offlineIndicatorText}>You are offline</Text>
-            </View>
-          </>
-        )}
+        <StatusBar
+          backgroundColor={isOnline ? null : backgroundColor}
+          barStyle={isOnline ? 'default' : 'light-content'}
+        />
 
-        <View style={styles.content}>
+        <View style={[styles.content, !isOnline && styles.offlineContent]}>
           {children}
 
           {!isOnline && <View style={styles.overlay} />}
         </View>
+
+        {!isOnline && (
+          <View style={[styles.offlineIndicator, platformStyles]}>
+            <Text style={styles.offlineIndicatorText}>You are offline</Text>
+          </View>
+        )}
       </View>
     );
   }
