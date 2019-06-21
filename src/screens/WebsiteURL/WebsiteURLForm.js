@@ -160,7 +160,7 @@ class WebsiteURLForm extends Component {
           <Text style={styles.error}>
             Please make sure the website URL address you have entered supports iola.
             {'\n\n'}
-            For more info please contact the website administrator.
+            Please contact the website administrator.
           </Text>
         )}
       </Form>
