@@ -150,7 +150,7 @@ class WebsiteURLForm extends Component {
 
         {lockedUrl && (
           <Text style={[styles.error, { marginHorizontal: 10 }]}>
-            Changing the website URL is disabled for
+            Changing website URL is disabled for
             <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#FFFFFF' }}> Beta 1 </Text>
             testing period.
           </Text>
@@ -173,7 +173,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: () => ({ url: __DEV__ ? 'DEV_PLATFORM_URL will be used' : lockedUrl }),
+  mapPropsToValues: () => ({ url: __DEV__ ? 'DEV_PLATFORM_URL' : lockedUrl }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(WebsiteURLForm);

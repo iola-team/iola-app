@@ -205,6 +205,7 @@ export default (variables => ({
 
     'NativeBase.H2': {
       fontWeight: '600',
+      fontSize: 24,
 
       '.inverse': {
         color: variables.inverseTextColor,

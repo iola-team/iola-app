@@ -53,13 +53,14 @@ const messageFragment = gql`
     marginBottom: 15,
 
     'NativeBase.ViewNB': {
-      borderRadius: 8,
+      borderRadius: 16,
 
       '.avatar': {
         height: 40,
         width: 40,
 
         marginRight: 8,
+        borderRadius: 8,
       },
 
       '.content': {
