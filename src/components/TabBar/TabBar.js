@@ -12,7 +12,7 @@ import TouchableOpacity from '../TouchableOpacity';
   alignItems: 'flex-end',
   justifyContent: 'center',
   paddingHorizontal: 50,
-  
+
   'Sparkle.TouchableOpacity': {
     flex: 1,
     alignItems: 'center',
@@ -37,6 +37,7 @@ import TouchableOpacity from '../TouchableOpacity';
         },
 
         'NativeBase.Text': {
+          fontWeight: '600',
           color: '#5259FF',
         },
 
@@ -73,7 +74,7 @@ export default class TabBar extends Component {
         <View indicator />
       </TouchableOpacity>
     );
-  }
+  };
 
   render() {
     const { style, navigation: { state } } = this.props;
