@@ -26,13 +26,9 @@ const userQuery = gql`
 
   button: {
     height: 50,
-    width: '30%',
+    width: '33%',
     alignSelf: 'center',
     marginHorizontal: 5,
-  },
-
-  buttonText: {
-    textAlign: 'center',
   },
 })
 @graphql(userQuery)
@@ -59,7 +55,7 @@ export default class ProfileHeading extends PureComponent {
             style={styles.button}
             onPress={() => navigate(routes.PROFILE_EDIT)}
           >
-            <Text style={styles.buttonText}>Edit Profile</Text>
+            <Text>Edit Profile</Text>
           </Button>
 
           <Button
