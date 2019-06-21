@@ -26,10 +26,10 @@ const userQuery = gql`
 
   button: {
     height: 50,
-    width: '30%',
+    width: '33%',
     alignSelf: 'center',
     marginHorizontal: 5,
-  }
+  },
 })
 @graphql(userQuery)
 export default class ProfileHeading extends PureComponent {

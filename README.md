@@ -31,11 +31,13 @@ Investigate this: https://reactnativetesting.io/
 TODO: Fill this section
 
 ### Troubleshooting
-1. How to debug the subscriptions
+1. How to debug the subscriptions:
    - Start the subscription in the app
    - Run in the Postman (via GET): `*DEV_PLATFORM_URL*/*INTEGRATION_PATH*/subscriptions/*streamId value from the subscriptions table (ow_esapi_subscription)*` (for example: http://192.168.0.100/oxwall/everywhere/api/subscriptions/5f1e34db2cf318ae)
    - Run mutation that triggers the subscription (for example from GraphiQL interface)
-2. "Metro Bundler can't listen on port 8081" error (or "Error: listen EADDRINUSE :::7007")
+2. How to debug Java errors:
+  - `adb logcat *:E`
+3. "Metro Bundler can't listen on port 8081" error (or "Error: listen EADDRINUSE :::7007")
    - `sudo lsof -i :8081`
    - `kill -9 *PID from the previous command results*`
 

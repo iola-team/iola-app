@@ -567,7 +567,7 @@ export default (variables => ({
                   backgroundColor: variables.highlightColor,
                 },
               },
-    
+
               'NativeBase.Body': {
                 'NativeBase.ViewNB': {
                   backgroundColor: variables.highlightColor,

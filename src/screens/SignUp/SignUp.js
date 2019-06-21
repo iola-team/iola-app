@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native';
+import { ImageBackground, Linking, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native';
 import { Container, Content, Text, View } from 'native-base';
+import { TERMS_AND_CONDITIONS_URL } from 'react-native-dotenv';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import SignUpForm from './SignUpForm';
@@ -8,7 +9,9 @@ import { LAUNCH } from '../routeNames';
 import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
 
 const Title = connectToStyleSheet('title', Text);
-const Background = connectToStyleSheet('background', ImageBackground).withProps({ source: imageBackground });
+const Background = connectToStyleSheet('background', ImageBackground).withProps({
+  source: imageBackground,
+});
 const TermsContainer = connectToStyleSheet('termsContainer', View);
 const TermsText = connectToStyleSheet('termsText', Text);
 const TermsSubcontainer = connectToStyleSheet('termsSubcontainer', View);
@@ -94,6 +97,14 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
   },
 })
 export default class SignUpScreen extends Component {
+  openTermsAndConditions = async () => {
+    const canOpen = await Linking.canOpenURL(TERMS_AND_CONDITIONS_URL);
+
+    if (canOpen) {
+      Linking.openURL(TERMS_AND_CONDITIONS_URL);
+    }
+  };
+
   render() {
     const {
       navigation: { goBack, navigate },
@@ -114,7 +125,7 @@ export default class SignUpScreen extends Component {
                 <TermsText>By signing up, you agree</TermsText>
                 <TermsSubcontainer>
                   <TermsText>to the</TermsText>
-                  <TermsButton onPress={() => alert('Terms and Conditions')}>
+                  <TermsButton onPress={this.openTermsAndConditions}>
                     <TermsButtonText>Terms and Conditions</TermsButtonText>
                   </TermsButton>
                 </TermsSubcontainer>
