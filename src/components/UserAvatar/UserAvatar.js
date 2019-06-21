@@ -117,10 +117,12 @@ export default class UserAvatar extends Component {
 
     const thumbnail = (
       <ViewRN style={style}>
-        <Thumbnail {...thumbnailProps} source={source} default={isDefault} />
-        <View {...sizeProps} foreground={foreground} highlight={!foreground}>
-          <UserOnlineStatus user={user} />
-        </View>
+        <ViewRN>
+          <Thumbnail {...thumbnailProps} source={source} default={isDefault} />
+          <View {...sizeProps} foreground={foreground} highlight={!foreground}>
+            <UserOnlineStatus user={user} />
+          </View>
+        </ViewRN>
       </ViewRN>
     );
 
