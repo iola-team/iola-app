@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Linking } from 'react-native';
 import { Text, List, ListItem, Right, Body, Icon } from 'native-base';
-import { TERMS_AND_CONDITIONS_URL, PRIVACY_POLICY_URL } from 'react-native-dotenv';
+import { LICENSE_AGREEMENT_URL, PRIVACY_POLICY_URL } from 'react-native-dotenv';
 
 import { ScrollView } from '../TabNavigator';
 
@@ -29,9 +29,9 @@ export default class SettingList extends Component {
             </Right>
           </ListItem>
 
-          <ListItem onPress={() =>this.openUrl(TERMS_AND_CONDITIONS_URL)} icon button last>
+          <ListItem onPress={() => this.openUrl(LICENSE_AGREEMENT_URL)} icon button last>
             <Body>
-              <Text>Terms and Conditions</Text>
+              <Text>License Agreement</Text>
             </Body>
             <Right>
               <Icon name="ios-arrow-forward" />

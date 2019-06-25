@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ImageBackground, Linking, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native';
 import { Container, Content, Text, View } from 'native-base';
-import { TERMS_AND_CONDITIONS_URL } from 'react-native-dotenv';
+import { LICENSE_AGREEMENT_URL } from 'react-native-dotenv';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import SignUpForm from './SignUpForm';
@@ -97,11 +97,11 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
   },
 })
 export default class SignUpScreen extends Component {
-  openTermsAndConditions = async () => {
-    const canOpen = await Linking.canOpenURL(TERMS_AND_CONDITIONS_URL);
+  openUrl = async (url) => {
+    const canOpen = await Linking.canOpenURL(url);
 
     if (canOpen) {
-      Linking.openURL(TERMS_AND_CONDITIONS_URL);
+      Linking.openURL(url);
     }
   };
 
@@ -125,8 +125,8 @@ export default class SignUpScreen extends Component {
                 <TermsText>By signing up, you agree</TermsText>
                 <TermsSubcontainer>
                   <TermsText>to the</TermsText>
-                  <TermsButton onPress={this.openTermsAndConditions}>
-                    <TermsButtonText>Terms and Conditions</TermsButtonText>
+                  <TermsButton onPress={() => this.openUrl(LICENSE_AGREEMENT_URL)}>
+                    <TermsButtonText>License Agreement</TermsButtonText>
                   </TermsButton>
                 </TermsSubcontainer>
               </TermsContainer>
