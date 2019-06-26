@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ScreenHeader, createHeadingTabsNavigator } from '~components';
+import { ScreenHeader, createHeadingTabsNavigator, UserActions } from '~components';
 import UserScreenHead from './UserScreenHead';
 
 export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
@@ -9,8 +9,10 @@ export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
   headerShrinkHeight: ScreenHeader.HEIGHT,
   headerHeight: UserScreenHead.HEIGHT,
 
-  navigationOptions: {
+  navigationOptions: ({ navigation }) => ({
     headerTransparent: true,
     headerBackground: null,
-  },
+
+    headerRight: <UserActions userId={navigation.getParam('id')} />,
+  }),
 });

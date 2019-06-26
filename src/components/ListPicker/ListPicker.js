@@ -58,7 +58,10 @@ export default class ListPicker extends PureComponent {
 
     isVisible: PropTypes.bool,
     label: PropTypes.string.isRequired,
+    doneLabel: PropTypes.string,
     children: childrenShape,
+    renderHeaderRight: PropTypes.func,
+    renderHeaderLeft: PropTypes.func,
 
     onChange: PropTypes.func,
     onDismiss: PropTypes.func,
@@ -74,6 +77,10 @@ export default class ListPicker extends PureComponent {
     isVisible: undefined,
     value: [],
     multiple: false,
+    doneLabel: 'Done',
+    children: null,
+    renderHeaderRight: null,
+    renderHeaderLeft: null,
 
     onChange: noop,
     onItemPress: noop,
@@ -144,13 +151,33 @@ export default class ListPicker extends PureComponent {
     );
   };
 
+  renderHeaderRight() {
+    const { renderHeaderRight } = this.props;
+    const { value } = this.state;
+    const onPress = this.action('onDone', this.hide);
+
+    return renderHeaderRight ? renderHeaderRight({ onPress, value }) : (
+      <TouchableOpacity onPress={onPress}>
+        <Text>Done</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  renderHeaderLeft() {
+    const { renderHeaderLeft } = this.props;
+    const { value } = this.state;
+    const onPress = this.action('onCancel', this.hide);
+
+    return renderHeaderLeft ? renderHeaderLeft({ onPress, value }) : (
+      <TouchableOpacity cancel onPress={onPress}>
+        <Text>Cancel</Text>
+      </TouchableOpacity>
+    );
+  }
+
   renderModal() {
     const { isVisible, value } = this.state;
-    const {
-      styleSheet: styles,
-      label,
-      options,
-    } = this.props;
+    const { styleSheet: styles, label, options, ...props } = this.props;
 
     const items = options.map((option, index) => ({
       ...option,
@@ -163,6 +190,8 @@ export default class ListPicker extends PureComponent {
 
     return (
       <Backdrop
+        {...props}
+
         height={listHeight}
         isVisible={isVisible}
         title={label}
@@ -172,17 +201,8 @@ export default class ListPicker extends PureComponent {
         onSwipe={this.action('onSwipe', this.hide)}
         onRequestClose={this.action('onRequestClose', this.hide)}
 
-        headerLeft={(
-          <TouchableOpacity cancel onPress={this.action('onCancel', this.hide)}>
-            <Text>Cancel</Text>
-          </TouchableOpacity>
-        )}
-
-        headerRight={(
-          <TouchableOpacity onPress={this.action('onDone', this.hide)}>
-            <Text>Done</Text>
-          </TouchableOpacity>
-        )}
+        headerLeft={this.renderHeaderLeft()}
+        headerRight={this.renderHeaderRight()}
       >
         <List dataArray={items} renderRow={this.renderRow} />
       </Backdrop>
