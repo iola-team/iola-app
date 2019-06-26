@@ -51,6 +51,7 @@ import UsersRow from './UsersRow';
 import UsersRowItem from './UsersRowItem';
 import UserUpdateSubscription from './UserUpdateSubscription';
 import UserActions from './UserActions';
+import PhotoActions from './PhotoActions';
 
 export {
   AvatarEdit,
@@ -78,6 +79,7 @@ export {
   NoContent,
   PhotoEdit,
   PhotoList,
+  PhotoActions,
   ProfileFieldsEdit,
   ProfileFieldsView,
   Root,
