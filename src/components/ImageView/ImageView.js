@@ -17,6 +17,7 @@ import ImageComments from '../ImageComments';
 import Icon from '../Icon';
 import Spinner from '../Spinner';
 import ActionSheet from '../ActionSheet';
+import PhotoActions from '../PhotoActions';
 
 const meQuery = gql`
   query meQuery {
@@ -274,7 +275,8 @@ export default class ImageView extends Component {
             </Text>
           )}
 
-          {me.id === firstPhotoData.user.id && (
+          {me.id === firstPhotoData.user.id ? (
+            // TODO: Move this action to PhotoActions component
             <ActionSheet
               options={['Cancel', 'Delete']}
               cancelButtonIndex={0}
@@ -290,6 +292,8 @@ export default class ImageView extends Component {
                 </TouchableOpacity>
               )}
             </ActionSheet>
+          ) : (
+            <PhotoActions photoId={id} />
           )}
         </View>
 
