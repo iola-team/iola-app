@@ -76,21 +76,23 @@ export default class ChannelHeader extends Component {
       return userData.user;
     }
 
-    const [ user ] = chat?.participants.filter(({ id }) => id !== me.id) || [];
+    const [ user ] = chat?.participants.filter((participant) => participant?.id !== me.id) || [];
 
-    return user || chat?.participants[0];
+    return user === undefined ? chat?.participants[0] : user;
   }
 
   renderRight = () => {
     const { styleSheet, navigation } = this.props;
     const user = this.getUser();
 
-    return user && (
+    return (
       <View style={styleSheet.avatar}>
         <UserAvatar
-          user={user}
-          onPress={() => navigation.navigate(USER, { id: user.id })}
           foreground
+          user={user}
+          onPress={user && (
+            () => navigation.navigate(USER, { id: user.id })
+          )}
         />
       </View>
     );
@@ -98,7 +100,7 @@ export default class ChannelHeader extends Component {
 
   render() {
     const user = this.getUser();
-    const title = user && user.name || '';
+    const title = user?.name || 'Deleted User';
 
     return (
       <ScreenHeader {...this.props} title={title} renderRight={this.renderRight} />

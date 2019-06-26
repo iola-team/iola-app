@@ -423,7 +423,7 @@ export default class Chat extends Component {
     return ids.length ? ids : [ me.id ];
   }
 
-  getItemSide = ({ user }) => this.props.data.me.id === user.id ? 'right' : 'left';
+  getItemSide = ({ user }) => this.props.data.me.id === user?.id ? 'right' : 'left';
 
   onMessagesRead = (nodes) => {
     const { markMessagesAsRead, data: { me } } = this.props;

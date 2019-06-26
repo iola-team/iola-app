@@ -150,8 +150,10 @@ export default class ChatListItem extends Component {
     }
 
     const { messages, participants } = chat;
-    const [ recipient = participants[0] ] = filter(participants, ({ id }) => id !== currentUserId);
     const lastMessage = messages.edges[0].node;
+    const [ recipient = participants[0] ] = filter(participants, participant => (
+      participant?.id !== currentUserId)
+    );
 
     return (
       <ListItem {...props} style={style} onPress={onPress} button avatar chatItem>
@@ -159,7 +161,7 @@ export default class ChatListItem extends Component {
           <UserAvatar user={recipient} />
         </Left>
         <Body>
-          <Text name headline>{recipient.name}</Text>
+          <Text name headline>{recipient?.name || 'Deleted User'}</Text>
           <Text content secondary numberOfLines={1}>{lastMessage.content.text}</Text>
         </Body>
         <Right>
