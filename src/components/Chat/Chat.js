@@ -414,8 +414,8 @@ export default class Chat extends Component {
   getInterlocutorIds = () => {
     const { data: { me } } = this.props;
     const ids = me?.chat.participants
-      .filter(({ id }) => id !== me.id)
-      .map(user => user.id);
+      .filter(participant => participant?.id !== me.id)
+      .map(user => user?.id || null);
 
     /**
      * No interlocutors means user is chatting with himself.
@@ -432,7 +432,7 @@ export default class Chat extends Component {
     /**
      * Filter user own messages
      */
-    const nodesToUpdate = nodes.filter(({ user }) => interlocutors.includes(user.id));
+    const nodesToUpdate = nodes.filter(({ user }) => interlocutors.includes(user?.id));
     const messageIds = nodesToUpdate.map(node => node.id);
     if (!messageIds.length) {
       return;
