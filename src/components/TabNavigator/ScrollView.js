@@ -74,6 +74,7 @@ class ScrollView extends PureComponent {
       const { scrollAnimatedValue } = this.context;
 
       scrollAnimatedValue.setOffset(Platform.select({ ios: 0, default: -top }));
+      scrollAnimatedValue.setValue(Platform.select({ ios: -top, default: 0 }));
     }
 
     this.unsubscribe = !this.context ? [] : [
