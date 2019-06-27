@@ -24,7 +24,7 @@ export default class DashboardAll extends PureComponent {
   static navigationOptions = {
     title: 'Users',
     tabBarIcon: ({ tintColor: color }) => (
-      <TabBarIcon name="dashboard-bar" style={{ color, fontSize: 25 }} />
+      <TabBarIcon name="friends-bar" style={{ color, fontSize: 35 }} />
     ),
   };
 

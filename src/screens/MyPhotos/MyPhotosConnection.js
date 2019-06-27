@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon } from 'native-base';
+import { Button } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { uniqueId, remove } from 'lodash';
 import update from 'immutability-helper';
 
-import { PhotoList, ImagePicker, ImageView } from '~components';
+import { PhotoList, ImagePicker, ImageView, Icon } from '~components';
+import { withStyleSheet as styleSheet } from '~theme';
 
 const myPhotosQuery = gql`
   query MyPhotosQuery {
@@ -47,6 +48,12 @@ const deletePhotoMutation = gql`
   }
 `;
 
+@styleSheet('Sparkle.MyFriendsConnection', {
+  addButtonIcon: {
+    fontSize: 16,
+    color: '#FFFFFF',
+  },
+})
 @graphql(myPhotosQuery, {
   skip: props => !!props.skip,
 })
@@ -78,7 +85,7 @@ export default class MyFriendsConnection extends PureComponent {
    */
   refresh = async () => {
     const { data: { refetch } } = this.props;
-    
+
     this.setState({ isRefreshing: true });
     try {
       await refetch({ cursor: null });
@@ -177,7 +184,7 @@ export default class MyFriendsConnection extends PureComponent {
   onChange = images => images.map(this.addPhoto);
 
   render() {
-    const { data: { loading, me }, skip, addButtonStyle, ...props } = this.props;
+    const { data: { loading, me }, skip, addButtonStyle, styleSheet: styles, ...props } = this.props;
     const { photoProgress, isRefreshing } = this.state;
     const edges = me?.photos.edges;
 
@@ -201,7 +208,7 @@ export default class MyFriendsConnection extends PureComponent {
         <ImagePicker multiple onChange={this.onChange}>
           {({ pick }) => (
             <Button block rounded style={addButtonStyle} onPress={pick}>
-              <Icon name="add" />
+              <Icon name="plus" style={styles.addButtonIcon} />
             </Button>
           )}
         </ImagePicker>

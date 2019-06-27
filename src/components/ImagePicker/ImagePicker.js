@@ -94,7 +94,7 @@ export default class ImagePicker extends Component {
             fromGallery: this.showPicker('gallery'),
           },
           this.state.images,
-          this.reset
+          this.reset,
         )}
       </ActionSheet>
     );

@@ -19,7 +19,7 @@ export default class ImagePickerActionSheet extends Component {
   static defaultProps = {
     onCancel: noop,
     onSourceSelect: noop,
-  }
+  };
 
   getProps() {
     const {

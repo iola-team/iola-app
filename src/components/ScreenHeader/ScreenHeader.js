@@ -21,7 +21,8 @@ import Icon from '../Icon';
     paddingLeft: Platform.select({ ios: 10, default: 0 }),
     paddingRight: 5,
     paddingVertical: 5,
-    fontSize: 16,
+    fontSize: 20,
+    marginLeft: -2,
   },
 
   title: {

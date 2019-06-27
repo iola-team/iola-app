@@ -24,7 +24,7 @@ export default (routes, config = {}) => createMaterialTopTabNavigator(routes, {
       </TouchableOpacity>
     ),
     tabBarIcon: ({ tintColor: color }) => (
-      <Icon name="dashboard-bar" style={{ color, fontSize: 25 }} />
+      <Icon name="friends-bar" style={{ color, fontSize: 25 }} />
     ),
   }),
 });

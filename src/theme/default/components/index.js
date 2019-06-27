@@ -654,7 +654,11 @@ export default (variables => ({
         color: variables.toolbarBtnTextColor,
       },
 
-      headerIcon: {
+      backIcon: {
+        color: variables.toolbarBtnTextColor,
+      },
+
+      meatballIcon: {
         color: variables.toolbarBtnTextColor,
       },
     },

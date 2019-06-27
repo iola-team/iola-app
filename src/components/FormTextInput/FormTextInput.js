@@ -36,7 +36,9 @@ import Icon from '../Icon';
   },
 
   showPasswordIcon: {
-    fontSize: 18,
+    marginTop: -2,
+    marginRight: 5,
+    fontSize: 24,
     color: '#FFFFFF',
   },
 
@@ -174,7 +176,7 @@ export default class FormTextInput extends Component {
 
           style={[
             styles.formInput,
-            secureTextEntry && !isPasswordIsShown && { paddingRight: isTouched ? 80 : 50 },
+            secureTextEntry && { paddingRight: 30 },
             isFocused && { color: '#BCBFCA' }, // TODO: TextInput dynamic color issue: https://github.com/facebook/react-native/issues/20131
             !isValid && { color: '#FF8787' }, // TODO: TextInput dynamic color issue: https://github.com/facebook/react-native/issues/20131
           ]}

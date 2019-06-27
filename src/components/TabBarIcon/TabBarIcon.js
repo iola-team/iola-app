@@ -7,7 +7,7 @@ import { withStyle } from '~theme';
 import Icon from '../Icon';
 
 @withStyle('Sparkle.TabBarIcon', {
-  fontSize: 20,
+  fontSize: 25,
   alignItems: 'center',
   justifyContent: 'center',
 

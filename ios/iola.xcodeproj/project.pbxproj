@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302C01ABCB91800DB3ED1 /* libRCTImage.a */; };
@@ -29,7 +28,6 @@
 		22FF50F067A5496CB50A4196 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C33AF7AD94094A1A807C7C19 /* libFastImage.a */; };
 		247F828C667042A782771314 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0F17FC3503E746A28467C3C5 /* libRNGestureHandler.a */; };
 		252F535550444260BEED2DBA /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2DAD9443F3F141AE8BD1543E /* MaterialCommunityIcons.ttf */; };
-		2DC9366B89734D2994B75876 /* iola-icons-2.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 005C749E881949BD8DFEAD90 /* iola-icons-2.ttf */; };
 		318314F1A37B4899A36E0A9E /* libRNReanimated.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE15D54FE31843E88F4B5489 /* libRNReanimated.a */; };
 		347F14F66DB5440F9178E660 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B5803346B094F21B4EE0488 /* SimpleLineIcons.ttf */; };
 		384598BB2243A51A00E0E0B7 /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384598BA2243A51A00E0E0B7 /* QBImagePicker.framework */; };
@@ -68,6 +66,7 @@
 		FAA7180058A94512B8F95A8D /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9FC2BD0F4E774BCAAEEDF917 /* FontAwesome5_Brands.ttf */; };
 		FD3A298476184E929F669C45 /* libRNCNetInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 785CC30C9DE241B1BB1B1796 /* libRNCNetInfo.a */; };
 		FD4201197F8C460D9F58A484 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C46EC94349684473AF8A2CEB /* libSplashScreen.a */; };
+		1425D946B5E24985B4B3C1BE /* iola.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 013543A23B474EBAA40AC40F /* iola.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -509,7 +508,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		005C749E881949BD8DFEAD90 /* iola-icons-2.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "iola-icons-2.ttf"; path = "../resources/fonts/iola-icons-2.ttf"; sourceTree = "<group>"; };
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
@@ -598,6 +596,7 @@
 		F391471A54704B50A0DC7094 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		FC90654E1573494DA84B1190 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		FE15D54FE31843E88F4B5489 /* libRNReanimated.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNReanimated.a; sourceTree = "<group>"; };
+		013543A23B474EBAA40AC40F /* iola.ttf */ = {isa = PBXFileReference; name = "iola.ttf"; path = "../resources/fonts/iola.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -953,7 +952,7 @@
 				9FC2BD0F4E774BCAAEEDF917 /* FontAwesome5_Brands.ttf */,
 				191998FC87094F5BB07644AC /* FontAwesome5_Regular.ttf */,
 				033F55D199844B7E84587836 /* FontAwesome5_Solid.ttf */,
-				005C749E881949BD8DFEAD90 /* iola-icons-2.ttf */,
+				013543A23B474EBAA40AC40F /* iola.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1710,7 +1709,7 @@
 				17E963652271D5A900DD2CC2 /* GoogleService-Info.plist in Resources */,
 				19EEC6DDE7AA435DA7B203C2 /* FontAwesome5_Regular.ttf in Resources */,
 				92F1D0B48C264FC8A42DA1B1 /* FontAwesome5_Solid.ttf in Resources */,
-				2DC9366B89734D2994B75876 /* iola-icons-2.ttf in Resources */,
+				1425D946B5E24985B4B3C1BE /* iola.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

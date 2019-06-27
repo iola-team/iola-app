@@ -28,7 +28,8 @@ import TouchableOpacity from '../TouchableOpacity';
 
   icon: {
     color: '#AFB2BF',
-    fontSize: 18,
+    fontSize: 20,
+    marginTop: -1,
     marginRight: 5,
   },
 
@@ -82,7 +83,7 @@ export default class SearchBar extends PureComponent {
       searching,
       autoFocus,
       onChangeText,
-      
+
       ...props
     } = this.props;
 

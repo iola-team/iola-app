@@ -14,7 +14,8 @@ import ScreenHeader from '../ScreenHeader';
   },
 
   icon: {
-    fontSize: 16,
+    fontSize: 20,
+    marginLeft: -2,
   },
 })
 export default class BackButton extends PureComponent {
