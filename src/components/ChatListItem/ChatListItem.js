@@ -134,6 +134,12 @@ export default class ChatListItem extends Component {
     );
   }
 
+  onPress = () => requestAnimationFrame(() => {
+    const { onPress, chat } = this.props;
+
+    return onPress(chat);
+  });
+
   render() {
     const {
       style,
@@ -141,7 +147,6 @@ export default class ChatListItem extends Component {
       chat,
       currentUserId,
       unreadMessagesCount,
-      onPress,
       ...props
     } = this.props;
 
@@ -156,7 +161,7 @@ export default class ChatListItem extends Component {
     );
 
     return (
-      <ListItem {...props} style={style} onPress={onPress} button avatar chatItem>
+      <ListItem {...props} button avatar chatItem style={style} onPress={this.onPress}>
         <Left>
           <UserAvatar user={recipient} />
         </Left>

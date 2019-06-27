@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { ImageBackground, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native';
-import { Button, Container, Text, Toast, View } from 'native-base';
+import { SafeAreaView, StyleSheet, Dimensions } from 'react-native';
+import { Button, Content as ContentNB, Container, Text, Toast, View } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
 import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
-import { Icon } from '~components';
+import { Image, Icon, TouchableOpacity } from '~components';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
-const Background = connectToStyleSheet('background', ImageBackground).withProps({ source: imageBackground });
-const Content = connectToStyleSheet('content', View);
+const Background = connectToStyleSheet('background', Image).withProps({ source: imageBackground });
+const Content = connectToStyleSheet('content', ContentNB);
 const Header = connectToStyleSheet('header', View);
 const LockIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'lock' });
 const Title = connectToStyleSheet('title', Text);
@@ -24,7 +24,8 @@ const SignInButton = connectToStyleSheet('signInButton', Button);
 
 @styleSheet('Sparkle.ForgotPasswordScreen', {
   background: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    height: Dimensions.get('window').height,
   },
 
   backgroundShadow: {
@@ -182,50 +183,49 @@ export default class ForgotPasswordScreen extends Component {
 
     return (
       <Container>
-        <Background>
-          <View style={styles.backgroundShadow} />
-          <SafeAreaView style={{ flex: 1 }}>
-            <Content>
-              <Header>
-                <LockIcon />
-                <Title>Forgot your password?</Title>
-                {emailWasSent ? (
-                  <>
-                    <Description>
-                      A new password has been sent to
-                    </Description>
-                    <Description>
-                      {email}
-                    </Description>
-                    <SignInButton block onPress={::this.goBack}>
-                      <Text>Sign in</Text>
-                    </SignInButton>
-                  </>
-                ) : (
-                  <Description>
-                    Enter your email below and we’ll{'\n'}
-                    send you password reset{'\n'}
-                    instructions
-                  </Description>
-                )}
-              </Header>
-              {emailWasSent ? null : (
+        <Background />
+        <View style={styles.backgroundShadow} />
+        <SafeAreaView style={{ flex: 1 }}>
+          <Content>
+            <Header>
+              <LockIcon />
+              <Title>Forgot your password?</Title>
+              {emailWasSent ? (
                 <>
-                  <ForgotPasswordForm onSubmit={::this.onSubmit} defaultEmail={defaultEmail} />
-
-                  <Footer>
-                    <FooterText>
-                      Remember your password?
-                    </FooterText>
-                    <SignInLink onPress={::this.goBack}>
-                      <SignInLinkText>Sign in</SignInLinkText>
-                    </SignInLink>
-                  </Footer>
+                  <Description>
+                    A new password has been sent to
+                  </Description>
+                  <Description>
+                    {email}
+                  </Description>
+                  <SignInButton block onPress={::this.goBack}>
+                    <Text>Sign in</Text>
+                  </SignInButton>
                 </>
+              ) : (
+                <Description>
+                  Enter your email below and we’ll{'\n'}
+                  send you password reset{'\n'}
+                  instructions
+                </Description>
               )}
-            </Content>
-          </SafeAreaView>
-        </Background>
+            </Header>
+            {emailWasSent ? null : (
+              <>
+                <ForgotPasswordForm onSubmit={::this.onSubmit} defaultEmail={defaultEmail} />
+
+                <Footer>
+                  <FooterText>
+                    Remember your password?
+                  </FooterText>
+                  <SignInLink onPress={::this.goBack}>
+                    <SignInLinkText>Sign in</SignInLinkText>
+                  </SignInLink>
+                </Footer>
+              </>
+            )}
+          </Content>
+        </SafeAreaView>
       </Container>
     );
   }

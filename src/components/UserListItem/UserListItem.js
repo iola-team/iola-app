@@ -96,15 +96,21 @@ export default class UserListItem extends Component {
     );
   }
 
+  onPress = () => requestAnimationFrame(() => {
+    const { onPress, user } = this.props;
+
+    return onPress(user);
+  });
+
   render() {
-    const { user, onPress, style, children, ...props } = this.props;
+    const { user, style, children, ...props } = this.props;
 
     if (!user) {
       return this.renderPlaceholder();
     }
 
     return (
-      <ListItem {...props} style={style} onPress={() => onPress(user)} button avatar>
+      <ListItem {...props} button avatar style={style} onPress={this.onPress}>
         <Left>
           <UserAvatar user={user} />
         </Left>

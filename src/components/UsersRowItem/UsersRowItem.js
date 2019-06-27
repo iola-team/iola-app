@@ -92,8 +92,14 @@ export default class UserListItem extends Component {
     );
   }
 
+  onPress = () => requestAnimationFrame(() => {
+    const { onPress, user } = this.props;
+
+    return onPress(user);
+  });
+
   render() {
-    const { user, onPress, ...props } = this.props;
+    const { user, ...props } = this.props;
 
     if (!user) {
       return this.renderPlaceholder();
@@ -101,7 +107,7 @@ export default class UserListItem extends Component {
 
     return (
       <ViewRN {...props}>
-        <Touchable onPress={onPress}>
+        <Touchable onPress={this.onPress}>
           <UserAvatar size="medium" user={user} foreground />
           <View>
             <Text numberOfLines={1} ellipsizeMode="clip">{user.name}</Text>

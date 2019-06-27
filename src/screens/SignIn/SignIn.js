@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { ImageBackground, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { Button, Container, Content, Text, H1, View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
+import { Image } from '~components';
 import SignInForm from './SignInForm';
 import * as routes from '../routeNames';
 import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
 
 @styleSheet('Sparkle.SignInScreen', {
   background: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    height: Dimensions.get('window').height,
   },
 
   backgroundShadow: {
@@ -78,34 +80,33 @@ export default class SignInScreen extends Component {
 
     return (
       <Container>
-        <ImageBackground style={styles.background} source={imageBackground}>
-          <View style={styles.backgroundShadow} />
-          <SafeAreaView style={{ flex: 1 }}>
-            <Content contentContainerStyle={styles.content}>
-              <H1 style={styles.title}>Sign in</H1>
+        <Image style={styles.background} source={imageBackground} />
+        <View style={styles.backgroundShadow} />
+        <SafeAreaView style={{ flex: 1 }}>
+          <Content contentContainerStyle={styles.content}>
+            <H1 style={styles.title}>Sign in</H1>
 
-              <SignInForm
-                defaultEmail={this.state.defaultEmail}
-                onSubmit={(values, formikBag) => this.onSubmit(values, formikBag)}
-                onForgotPassword={login => this.onForgotPassword(login)}
-              />
+            <SignInForm
+              defaultEmail={this.state.defaultEmail}
+              onSubmit={(values, formikBag) => this.onSubmit(values, formikBag)}
+              onForgotPassword={login => this.onForgotPassword(login)}
+            />
 
-              <Button
-                style={styles.button}
-                onPress={() => navigate(routes.SIGN_UP)}
-                block
-                bordered
-                light
-              >
-                <Text>Sign up</Text>
-              </Button>
+            <Button
+              style={styles.button}
+              onPress={() => navigate(routes.SIGN_UP)}
+              block
+              bordered
+              light
+            >
+              <Text>Sign up</Text>
+            </Button>
 
-              <Button style={styles.button} onPress={onApplicationReset} block bordered light>
-                <Text>Change Website URL</Text>
-              </Button>
-            </Content>
-          </SafeAreaView>
-        </ImageBackground>
+            <Button style={styles.button} onPress={onApplicationReset} block bordered light>
+              <Text>Change Website URL</Text>
+            </Button>
+          </Content>
+        </SafeAreaView>
       </Container>
     );
   }

@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import { ImageBackground, Linking, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native';
+import { Linking, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
 import { Container, Content, Text, View } from 'native-base';
 import { LICENSE_AGREEMENT_URL } from 'react-native-dotenv';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
+import { TouchableOpacity, Image } from '~components';
 import SignUpForm from './SignUpForm';
 import { LAUNCH } from '../routeNames';
 import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
 
 const Title = connectToStyleSheet('title', Text);
-const Background = connectToStyleSheet('background', ImageBackground).withProps({
+const Background = connectToStyleSheet('background', Image).withProps({
   source: imageBackground,
 });
 const TermsContainer = connectToStyleSheet('termsContainer', View);
@@ -24,7 +25,8 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 
 @styleSheet('Sparkle.SignUpScreen', {
   background: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    height: Dimensions.get('window').height,
   },
 
   backgroundShadow: {
@@ -113,33 +115,32 @@ export default class SignUpScreen extends Component {
 
     return (
       <Container>
-        <Background>
-          <View style={styles.backgroundShadow} />
-          <SafeAreaView style={{ flex: 1 }}>
-            <Content contentContainerStyle={styles.content}>
-              <Title>Please sign up</Title>
+        <Background />
+        <View style={styles.backgroundShadow} />
+        <SafeAreaView style={{ flex: 1 }}>
+          <Content contentContainerStyle={styles.content}>
+            <Title>Please sign up</Title>
 
-              <SignUpForm onSubmit={() => navigate(LAUNCH, { loading: true })} />
+            <SignUpForm onSubmit={() => navigate(LAUNCH, { loading: true })} />
 
-              <TermsContainer>
-                <TermsText>By signing up, you agree</TermsText>
-                <TermsSubcontainer>
-                  <TermsText>to the</TermsText>
-                  <TermsButton onPress={() => this.openUrl(LICENSE_AGREEMENT_URL)}>
-                    <TermsButtonText>License Agreement</TermsButtonText>
-                  </TermsButton>
-                </TermsSubcontainer>
-              </TermsContainer>
+            <TermsContainer>
+              <TermsText>By signing up, you agree</TermsText>
+              <TermsSubcontainer>
+                <TermsText>to the</TermsText>
+                <TermsButton onPress={() => this.openUrl(LICENSE_AGREEMENT_URL)}>
+                  <TermsButtonText>License Agreement</TermsButtonText>
+                </TermsButton>
+              </TermsSubcontainer>
+            </TermsContainer>
 
-              <AlreadyHaveAnAccountContainer>
-                <AlreadyHaveAnAccountText>Already have an account?</AlreadyHaveAnAccountText>
-                <ButtonSignIn onPress={() => goBack()}>
-                  <ButtonSignInText>Sign in</ButtonSignInText>
-                </ButtonSignIn>
-              </AlreadyHaveAnAccountContainer>
-            </Content>
-          </SafeAreaView>
-        </Background>
+            <AlreadyHaveAnAccountContainer>
+              <AlreadyHaveAnAccountText>Already have an account?</AlreadyHaveAnAccountText>
+              <ButtonSignIn onPress={() => goBack()}>
+                <ButtonSignInText>Sign in</ButtonSignInText>
+              </ButtonSignIn>
+            </AlreadyHaveAnAccountContainer>
+          </Content>
+        </SafeAreaView>
       </Container>
     );
   }
