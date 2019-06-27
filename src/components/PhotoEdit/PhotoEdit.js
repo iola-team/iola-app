@@ -5,20 +5,14 @@ import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import { Image } from 'react-native';
-import {
-  View,
-  Text,
-  Button,
-  Icon,
-  Card,
-  CardItem,
-} from 'native-base';
+import { View, Text, Button, Card, CardItem } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import PhotoGrid, { Item } from '../PhotoGrid';
 import ImagePicker from '../ImagePicker';
 import ImageProgress from '../ImageProgress';
 import ActionSheet from '../ActionSheet';
+import Icon from '../Icon';
 
 function mergeSlots(prevSlots, nextSlots, by = 'id') {
   return nextSlots.reduce((slots, slot) => {
@@ -104,8 +98,8 @@ const deletePhotoMutation = gql`
   },
 
   addButtonIcon: {
+    fontSize: 16,
     color: '#FFFFFF',
-    fontSize: 36,
   },
 
   gridWrap: {
@@ -279,10 +273,7 @@ export default class PhotoEdit extends Component {
                   style={[styleSheet.itemContent, styleSheet.addButton]}
                   onPress={() => pick()}
                 >
-                  <Icon
-                    name="add"
-                    style={styleSheet.addButtonIcon}
-                  />
+                  <Icon name="plus" style={styleSheet.addButtonIcon} />
                 </Button>
               )}
             </ImagePicker>

@@ -40,7 +40,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>to Capture Photos</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>for Image Sharing</string>
 	<key>UIAppFonts</key>
@@ -63,7 +63,7 @@
 		<string>FontAwesome5_Brands.ttf</string>
 		<string>FontAwesome5_Regular.ttf</string>
 		<string>FontAwesome5_Solid.ttf</string>
-		<string>iola-icons-2.ttf</string>
+		<string>iola.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

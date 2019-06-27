@@ -83,20 +83,26 @@ const edgeFragment = gql`
     padding: 15,
   },
 
-  headerIcon: {
-    fontSize: 14,
-  },
-
   backButton: {
     marginRight: 'auto',
     padding: 15,
     zIndex: 1,
   },
 
-  meatballMenu: {
+  backIcon: {
+    fontSize: 20,
+    marginLeft: -2,
+  },
+
+  meatballButton: {
     position: 'relative',
     marginLeft: 'auto',
+    marginRight: 3,
     padding: 15,
+  },
+
+  meatballIcon: {
+    fontSize: 18,
   },
 
   indicator: {
@@ -177,6 +183,7 @@ const edgeFragment = gql`
   actionBadge: {
     height: 16,
     marginLeft: 7,
+    paddingHorizontal: 3,
     paddingVertical: 0,
     backgroundColor: '#AFB2BF',
   },
@@ -266,7 +273,7 @@ export default class ImageView extends Component {
             onPress={::this.onClose}
             style={[styles.headerButton, styles.backButton]}
           >
-            <Icon style={styles.headerIcon} name="back" />
+            <Icon style={styles.backIcon} name="back" />
           </TouchableOpacity>
 
           {totalCountImages > 1 && (
@@ -286,9 +293,9 @@ export default class ImageView extends Component {
               {show => (
                 <TouchableOpacity
                   onPress={show}
-                  style={[styles.headerButton, styles.meatballMenu]}
+                  style={[styles.headerButton, styles.meatballButton]}
                 >
-                  <Icon style={styles.headerIcon} name="emoji" /* TODO: meatball icon */ />
+                  <Icon name="more" style={styles.meatballIcon} />
                 </TouchableOpacity>
               )}
             </ActionSheet>
