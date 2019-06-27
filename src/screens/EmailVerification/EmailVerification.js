@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { ImageBackground, SafeAreaView } from 'react-native';
-import { Container, Text, View } from 'native-base';
+import { SafeAreaView, Dimensions, StyleSheet } from 'react-native';
+import { Container, Content, Text, View } from 'native-base';
 import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { Icon, Spinner, UserUpdateSubscription } from '~components';
+import { Image, Icon, Spinner, UserUpdateSubscription } from '~components';
 import EmailVerificationForm from './EmailVerificationForm';
 import * as routes from '../routeNames';
 import imageBackground from './background.jpg'; // TODO: Make it dynamic with admin plugin
@@ -30,7 +30,13 @@ const sendEmailVerificationInstructionsMutation = gql`
 
 @styleSheet('Sparkle.ForgotPasswordScreen', {
   background: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
+    height: Dimensions.get('window').height,
+  },
+
+  backgroundShadow: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(46, 46, 46, 0.4)',
   },
 
   content: {
@@ -151,29 +157,29 @@ export default class EmailVerificationScreen extends Component {
 
           return (
             <Container>
-              <ImageBackground style={styles.background} source={imageBackground}>
-                <SafeAreaView style={{ flex: 1 }}>
-                  <View style={styles.content}>
-                    <View style={styles.header}>
-                      <Icon style={styles.icon} name="envelope" />
-                      <Text style={styles.title}>Email verification</Text>
-                      <View style={styles.info}>
-                        {!loading && !isSubmitting ? infoContent : <Spinner style={styles.spinner} />}
-                      </View>
+              <Image style={styles.background} source={imageBackground} />
+              <View style={styles.backgroundShadow} />
+              <SafeAreaView style={{ flex: 1 }}>
+                <Content style={styles.content}>
+                  <View style={styles.header}>
+                    <Icon style={styles.icon} name="envelope" />
+                    <Text style={styles.title}>Email verification</Text>
+                    <View style={styles.info}>
+                      {!loading && !isSubmitting ? infoContent : <Spinner style={styles.spinner} />}
                     </View>
-
-                    <Mutation mutation={sendEmailVerificationInstructionsMutation}>
-                      {sendEmailVerificationInstructions => !loading && (
-                        <EmailVerificationForm
-                          onSubmit={() => this.onSubmit(email, sendEmailVerificationInstructions)}
-                          onSuccess={this.onSuccess}
-                          isSubmitting={isSubmitting}
-                        />
-                      )}
-                    </Mutation>
                   </View>
-                </SafeAreaView>
-              </ImageBackground>
+
+                  <Mutation mutation={sendEmailVerificationInstructionsMutation}>
+                    {sendEmailVerificationInstructions => !loading && (
+                      <EmailVerificationForm
+                        onSubmit={() => this.onSubmit(email, sendEmailVerificationInstructions)}
+                        onSuccess={this.onSuccess}
+                        isSubmitting={isSubmitting}
+                      />
+                    )}
+                  </Mutation>
+                </Content>
+              </SafeAreaView>
               {!loading && <UserUpdateSubscription userId={me.id} onSubscriptionData={this.onUserUpdate} />}
             </Container>
           );

@@ -66,7 +66,7 @@ export default class PhotoList extends Component {
   extractItemKey = ({ node, key }) => key || node.id;
 
   defaultRenderItem = ({ item, index }) => {
-    const { styleSheet, onItemPress, itemsProgress } = this.props;
+    const { styleSheet, itemsProgress } = this.props;
     const { node } = item;
     const progress = node && itemsProgress[node.id];
 
@@ -85,13 +85,15 @@ export default class PhotoList extends Component {
     ) : (
       <TouchableOpacity
         activeOpacity={0.6}
-        onPress={() => onItemPress({ item, index })}
+        onPress={() => this.onItemPress({ item, index })}
         style={styleSheet.item}
       >
         <Item photo={node} priority={priority} />
       </TouchableOpacity>
     );
   };
+  
+  onItemPress = (...args) => requestAnimationFrame(() => this.props.onItemPress(...args));
 
   renderItem = (params) => {
     const { renderItem } = this.props;

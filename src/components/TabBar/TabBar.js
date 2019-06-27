@@ -43,6 +43,7 @@ import TouchableOpacity from '../TouchableOpacity';
 
         'Sparkle.TabBarLabel': {
           'NativeBase.Text': {
+            fontWeight: '600',
             color: '#5259FF',
           },
         },
