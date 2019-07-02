@@ -72,6 +72,7 @@ export default class UserChats extends Component {
     loading: PropTypes.bool,
     onRefresh: PropTypes.func,
     refreshing: PropTypes.bool,
+    shouldUpdate: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -79,6 +80,7 @@ export default class UserChats extends Component {
     loading: false,
     onRefresh: noop,
     refreshing: false,
+    shouldUpdate: true,
   };
 
   state = {
@@ -144,6 +146,10 @@ export default class UserChats extends Component {
 
   componentDidMount() {
     this.startSubscriptions();
+  }
+
+  shouldComponentUpdate({ shouldUpdate }) {
+    return shouldUpdate;
   }
 
   render() {

@@ -4,7 +4,7 @@ import { View as ViewRN } from 'react-native';
 import { View } from 'native-base';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
-import { has } from 'lodash';
+import { has, memoize } from 'lodash';
 
 import { withStyle } from '~theme';
 import defaultAvatar from './defaultAvatar.png'; // TODO: Think about assets directory
@@ -94,6 +94,8 @@ export default class UserAvatar extends Component {
     user: userFragment,
   };
 
+  createSource = memoize(uri => ({ uri }));
+
   render() {
     const { style, user, loading, size, onPress, foreground, ...props } = this.props;
     const sizeProps = {
@@ -113,7 +115,7 @@ export default class UserAvatar extends Component {
     }
 
     const isDefault = !has(user, ['avatar', size]);
-    const source = isDefault ? defaultAvatar : { uri: user.avatar[size] };
+    const source = isDefault ? defaultAvatar : this.createSource(user.avatar[size]);
 
     const thumbnail = (
       <ViewRN style={style}>

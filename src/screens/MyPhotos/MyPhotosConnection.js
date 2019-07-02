@@ -13,6 +13,7 @@ const myPhotosQuery = gql`
   query MyPhotosQuery {
     me {
       id
+      name
       photos {
         edges {
           ...PhotoList_edge
@@ -150,7 +151,20 @@ export default class MyFriendsConnection extends PureComponent {
 
     const id = uniqueId('OptimisiticPhoto:');
     const edge = PhotoList.createOptimisticEdge({ url: image.path, id });
-    const optimisticResponse = { result: { __typename: 'UserPhotoCreatePayload', edge, user: me } };
+    const optimisticResponse = {
+      result: {
+        __typename: 'UserPhotoCreatePayload',
+        edge: ImageView.createOptimisticEdge({
+          edge,
+          user: me,
+          photo: {
+            id,
+            url: image.path,
+          },
+        }),
+        user: me,
+      },
+    };
 
     this.setPhotoProgress(id, 0);
 
