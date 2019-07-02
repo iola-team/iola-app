@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { Container, View } from 'native-base';
+import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from '~theme';
 import { UserChats, SearchBar, UsersRow, TouchableOpacity } from '~components';
@@ -57,6 +58,7 @@ import { CHANNEL, CHAT_SEARCH } from '../routeNames';
 
   ${UsersRow.fragments.edge}
 `)
+@withNavigationFocus
 export default class Channels extends Component {
   static navigationOptions = ({ navigation }) => ({
     title: 'Chats',
@@ -89,17 +91,23 @@ export default class Channels extends Component {
     navigation.addListener('willBlur', () => data.stopPolling());
   }
 
+  shouldComponentUpdate({ isFocused }) {
+    return isFocused;
+  }
+
   render() {
     const {
       styleSheet: styles,
       data: { me: { friends } = {}, loading: loadingFriends }, 
       meData: { me, loading: loadingMe }, 
       screenProps,
+      isFocused,
     } = this.props;
 
     return (
       <Container>
         <UserChats
+          shouldUpdate={isFocused}
           ListHeaderComponent={(
             <View foreground style={styles.headerList}>
               <TouchableOpacity onPressIn={this.onSearchPress}>

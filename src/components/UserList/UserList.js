@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
@@ -20,7 +20,7 @@ const edgeFragment = gql`
 `;
 
 @withStyleSheet('Sparkle.UserList')
-export default class UserList extends Component {
+export default class UserList extends PureComponent {
   static fragments = {
     edge: edgeFragment,
   };

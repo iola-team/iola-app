@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import update from 'immutability-helper';
+import { withNavigationFocus } from 'react-navigation';
 
 import { UserList } from '~components';
 
@@ -28,6 +29,7 @@ import { UserList } from '~components';
     },
   },
 })
+@withNavigationFocus
 export default class UsersConnection extends Component {
   static propTypes = {
     search: PropTypes.string,
@@ -83,6 +85,10 @@ export default class UsersConnection extends Component {
       this.fetchMorePromise = null;
     });
   };
+
+  shouldComponentUpdate({ isFocused }) {
+    return isFocused;
+  }
 
   render() {
     const { data: { users, loading }, onItemPress, ...listProps } = this.props;
