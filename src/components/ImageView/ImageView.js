@@ -50,6 +50,35 @@ const edgeFragment = gql`
   }
 `;
 
+const createOptimisticEdge = ({
+  edge = {},
+  user: { id: userId, name = '' },
+  photo: { id, url, caption = '', createdAt = new Date() },
+}) => ({
+  ...edge,
+  __typename: 'PhotoEdge',
+  node: {
+    ...edge?.node,
+    __typename: 'Photo',
+    user: {
+      ...edge?.node?.user,
+
+      __typename: 'User',
+      id: userId,
+      name,
+    },
+
+    id,
+    url,
+    caption,
+    createdAt,
+    comments: {
+      __typename: 'PhotoCommentsConnection',
+      totalCount: 0,
+    },
+  },
+});
+
 @styleSheet('Sparkle.ImageView', {
   spinnerContainer: {
     margin: 'auto',
@@ -196,6 +225,8 @@ const edgeFragment = gql`
 })
 @graphql(meQuery)
 export default class ImageView extends Component {
+  static createOptimisticEdge = createOptimisticEdge;
+
   static fragments = {
     edge: edgeFragment,
   };
