@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'native-base';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { uniqueId, remove } from 'lodash';
+import { uniqueId } from 'lodash';
 import update from 'immutability-helper';
 
 import { PhotoList, ImagePicker, ImageView, Icon } from '~components';
@@ -49,7 +49,7 @@ const deletePhotoMutation = gql`
   }
 `;
 
-@styleSheet('Sparkle.MyFriendsConnection', {
+@styleSheet('Sparkle.MyPhotosConnection', {
   addButtonIcon: {
     fontSize: 16,
     color: '#FFFFFF',
@@ -64,7 +64,7 @@ const deletePhotoMutation = gql`
 @graphql(deletePhotoMutation, {
   name: 'deletePhoto',
 })
-export default class MyFriendsConnection extends PureComponent {
+export default class MyPhotosConnection extends PureComponent {
   static propTypes = {
     addButtonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
     data: PropTypes.object,

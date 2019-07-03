@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Dimensions, View } from 'react-native';
 import { Badge, Text } from 'native-base';
 import ImageViewer from 'react-native-image-zoom-viewer';
-import { graphql, Query } from 'react-apollo';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -244,19 +244,10 @@ export default class ImageView extends Component {
     isVisible: false,
   };
 
-  onShowImage({ item, index }) {
-    this.setState({ index, isVisible: true });
-  }
-
-  onChange(index) {
-    this.setState({ index });
-  }
-
-  onClose() {
-    this.setState({ isVisible: false });
-  }
-
-  onDelete(photoId) {
+  onShowImage = ({ item, index }) => this.setState({ index, isVisible: true });
+  onChange = index => this.setState({ index });
+  onClose = () => this.setState({ isVisible: false });
+  onDelete = (photoId) => {
     const { edges, deletePhoto } = this.props;
     const { index } = this.state;
 
@@ -301,7 +292,7 @@ export default class ImageView extends Component {
       <>
         <View style={styles.header}>
           <TouchableOpacity
-            onPress={::this.onClose}
+            onPress={this.onClose}
             style={[styles.headerButton, styles.backButton]}
           >
             <Icon style={styles.backIcon} name="back" />
@@ -386,15 +377,15 @@ export default class ImageView extends Component {
 
     return (
       <>
-        {children(::this.onShowImage)}
+        {children(this.onShowImage)}
 
-        <Overlay visible={isVisible} onRequestClose={::this.onClose}>
+        <Overlay visible={isVisible} onRequestClose={this.onClose}>
           <View style={styles.content}>
             <ImageViewer
               imageUrls={imageUrls}
               index={index}
-              onChange={::this.onChange}
-              onSwipeDown={::this.onClose}
+              onChange={this.onChange}
+              onSwipeDown={this.onClose}
               renderIndicator={() => null}
               failImageSource="https://thewindowsclub-thewindowsclubco.netdna-ssl.com/wp-content/uploads/2018/06/Broken-image-icon-in-Chrome.gif" /* TODO */
               loadingRender={() => <View style={styles.spinnerContainer}><Spinner /></View>}

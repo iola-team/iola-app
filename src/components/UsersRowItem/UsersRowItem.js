@@ -98,6 +98,9 @@ export default class UserListItem extends Component {
     return onPress(user);
   });
 
+  /**
+   * TODO: Review this logic, since it will not re-render on theme switch
+   */
   shouldComponentUpdate(nextProps) {
     const { user } = this.props;
 

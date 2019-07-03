@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { Text, Badge } from 'native-base';
@@ -29,7 +29,7 @@ import { withStyle } from '~theme';
   flexDirection: 'row',
   alignItems: 'center',
 })
-export default class TabBarLabel extends Component {
+export default class TabBarLabel extends PureComponent {
   static propTypes = {
     label: PropTypes.string.isRequired,
     count: PropTypes.number,
