@@ -5,8 +5,9 @@ import { Container, View } from 'native-base';
 import { withNavigationFocus } from 'react-navigation';
 
 import { withStyleSheet } from '~theme';
-import { UserChats, SearchBar, UsersRow, TouchableOpacity } from '~components';
+import { UserChats, SearchBar, TouchableOpacity } from '~components';
 import TabBarIcon from './TabBarIcon';
+import OnlineFriendsList from './OnlineFriendsList';
 import { CHANNEL, CHAT_SEARCH } from '../routeNames';
 
 @withStyleSheet('Sparkle.ChannelsScreen', {
@@ -39,67 +40,52 @@ import { CHANNEL, CHAT_SEARCH } from '../routeNames';
     }
   }
 `, {
-  name: 'meData',
   options: {
     fetchPolicy: 'cache-first',
   },
 })
-@graphql(gql`
-  query MyOnlineFriendsQuery {
-    me {
-      id
-      friends (filter: { online: true }) {
-        edges {
-          ...UsersRow_edge
-        }
-      }
-    }
-  }
-
-  ${UsersRow.fragments.edge}
-`)
 @withNavigationFocus
 export default class Channels extends Component {
-  static navigationOptions = ({ navigation }) => ({
+  static navigationOptions = {
     title: 'Chats',
-    tabBarIcon: ({ focused, tintColor }) => (
-      <TabBarIcon style={{ color: tintColor }} />
-    ),
+    tabBarIcon: props => <TabBarIcon {...props} />,
     headerStyle: {
       borderBottomWidth: 0,
     },
-  });
+  };
 
   onChatPress = ({ node }) => this.props.navigation.navigate(CHANNEL, { chatId: node.id });
   onUserPress = ({ node }) => this.props.navigation.navigate(CHANNEL, { userId: node.id });
   onSearchPress = () => this.props.navigation.navigate(CHAT_SEARCH);
   onRefresh = () => this.props.data.refetch();
 
-  componentDidMount() {
-    const { navigation, data } = this.props;
-
-    /**
-     * TODO: Temporary solution, till we add online users `graphql` subscriptions
-     * https://gitlab.com/thisissparkle/messenger/issues/337
-     * 
-     */
-    navigation.addListener('didFocus', () => {
-      data.refetch();
-      data.startPolling(3000);
-    });
-
-    navigation.addListener('willBlur', () => data.stopPolling());
-  }
-
   shouldComponentUpdate({ isFocused }) {
     return isFocused;
   }
 
+  renderHeader = () => {
+    const { styleSheet: styles, navigation } = this.props;
+
+    return (
+      <View foreground style={styles.headerList}>
+        <TouchableOpacity onPressIn={this.onSearchPress}>
+          <View style={styles.searchBar} padder pointerEvents="box-only">
+            <SearchBar placeholder="Search chats" />
+          </View>
+        </TouchableOpacity>
+
+        <OnlineFriendsList
+          navigation={navigation}
+          contentContainerStyle={styles.headerListContent}
+          onItemPress={this.onUserPress}
+        />
+      </View>
+    );
+  };
+
   render() {
     const {
-      styleSheet: styles,
-      data: { me: { friends } = {}, loading: loadingFriends }, 
-      meData: { me, loading: loadingMe }, 
+      data: { me, loading },
       screenProps,
       isFocused,
     } = this.props;
@@ -108,28 +94,9 @@ export default class Channels extends Component {
       <Container>
         <UserChats
           shouldUpdate={isFocused}
-          ListHeaderComponent={(
-            <View foreground style={styles.headerList}>
-              <TouchableOpacity onPressIn={this.onSearchPress}>
-                <View style={styles.searchBar} padder pointerEvents="box-only">
-                  <SearchBar placeholder="Search chats" />
-                </View>
-              </TouchableOpacity>
-
-
-              <UsersRow
-                loading={loadingFriends}
-                edges={friends?.edges}
-                onItemPress={this.onUserPress}
-                contentContainerStyle={styles.headerListContent}
-
-                noContentText="No friends online"
-              />
-            </View>
-          )}
-
-          loading={loadingMe}
+          loading={loading}
           userId={me?.id}
+          ListHeaderComponent={this.renderHeader}
           onItemPress={this.onChatPress}
           onRefresh={this.onRefresh}
 

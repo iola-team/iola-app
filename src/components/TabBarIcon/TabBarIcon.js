@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, StyleSheet } from 'react-native';
 import { Text, Badge } from 'native-base';
@@ -29,20 +29,23 @@ import Icon from '../Icon';
     },
   },
 })
-export default class TabBarIcon extends Component {
+export default class TabBarIcon extends PureComponent {
   static propTypes = {
     name: PropTypes.string.isRequired,
     count: PropTypes.number,
+    tintColor: PropTypes.string,
   };
 
   static defaultProps = {
     count: null,
+    tintColor: undefined,
   };
 
   render() {
-    const { count, name, style, ...props } = this.props;
+    const { count, name, tintColor, style, ...props } = this.props;
     const sanitizedCount = Math.max(count, 0);
-    const { color, fontSize, ...restStyle } = StyleSheet.flatten(style);
+    const { color: styleColor, fontSize, ...restStyle } = StyleSheet.flatten(style);
+    const color = tintColor || styleColor;
 
     return (
       <View {...props} style={restStyle}>

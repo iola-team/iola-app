@@ -71,11 +71,13 @@ export default class UserListItem extends Component {
 
   static propTypes = {
     user: fragmentProp(userFragment),
+    last: PropTypes.bool,
     onPress: PropTypes.func,
   };
 
   static defaultProps = {
     user: null,
+    last: false,
     onPress: () => {},
   };
 
@@ -101,6 +103,12 @@ export default class UserListItem extends Component {
 
     return onPress(user);
   });
+
+  shouldComponentUpdate(nextProps) {
+    const { user, last } = this.props;
+
+    return user !== nextProps.user || last !== nextProps.last;
+  }
 
   render() {
     const { user, style, children, ...props } = this.props;

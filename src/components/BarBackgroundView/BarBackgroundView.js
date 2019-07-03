@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 
 import { withStyle } from '~theme';
@@ -8,7 +8,7 @@ import { withStyle } from '~theme';
   backgroundColor: '#FFFFFF',
   opacity: 0.98,
 })
-export default class BarBackgroundView extends Component {
+export default class BarBackgroundView extends PureComponent {
   render() {
     const { style } = this.props;
 

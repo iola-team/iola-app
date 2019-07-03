@@ -6,6 +6,10 @@ import { withStyleSheet } from '~theme';
 import { USER, USER_SEARCH } from '../routeNames';
 import UsersConnection from './UsersConnection';
 
+const tabBarIconStyle = {
+  fontSize: 35,
+};
+
 @withStyleSheet('Sparkle.UsersScreen', {
   listHeader: {
      /**
@@ -23,9 +27,7 @@ import UsersConnection from './UsersConnection';
 export default class DashboardAll extends PureComponent {
   static navigationOptions = {
     title: 'Users',
-    tabBarIcon: ({ tintColor: color }) => (
-      <TabBarIcon name="friends-bar" style={{ color, fontSize: 35 }} />
-    ),
+    tabBarIcon: props => <TabBarIcon {...props} name="friends-bar" style={tabBarIconStyle} />,
   };
 
   onItemPress = ({ node: { id } }) => {

@@ -98,6 +98,12 @@ export default class UserListItem extends Component {
     return onPress(user);
   });
 
+  shouldComponentUpdate(nextProps) {
+    const { user } = this.props;
+
+    return user !== nextProps.user;
+  }
+
   render() {
     const { user, ...props } = this.props;
 
