@@ -66,6 +66,7 @@ TODO: Fill this section
   - iOS: `yarn fastlane:ios:beta`
 2) Build the release app version (build the apk file):
   - Android: `yarn release:build:android`
+  - Get the new .aab (Android App Bundle) file here: `./android/app/build/outputs/bundle/applicationRelease`  
   - iOS: TODO
 
 ## For future customizations

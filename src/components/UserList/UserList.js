@@ -84,7 +84,7 @@ export default class UserList extends PureComponent {
         ListEmptyComponent={(
           <NoContent
             style={noContentStyle}
-            icon="users-empty-state"
+            icon="friends-empty-state"
             text={noContentText === undefined ? 'No users' : noContentText}
           />
         )}
