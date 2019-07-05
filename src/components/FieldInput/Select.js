@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { find } from 'lodash';
 import { Text } from 'native-base';
 
@@ -8,7 +8,7 @@ import ListPicker from '../ListPicker';
 import TouchableOpacity from '../TouchableOpacity';
 
 @withStyleSheet('Sparkle.SelectInput')
-export default class Select extends Component {
+export default class Select extends PureComponent {
   state = {
     isPickerVisible: false,
   };

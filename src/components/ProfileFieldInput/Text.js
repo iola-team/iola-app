@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -39,7 +39,7 @@ const keyboardTypes = {
   }),
 };
 
-export default class ProfileFieldInputText extends PureComponent {
+export default class ProfileFieldInputText extends Component {
   static formOptions({ field, data }) {
     const { minLength, maxLength, regexp, format } = field.configs;
     let validationSchema = Yup.string();

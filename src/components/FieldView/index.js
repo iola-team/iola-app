@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
 import Select from './Select';
@@ -13,7 +13,7 @@ const types = {
   'date': Date,
 };
 
-export default class FieldViewContainer extends Component {
+export default class FieldViewContainer extends PureComponent {
   static propTypes = {
     type: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,

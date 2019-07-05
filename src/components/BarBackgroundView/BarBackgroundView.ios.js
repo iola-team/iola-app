@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { VibrancyView } from "@react-native-community/blur";
 
@@ -9,7 +9,7 @@ import { withStyle } from '~theme';
   backgroundColor: '#FFFFFF',
   opacity: 0.8,
 })
-export default class BarBackgroundView extends Component {
+export default class BarBackgroundView extends PureComponent {
   render() {
     const { style } = this.props;
     const { backgroundColor, opacity, ...restStyles } = StyleSheet.flatten(style);

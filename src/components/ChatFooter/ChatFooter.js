@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Platform } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-import { View, Item, Input } from 'native-base';
+import { Item, Input } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import Icon from '../Icon';
@@ -48,7 +48,7 @@ import TouchableOpacity from '../TouchableOpacity';
     fontSize: 28,
   },
 })
-export default class ChatFooter extends Component {
+export default class ChatFooter extends PureComponent {
   static propTypes = {
     onSend: PropTypes.func.isRequired,
     disabled: PropTypes.bool,

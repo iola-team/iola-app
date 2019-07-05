@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -25,7 +25,7 @@ const valueFragment = gql`
   }
 `;
 
-export default class FieldDate extends PureComponent {
+export default class FieldDate extends Component {
   static formOptions({ field, data }) {
     const { minDate, maxDate } = field.configs;
     let validationSchema = Yup.date();

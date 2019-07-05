@@ -1,6 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Moment from 'react-moment';
-import { isUndefined } from 'lodash';
 import { Text } from 'native-base';
 
 import { withStyleSheet } from '~theme';
@@ -9,7 +8,7 @@ import DatePicker from '../DatePicker';
 import TouchableOpacity from '../TouchableOpacity';
 
 @withStyleSheet('Sparkle.DateInput')
-export default class DateInput extends PureComponent {
+export default class DateInput extends Component {
   state = {
     isPickerVisible: false,
   };

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ListItem, Left, Body, Text, Right, View } from 'native-base';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import { onlyUpdateForKeys, hoistStatics } from 'recompose';
+import { ListItem, Left, Body, Text, Right, View } from 'native-base';
 
 import { withStyle } from '~theme';
 import UserAvatar from '../UserAvatar';
@@ -62,6 +63,7 @@ const userFragment = gql`
     },
   },
 })
+@hoistStatics(onlyUpdateForKeys(['user', 'last', 'style']))
 export default class UserListItem extends Component {
   static ITEM_HEIGHT = 70;
 
@@ -71,11 +73,13 @@ export default class UserListItem extends Component {
 
   static propTypes = {
     user: fragmentProp(userFragment),
+    last: PropTypes.bool,
     onPress: PropTypes.func,
   };
 
   static defaultProps = {
     user: null,
+    last: false,
     onPress: () => {},
   };
 

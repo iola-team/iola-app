@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { graphql, Subscription } from 'react-apollo';
 import gql from 'graphql-tag';
 import { sumBy } from 'lodash';
@@ -49,20 +49,19 @@ const countsQuery = gql`
     }
   }
 `, {
-  name: 'meData',
   options: {
     fetchPolicy: 'cache-first',
   },
 })
 @graphql(countsQuery, {
-  skip: ({ meData: { me } }) => !me?.id,
-  options: ({ meData: { me } }) => ({
+  skip: ({ data: { me } }) => !me?.id,
+  options: ({ data: { me } }) => ({
     variables: {
       userId: me.id,
     },
   }),
 })
-export default class TabBarIcon extends Component {
+export default class TabBarIcon extends PureComponent {
   render() {
     const { data: { me }, ...props } = this.props;
     const count = sumBy(me?.chats.edges || [], 'node.messages.totalCount');

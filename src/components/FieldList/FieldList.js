@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { range, noop } from 'lodash';
 
@@ -20,7 +20,7 @@ const sectionShape = PropTypes.shape({
   items: PropTypes.array.isRequired,
 }).isRequired;
 
-export default class FieldList extends Component {
+export default class FieldList extends PureComponent {
   static propTypes = {
     loading: PropTypes.bool,
     sections: PropTypes.arrayOf(sectionShape),

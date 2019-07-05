@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { range } from 'lodash';
@@ -26,7 +26,7 @@ const edgeFragment = gql`
 `;
 
 @styleSheet('Sparkle.ChatList')
-export default class ChatList extends Component {
+export default class ChatList extends PureComponent {
   static fragments = {
     user: userFragment,
     edge: edgeFragment,

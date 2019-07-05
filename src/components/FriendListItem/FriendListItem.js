@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import { Button, Text } from 'native-base';
 import { noop } from 'lodash';
+import { onlyUpdateForKeys, hoistStatics } from 'recompose';
 
 import { withStyle } from '~theme';
 import UserListItem from '../UserListItem';
@@ -41,6 +42,7 @@ const userFragment = gql`
     },
   },
 })
+@hoistStatics(onlyUpdateForKeys(['user', 'friendship', 'last', 'style']))
 export default class FriendListItem extends Component {
   static fragments = {
     friendship: friendshipFragment,

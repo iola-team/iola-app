@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -52,7 +52,7 @@ const valueFragment = gql`
 
 const getFieldComponent = ({ field }) => types[field.presentation];
 
-export default class ProfileFieldInput extends Component {
+export default class ProfileFieldInput extends PureComponent {
   static formOptions({ value, ...restProps }) {
     const props = {
       ...restProps,

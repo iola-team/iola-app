@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Body, Right, Spinner, Toast } from 'native-base';
 
@@ -22,7 +22,7 @@ import Icon from '../Icon';
     },
   },
 })
-export default class FieldInput extends PureComponent {
+export default class FieldInput extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     loading: PropTypes.bool,

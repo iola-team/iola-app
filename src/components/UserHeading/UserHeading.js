@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { View, Text, H2 } from 'native-base';
 import { Animated, StyleSheet } from 'react-native';
+import { onlyUpdateForKeys, hoistStatics } from 'recompose';
 
 import { withStyleSheet } from '~theme';
 import ScreenHeader from '../ScreenHeader';
@@ -90,7 +91,8 @@ const headerHeight = 350 + 10;
     color: '#585A61',
   },
 })
-export default class UserHeading extends PureComponent {
+@hoistStatics(onlyUpdateForKeys(['user', 'loading']))
+export default class UserHeading extends Component {
   static HEIGHT = headerHeight;
   static fragments = {
     user: userFragment,

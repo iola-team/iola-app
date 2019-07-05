@@ -11,6 +11,7 @@ import {
   ChatList,
   SearchBlank,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from '~components';
 
 const meQuery = gql`
@@ -181,19 +182,21 @@ export default class ChatSearch extends Component {
 
     return (
       <Container>
-        <SearchResult
-          fetchPolicy="cache-first" // TODO: remove this when we add pagination to chat list
-          search={navigation.getParam('search', '')}
-          query={searchQuery}
-          historyKey="chats"
-          connectionPath="me.chats"
-          onItemPress={this.onItemPress}
-          filterEdges={this.filterEdges}
-          renderBlank={this.renderBlank}
-          onSearchingStateChange={this.onSearchingStateChange}
-        >
-          {this.renderList}
-        </SearchResult>
+        <KeyboardAvoidingView>
+          <SearchResult
+            fetchPolicy="cache-first" // TODO: remove this when we add pagination to chat list
+            search={navigation.getParam('search', '')}
+            query={searchQuery}
+            historyKey="chats"
+            connectionPath="me.chats"
+            onItemPress={this.onItemPress}
+            filterEdges={this.filterEdges}
+            renderBlank={this.renderBlank}
+            onSearchingStateChange={this.onSearchingStateChange}
+          >
+            {this.renderList}
+          </SearchResult>
+        </KeyboardAvoidingView>
       </Container>
     );
   }

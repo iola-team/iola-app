@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Header } from 'react-navigation';
 import { constant, assign } from 'lodash';
-import { StyleSheet, Platform } from 'react-native';
+import { Platform } from 'react-native';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import Icon from '../Icon';

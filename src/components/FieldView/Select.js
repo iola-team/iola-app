@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { find } from 'lodash';
 import { Text } from 'native-base';
 

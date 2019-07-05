@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -35,7 +35,7 @@ const createOptimisticEdge = ({ id, url }) => ({
     padding: 4,
   },
 })
-export default class PhotoList extends Component {
+export default class PhotoList extends PureComponent {
   static createOptimisticEdge = createOptimisticEdge;
   static fragments = {
     edge: edgeFragment,

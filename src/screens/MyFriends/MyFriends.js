@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withNavigationFocus } from 'react-navigation';
 import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
@@ -12,7 +11,6 @@ import TabBarLabel from './TabBarLabel';
     paddingTop: 8,
   },
 })
-@withNavigationFocus
 export default class MyFriends extends Component {
   static navigationOptions = {
     tabBarLabel: () => <TabBarLabel />,
@@ -23,10 +21,6 @@ export default class MyFriends extends Component {
 
     navigation.navigate({ routeName: USER, params: { id }, key: id });
   };
-
-  shouldComponentUpdate({ isFocused }) {
-    return isFocused;
-  }
 
   render() {
     const { styleSheet: styles, screenProps } = this.props;

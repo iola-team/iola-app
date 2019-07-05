@@ -4,6 +4,7 @@ import { Text, ListItem, Left, Body, Right, Badge, View } from 'native-base';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { filter } from 'lodash';
+import { onlyUpdateForKeys, hoistStatics } from 'recompose';
 import Moment from 'react-moment';
 
 import { withStyle } from '~theme';
@@ -81,6 +82,9 @@ const chatFragment = gql`
     },
   },
 })
+@hoistStatics(onlyUpdateForKeys([
+  'chat', 'last', 'unreadMessagesCount', 'currentUserId', 'style'
+]))
 export default class ChatListItem extends Component {
   static fragments = {
     chat: chatFragment,

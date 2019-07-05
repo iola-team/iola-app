@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { graphql, Subscription } from 'react-apollo';
 import gql from 'graphql-tag';
-import { sumBy } from 'lodash';
 
 import { TabBarIcon as Icon } from '~components';
 
@@ -68,7 +67,7 @@ const countsQuery = gql`
 `;
 
 @graphql(countsQuery)
-export default class TabBarIcon extends Component {
+export default class TabBarIcon extends PureComponent {
   render() {
     const { data: { me }, ...props } = this.props;
     const count = me?.friends.totalCount;

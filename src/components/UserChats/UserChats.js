@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
-import { filter, noop } from 'lodash';
+import { shouldUpdate } from 'recompose';
+import { filter, noop, memoize } from 'lodash';
 
 import ChatList from '../ChatList';
 import MessageUpdateSubscription from '../MessageUpdateSubscription';
@@ -66,13 +67,13 @@ const subscriptionQuery = gql`
   }),
   skip: props => !props.userId,
 })
-export default class UserChats extends Component {
+@shouldUpdate((props, nextProps) => nextProps.shouldUpdate)
+export default class UserChats extends PureComponent {
   static propTypes = {
     userId: PropTypes.string,
     loading: PropTypes.bool,
     onRefresh: PropTypes.func,
     refreshing: PropTypes.bool,
-    shouldUpdate: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -80,7 +81,6 @@ export default class UserChats extends Component {
     loading: false,
     onRefresh: noop,
     refreshing: false,
-    shouldUpdate: true,
   };
 
   state = {
@@ -148,15 +148,15 @@ export default class UserChats extends Component {
     this.startSubscriptions();
   }
 
-  shouldComponentUpdate({ shouldUpdate }) {
-    return shouldUpdate;
-  }
+  getUnreadCounts = memoize(
+    edges => edges?.map(edge => edge.node.unreadMessages.totalCount) || [],
+  );
 
   render() {
     const { data, loading, ...props } = this.props;
     const { isRefreshing } = this.state;
     const edges = data?.user?.chats.edges;
-    const unreadCounts = edges?.map(edge => edge.node.unreadMessages.totalCount) || [];
+    const unreadCounts = this.getUnreadCounts(edges);
 
     return (
       <>

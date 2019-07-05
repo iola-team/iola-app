@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import { withNavigation } from 'react-navigation';
+import { withNavigation, withNavigationFocus } from 'react-navigation';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import update from 'immutability-helper';
-import { get, filter } from 'lodash';
+import { filter } from 'lodash';
+import { shouldUpdate } from 'recompose';
 
 import { FriendList, FriendsTabBarLabel } from '~components';
 
@@ -117,6 +118,8 @@ const removeFromCache = (cache, toDeleteId) => {
   name: 'deleteFriend',
 })
 @withNavigation
+@withNavigationFocus
+@shouldUpdate((props, nextProps) => nextProps.isFocused)
 export default class MyFriendsConnection extends PureComponent {
   static propTypes = {
     data: PropTypes.object,
