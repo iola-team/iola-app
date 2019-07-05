@@ -5,6 +5,8 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { uniqueId } from 'lodash';
 import update from 'immutability-helper';
+import { withNavigationFocus } from 'react-navigation';
+import { shouldUpdate } from 'recompose';
 
 import { PhotoList, ImagePicker, ImageView, Icon } from '~components';
 import { withStyleSheet as styleSheet } from '~theme';
@@ -64,6 +66,8 @@ const deletePhotoMutation = gql`
 @graphql(deletePhotoMutation, {
   name: 'deletePhoto',
 })
+@withNavigationFocus
+@shouldUpdate((props, nextProps) => nextProps.isFocused)
 export default class MyPhotosConnection extends PureComponent {
   static propTypes = {
     addButtonStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,

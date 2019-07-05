@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigationFocus } from 'react-navigation';
+import { shouldUpdate, hoistStatics } from 'recompose';
 import { Container } from 'native-base';
 
 import { ProfileFieldsView } from '~components';
@@ -19,6 +20,7 @@ const userFieldsQuery = gql`
 
 @graphql(userFieldsQuery)
 @withNavigationFocus
+@hoistStatics(shouldUpdate((props, nextProps) => nextProps.isFocused))
 export default class UserInfo extends Component {
   static navigationOptions = {
     title: 'Info',
@@ -42,10 +44,6 @@ export default class UserInfo extends Component {
     }
     this.setState({ isRefreshing: false });
   };
-
-  shouldComponentUpdate({ isFocused }) {
-    return isFocused;
-  }
 
   render() {
     const { data: { loading, me }, screenProps } = this.props;

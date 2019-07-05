@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withNavigationFocus } from 'react-navigation';
 import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
@@ -25,15 +24,10 @@ import MyPhotosConnection from './MyPhotosConnection';
     marginTop: -12, // TODO: Aligning `No photos` to `No friends` - need to find a better way
   }
 })
-@withNavigationFocus
 export default class UserPhotos extends Component {
   static navigationOptions = {
     tabBarLabel: 'Photos',
   };
-
-  shouldComponentUpdate({ isFocused }) {
-    return isFocused;
-  }
 
   render() {
     const { navigation, styleSheet: styles, screenProps } = this.props;
