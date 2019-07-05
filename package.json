@@ -1,6 +1,6 @@
 {
   "name": "iola",
-  "version": "0.1.0",
+  "version": "0.8.0",
   "private": true,
   "scripts": {
     "info": "npm-scripts-info",
@@ -29,7 +29,7 @@
     "lint:fix": "eslint --fix \"./src/**/*.js\"; exit 0",
     "tools:generate-component": "generact ./src/components/ComponentTemplate/index.js --root ./src/components/",
     "postinstall": "sh ./scripts/postinstall.sh && yarn xcode:schemes",
-    "release:build:android": "cd android && ./gradlew bundleRelease",
+    "release:build:android": "cd android && ./gradlew bundleApplicationRelease",
     "release:test:android": "cd android && ./gradlew installApplicationRelease --stacktrace",
     "xcode:schemes": "react-native-schemes-manager all",
     "fastlane:ios:beta": "bundle exec fastlane ios beta"
