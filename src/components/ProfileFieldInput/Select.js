@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -28,7 +28,7 @@ const dataFragment = gql`
   }
 `;
 
-export default class ProfileFieldInputSelect extends PureComponent {
+export default class ProfileFieldInputSelect extends Component {
   static formOptions({ field, data }) {
     return {
       validationSchema: Yup.array(),

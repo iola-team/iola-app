@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { noop } from 'lodash';
 
@@ -14,7 +14,7 @@ const types = {
   'date': Date,
 };
 
-export default class FieldInputContainer extends Component {
+export default class FieldInputContainer extends PureComponent {
   static propTypes = {
     type: PropTypes.string.isRequired,
     label: PropTypes.string.isRequired,

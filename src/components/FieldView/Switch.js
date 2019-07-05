@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { isUndefined } from 'lodash';
 import { Text } from 'native-base';
 
@@ -6,7 +6,7 @@ import { withStyle } from '~theme';
 import FieldView from './FieldView';
 
 @withStyle('Sparkle.SwitchView')
-export default class SwitchView extends PureComponent {
+export default class SwitchView extends Component {
   render() {
     const {
       value,

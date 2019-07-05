@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 
@@ -26,7 +26,7 @@ const valueFragment = gql`
   }
 `;
 
-export default class ProfileFieldViewSelect extends PureComponent {
+export default class ProfileFieldViewSelect extends Component {
   static fieldOptions = {
     isEmpty: ({ arrayValue }) => !arrayValue?.length,
   };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
 import { isFunction, noop } from 'lodash';
@@ -51,7 +51,7 @@ const valueFragment = gql`
 
 const getFieldComponent = ({ presentation }) => types[presentation];
 
-export default class ProfileFieldView extends Component {
+export default class ProfileFieldView extends PureComponent {
   static fieldOptions(field) {
     const Field = getFieldComponent(field);
 

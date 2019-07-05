@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Label, Body } from 'native-base';
 
@@ -6,7 +6,7 @@ import { withStyle } from '~theme';
 import FieldItem from '../FieldItem';
 
 @withStyle('Sparkle.FieldView')
-export default class FieldView extends PureComponent {
+export default class FieldView extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,
     last: PropTypes.bool,
