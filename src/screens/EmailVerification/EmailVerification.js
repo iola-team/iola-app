@@ -8,7 +8,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { Image, Icon, Spinner, UserUpdateSubscription } from '~components';
 import EmailVerificationForm from './EmailVerificationForm';
 import * as routes from '../routeNames';
-import imageBackground from './background.jpg'; // TODO: Make it dynamic with admin plugin
+import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
 
 const meQuery = gql`
   query meQuery {
