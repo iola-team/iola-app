@@ -11,6 +11,7 @@ import {
   UserList,
   SearchBlank,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from '~components';
 
 const searchQuery = gql`
@@ -137,18 +138,20 @@ export default class UserSearch extends Component {
 
     return (
       <Container>
-        <SearchResult
-          search={navigation.getParam('search', '')}
-          query={searchQuery}
-          historyKey="users"
-          connectionPath="users"
-          onItemPress={this.onItemPress}
-          filterEdges={this.filterEdges}
-          renderBlank={this.renderBlank}
-          onSearchingStateChange={this.onSearchingStateChange}
-        >
-          {this.renderList}
-        </SearchResult>
+        <KeyboardAvoidingView>
+          <SearchResult
+            search={navigation.getParam('search', '')}
+            query={searchQuery}
+            historyKey="users"
+            connectionPath="users"
+            onItemPress={this.onItemPress}
+            filterEdges={this.filterEdges}
+            renderBlank={this.renderBlank}
+            onSearchingStateChange={this.onSearchingStateChange}
+          >
+            {this.renderList}
+          </SearchResult>
+        </KeyboardAvoidingView>
       </Container>
     );
   }
