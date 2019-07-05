@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'native-base';
 
@@ -16,7 +16,7 @@ import { withStyle } from '~theme';
     },
   },
 })
-export default class OnlineStatus extends Component {
+export default class OnlineStatus extends PureComponent {
   static propTypes = {
     online: PropTypes.bool.isRequired,
   };

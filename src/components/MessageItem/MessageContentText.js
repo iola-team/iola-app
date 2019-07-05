@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { Text } from 'native-base';
 import PropTypes from 'prop-types';
@@ -32,7 +32,7 @@ const contentFragment = gql`
     },
   },
 })
-export default class MessageContentText extends Component {
+export default class MessageContentText extends PureComponent {
   static fragments = {
     content: contentFragment,
   };

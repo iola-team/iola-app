@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View as ViewRN } from 'react-native';
 import { View } from 'native-base';
@@ -73,7 +73,7 @@ const thumbnailStyle = {
 
   ...thumbnailStyle,
 })
-export default class UserAvatar extends Component {
+export default class UserAvatar extends PureComponent {
   static propTypes = {
     size: PropTypes.oneOf(['small', 'medium', 'large']),
     user: fragmentProp(userFragment),

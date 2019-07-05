@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Switch } from 'native-base';
 
 import FieldInput from './FieldInput';
 
-export default class SwitchInput extends Component {
+export default class SwitchInput extends PureComponent {
   onChange = (value) => {
     const { onFinishEditing, onChange } = this.props;
 

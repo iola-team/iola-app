@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import { onlyUpdateForKeys, hoistStatics } from 'recompose';
 import LinearGradient from 'react-native-linear-gradient';
 import { View as ViewRN, StyleSheet } from 'react-native';
 import { View, Text } from 'native-base';
@@ -66,6 +67,7 @@ const userFragment = gql`
     },
   },
 })
+@hoistStatics(onlyUpdateForKeys(['user', 'style']))
 export default class UserListItem extends Component {
   static fragments = {
     user: userFragment,
@@ -97,15 +99,6 @@ export default class UserListItem extends Component {
 
     return onPress(user);
   });
-
-  /**
-   * TODO: Review this logic, since it will not re-render on theme switch
-   */
-  shouldComponentUpdate(nextProps) {
-    const { user } = this.props;
-
-    return user !== nextProps.user;
-  }
 
   render() {
     const { user, ...props } = this.props;

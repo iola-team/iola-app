@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { View, StyleSheet } from "react-native";
 import { uniqueId, memoize } from 'lodash';
 import PropTypes from 'prop-types';
+import { onlyUpdateForKeys, hoistStatics } from 'recompose';
 
 import { withStyle } from '~theme';
 import Placeholder from '../Placeholder';
@@ -37,6 +38,7 @@ const createOptimisticPhoto = ({ id, url }) => ({
   borderRadius: 8,
   aspectRatio: 1,
 })
+@hoistStatics(onlyUpdateForKeys(['photo', 'priority', 'progress', 'style']))
 export default class PhotoListItem extends Component {
   static createOptimisticPhoto = createOptimisticPhoto;
   static fragments = {

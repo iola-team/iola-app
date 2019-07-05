@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View } from 'native-base';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
@@ -13,7 +13,7 @@ const userFragment = gql`
 `;
 
 @withStyle('Sparkle.UserOnlineStatus')
-export default class UserOnlineStatus extends Component {
+export default class UserOnlineStatus extends PureComponent {
   static propTypes = {
     user: fragmentProp(userFragment),
   };

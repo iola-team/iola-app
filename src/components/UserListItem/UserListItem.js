@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { ListItem, Left, Body, Text, Right, View } from 'native-base';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
+import { onlyUpdateForKeys, hoistStatics } from 'recompose';
+import { ListItem, Left, Body, Text, Right, View } from 'native-base';
 
 import { withStyle } from '~theme';
 import UserAvatar from '../UserAvatar';
@@ -62,6 +63,7 @@ const userFragment = gql`
     },
   },
 })
+@hoistStatics(onlyUpdateForKeys(['user', 'last', 'style']))
 export default class UserListItem extends Component {
   static ITEM_HEIGHT = 70;
 
@@ -103,15 +105,6 @@ export default class UserListItem extends Component {
 
     return onPress(user);
   });
-
-  /**
-   * TODO: Review this logic, since it will not re-render on theme switch
-   */
-  shouldComponentUpdate(nextProps) {
-    const { user, last } = this.props;
-
-    return user !== nextProps.user || last !== nextProps.last;
-  }
 
   render() {
     const { user, style, children, ...props } = this.props;

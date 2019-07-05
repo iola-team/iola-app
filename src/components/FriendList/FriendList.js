@@ -51,14 +51,15 @@ export default class FriendList extends PureComponent {
     onCancelPress: noop,
   };
 
-  renderItem = ({ item }) => {
-    const { onItemPress, onAcceptPress, onIgnorePress, onCancelPress } = this.props;
+  renderItem = ({ item, index }) => {
+    const { edges, onItemPress, onAcceptPress, onIgnorePress, onCancelPress } = this.props;
     const { node, friendship } = item;
 
     return (
       <FriendListItem
         user={node}
         friendship={friendship}
+        last={(index + 1) === edges?.length}
         onPress={() => onItemPress(item)}
         onAcceptPress={() => onAcceptPress(item)}
         onIgnorePress={() => onIgnorePress(item)}

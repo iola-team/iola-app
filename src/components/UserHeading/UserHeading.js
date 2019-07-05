@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { View, Text, H2 } from 'native-base';
 import { Animated, StyleSheet } from 'react-native';
-import diff from 'shallow-diff';
+import { onlyUpdateForKeys, hoistStatics } from 'recompose';
 
 import { withStyleSheet } from '~theme';
 import ScreenHeader from '../ScreenHeader';
@@ -91,6 +91,7 @@ const headerHeight = 350 + 10;
     color: '#585A61',
   },
 })
+@hoistStatics(onlyUpdateForKeys(['user', 'loading']))
 export default class UserHeading extends Component {
   static HEIGHT = headerHeight;
   static fragments = {
@@ -109,15 +110,6 @@ export default class UserHeading extends Component {
     user: null,
     loading: false,
   };
-
-  /**
-   * TODO: Review this logic, since it will not re-render on theme switch
-   */
-  shouldComponentUpdate(nextProps) {
-    const { user, loading } = this.props;
-
-    return user !== nextProps.user || loading !== nextProps.loading;
-  }
 
   render() {
     const {

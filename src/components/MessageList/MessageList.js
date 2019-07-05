@@ -1,4 +1,4 @@
-import React, { Component, createRef } from 'react';
+import React, { PureComponent, createRef } from 'react';
 import PropTypes from 'prop-types';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import gql from 'graphql-tag';
@@ -23,7 +23,7 @@ const edgeFragment = gql`
 @withStyle('Sparkle.MessageList', {
   paddingHorizontal: 16,
 })
-export default class MessageList extends Component {
+export default class MessageList extends PureComponent {
   static fragments = {
     edge: edgeFragment,
   };

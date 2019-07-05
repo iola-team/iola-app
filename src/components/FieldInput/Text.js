@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Input } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import FieldInput from './FieldInput';
 
 @styleSheet('Sparkle.TextInput')
-export default class TextInput extends Component {
+export default class TextInput extends PureComponent {
   render() {
     const {
       value,

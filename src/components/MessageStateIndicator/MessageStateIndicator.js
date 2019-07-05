@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View as ViewRN, StyleSheet } from 'react-native';
 
@@ -23,7 +23,7 @@ import Icon from '../Icon';
     },
   },
 })
-export default class MessageStateIndicator extends Component {
+export default class MessageStateIndicator extends PureComponent {
   static propTypes = {
     done: PropTypes.bool,
   };

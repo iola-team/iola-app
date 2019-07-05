@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Linking } from 'react-native';
 import { Text } from 'native-base';
 
@@ -7,7 +7,7 @@ import FieldView from './FieldView';
 import TouchableOpacity from '../TouchableOpacity';
 
 @withStyle('Sparkle.TextView')
-export default class TextView extends Component {
+export default class TextView extends PureComponent {
   state = {
     isLink: false,
   };
