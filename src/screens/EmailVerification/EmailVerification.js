@@ -8,7 +8,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { Image, Icon, Spinner, UserUpdateSubscription } from '~components';
 import EmailVerificationForm from './EmailVerificationForm';
 import * as routes from '../routeNames';
-import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
+import defaultBackground from '../SignIn/defaultBackground.jpg'; // TODO: Make it dynamic with admin plugin
 
 const meQuery = gql`
   query meQuery {
@@ -157,7 +157,7 @@ export default class EmailVerificationScreen extends Component {
 
           return (
             <Container>
-              <Image style={styles.background} source={imageBackground} />
+              <Image style={styles.background} source={defaultBackground} />
               <View style={styles.backgroundShadow} />
               <SafeAreaView style={{ flex: 1 }}>
                 <Content style={styles.content}>

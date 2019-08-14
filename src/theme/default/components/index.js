@@ -5,7 +5,7 @@ import getTheme from 'native-base/src/theme/components';
 export default (variables => ({
   ...variables,
   ...merge(getTheme(variables), {
-    'Sparkle.LoadingBackground': {
+    'Sparkle.LoadingScreen': {
       'NativeBase.Container': {
         'NativeBase.ViewNB': {
           'Sparkle.Spinner': {

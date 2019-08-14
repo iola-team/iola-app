@@ -4,13 +4,13 @@ import { Button, Content as ContentNB, Container, Text, Toast, View } from 'nati
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
-import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
+import defaultBackground from '../SignIn/defaultBackground.jpg'; // TODO: Make it dynamic with admin plugin
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { Image, Icon, TouchableOpacity } from '~components';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
-const Background = connectToStyleSheet('background', Image).withProps({ source: imageBackground });
+const Background = connectToStyleSheet('background', Image).withProps({ source: defaultBackground });
 const Content = connectToStyleSheet('content', ContentNB);
 const Header = connectToStyleSheet('header', View);
 const LockIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'lock' });

@@ -5,7 +5,7 @@ import { Container, View } from 'native-base';
 import { withStyleSheet as styleSheet } from '~theme';
 import logo from './logo.png';
 
-@styleSheet('Sparkle.SplashBackground', {
+@styleSheet('Sparkle.Splash', {
   content: {
     flex: 1,
     justifyContent: 'center',
@@ -19,7 +19,7 @@ import logo from './logo.png';
     resizeMode: 'contain',
   },
 })
-export default class SplashBackground extends Component {
+export default class Splash extends Component {
   logo = {
     opacityAnimatedValue: new Animated.Value(1),
     pulsingAnimationValue: 1,

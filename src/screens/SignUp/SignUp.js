@@ -7,12 +7,10 @@ import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { TouchableOpacity, Image } from '~components';
 import SignUpForm from './SignUpForm';
 import { LAUNCH } from '../routeNames';
-import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
+import defaultBackground from '../SignIn/defaultBackground.jpg'; // TODO: Make it dynamic with admin plugin
+import defaultLogo from '../SignIn/defaultLogo.png';
 
 const Title = connectToStyleSheet('title', Text);
-const Background = connectToStyleSheet('background', Image).withProps({
-  source: imageBackground,
-});
 const TermsContainer = connectToStyleSheet('termsContainer', View);
 const TermsText = connectToStyleSheet('termsText', Text);
 const TermsSubcontainer = connectToStyleSheet('termsSubcontainer', View);
@@ -42,8 +40,17 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
     paddingHorizontal: '10%',
   },
 
+  logo: {
+    alignSelf: 'center',
+    width: 48,
+    height: 48,
+    marginTop: 34,
+    marginBottom: 18,
+    borderRadius: 8,
+  },
+
   title: {
-    marginVertical: 34,
+    marginBottom: 34,
     alignSelf: 'center',
     fontSize: 30,
     color: '#FFFFFF',
@@ -109,20 +116,23 @@ export default class SignUpScreen extends Component {
 
   render() {
     const {
-      navigation: { goBack, navigate },
+      navigation: { dangerouslyGetParent, goBack, navigate },
       styleSheet: styles,
     } = this.props;
+    const backgroundUrl = dangerouslyGetParent().getParam('backgroundUrl');
+    const backgroundImage = backgroundUrl ? { uri: backgroundUrl } : defaultBackground;
+    const logoUrl = dangerouslyGetParent().getParam('logoUrl');
+    const logoImage = logoUrl ? { uri: logoUrl } : defaultLogo;
 
     return (
       <Container>
-        <Background />
+        <Image style={styles.background} source={backgroundImage} />
         <View style={styles.backgroundShadow} />
         <SafeAreaView style={{ flex: 1 }}>
           <Content contentContainerStyle={styles.content}>
+            <Image style={styles.logo} source={logoImage} />
             <Title>Please sign up</Title>
-
             <SignUpForm onSubmit={() => navigate(LAUNCH, { loading: true })} />
-
             <TermsContainer>
               <TermsText>By signing up, you agree</TermsText>
               <TermsSubcontainer>
@@ -132,7 +142,6 @@ export default class SignUpScreen extends Component {
                 </TermsButton>
               </TermsSubcontainer>
             </TermsContainer>
-
             <AlreadyHaveAnAccountContainer>
               <AlreadyHaveAnAccountText>Already have an account?</AlreadyHaveAnAccountText>
               <ButtonSignIn onPress={() => goBack()}>

@@ -6,7 +6,8 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { Image } from '~components';
 import SignInForm from './SignInForm';
 import * as routes from '../routeNames';
-import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
+import defaultBackground from './defaultBackground.jpg'; // @TODO: Make it dynamic with admin plugin
+import defaultLogo from './defaultLogo.png';
 
 @styleSheet('Sparkle.SignInScreen', {
   background: {
@@ -27,8 +28,17 @@ import imageBackground from './background.jpg'; // @TODO: Make it dynamic with a
     paddingBottom: 30,
   },
 
+  logo: {
+    alignSelf: 'center',
+    width: 48,
+    height: 48,
+    marginTop: 34,
+    marginBottom: 18,
+    borderRadius: 8,
+  },
+
   title: {
-    marginVertical: 34,
+    marginBottom: 34,
     alignSelf: 'center',
     fontSize: 30,
     color: '#FFFFFF',
@@ -73,25 +83,28 @@ export default class SignInScreen extends Component {
 
   render() {
     const {
-      navigation: { navigate },
+      navigation: { dangerouslyGetParent, navigate },
       screenProps: { onApplicationReset },
       styleSheet: styles,
     } = this.props;
+    const backgroundUrl = dangerouslyGetParent().getParam('backgroundUrl');
+    const backgroundImage = backgroundUrl ? { uri: backgroundUrl } : defaultBackground;
+    const logoUrl = dangerouslyGetParent().getParam('logoUrl');
+    const logoImage = logoUrl ? { uri: logoUrl } : defaultLogo;
 
     return (
       <Container>
-        <Image style={styles.background} source={imageBackground} />
+        <Image style={styles.background} source={backgroundImage} />
         <View style={styles.backgroundShadow} />
         <SafeAreaView style={{ flex: 1 }}>
           <Content contentContainerStyle={styles.content}>
+            <Image style={styles.logo} source={logoImage} />
             <H1 style={styles.title}>Sign in</H1>
-
             <SignInForm
               defaultEmail={this.state.defaultEmail}
               onSubmit={(values, formikBag) => this.onSubmit(values, formikBag)}
               onForgotPassword={login => this.onForgotPassword(login)}
             />
-
             <Button
               style={styles.button}
               onPress={() => navigate(routes.SIGN_UP)}
@@ -101,7 +114,6 @@ export default class SignInScreen extends Component {
             >
               <Text>Sign up</Text>
             </Button>
-
             <Button style={styles.button} onPress={onApplicationReset} block bordered light>
               <Text>Change Website URL</Text>
             </Button>

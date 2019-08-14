@@ -1,12 +1,13 @@
 export const AUTHENTICATION = 'authentication';
 export const APPLICATION = 'application';
 
+export const LAUNCH = 'launch';
+export const LOADING = 'loading';
 export const SIGN_IN = 'signIn';
 export const SIGN_UP = 'signUp';
 export const FORGOT_PASSWORD = 'forgotPassword';
 export const PENDING_APPROVAL = 'pendingApproval';
 export const EMAIL_VERIFICATION = 'emailVerification';
-export const LAUNCH = 'launch';
 export const USER = 'user';
 
 export const DASHBOARD = 'dashboard';
