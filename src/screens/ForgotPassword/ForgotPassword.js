@@ -4,7 +4,7 @@ import { Button, Content as ContentNB, Container, Text, Toast, View } from 'nati
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
-import defaultBackground from '../SignIn/defaultBackground.jpg'; // TODO: Make it dynamic with admin plugin
+import defaultBackground from '../SignIn/defaultBackground.jpg';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { Image, Icon, TouchableOpacity } from '~components';

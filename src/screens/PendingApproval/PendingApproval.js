@@ -7,7 +7,7 @@ import gql from 'graphql-tag';
 import { withStyleSheet as styleSheet } from '~theme';
 import { Icon, LogoutButton, UserUpdateSubscription } from '~components';
 import * as routes from '../routeNames';
-import defaultBackground from '../SignIn/defaultBackground.jpg'; // TODO: Make it dynamic with admin plugin
+import defaultBackground from '../SignIn/defaultBackground.jpg';
 
 const meQuery = gql`
   query meQuery {

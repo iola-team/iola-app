@@ -7,7 +7,7 @@ import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { TouchableOpacity, Image } from '~components';
 import SignUpForm from './SignUpForm';
 import { LAUNCH } from '../routeNames';
-import defaultBackground from '../SignIn/defaultBackground.jpg'; // TODO: Make it dynamic with admin plugin
+import defaultBackground from '../SignIn/defaultBackground.jpg';
 import defaultLogo from '../SignIn/defaultLogo.png';
 
 const Title = connectToStyleSheet('title', Text);

@@ -6,7 +6,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { Image } from '~components';
 import SignInForm from './SignInForm';
 import * as routes from '../routeNames';
-import defaultBackground from './defaultBackground.jpg'; // @TODO: Make it dynamic with admin plugin
+import defaultBackground from './defaultBackground.jpg';
 import defaultLogo from './defaultLogo.png';
 
 @styleSheet('Sparkle.SignInScreen', {
