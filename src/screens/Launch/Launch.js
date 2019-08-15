@@ -46,19 +46,15 @@ export default class LaunchScreen extends Component {
           userApproveIsRequired,
           backgroundUrl,
           logoUrl,
-          primaryColor, // TODO
+          primaryColor, // caching
         },
       } = data;
-      const images = [backgroundUrl, logoUrl].reduce((result, uri) => {
-        if (uri) result.push({ uri });
-
-        return result;
-      }, []);
+      const images = [backgroundUrl, logoUrl].filter(Boolean).map(uri => ({ uri }));
 
       await FastImage.preload(images);
 
       if (!me) {
-        navigate(routes.AUTHENTICATION, { backgroundUrl, logoUrl });
+        navigate(routes.AUTHENTICATION);
 
         return;
       }

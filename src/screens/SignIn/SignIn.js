@@ -1,40 +1,20 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Dimensions } from 'react-native';
-import { Button, Container, Content, Text, H1, View } from 'native-base';
+import { SafeAreaView } from 'react-native';
+import { Button, Container, Content, Text, H1 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { Image } from '~components';
-import SignInForm from './SignInForm';
 import * as routes from '../routeNames';
-import defaultBackground from './defaultBackground.jpg';
-import defaultLogo from './defaultLogo.png';
+import SignInForm from './SignInForm';
+import Background from './Background';
+import Logo from './Logo';
 
 @styleSheet('Sparkle.SignInScreen', {
-  background: {
-    ...StyleSheet.absoluteFillObject,
-    height: Dimensions.get('window').height,
-  },
-
-  backgroundShadow: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(46, 46, 46, 0.4)',
-  },
-
   content: {
     alignSelf: 'center',
     width: '100%',
     minWidth: 320,
     paddingHorizontal: '10%',
     paddingBottom: 30,
-  },
-
-  logo: {
-    alignSelf: 'center',
-    width: 48,
-    height: 48,
-    marginTop: 34,
-    marginBottom: 18,
-    borderRadius: 8,
   },
 
   title: {
@@ -83,22 +63,17 @@ export default class SignInScreen extends Component {
 
   render() {
     const {
-      navigation: { dangerouslyGetParent, navigate },
+      navigation: { navigate },
       screenProps: { onApplicationReset },
       styleSheet: styles,
     } = this.props;
-    const backgroundUrl = dangerouslyGetParent().getParam('backgroundUrl');
-    const backgroundImage = backgroundUrl ? { uri: backgroundUrl } : defaultBackground;
-    const logoUrl = dangerouslyGetParent().getParam('logoUrl');
-    const logoImage = logoUrl ? { uri: logoUrl } : defaultLogo;
 
     return (
       <Container>
-        <Image style={styles.background} source={backgroundImage} />
-        <View style={styles.backgroundShadow} />
+        <Background />
         <SafeAreaView style={{ flex: 1 }}>
           <Content contentContainerStyle={styles.content}>
-            <Image style={styles.logo} source={logoImage} />
+            <Logo />
             <H1 style={styles.title}>Sign in</H1>
             <SignInForm
               defaultEmail={this.state.defaultEmail}

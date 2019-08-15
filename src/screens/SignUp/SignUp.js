@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Linking, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
+import { Linking, SafeAreaView } from 'react-native';
 import { Container, Content, Text, View } from 'native-base';
 import { LICENSE_AGREEMENT_URL } from 'react-native-dotenv';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
-import { TouchableOpacity, Image } from '~components';
+import { TouchableOpacity } from '~components';
 import SignUpForm from './SignUpForm';
+import Background from '../SignIn/Background';
+import Logo from '../SignIn/Logo';
 import { LAUNCH } from '../routeNames';
-import defaultBackground from '../SignIn/defaultBackground.jpg';
-import defaultLogo from '../SignIn/defaultLogo.png';
 
 const Title = connectToStyleSheet('title', Text);
 const TermsContainer = connectToStyleSheet('termsContainer', View);
@@ -22,31 +22,12 @@ const ButtonSignIn = connectToStyleSheet('buttonSignIn', TouchableOpacity);
 const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 
 @styleSheet('Sparkle.SignUpScreen', {
-  background: {
-    ...StyleSheet.absoluteFillObject,
-    height: Dimensions.get('window').height,
-  },
-
-  backgroundShadow: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(46, 46, 46, 0.4)',
-  },
-
   content: {
     alignSelf: 'center',
     width: '100%',
     minWidth: 320,
     paddingBottom: 30,
     paddingHorizontal: '10%',
-  },
-
-  logo: {
-    alignSelf: 'center',
-    width: 48,
-    height: 48,
-    marginTop: 34,
-    marginBottom: 18,
-    borderRadius: 8,
   },
 
   title: {
@@ -116,21 +97,16 @@ export default class SignUpScreen extends Component {
 
   render() {
     const {
-      navigation: { dangerouslyGetParent, goBack, navigate },
+      navigation: { goBack, navigate },
       styleSheet: styles,
     } = this.props;
-    const backgroundUrl = dangerouslyGetParent().getParam('backgroundUrl');
-    const backgroundImage = backgroundUrl ? { uri: backgroundUrl } : defaultBackground;
-    const logoUrl = dangerouslyGetParent().getParam('logoUrl');
-    const logoImage = logoUrl ? { uri: logoUrl } : defaultLogo;
 
     return (
       <Container>
-        <Image style={styles.background} source={backgroundImage} />
-        <View style={styles.backgroundShadow} />
+        <Background />
         <SafeAreaView style={{ flex: 1 }}>
           <Content contentContainerStyle={styles.content}>
-            <Image style={styles.logo} source={logoImage} />
+            <Logo />
             <Title>Please sign up</Title>
             <SignUpForm onSubmit={() => navigate(LAUNCH, { loading: true })} />
             <TermsContainer>
