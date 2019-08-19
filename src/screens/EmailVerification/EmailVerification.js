@@ -5,10 +5,9 @@ import { Query, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { Image, Icon, Spinner, UserUpdateSubscription } from '~components';
+import { Background, Icon, Spinner, UserUpdateSubscription } from '~components';
 import EmailVerificationForm from './EmailVerificationForm';
 import * as routes from '../routeNames';
-import defaultBackground from '../SignIn/defaultBackground.jpg';
 
 const meQuery = gql`
   query meQuery {
@@ -157,8 +156,7 @@ export default class EmailVerificationScreen extends Component {
 
           return (
             <Container>
-              <Image style={styles.background} source={defaultBackground} />
-              <View style={styles.backgroundShadow} />
+              <Background />
               <SafeAreaView style={{ flex: 1 }}>
                 <Content style={styles.content}>
                   <View style={styles.header}>

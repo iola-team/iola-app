@@ -4,10 +4,8 @@ import { Container, Content, Text, View } from 'native-base';
 import { LICENSE_AGREEMENT_URL } from 'react-native-dotenv';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
-import { TouchableOpacity } from '~components';
+import { Background, Logo, TouchableOpacity } from '~components';
 import SignUpForm from './SignUpForm';
-import Background from '../SignIn/Background';
-import Logo from '../SignIn/Logo';
 import { LAUNCH } from '../routeNames';
 
 const Title = connectToStyleSheet('title', Text);

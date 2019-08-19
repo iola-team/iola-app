@@ -4,13 +4,11 @@ import { Button, Content as ContentNB, Container, Text, Toast, View } from 'nati
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
-import defaultBackground from '../SignIn/defaultBackground.jpg';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
-import { Image, Icon, TouchableOpacity } from '~components';
+import { Background, Icon, TouchableOpacity } from '~components';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
-const Background = connectToStyleSheet('background', Image).withProps({ source: defaultBackground });
 const Content = connectToStyleSheet('content', ContentNB);
 const Header = connectToStyleSheet('header', View);
 const LockIcon = connectToStyleSheet('lockIcon', Icon).withProps({ name: 'lock' });
@@ -23,16 +21,6 @@ const SignInLinkText = connectToStyleSheet('signInLinkText', Text);
 const SignInButton = connectToStyleSheet('signInButton', Button);
 
 @styleSheet('Sparkle.ForgotPasswordScreen', {
-  background: {
-    ...StyleSheet.absoluteFillObject,
-    height: Dimensions.get('window').height,
-  },
-
-  backgroundShadow: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(46, 46, 46, 0.4)',
-  },
-
   content: {
     flex: 1,
     alignSelf: 'center',
@@ -176,7 +164,6 @@ export default class ForgotPasswordScreen extends Component {
   }
 
   render() {
-    const { styleSheet: styles } = this.props;
     const { email, emailWasSent } = this.state;
     const defaultLogin = get(this.props, 'navigation.state.params.defaultLogin');
     const defaultEmail = /^.+@.+\..+$/.test(defaultLogin) ? defaultLogin : '';
@@ -184,7 +171,6 @@ export default class ForgotPasswordScreen extends Component {
     return (
       <Container>
         <Background />
-        <View style={styles.backgroundShadow} />
         <SafeAreaView style={{ flex: 1 }}>
           <Content>
             <Header>

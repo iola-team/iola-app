@@ -3,10 +3,9 @@ import { SafeAreaView } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
+import { Background, Logo } from '~components';
 import * as routes from '../routeNames';
 import SignInForm from './SignInForm';
-import Background from './Background';
-import Logo from './Logo';
 
 @styleSheet('Sparkle.SignInScreen', {
   content: {

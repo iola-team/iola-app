@@ -6,7 +6,7 @@ import { View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import { Image } from '~components';
-import defaultBackground from './defaultBackground.jpg';
+import backgroundImage from './background.jpg';
 
 @graphql(gql`
   query {
@@ -36,7 +36,7 @@ export default class Background extends Component {
       },
       styleSheet: styles,
     } = this.props;
-    const source = backgroundUrl ? { uri: backgroundUrl } : defaultBackground;
+    const source = backgroundUrl ? { uri: backgroundUrl } : backgroundImage;
 
     return (
       <>

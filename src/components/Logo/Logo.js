@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
 import { Image } from '~components';
-import defaultLogo from './defaultLogo.png';
+import logoImage from './logo.png';
 
 @graphql(gql`
   query {
@@ -33,7 +33,7 @@ export default class Logo extends Component {
       },
       styleSheet: styles,
     } = this.props;
-    const source = logoUrl ? { uri: logoUrl } : defaultLogo;
+    const source = logoUrl ? { uri: logoUrl } : logoImage;
 
     return <Image style={styles.logo} source={source} />;
   }
