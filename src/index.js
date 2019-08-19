@@ -21,8 +21,8 @@ import { Theme, ConfigurableTheme } from '~theme';
 import Application from '~application';
 import { Root, ErrorBoundary } from '~components';
 import Storybook from '~storybook/UI';
-import SplashBackground from '~screens/Launch/SplashBackground';
-import LoadingBackground from '~screens/Launch/LoadingBackground';
+import Splash from '~screens/Launch/Splash';
+import Loading from '~screens/Loading';
 import WebsiteURLScreen from '~screens/WebsiteURL/WebsiteURL';
 /* eslint-enable */
 
@@ -93,7 +93,7 @@ class ApplicationRoot extends Component {
 
   render() {
     const { isReady, initWasLaunched, initWasTriggeredManually } = this.state;
-    const LoadingScreenComponent = initWasTriggeredManually ? <LoadingBackground /> : <SplashBackground />;
+    const LoadingScreenComponent = initWasTriggeredManually ? <Loading /> : <Splash />;
     const displayOnNotReady = (initWasLaunched)
       ? LoadingScreenComponent
       /**

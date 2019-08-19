@@ -1,24 +1,13 @@
 import React, { Component } from 'react';
-import { SafeAreaView, StyleSheet, Dimensions } from 'react-native';
-import { Button, Container, Content, Text, H1, View } from 'native-base';
+import { SafeAreaView } from 'react-native';
+import { Button, Container, Content, Text, H1 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { Icon, Image } from '~components';
-import SignInForm from './SignInForm';
+import { Background, Icon, Logo } from '~components';
 import * as routes from '../routeNames';
-import imageBackground from './background.jpg'; // @TODO: Make it dynamic with admin plugin
+import SignInForm from './SignInForm';
 
 @styleSheet('Sparkle.SignInScreen', {
-  background: {
-    ...StyleSheet.absoluteFillObject,
-    height: Dimensions.get('window').height,
-  },
-
-  backgroundShadow: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(46, 46, 46, 0.4)',
-  },
-
   content: {
     alignSelf: 'center',
     flex: 1,
@@ -29,7 +18,7 @@ import imageBackground from './background.jpg'; // @TODO: Make it dynamic with a
   },
 
   title: {
-    marginVertical: 34,
+    marginBottom: 34,
     alignSelf: 'center',
     fontSize: 30,
     color: '#FFFFFF',
@@ -93,18 +82,16 @@ export default class SignInScreen extends Component {
 
     return (
       <Container>
-        <Image style={styles.background} source={imageBackground} />
-        <View style={styles.backgroundShadow} />
+        <Background />
         <SafeAreaView style={{ flex: 1 }}>
           <Content contentContainerStyle={styles.content}>
+            <Logo />
             <H1 style={styles.title}>Sign in</H1>
-
             <SignInForm
               defaultEmail={this.state.defaultEmail}
               onSubmit={(values, formikBag) => this.onSubmit(values, formikBag)}
               onForgotPassword={login => this.onForgotPassword(login)}
             />
-
             <Button
               style={styles.button}
               onPress={() => navigate(routes.SIGN_UP)}
@@ -114,7 +101,6 @@ export default class SignInScreen extends Component {
             >
               <Text>Sign up</Text>
             </Button>
-
             <Button style={styles.changeWebsiteURLbutton} onPress={onApplicationReset} block bordered light>
               <Icon name="back" style={styles.icon} />
               <Text>Change Website URL</Text>

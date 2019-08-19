@@ -1,4 +1,5 @@
 import AvatarEdit from './AvatarEdit';
+import Background from './Background';
 import BackButton from './BackButton';
 import BottomTabBar from './BottomTabBar';
 import BarBackgroundView from './BarBackgroundView';
@@ -21,6 +22,7 @@ import ImagePicker from './ImagePicker';
 import ImageProgress from './ImageProgress';
 import ImageView from './ImageView';
 import KeyboardAvoidingView from './KeyboardAvoidingView';
+import Logo from './Logo';
 import LogoutButton from './LogoutButton';
 import NoContent from './NoContent';
 import PhotoEdit from './PhotoEdit';
@@ -55,6 +57,7 @@ import PhotoActions from './PhotoActions';
 
 export {
   AvatarEdit,
+  Background,
   BackButton,
   BarBackgroundView,
   Chat,
@@ -75,6 +78,7 @@ export {
   ImageProgress,
   ImageView,
   KeyboardAvoidingView,
+  Logo,
   LogoutButton,
   NoContent,
   PhotoEdit,

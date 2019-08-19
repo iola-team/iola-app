@@ -4,7 +4,7 @@ import { Container, View } from 'native-base';
 import { withStyle } from '~theme';
 import { Spinner } from '~components';
 
-@withStyle('Sparkle.LoadingBackground', {
+@withStyle('Sparkle.LoadingScreen', {
   'NativeBase.Container': {
     'NativeBase.ViewNB': {
       flex: 1,
@@ -18,7 +18,7 @@ import { Spinner } from '~components';
     },
   },
 })
-export default class LoadingBackground extends Component {
+export default class LoadingScreen extends Component {
   render() {
     return (
       <Container>

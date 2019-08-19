@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { ImageBackground, SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { Container, Text, View } from 'native-base';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { Icon, LogoutButton, UserUpdateSubscription } from '~components';
+import { Background, Icon, LogoutButton, UserUpdateSubscription } from '~components';
 import * as routes from '../routeNames';
-import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
 
 const meQuery = gql`
   query meQuery {
@@ -81,22 +80,20 @@ export default class EmailVerificationScreen extends Component {
 
     return (
       <Container>
-        <ImageBackground style={styles.background} source={imageBackground}>
-          <View style={styles.backgroundShadow} />
-          <SafeAreaView style={{ flex: 1 }}>
-            <View style={styles.content}>
-              <View style={styles.header}>
-                <Icon style={styles.icon} name="envelope" />
-                <Text style={styles.title}>Account Pending Approval</Text>
-                <Text style={styles.description}>
-                  Your account is currently pending approval.{'\n'}
-                  Please wait until the review is completed by administration.
-                </Text>
-              </View>
-              <LogoutButton button bordered />
+        <Background />
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={styles.content}>
+            <View style={styles.header}>
+              <Icon style={styles.icon} name="envelope" />
+              <Text style={styles.title}>Account Pending Approval</Text>
+              <Text style={styles.description}>
+                Your account is currently pending approval.{'\n'}
+                Please wait until the review is completed by administration.
+              </Text>
             </View>
-          </SafeAreaView>
-        </ImageBackground>
+            <LogoutButton button bordered />
+          </View>
+        </SafeAreaView>
         <Query query={meQuery}>
           {({ data: { me }, loading }) => !loading && (
             <UserUpdateSubscription userId={me.id} onSubscriptionData={this.onUserUpdate} />
