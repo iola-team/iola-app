@@ -17,7 +17,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import RNRestart from 'react-native-restart';
 
 import createApiClient from '~graph';
-import Theme from '~theme';
+import { Theme, ConfigurableTheme } from '~theme';
 import Application from '~application';
 import { Root, ErrorBoundary } from '~components';
 import Storybook from '~storybook/UI';
@@ -78,6 +78,7 @@ class ApplicationRoot extends Component {
 
   onApplicationReset = async () => {
     try {
+      this.apiClient.clearStore();
       await AsyncStorage.removeItem('platformURL');
       this.setState({ isReady: false, initWasLaunched: false });
     } catch (error) {
@@ -86,6 +87,7 @@ class ApplicationRoot extends Component {
   };
 
   onError = () => {
+    SplashScreen.hide();
     this.apiClient.clearStore();
   };
 
@@ -99,27 +101,25 @@ class ApplicationRoot extends Component {
        */
       : <WebsiteURLScreen onSubmit={this.init} />;
 
-    return (
-      <Theme>
-        {isReady ? (
-          <ApolloProvider client={this.apiClient}>
-            <ErrorBoundary
-              onError={this.onError}
-              onRequestRelaunch={this.onRequestRelaunch}
-              onReportPress={this.onReportPress}
-            >
-              <Root>
-                <Application
-                  onReady={this.onApplicationReady}
-                  onReset={this.onApplicationReset}
-                  initWasTriggeredManually={initWasTriggeredManually}
-                />
-              </Root>
-            </ErrorBoundary>
-          </ApolloProvider>
-        ) : displayOnNotReady}
-      </Theme> 
-    );
+    return isReady ? (
+      <ApolloProvider client={this.apiClient}>
+        <ConfigurableTheme>
+          <ErrorBoundary
+            onError={this.onError}
+            onRequestRelaunch={this.onRequestRelaunch}
+            onReportPress={this.onReportPress}
+          >
+            <Root>
+              <Application
+                onReady={this.onApplicationReady}
+                onReset={this.onApplicationReset}
+                initWasTriggeredManually={initWasTriggeredManually}
+              />
+            </Root>
+          </ErrorBoundary>
+        </ConfigurableTheme>
+      </ApolloProvider>
+    ) : <Theme>{displayOnNotReady}</Theme>;
   }
 }
 

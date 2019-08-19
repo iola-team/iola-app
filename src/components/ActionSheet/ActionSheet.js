@@ -1,13 +1,14 @@
 import React, { Component, forwardRef } from 'react';
 import { noop } from 'lodash';
 import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
 import ActionSheetRN from 'react-native-actionsheet';
 
 import { withStyleSheet } from '~theme';
 
 /**
  * TODO: Get rid of this ugly lib... Find better one or write own
- * 
+ *
  * Available styles:
  * https://github.com/beefe/react-native-actionsheet/blob/master/lib/styles.js
  */
@@ -20,9 +21,15 @@ const StyledActionSheet = withStyleSheet('Sparkle.ActionSheet', {
   body: {
     backgroundColor: 'transparent',
   },
-})(forwardRef(({ styleSheet, ...props }, ref) => (
-  <ActionSheetRN {...props} styles={styleSheet} ref={ref} />
-)));
+
+  buttonText: {
+    color: '#5259FF',
+  },
+})(forwardRef(({ styleSheet, ...props }, ref) => {
+  const { color } = StyleSheet.flatten(styleSheet.buttonText);
+
+  return <ActionSheetRN {...props} tintColor={color} styles={styleSheet} ref={ref} />;
+}));
 
 export default class ActionSheet extends Component {
   static propTypes = {
@@ -56,7 +63,7 @@ export default class ActionSheet extends Component {
   };
 
   render() {
-    const { children, styleSheet, ...props } = this.props;
+    const { children, ...props } = this.props;
 
     return (
       <>
@@ -65,7 +72,7 @@ export default class ActionSheet extends Component {
         <StyledActionSheet
           {...props}
 
-          styles={styleSheet}
+          tintColor="#000000"
           onPress={this.onPress}
           ref={this.setActionSheet}
         />

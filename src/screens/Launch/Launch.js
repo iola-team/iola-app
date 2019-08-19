@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import FastImage from 'react-native-fast-image';
 import { get } from 'lodash';
 
+import { withStyleSheet as styleSheet, ConfigurableTheme } from '~theme';
 import { withStyleSheet as styleSheet } from '~theme';
 import Splash from './Splash';
 import Loading from '../Loading';
@@ -16,9 +17,10 @@ const initQuery = gql`
       userApproveIsRequired
       backgroundUrl
       logoUrl
-      primaryColor
+
+      ...ConfigurableTheme_variables
     }
-    
+
     me {
       id
       name
@@ -26,11 +28,13 @@ const initQuery = gql`
       isApproved
     }
   }
+
+  ${ConfigurableTheme.fragments.variables}
 `;
 
 @graphql(initQuery, {
   options: {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
   },
 })
 @styleSheet('Sparkle.LaunchScreen')

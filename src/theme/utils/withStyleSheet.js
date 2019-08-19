@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { isArray, identity } from 'lodash';
 import { compose, getDisplayName } from 'recompose';
 import hoistNonReactStatic from 'hoist-non-react-statics';
-import { connectStyle } from 'native-base';
+import { connectStyle } from 'native-base-shoutem-theme';
 import mapPropsToStyleNames from 'native-base/src/utils/mapPropsToStyleNames';
 
 import normalizeStyle from './normalizeStyle';

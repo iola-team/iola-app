@@ -27,7 +27,7 @@ import TouchableOpacity from '../TouchableOpacity';
       },
     },
 
-    '.primary': {
+    '.active': {
       'NativeBase.ViewNB': {
         '.indicator': {
           alignSelf: 'stretch',
@@ -38,13 +38,11 @@ import TouchableOpacity from '../TouchableOpacity';
 
         'NativeBase.Text': {
           fontWeight: '600',
-          color: '#5259FF',
         },
 
         'Sparkle.TabBarLabel': {
           'NativeBase.Text': {
             fontWeight: '600',
-            color: '#5259FF',
           },
         },
       },
@@ -66,7 +64,7 @@ export default class TabBar extends Component {
     return (
       <TouchableOpacity
         key={route.key}
-        primary={focused}
+        active={focused}
         onPress={() => onTabPress({ route })}
       >
         <View label>
