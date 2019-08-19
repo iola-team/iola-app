@@ -10,11 +10,6 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { FormTextInput, Spinner } from '~components';
 import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
 
-/**
- * TODO: Remove after `Beta 1`
- */
-const lockedUrl = 'demo.iola.app/oxwall';
-
 @styleSheet('Sparkle.WebsiteURLForm', {
   row: {
     flexDirection: 'row',
@@ -125,7 +120,6 @@ class WebsiteURLForm extends Component {
             </Text>
           </View>
           <FormTextInput
-            disabled={!!lockedUrl}
             name="url"
             placeholder="Enter website URL address"
             textContentType="URL"
@@ -148,14 +142,6 @@ class WebsiteURLForm extends Component {
           {isSubmitting && <Spinner />}
         </Button>
 
-        {lockedUrl && (
-          <Text style={[styles.error, { marginHorizontal: 10 }]}>
-            Changing website URL is disabled for
-            <Text style={{ fontSize: 13, fontWeight: 'bold', color: '#FFFFFF' }}> Beta 1 </Text>
-            testing period.
-          </Text>
-        )}
-
         {!isValidURL && (
           <Text style={styles.error}>
             Please make sure the website URL address you have entered supports iola.
@@ -173,7 +159,7 @@ const validationSchema = yup.object().shape({
 });
 
 export default withFormik({
-  mapPropsToValues: () => ({ url: __DEV__ ? 'DEV_PLATFORM_URL' : lockedUrl }),
+  mapPropsToValues: () => ({ url: __DEV__ ? 'DEV_PLATFORM_URL' : '' }),
   handleSubmit: (values, { props }) => props.onSubmit(values),
   validationSchema,
 })(WebsiteURLForm);

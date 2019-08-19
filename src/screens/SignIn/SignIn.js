@@ -3,13 +3,14 @@ import { SafeAreaView } from 'react-native';
 import { Button, Container, Content, Text, H1 } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { Background, Logo } from '~components';
+import { Background, Icon, Logo } from '~components';
 import * as routes from '../routeNames';
 import SignInForm from './SignInForm';
 
 @styleSheet('Sparkle.SignInScreen', {
   content: {
     alignSelf: 'center',
+    flex: 1,
     width: '100%',
     minWidth: 320,
     paddingHorizontal: '10%',
@@ -25,6 +26,18 @@ import SignInForm from './SignInForm';
 
   button: {
     marginTop: 8,
+    marginBottom: 'auto',
+  },
+
+  changeWebsiteURLbutton: {
+    marginTop: 8,
+    paddingLeft: 25,
+  },
+
+  icon: {
+    position: 'absolute',
+    left: -3,
+    fontSize: 18,
   },
 })
 export default class SignInScreen extends Component {
@@ -88,7 +101,8 @@ export default class SignInScreen extends Component {
             >
               <Text>Sign up</Text>
             </Button>
-            <Button style={styles.button} onPress={onApplicationReset} block bordered light>
+            <Button style={styles.changeWebsiteURLbutton} onPress={onApplicationReset} block bordered light>
+              <Icon name="back" style={styles.icon} />
               <Text>Change Website URL</Text>
             </Button>
           </Content>

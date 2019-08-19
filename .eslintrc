@@ -56,6 +56,9 @@
           ".js",
           ".json"
         ]
+      },
+      "node": {
+        "extensions": [".js", ".jsx", ".json", ".native.js"]
       }
     }
   },
