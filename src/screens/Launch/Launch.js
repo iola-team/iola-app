@@ -5,7 +5,6 @@ import FastImage from 'react-native-fast-image';
 import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet, ConfigurableTheme } from '~theme';
-import { withStyleSheet as styleSheet } from '~theme';
 import Splash from './Splash';
 import Loading from '../Loading';
 import * as routes from '../routeNames';
