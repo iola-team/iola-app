@@ -1,4 +1,4 @@
-import { connectStyle } from 'native-base';
+import { connectStyle } from 'native-base-shoutem-theme';
 import { withProps, compose, toClass, hoistStatics } from 'recompose';
 
 import mapPropsToStyleNames from 'native-base/src/utils/mapPropsToStyleNames';

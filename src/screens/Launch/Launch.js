@@ -3,7 +3,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { get } from 'lodash';
 
-import { withStyleSheet as styleSheet } from '~theme';
+import { withStyleSheet as styleSheet, ConfigurableTheme } from '~theme';
 import * as routes from '../routeNames';
 import LoadingBackground from './LoadingBackground';
 import SplashBackground from './SplashBackground';
@@ -13,8 +13,10 @@ const initQuery = gql`
     config {
       emailConfirmIsRequired
       userApproveIsRequired
+
+      ...ConfigurableTheme_variables
     }
-    
+
     me {
       id
       name
@@ -22,11 +24,13 @@ const initQuery = gql`
       isApproved
     }
   }
+
+  ${ConfigurableTheme.fragments.variables}
 `;
 
 @graphql(initQuery, {
   options: {
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'network-only',
   },
 })
 @styleSheet('Sparkle.LaunchScreen')
