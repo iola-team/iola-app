@@ -434,10 +434,35 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.TabBar': {},
+    'Sparkle.TabBar': {
+      'Sparkle.TouchableOpacity': {
+        'NativeBase.ViewNB': {
+          '.label': {
+            'NativeBase.Text': {
+              color: variables.brandPrimary,
+            },
+          },
+        },
+
+        '.active': {
+          'NativeBase.ViewNB': {
+            '.indicator': {
+              backgroundColor: variables.brandPrimary,
+            },
+          },
+        },
+      },
+    },
+
     'Sparkle.BottomTabBar': {
       activeTintColor: variables.brandPrimary,
       inactiveTintColor: variables.toolbarBtnTextColor,
+    },
+
+    'Sparkle.TabBarLabel': {
+      'NativeBase.Text': {
+        color: variables.brandPrimary,
+      },
     },
 
     'Sparkle.ChatFooter': {
@@ -673,6 +698,18 @@ export default (variables => ({
 
     'Sparkle.Image': {
       backgroundColor: variables.placeholderColor,
+    },
+
+    'Sparkle.ListPicker': {
+      selectedColor: {
+        color: variables.brandPrimary,
+      },
+    },
+
+    'Sparkle.ActionSheet': {
+      buttonText: {
+        color: variables.brandPrimary,
+      },
     },
   }),
 }));
