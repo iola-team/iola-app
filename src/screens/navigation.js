@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { useScreens } from 'react-native-screens';
 import {
   createBottomTabNavigator,
@@ -22,6 +21,7 @@ import PendingApproval from './PendingApproval';
 import EmailVerification from './EmailVerification';
 import ForgotPassword from './ForgotPassword';
 import Launch from './Launch';
+import Loading from './Loading';
 import MyFriends from './MyFriends';
 import MyInfo from './MyInfo';
 import MyPhotos from './MyPhotos';
@@ -144,6 +144,13 @@ const RootNavigator = createSwitchNavigator({
 
   [routes.LAUNCH]: {
     screen: Launch,
+    defaultNavigationOptions: {
+      header: null,
+    },
+  },
+
+  [routes.LOADING]: {
+    screen: Loading,
     defaultNavigationOptions: {
       header: null,
     },

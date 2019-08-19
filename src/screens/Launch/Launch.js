@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import FastImage from 'react-native-fast-image';
 import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet } from '~theme';
+import Splash from './Splash';
+import Loading from '../Loading';
 import * as routes from '../routeNames';
-import LoadingBackground from './LoadingBackground';
-import SplashBackground from './SplashBackground';
 
 const initQuery = gql`
   query {
     config {
       emailConfirmIsRequired
       userApproveIsRequired
+      backgroundUrl
+      logoUrl
+      primaryColor
     }
     
     me {
@@ -31,11 +35,23 @@ const initQuery = gql`
 })
 @styleSheet('Sparkle.LaunchScreen')
 export default class LaunchScreen extends Component {
-  componentDidUpdate(nextProps, prevState) {
+  async componentDidUpdate(nextProps, prevState) {
     const { data, navigation: { navigate } } = this.props;
 
     if (!data.loading) {
-      const { config: { emailConfirmIsRequired, userApproveIsRequired }, me } = data;
+      const {
+        me,
+        config: {
+          emailConfirmIsRequired,
+          userApproveIsRequired,
+          backgroundUrl,
+          logoUrl,
+          primaryColor, // caching
+        },
+      } = data;
+      const images = [backgroundUrl, logoUrl].filter(Boolean).map(uri => ({ uri }));
+
+      await FastImage.preload(images);
 
       if (!me) {
         navigate(routes.AUTHENTICATION);
@@ -63,6 +79,6 @@ export default class LaunchScreen extends Component {
     const { screenProps: { applicationInitWasTriggeredManually } } = this.props;
     const loading = applicationInitWasTriggeredManually || get(this.props, 'navigation.state.params.loading', false);
 
-    return loading ? <LoadingBackground /> : <SplashBackground />;
+    return loading ? <Loading /> : <Splash />;
   }
 }

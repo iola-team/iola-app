@@ -21,10 +21,12 @@ export default class LogoutButton extends Component {
   logout = async () => {
     const { mutate, navigation: { navigate }, client } = this.props;
 
-    navigate(routes.SIGN_IN);
+    navigate(routes.LOADING);
 
     await mutate();
     await client.resetStore();
+
+    navigate(routes.LAUNCH, { loading: true });
   };
 
   render() {

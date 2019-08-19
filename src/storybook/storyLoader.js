@@ -8,6 +8,7 @@ function loadStories() {
   require('../components/ActionSheet/ActionSheet.stories');
   require('../components/AvatarInput/AvatarInput.stories');
   require('../components/Backdrop/Backdrop.stories');
+  require('../components/Background/Background.stories');
   require('../components/Chat/Chat.stories');
   require('../components/ChatFooter/ChatFooter.stories');
   require('../components/ChatListItem/ChatListItem.stories');
@@ -33,6 +34,7 @@ function loadStories() {
   require('../components/ImageProgress/ImageProgress.stories');
   require('../components/ImageView/ImageView.stories');
   require('../components/ListPicker/ListPicker.stories');
+  require('../components/Logo/Logo.stories');
   require('../components/MessageItem/MessageItem.stories');
   require('../components/MessageList/MessageList.stories');
   require('../components/MessageStateIndicator/MessageStateIndicator.stories');
@@ -79,6 +81,7 @@ const stories = [
   '../components/ActionSheet/ActionSheet.stories',
   '../components/AvatarInput/AvatarInput.stories',
   '../components/Backdrop/Backdrop.stories',
+  '../components/Background/Background.stories',
   '../components/Chat/Chat.stories',
   '../components/ChatFooter/ChatFooter.stories',
   '../components/ChatListItem/ChatListItem.stories',
@@ -104,6 +107,7 @@ const stories = [
   '../components/ImageProgress/ImageProgress.stories',
   '../components/ImageView/ImageView.stories',
   '../components/ListPicker/ListPicker.stories',
+  '../components/Logo/Logo.stories',
   '../components/MessageItem/MessageItem.stories',
   '../components/MessageList/MessageList.stories',
   '../components/MessageStateIndicator/MessageStateIndicator.stories',

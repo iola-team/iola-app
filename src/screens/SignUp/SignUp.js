@@ -1,18 +1,14 @@
 import React, { Component } from 'react';
-import { Linking, SafeAreaView, StyleSheet, Dimensions } from 'react-native';
+import { Linking, SafeAreaView } from 'react-native';
 import { Container, Content, Text, View } from 'native-base';
 import { LICENSE_AGREEMENT_URL } from 'react-native-dotenv';
 
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
-import { TouchableOpacity, Image } from '~components';
+import { Background, Logo, TouchableOpacity } from '~components';
 import SignUpForm from './SignUpForm';
 import { LAUNCH } from '../routeNames';
-import imageBackground from '../SignIn/background.jpg'; // TODO: Make it dynamic with admin plugin
 
 const Title = connectToStyleSheet('title', Text);
-const Background = connectToStyleSheet('background', Image).withProps({
-  source: imageBackground,
-});
 const TermsContainer = connectToStyleSheet('termsContainer', View);
 const TermsText = connectToStyleSheet('termsText', Text);
 const TermsSubcontainer = connectToStyleSheet('termsSubcontainer', View);
@@ -24,16 +20,6 @@ const ButtonSignIn = connectToStyleSheet('buttonSignIn', TouchableOpacity);
 const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 
 @styleSheet('Sparkle.SignUpScreen', {
-  background: {
-    ...StyleSheet.absoluteFillObject,
-    height: Dimensions.get('window').height,
-  },
-
-  backgroundShadow: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(46, 46, 46, 0.4)',
-  },
-
   content: {
     alignSelf: 'center',
     width: '100%',
@@ -43,7 +29,7 @@ const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
   },
 
   title: {
-    marginVertical: 34,
+    marginBottom: 34,
     alignSelf: 'center',
     fontSize: 30,
     color: '#FFFFFF',
@@ -116,13 +102,11 @@ export default class SignUpScreen extends Component {
     return (
       <Container>
         <Background />
-        <View style={styles.backgroundShadow} />
         <SafeAreaView style={{ flex: 1 }}>
           <Content contentContainerStyle={styles.content}>
+            <Logo />
             <Title>Please sign up</Title>
-
             <SignUpForm onSubmit={() => navigate(LAUNCH, { loading: true })} />
-
             <TermsContainer>
               <TermsText>By signing up, you agree</TermsText>
               <TermsSubcontainer>
@@ -132,7 +116,6 @@ export default class SignUpScreen extends Component {
                 </TermsButton>
               </TermsSubcontainer>
             </TermsContainer>
-
             <AlreadyHaveAnAccountContainer>
               <AlreadyHaveAnAccountText>Already have an account?</AlreadyHaveAnAccountText>
               <ButtonSignIn onPress={() => goBack()}>
