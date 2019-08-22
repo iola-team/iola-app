@@ -14,7 +14,7 @@ import logoImage from './logo.png';
   }
 `, {
   options: {
-    fetchPolicy: 'cache-only',
+    fetchPolicy: 'cache-first',
   },
 })
 @styleSheet('Sparkle.Logo', {

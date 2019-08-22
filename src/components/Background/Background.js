@@ -16,7 +16,7 @@ import backgroundImage from './background.jpg';
   }
 `, {
   options: {
-    fetchPolicy: 'cache-only',
+    fetchPolicy: 'cache-first',
   },
 })
 @styleSheet('Sparkle.Background', {
