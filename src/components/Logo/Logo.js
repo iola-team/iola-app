@@ -12,7 +12,11 @@ import logoImage from './logo.png';
       logoUrl
     }
   }
-`)
+`, {
+  options: {
+    fetchPolicy: 'cache-only',
+  },
+})
 @styleSheet('Sparkle.Logo', {
   logo: {
     alignSelf: 'center',
@@ -25,14 +29,8 @@ import logoImage from './logo.png';
 })
 export default class Logo extends Component {
   render() {
-    const {
-      data: {
-        config: {
-          logoUrl,
-        },
-      },
-      styleSheet: styles,
-    } = this.props;
+    const { data, styleSheet: styles } = this.props;
+    const logoUrl = data?.config.logoUrl;
     const source = logoUrl ? { uri: logoUrl } : logoImage;
 
     return <Image style={styles.logo} source={source} />;

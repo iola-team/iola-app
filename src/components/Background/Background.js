@@ -14,7 +14,11 @@ import backgroundImage from './background.jpg';
       backgroundUrl
     }
   }
-`)
+`, {
+  options: {
+    fetchPolicy: 'cache-only',
+  },
+})
 @styleSheet('Sparkle.Background', {
   background: {
     ...StyleSheet.absoluteFillObject,
@@ -28,14 +32,8 @@ import backgroundImage from './background.jpg';
 })
 export default class Background extends Component {
   render() {
-    const {
-      data: {
-        config: {
-          backgroundUrl,
-        },
-      },
-      styleSheet: styles,
-    } = this.props;
+    const { data, styleSheet: styles } = this.props;
+    const backgroundUrl = data?.config.backgroundUrl;
     const source = backgroundUrl ? { uri: backgroundUrl } : backgroundImage;
 
     return (
