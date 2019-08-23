@@ -6,7 +6,7 @@ import { withStyle } from '~theme';
 
 const GatewayComponent = props => <Fragment {...props} />;
 
-@withStyle('Sparkle.Root')
+@withStyle('iola.Root')
 export default class Root extends Component {
   render() {
     const { style, children } = this.props;

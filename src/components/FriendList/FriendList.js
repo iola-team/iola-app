@@ -24,7 +24,7 @@ const edgeFragment = gql`
   ${UserList.fragments.edge}
 `;
 
-@withStyle('Sparkle.FriendList')
+@withStyle('iola.FriendList')
 export default class FriendList extends Component {
   static fragments = {
     edge: edgeFragment,

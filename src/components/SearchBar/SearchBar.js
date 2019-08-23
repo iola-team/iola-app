@@ -7,7 +7,7 @@ import Icon from '../Icon';
 import Spinner from '../Spinner';
 import TouchableOpacity from '../TouchableOpacity';
 
-@withStyleSheet('Sparkle.SearchBar', {
+@withStyleSheet('iola.SearchBar', {
   root: {
     overflow: 'hidden',
     flex: 1,

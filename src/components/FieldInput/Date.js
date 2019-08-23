@@ -7,7 +7,7 @@ import FieldInput from './FieldInput';
 import DatePicker from '../DatePicker';
 import TouchableOpacity from '../TouchableOpacity';
 
-@withStyleSheet('Sparkle.DateInput')
+@withStyleSheet('iola.DateInput')
 export default class DateInput extends Component {
   state = {
     isPickerVisible: false,

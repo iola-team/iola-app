@@ -81,7 +81,7 @@ const deletePhotoMutation = gql`
   ${userFragment}
 `;
 
-@styleSheet('Sparkle.PhotoEdit', {
+@styleSheet('iola.PhotoEdit', {
   itemContent: {
     flex: 1,
   },

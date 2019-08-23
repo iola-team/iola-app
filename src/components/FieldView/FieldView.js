@@ -5,7 +5,7 @@ import { Label, Body } from 'native-base';
 import { withStyle } from '~theme';
 import FieldItem from '../FieldItem';
 
-@withStyle('Sparkle.FieldView')
+@withStyle('iola.FieldView')
 export default class FieldView extends Component {
   static propTypes = {
     label: PropTypes.string.isRequired,

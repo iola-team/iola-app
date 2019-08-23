@@ -5,7 +5,7 @@ import { withStyleSheet } from '~theme';
 import { USER } from '../routeNames';
 import DashboardAllConnection from './DashboardAllConnection';
 
-@withStyleSheet('Sparkle.DashboardAllScreen', {
+@withStyleSheet('iola.DashboardAllScreen', {
   list: {
     paddingTop: 8,
   },

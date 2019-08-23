@@ -6,14 +6,14 @@ import { Text, View } from 'native-base';
 import { withStyle } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 
-@withStyle('Sparkle.TabBar', {
+@withStyle('iola.TabBar', {
   flexDirection: 'row',
   height: 50,
   alignItems: 'flex-end',
   justifyContent: 'center',
   paddingHorizontal: 50,
 
-  'Sparkle.TouchableOpacity': {
+  'iola.TouchableOpacity': {
     flex: 1,
     alignItems: 'center',
 
@@ -40,7 +40,7 @@ import TouchableOpacity from '../TouchableOpacity';
           fontWeight: '600',
         },
 
-        'Sparkle.TabBarLabel': {
+        'iola.TabBarLabel': {
           'NativeBase.Text': {
             fontWeight: '600',
           },

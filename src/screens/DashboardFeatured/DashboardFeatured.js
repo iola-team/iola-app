@@ -5,7 +5,7 @@ import { withStyleSheet } from '~theme';
 import { USER } from '../routeNames';
 import DashboardFeaturedConnection from './DashboardFeaturedConnection';
 
-@withStyleSheet('Sparkle.DashboardFeaturedScreen', {
+@withStyleSheet('iola.DashboardFeaturedScreen', {
   list: {
     paddingTop: 8,
   },

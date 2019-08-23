@@ -28,8 +28,8 @@ const userFragment = gql`
   ${UserListItem.fragments.user}
 `;
 
-@withStyle('Sparkle.FriendListItem', {
-  'Sparkle.UserListItem': {
+@withStyle('iola.FriendListItem', {
+  'iola.UserListItem': {
     'NativeBase.ListItem': {
       'NativeBase.Right': {
         flexDirection: 'row',

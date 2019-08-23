@@ -6,7 +6,7 @@ import { withStyle } from '~theme';
 import FieldView from './FieldView';
 import TouchableOpacity from '../TouchableOpacity';
 
-@withStyle('Sparkle.TextView')
+@withStyle('iola.TextView')
 export default class TextView extends Component {
   state = {
     isLink: false,

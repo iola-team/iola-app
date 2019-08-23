@@ -21,7 +21,7 @@ const userFragment = gql`
   }
 `;
 
-@styleSheet('Sparkle.DashboardHeading', {
+@styleSheet('iola.DashboardHeading', {
   root: {
     alignSelf: 'stretch',
     alignItems: 'center',

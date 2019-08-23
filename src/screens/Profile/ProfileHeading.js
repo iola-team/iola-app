@@ -18,7 +18,7 @@ const userQuery = gql`
   ${UserHeading.fragments.user}
 `;
 
-@withStyleSheet('Sparkle.ProfileScreenHead', {
+@withStyleSheet('iola.ProfileScreenHead', {
   buttons: {
     flexDirection: 'row',
     width: '100%',

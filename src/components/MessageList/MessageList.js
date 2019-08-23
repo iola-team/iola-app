@@ -20,7 +20,7 @@ const edgeFragment = gql`
   ${MessageItem.fragments.message}
 `;
 
-@withStyle('Sparkle.MessageList', {
+@withStyle('iola.MessageList', {
   paddingHorizontal: 16,
 })
 export default class MessageList extends PureComponent {

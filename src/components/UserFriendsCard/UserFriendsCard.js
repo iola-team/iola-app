@@ -24,7 +24,7 @@ const userFragment = gql`
   ${UserAvatar.fragments.user}
 `;
 
-@styleSheet('Sparkle.UserFriendsCard', {
+@styleSheet('iola.UserFriendsCard', {
   list: {
     flexDirection: 'row',
   },

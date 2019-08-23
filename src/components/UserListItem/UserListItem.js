@@ -25,7 +25,7 @@ const userFragment = gql`
   ${UserHeading.fragments.user}
 `;
 
-@withStyle('Sparkle.UserListItem', {
+@withStyle('iola.UserListItem', {
   'NativeBase.ListItem': {
     'NativeBase.Body': {
       flexDirection: 'row',
@@ -38,7 +38,7 @@ const userFragment = gql`
     },
   },
 
-  'Sparkle.Placeholder': {
+  'iola.Placeholder': {
     'NativeBase.ListItem': {
       'NativeBase.Left': {
         'NativeBase.ViewNB': {

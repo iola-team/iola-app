@@ -7,7 +7,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import TouchableOpacity from '../TouchableOpacity';
 import Icon from '../Icon';
 
-@styleSheet('Sparkle.FormTextInput', {
+@styleSheet('iola.FormTextInput', {
   formItem: {
     positions: 'relative',
     marginBottom: 8,

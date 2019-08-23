@@ -5,8 +5,8 @@ import { Card, CardItem, Text, View } from 'native-base';
 import { withStyle } from '~theme';
 import Placeholder from '../Placeholder';
 
-@withStyle('Sparkle.FieldSection', {
-  'Sparkle.Placeholder': {
+@withStyle('iola.FieldSection', {
+  'iola.Placeholder': {
     'NativeBase.Card': {
       'NativeBase.CardItem': {
         '.header': {

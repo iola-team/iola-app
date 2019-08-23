@@ -6,7 +6,7 @@ import { StyleSheet, StatusBar, Platform } from 'react-native';
 
 import { withStyleSheet } from '~theme';
 
-@withStyleSheet('Sparkle.ConnectivityIndicator', {
+@withStyleSheet('iola.ConnectivityIndicator', {
   root: {
     flex: 1,
   },

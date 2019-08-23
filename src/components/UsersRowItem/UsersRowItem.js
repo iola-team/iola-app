@@ -22,14 +22,14 @@ const userFragment = gql`
   ${UserAvatar.fragments.user}
 `;
 
-@withStyle('Sparkle.UsersRowItem', {
+@withStyle('iola.UsersRowItem', {
   width: 68,
   marginVertical: 5,
 
-  'Sparkle.TouchableOpacity': {
+  'iola.TouchableOpacity': {
     alignItems: 'center',
 
-    'Sparkle.UserAvatar': {
+    'iola.UserAvatar': {
       marginBottom: 6,
     },
 
@@ -45,7 +45,7 @@ const userFragment = gql`
     },
   },
 
-  'Sparkle.Placeholder': {
+  'iola.Placeholder': {
     alignItems: 'center',
 
     'NativeBase.ViewNB': {

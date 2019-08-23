@@ -5,7 +5,7 @@ import { Text, Badge } from 'native-base';
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.TabBarLabel', {
+@withStyle('iola.TabBarLabel', {
   'NativeBase.Text': {
     '.count': {
       marginLeft: 5,

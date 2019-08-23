@@ -16,7 +16,7 @@ const meQuery = gql`
   }
 `;
 
-@styleSheet('Sparkle.PendingApprovalScreen', {
+@styleSheet('iola.PendingApprovalScreen', {
   background: {
     flex: 1,
   },

@@ -6,7 +6,7 @@ import { Text, Badge } from 'native-base';
 import { withStyle } from '~theme';
 import Icon from '../Icon';
 
-@withStyle('Sparkle.TabBarIcon', {
+@withStyle('iola.TabBarIcon', {
   fontSize: 25,
   alignItems: 'center',
   justifyContent: 'center',

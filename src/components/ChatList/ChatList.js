@@ -25,7 +25,7 @@ const edgeFragment = gql`
   ${ChatListItem.fragments.chat}
 `;
 
-@styleSheet('Sparkle.ChatList')
+@styleSheet('iola.ChatList')
 export default class ChatList extends PureComponent {
   static fragments = {
     user: userFragment,

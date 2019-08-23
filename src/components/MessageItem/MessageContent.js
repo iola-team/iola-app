@@ -23,16 +23,16 @@ const messageFragment = gql`
   ${MessageContentImage.fragments.content}
 `;
 
-@withStyle('Sparkle.MessageContent', {
+@withStyle('iola.MessageContent', {
   marginBottom: 5,
   borderRadius: 16,
   overflow: 'hidden',
 
-  'Sparkle.ImageFit': {
+  'iola.ImageFit': {
     marginTop: 5,
   },
 
-  'Sparkle.MessageStatus': {
+  'iola.MessageStatus': {
     position: 'absolute',
     bottom: 10,
     right: 15,

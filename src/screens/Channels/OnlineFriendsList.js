@@ -24,7 +24,7 @@ export default class OnlinFriendsList extends PureComponent {
 
     /**
      * TODO: Temporary solution, till we add online users `graphql` subscriptions
-     * https://gitlab.com/thisissparkle/messenger/issues/337
+     * https://gitlab.com/iola-team/messenger/issues/337
      * 
      */
     navigation.addListener('didFocus', () => {

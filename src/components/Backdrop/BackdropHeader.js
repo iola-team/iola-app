@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 import { withStyleSheet } from '~theme';
 
-@withStyleSheet('Sparkle.BackdropHeader', {
+@withStyleSheet('iola.BackdropHeader', {
   root: {
 
   },
@@ -37,7 +37,7 @@ import { withStyleSheet } from '~theme';
     justifyContent: 'center',
   },
 
-  'Sparkle.TouchableOpacity': {
+  'iola.TouchableOpacity': {
     'NativeBase.Text': {
       fontSize: 14,
     },

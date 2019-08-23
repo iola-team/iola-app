@@ -42,7 +42,7 @@ const createOptimisticEdge = ({ userId, friendId, status = 'PENDING', friendship
   },
 });
 
-@withStyle('Sparkle.FriendsButton', {
+@withStyle('iola.FriendsButton', {
   'NativeBase.Button': {
     '.hasIcon': {
       'NativeBase.Text': {

@@ -19,7 +19,7 @@ import backgroundImage from './background.jpg';
     fetchPolicy: 'cache-first',
   },
 })
-@styleSheet('Sparkle.Background', {
+@styleSheet('iola.Background', {
   background: {
     ...StyleSheet.absoluteFillObject,
     height: Dimensions.get('window').height,

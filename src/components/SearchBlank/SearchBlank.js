@@ -4,7 +4,7 @@ import { View, Text } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 
-@withStyleSheet('Sparkle.SearchBlank', {
+@withStyleSheet('iola.SearchBlank', {
   root: {
     flex: 1,
   },

@@ -18,7 +18,7 @@ const userFragment = gql`
 
 const Root = connectToStyleSheet('root', View);
 
-@styleSheet('Sparkle.ComponentTemplate', {
+@styleSheet('iola.ComponentTemplate', {
   root: {
 
   }

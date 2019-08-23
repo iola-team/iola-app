@@ -24,7 +24,7 @@ const userFragment = gql`
   }
 `;
 
-@styleSheet('Sparkle.UserPhotosCard', {
+@styleSheet('iola.UserPhotosCard', {
   list: {
     height: 208,
     flexDirection: 'column',

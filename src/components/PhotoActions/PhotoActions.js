@@ -8,7 +8,7 @@ import TouchableOpacity from '../TouchableOpacity';
 import Report from '../Report';
 import Icon from '../Icon';
 
-@styleSheet('Sparkle.ImageView', {
+@styleSheet('iola.ImageView', {
   meatballButton: {
     marginRight: 3,
     padding: 15,

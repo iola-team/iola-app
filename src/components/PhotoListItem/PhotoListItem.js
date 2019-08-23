@@ -24,12 +24,12 @@ const createOptimisticPhoto = ({ id, url }) => ({
   thumbnailUrl: url,
 });
 
-@withStyle('Sparkle.PhotoListItem', {
-  'Sparkle.Image': {
+@withStyle('iola.PhotoListItem', {
+  'iola.Image': {
     flex: 1,
   },
 
-  'Sparkle.Placeholder': {
+  'iola.Placeholder': {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#FFFFFF',
   },

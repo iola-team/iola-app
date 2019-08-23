@@ -59,7 +59,7 @@ const valueFragment = gql`
   ${ProfileFieldList.fragments.value}
 `;
 
-@withStyle('Sparkle.ProfileFieldForm')
+@withStyle('iola.ProfileFieldForm')
 export default class ProfileFieldForm extends Component {
   static fragments = {
     field: fieldFragment,

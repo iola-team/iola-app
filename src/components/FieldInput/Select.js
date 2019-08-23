@@ -7,7 +7,7 @@ import FieldInput from './FieldInput';
 import ListPicker from '../ListPicker';
 import TouchableOpacity from '../TouchableOpacity';
 
-@withStyleSheet('Sparkle.SelectInput')
+@withStyleSheet('iola.SelectInput')
 export default class Select extends PureComponent {
   state = {
     isPickerVisible: false,

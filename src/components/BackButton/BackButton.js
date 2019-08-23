@@ -5,7 +5,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import Icon from '../Icon';
 import ScreenHeader from '../ScreenHeader';
 
-@styleSheet('Sparkle.BackButton', {
+@styleSheet('iola.BackButton', {
   button: {
     height: ScreenHeader.HEIGHT,
     width: ScreenHeader.HEIGHT,

@@ -43,9 +43,9 @@ const thumbnailStyle = {
       padding: 3,
       borderRadius: 10,
 
-      'Sparkle.UserOnlineStatus': {
+      'iola.UserOnlineStatus': {
         'NativeBase.ViewNB': {
-          'Sparkle.OnlineStatus': {
+          'iola.OnlineStatus': {
             'NativeBase.ViewNB': {
               width: 14,
               height: 14,
@@ -58,16 +58,16 @@ const thumbnailStyle = {
   },
 };
 
-@withStyle('Sparkle.UserAvatar', {
-  'Sparkle.Placeholder': {
+@withStyle('iola.UserAvatar', {
+  'iola.Placeholder': {
     borderRadius: 8,
 
-    'Sparkle.Thumbnail': {
+    'iola.Thumbnail': {
       opacity: 0,
     },
   },
 
-  'Sparkle.TouchableOpacity': {
+  'iola.TouchableOpacity': {
     ...thumbnailStyle,
   },
 

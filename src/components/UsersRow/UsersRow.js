@@ -21,7 +21,7 @@ const edgeFragment = gql`
   ${UsersRowItem.fragments.user}
 `;
 
-@withStyle('Sparkle.UsersRow', {
+@withStyle('iola.UsersRow', {
   height: 70,
 })
 export default class UsersRow extends PureComponent {

@@ -74,7 +74,7 @@ const recentChatsQuery = gql`
   ${ChatList.fragments.edge}
 `;
 
-@withStyleSheet('Sparkle.ChatSearchScreen', {
+@withStyleSheet('iola.ChatSearchScreen', {
   'NativeBase.Container': {
     backgroundColor: '#FFFFFF',
   },

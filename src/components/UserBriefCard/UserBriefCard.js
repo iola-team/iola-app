@@ -20,7 +20,7 @@ const userFragment = gql`
   }
 `;
 
-@styleSheet('Sparkle.UserBriefCard')
+@styleSheet('iola.UserBriefCard')
 export default class UserBriefCard extends PureComponent {
   static fragments = {
     user: userFragment,
