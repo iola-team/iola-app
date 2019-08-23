@@ -4,9 +4,9 @@ import gql from 'graphql-tag';
 import { withNavigation } from 'react-navigation';
 import { Text } from 'native-base';
 
+import * as routes from '~screens/routeNames';
 import TouchableOpacity from '../TouchableOpacity';
 import ActionSheet from '../ActionSheet';
-import * as routes from '../../screens/routeNames';
 
 @graphql(gql`
   mutation {

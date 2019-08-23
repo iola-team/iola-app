@@ -25,7 +25,6 @@ const userQuery = gql`
   },
 
   button: {
-    height: 50,
     width: '30%',
     alignSelf: 'center',
     marginHorizontal: 5,

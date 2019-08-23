@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import { Linking } from 'react-native';
-import { Button, Text, List, ListItem, Right, Body, Icon } from 'native-base';
+import { Body, Button, Icon, List, ListItem, Right, Text, Toast } from 'native-base';
 import { withNavigation } from 'react-navigation';
 import { graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import { LICENSE_AGREEMENT_URL, PRIVACY_POLICY_URL } from 'react-native-dotenv';
 
 import { withStyleSheet } from '~theme';
+import * as routes from '~screens/routeNames';
 import { ScrollView } from '../TabNavigator';
 import ActionSheet from '../ActionSheet';
-import * as routes from '../../screens/routeNames';
 
 @withStyleSheet('Sparkle.SettingList', {
   button: {
     marginTop: 'auto',
     marginHorizontal: 48,
     marginBottom: 32,
-    height: 50,
   },
 })
 @graphql(gql`
@@ -63,19 +62,25 @@ export default class SettingList extends Component {
 
     navigate(routes.LOADING);
 
-    const { data } = await deleteUser({
-      variables: {
-        id: me.id,
-      },
-    });
+    try {
+      await deleteUser({
+        variables: {
+          id: me.id,
+        },
+      });
 
-    if (data?.deleteUser.deletedId) {
       await client.resetStore();
       navigate(routes.LAUNCH, { loading: true });
-      alert('Your profile was successfully deleted');
-    }
 
-    // TODO: handle the error?
+      Toast.show({
+        text: 'Your profile was successfully deleted',
+        duration: 5000,
+        buttonText: 'Ok',
+        type: 'success',
+      });
+    } catch (error) {
+      // TODO: handle the error?
+    }
   };
 
   render() {
