@@ -1,4 +1,5 @@
-import { graphql, compose } from 'react-apollo';
+import { compose } from 'recompose';
+import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import Screen from './SignIn';
