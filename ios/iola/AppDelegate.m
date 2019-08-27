@@ -24,9 +24,6 @@
   [AppCenterReactNative register];
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
-  [AppCenterReactNative register];
-  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
-  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
 
   NSMutableDictionary *initialProperties = [[NSMutableDictionary alloc] init];
   NSString *isStorybookValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"isStorybook"];
