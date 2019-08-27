@@ -5,8 +5,6 @@ import com.facebook.react.ReactFragmentActivity;
 import com.facebook.react.ReactActivityDelegate;
 
 import org.devio.rn.splashscreen.SplashScreen;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 public class MainActivity extends ReactFragmentActivity {
     @Override
@@ -33,7 +31,6 @@ public class MainActivity extends ReactFragmentActivity {
              *
              * @return Bundle
              */
-            @Nullable
             @Override
             protected Bundle getLaunchOptions() {
                 Bundle bundle = new Bundle();

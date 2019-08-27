@@ -12392,10 +12392,10 @@ react-native-vector-icons@^6.6.0:
     prop-types "^15.6.2"
     yargs "^13.2.2"
 
-react-native-wheel-picker-android@2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-wheel-picker-android/-/react-native-wheel-picker-android-2.0.5.tgz#ab1881640c7c4b64b878e519ea5fe82fbb9bde99"
-  integrity sha512-ee8MLSvFoi0uoy0QEPYSlmpwLYSJ4tBmdXARyj+EAevGB+m4CFqOfD6Ptsl+JtGkoNbXZMIZsdmQASfH8g0/gw==
+react-native-wheel-picker-android@1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/react-native-wheel-picker-android/-/react-native-wheel-picker-android-1.1.6.tgz#d4b9f7cdca7ed2aac4d7ab3b2249913b0a0c6183"
+  integrity sha512-bdKSEknEI7oSTGYOQERkjC/q7OnNqLd3fWn4J3F/L7TllLQBd72yBmRAc6YVsAhrI8hB3xgHj+f06FzIR8KLKQ==
   dependencies:
     moment "2.22.0"
 
