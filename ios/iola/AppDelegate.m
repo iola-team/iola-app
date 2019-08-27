@@ -12,10 +12,19 @@
 #import <React/RCTRootView.h>
 #import <RNSplashScreen.h>
 
+#import <AppCenterReactNativeShared/AppCenterReactNativeShared.h>
+#import <AppCenterReactNative.h>
+#import <AppCenterReactNativeAnalytics.h>
+#import <AppCenterReactNativeCrashes.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [AppCenterReactNative register];
+  [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
+  [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
+
   NSMutableDictionary *initialProperties = [[NSMutableDictionary alloc] init];
   NSString *isStorybookValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"isStorybook"];
   BOOL isStorybook = [isStorybookValue boolValue];
