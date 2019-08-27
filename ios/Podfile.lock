@@ -38,6 +38,8 @@ PODS:
     - React-RCTText (= 0.60.5)
     - React-RCTVibration (= 0.60.5)
     - React-RCTWebSocket (= 0.60.5)
+  - React-ART (0.60.5):
+    - React-Core (= 0.60.5)
   - React-Core (0.60.5):
     - Folly (= 2018.10.22.00)
     - React-cxxreact (= 0.60.5)
@@ -138,6 +140,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - RCTRestart (from `../node_modules/react-native-restart/ios`)
   - React (from `../node_modules/react-native/`)
+  - React-ART (from `../node_modules/react-native/Libraries/ART`)
   - React-Core (from `../node_modules/react-native/React`)
   - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
   - React-DevSupport (from `../node_modules/react-native/React`)
@@ -190,6 +193,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-restart/ios"
   React:
     :path: "../node_modules/react-native/"
+  React-ART:
+    :path: "../node_modules/react-native/Libraries/ART"
   React-Core:
     :path: "../node_modules/react-native/React"
   React-cxxreact:
@@ -259,6 +264,7 @@ SPEC CHECKSUMS:
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   RCTRestart: 3abdd55016c31254b996e0a55cc14cc2544fa3c1
   React: 53c53c4d99097af47cf60594b8706b4e3321e722
+  React-ART: 662252e1a2f87f7d4e56150403040b4cd725c0f9
   React-Core: ba421f6b4f4cbe2fb17c0b6fc675f87622e78a64
   React-cxxreact: 8384287780c4999351ad9b6e7a149d9ed10a2395
   React-DevSupport: 197fb409737cff2c4f9986e77c220d7452cb9f9f
@@ -292,6 +298,6 @@ SPEC CHECKSUMS:
   SDWebImageWebPCoder: 7568737603c50f6237850afedd7e9e28e5917e6b
   yoga: 312528f5bbbba37b4dcea5ef00e8b4033fdd9411
 
-PODFILE CHECKSUM: c2a098804620082d95ecf3a31c2b089da97a95db
+PODFILE CHECKSUM: 4d00051ad2880e9affafa87bc61e94a898c0e7da
 
 COCOAPODS: 1.7.0
