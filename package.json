@@ -29,7 +29,7 @@
     "lint:fix": "eslint --fix \"./src/**/*.js\"; exit 0",
     "tools:generate-component": "generact ./src/components/ComponentTemplate/index.js --root ./src/components/",
     "postinstall": "sh ./scripts/postinstall.sh",
-    "release:build:android": "cd android && ./gradlew assembleApplicationRelease",
+    "release:build:android": "cd android && ./gradlew bundleApplicationRelease",
     "release:test:android": "react-native run-android --variant=applicationRelease",
     "fastlane:ios:beta": "bundle exec fastlane ios beta"
   },
