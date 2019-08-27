@@ -18,7 +18,7 @@ const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode
 }));
 */
 
-@styleSheet('Sparkle.EmailVerificationForm', {
+@styleSheet('iola.EmailVerificationForm', {
   // TODO: Iteration 2 (Email Verification with short code)
   /*
   code: {
@@ -42,9 +42,9 @@ const Code = connectToStyleSheet('code', CodeInput).withProps(({ compareWithCode
   },
   */
 })
-@withStyle('Sparkle.ForgotPasswordForm', {
+@withStyle('iola.ForgotPasswordForm', {
   'NativeBase.Form': {
-    'Sparkle.TouchableOpacity': {
+    'iola.TouchableOpacity': {
       marginTop: 8,
     },
   },

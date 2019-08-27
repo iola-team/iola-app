@@ -6,7 +6,7 @@ import { USER } from '../routeNames';
 import MyFriendsConnection from './MyFriendsConnection';
 import TabBarLabel from './TabBarLabel';
 
-@withStyleSheet('Sparkle.MyFriendsScreen', {
+@withStyleSheet('iola.MyFriendsScreen', {
   list: {
     paddingTop: 8,
   },

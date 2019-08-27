@@ -46,7 +46,7 @@ const recentUsersQuery = gql`
   ${UserList.fragments.edge}
 `;
 
-@withStyleSheet('Sparkle.UserSearchScreen', {
+@withStyleSheet('iola.UserSearchScreen', {
   'NativeBase.Container': {
     backgroundColor: '#FFFFFF',
   },

@@ -5,7 +5,7 @@ import { Container, View } from 'native-base';
 import { withStyleSheet as styleSheet } from '~theme';
 import logo from './logo.png';
 
-@styleSheet('Sparkle.Splash', {
+@styleSheet('iola.Splash', {
   content: {
     flex: 1,
     justifyContent: 'center',

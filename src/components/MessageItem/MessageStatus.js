@@ -7,7 +7,7 @@ import { Text } from 'native-base';
 import { withStyle } from '~theme';
 import MessageStateIndicator from '../MessageStateIndicator';
 
-@withStyle('Sparkle.MessageStatus', {
+@withStyle('iola.MessageStatus', {
   flexDirection: 'row',
   alignItems: 'center',
   height: 20,
@@ -28,7 +28,7 @@ import MessageStateIndicator from '../MessageStateIndicator';
     color: '#FFFFFF',
   },
 
-  'Sparkle.MessageStateIndicator': {
+  'iola.MessageStateIndicator': {
     marginLeft: 5,
   },
 })

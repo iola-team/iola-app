@@ -10,7 +10,7 @@ import TabBarIcon from './TabBarIcon';
 import OnlineFriendsList from './OnlineFriendsList';
 import { CHANNEL, CHAT_SEARCH } from '../routeNames';
 
-@withStyleSheet('Sparkle.ChannelsScreen', {
+@withStyleSheet('iola.ChannelsScreen', {
   headerList: {
     paddingBottom: 15,
 

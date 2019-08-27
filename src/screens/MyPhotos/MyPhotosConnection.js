@@ -51,7 +51,7 @@ const deletePhotoMutation = gql`
   }
 `;
 
-@styleSheet('Sparkle.MyPhotosConnection', {
+@styleSheet('iola.MyPhotosConnection', {
   addButtonIcon: {
     fontSize: 16,
     color: '#FFFFFF',

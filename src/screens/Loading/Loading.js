@@ -4,7 +4,7 @@ import { Container, View } from 'native-base';
 import { withStyle } from '~theme';
 import { Spinner } from '~components';
 
-@withStyle('Sparkle.LoadingScreen', {
+@withStyle('iola.LoadingScreen', {
   'NativeBase.Container': {
     'NativeBase.ViewNB': {
       flex: 1,

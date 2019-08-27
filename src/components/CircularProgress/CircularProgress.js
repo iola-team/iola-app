@@ -14,7 +14,7 @@ const styleSheet = StyleSheet.create({
   },
 });
 
-@withStyle('Sparkle.CircularProgress', {
+@withStyle('iola.CircularProgress', {
   color: '#FFFFFF',
   unfilledColor: 'rgba(255,255,255, 0.3)',
   thickness: 4,

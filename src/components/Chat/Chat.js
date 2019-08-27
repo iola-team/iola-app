@@ -214,7 +214,7 @@ const messageAddSubscription = gql`
 @graphql(markMessagesAsReadMutation, {
   name: 'markMessagesAsRead',
 })
-@styleSheet('Sparkle.Chat', {
+@styleSheet('iola.Chat', {
   root: {
     flex: 1,
   },

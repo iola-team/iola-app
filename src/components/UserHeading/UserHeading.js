@@ -31,7 +31,7 @@ const userFragment = gql`
 
 const headerHeight = 350 + 10;
 
-@withStyleSheet('Sparkle.UserHeading', {
+@withStyleSheet('iola.UserHeading', {
   root: {
     alignItems: 'center',
     overflow: 'hidden',

@@ -29,7 +29,7 @@ const searchHistoryQuery = gql`
   }
 `;
 
-@withStyleSheet('Sparkle.SearchResult', {
+@withStyleSheet('iola.SearchResult', {
   root: {
     flex: 1,
   }

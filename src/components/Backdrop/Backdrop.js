@@ -12,7 +12,7 @@ import KeyboardAvoidingView from '../KeyboardAvoidingView';
 
 const windowHeight = Dimensions.get('window').height;
 
-@styleSheet('Sparkle.Backdrop', {
+@styleSheet('iola.Backdrop', {
   body: {
     marginTop: 'auto',
   },

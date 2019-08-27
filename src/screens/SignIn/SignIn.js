@@ -7,7 +7,7 @@ import { Background, Icon, Logo } from '~components';
 import * as routes from '../routeNames';
 import SignInForm from './SignInForm';
 
-@styleSheet('Sparkle.SignInScreen', {
+@styleSheet('iola.SignInScreen', {
   content: {
     alignSelf: 'center',
     flex: 1,

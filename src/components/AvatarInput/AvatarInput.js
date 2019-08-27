@@ -9,7 +9,7 @@ import Placeholder from '../Placeholder';
 import ActionSheet from '../ActionSheet';
 import Image from '../Image';
 
-@withStyleSheet('Sparkle.AvatarInput', {
+@withStyleSheet('iola.AvatarInput', {
   root: {
     flexDirection: 'row',
   },

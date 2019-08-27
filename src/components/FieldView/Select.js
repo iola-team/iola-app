@@ -5,7 +5,7 @@ import { Text } from 'native-base';
 import { withStyle } from '~theme';
 import FieldView from './FieldView';
 
-@withStyle('Sparkle.SelectView')
+@withStyle('iola.SelectView')
 export default class SelectView extends Component {
   render() {
     const {

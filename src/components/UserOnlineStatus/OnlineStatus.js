@@ -4,7 +4,7 @@ import { View } from 'native-base';
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.OnlineStatus', {
+@withStyle('iola.OnlineStatus', {
   'NativeBase.ViewNB': {
     width: 8,
     height: 8,

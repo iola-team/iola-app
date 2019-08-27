@@ -5,7 +5,7 @@ import { View as ViewRN, StyleSheet } from 'react-native';
 import { withStyle } from '~theme';
 import Icon from '../Icon';
 
-@withStyle('Sparkle.MessageStateIndicator', {
+@withStyle('iola.MessageStateIndicator', {
   height: 8,
   flexDirection: 'row',
   alignItems: 'center',

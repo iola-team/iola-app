@@ -12,7 +12,7 @@ import { withStyleSheet } from '~theme';
  * Available styles:
  * https://github.com/beefe/react-native-actionsheet/blob/master/lib/styles.js
  */
-const StyledActionSheet = withStyleSheet('Sparkle.ActionSheet', {
+const StyledActionSheet = withStyleSheet('iola.ActionSheet', {
   overlay: {
     opacity: 0.49,
     backgroundColor: '#45474F',

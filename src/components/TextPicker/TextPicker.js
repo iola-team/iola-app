@@ -24,7 +24,7 @@ const itemShape = PropTypes.shape({
   value: valueShape,
 });
 
-@styleSheet('Sparkle.TextPicker', {
+@styleSheet('iola.TextPicker', {
   root: {
 
   },

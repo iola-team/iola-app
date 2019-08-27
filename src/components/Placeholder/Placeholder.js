@@ -5,7 +5,7 @@ import * as Animatable from 'react-native-animatable';
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.Placeholder', {
+@withStyle('iola.Placeholder', {
   overflow: 'hidden',
 })
 export default class Placeholder extends Component {

@@ -63,7 +63,7 @@ const chatQuery = gql`
     },
   }),
 })
-@styleSheet('Sparkle.ChannelScreenHeader', {
+@styleSheet('iola.ChannelScreenHeader', {
   avatar: {
     marginHorizontal: 16,
   },

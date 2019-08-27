@@ -13,7 +13,7 @@ const contentFragment = gql`
   }
 `;
 
-@withStyle('Sparkle.MessageContentImage')
+@withStyle('iola.MessageContentImage')
 export default class MessageContentImage extends Component {
   static fragments = {
     content: contentFragment,

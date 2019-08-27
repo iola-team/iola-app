@@ -7,7 +7,7 @@ import { Platform } from 'react-native';
 import { withStyleSheet as styleSheet } from '~theme';
 import Icon from '../Icon';
 
-@styleSheet('Sparkle.ScreenHeader', {
+@styleSheet('iola.ScreenHeader', {
   header: {
     height: 52,
     elevation: 0,

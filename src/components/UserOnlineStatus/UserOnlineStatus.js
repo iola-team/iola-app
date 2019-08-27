@@ -12,7 +12,7 @@ const userFragment = gql`
   }
 `;
 
-@withStyle('Sparkle.UserOnlineStatus')
+@withStyle('iola.UserOnlineStatus')
 export default class UserOnlineStatus extends PureComponent {
   static propTypes = {
     user: fragmentProp(userFragment),

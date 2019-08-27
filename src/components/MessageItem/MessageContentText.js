@@ -14,7 +14,7 @@ const contentFragment = gql`
   }
 `;
 
-@withStyle('Sparkle.MessageContentText', {
+@withStyle('iola.MessageContentText', {
   paddingHorizontal: 15,
   paddingVertical: 10,
   backgroundColor: '#FFFFFF',

@@ -53,7 +53,7 @@ const deleteAvatarMutation = gql`
 @graphql(deleteAvatarMutation, {
   name: 'deleteAvatar',
 })
-@styleSheet('Sparkle.AvatarEdit', {
+@styleSheet('iola.AvatarEdit', {
   root: {}
 })
 export default class AvatarEdit extends PureComponent {

@@ -10,7 +10,7 @@ const priorityMap = {
   'high': FastImage.priority.high,
 };
 
-@withStyle('Sparkle.Image')
+@withStyle('iola.Image')
 export default class Image extends PureComponent {
   static propTypes = {
     source: PropTypes.oneOfType([

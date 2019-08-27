@@ -10,7 +10,7 @@ const Grid = connectToStyleSheet('grid', View);
 const Place = connectToStyleSheet('place', View);
 const List = connectToStyleSheet('list', View);
 
-@styleSheet('Sparkle.PhotoGrid', {
+@styleSheet('iola.PhotoGrid', {
   root: {
     margin: -4,
     flex: 1,

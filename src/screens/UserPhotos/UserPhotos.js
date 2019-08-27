@@ -38,7 +38,7 @@ const deletePhotoMutation = gql`
   }
 `;
 
-@withStyleSheet('Sparkle.UserPhotosScreen', {
+@withStyleSheet('iola.UserPhotosScreen', {
   list: {
     paddingTop: 20,
     paddingHorizontal: 16,

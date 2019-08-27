@@ -36,7 +36,7 @@ const initQuery = gql`
     fetchPolicy: 'network-only',
   },
 })
-@styleSheet('Sparkle.LaunchScreen')
+@styleSheet('iola.LaunchScreen')
 export default class LaunchScreen extends Component {
   async componentDidUpdate(nextProps, prevState) {
     const { data, navigation: { navigate } } = this.props;

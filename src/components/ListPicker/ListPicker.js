@@ -25,7 +25,7 @@ const itemShape = PropTypes.shape({
   value: valueShape,
 });
 
-@styleSheet('Sparkle.ListPicker', {
+@styleSheet('iola.ListPicker', {
   item: {
     marginRight: 20,
   },

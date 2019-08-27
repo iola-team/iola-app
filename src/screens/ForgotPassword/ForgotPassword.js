@@ -20,7 +20,7 @@ const SignInLink = connectToStyleSheet('signInLink', TouchableOpacity);
 const SignInLinkText = connectToStyleSheet('signInLinkText', Text);
 const SignInButton = connectToStyleSheet('signInButton', Button);
 
-@styleSheet('Sparkle.ForgotPasswordScreen', {
+@styleSheet('iola.ForgotPasswordScreen', {
   content: {
     flex: 1,
     alignSelf: 'center',

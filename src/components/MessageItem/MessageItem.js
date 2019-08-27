@@ -25,10 +25,10 @@ const messageFragment = gql`
   ${Avatar.fragments.user}
 `;
 
-@withStyle('Sparkle.MessageItem', {
+@withStyle('iola.MessageItem', {
   flexDirection: 'row',
 
-  'Sparkle.UserAvatar': {
+  'iola.UserAvatar': {
     marginLeft: -48,
     marginRight: 8,
   },
@@ -48,7 +48,7 @@ const messageFragment = gql`
     marginBottom: 15,
   },
 
-  'Sparkle.Placeholder': {
+  'iola.Placeholder': {
     flexDirection: 'row',
     marginBottom: 15,
 

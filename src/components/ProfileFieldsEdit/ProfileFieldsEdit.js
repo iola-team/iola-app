@@ -60,7 +60,7 @@ const saveMutation = gql`
 @graphql(saveMutation, {
   name: 'saveValuesMutation',
 })
-@styleSheet('Sparkle.ProfileFieldsEdit')
+@styleSheet('iola.ProfileFieldsEdit')
 export default class ProfileFieldsEdit extends Component {
   static fragments = {
     user: userFragment,

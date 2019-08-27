@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.BarBackgroundView', {
+@withStyle('iola.BarBackgroundView', {
   flex: 1,
   backgroundColor: '#FFFFFF',
   opacity: 0.98,
