@@ -75,7 +75,7 @@ export default class ForgotPasswordForm extends Component {
   */
 
   render() {
-    const { styleSheet: styles, onSubmit, isSubmitting } = this.props;
+    const { styleSheet: styles, onSubmit, isSubmitting, navigation } = this.props;
 
     return (
       <Form>
@@ -88,11 +88,11 @@ export default class ForgotPasswordForm extends Component {
         />
         */}
 
-        <TouchableOpacity onPress={onSubmit} disabled={isSubmitting} button bordered>
+        <TouchableOpacity button bordered onPress={onSubmit} disabled={isSubmitting}>
           <Text style={styles.buttonText}>Resend the Verification Code</Text>
         </TouchableOpacity>
 
-        <LogoutButton button bordered />
+        <LogoutButton button bordered navigation={navigation} />
       </Form>
     );
   }

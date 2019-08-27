@@ -11,11 +11,11 @@ export default class SettingsScreen extends Component {
   };
 
   render() {
-    const { screenProps } = this.props;
+    const { screenProps, navigation } = this.props;
 
     return (
       <Container>
-        <SettingList contentInset={{ ...screenProps.contentInset, bottom: 0 }} />
+        <SettingList contentInset={{ ...screenProps.contentInset, bottom: 0 }} navigation={navigation} />
       </Container>
     );
   }

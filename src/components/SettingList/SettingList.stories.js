@@ -15,4 +15,10 @@ stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator());
 
 // Stories
-stories.add('Default', () => <SettingList />);
+const mockedNavigation = {
+  navigation: {
+    navigate: () => alert('Navigation action'),
+  },
+};
+
+stories.add('Default', () => <SettingList navigation={mockedNavigation} />);
