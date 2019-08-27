@@ -5,7 +5,7 @@ import { View, StyleSheet } from 'react-native';
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.Shadow', {
+@withStyle('iola.Shadow', {
   shadowColors: ['rgba(211, 213, 222, 0.1)', 'rgba(211, 213, 222, 0)'],
   shadowSpread: 16,
 })

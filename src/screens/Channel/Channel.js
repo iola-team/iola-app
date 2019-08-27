@@ -10,7 +10,7 @@ const propsToVariables = props => ({
   chatId: props.navigation.state.params.chatId,
 });
 
-@styleSheet('Sparkle.ChannelScreen')
+@styleSheet('iola.ChannelScreen')
 export default class Channel extends Component {
   static navigationOptions = (navigationProps) => ({
     title: 'Channel',

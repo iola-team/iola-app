@@ -40,17 +40,17 @@ const chatFragment = gql`
   ${UserAvatar.fragments.user}
 `;
 
-@withStyle('Sparkle.ChatListItem', {
+@withStyle('iola.ChatListItem', {
   'NativeBase.ListItem': {
     'NativeBase.Right': {
-      'Sparkle.MessageStateIndicator': {
+      'iola.MessageStateIndicator': {
         marginTop: 5,
         marginRight: 3,
       },
     },
   },
 
-  'Sparkle.Placeholder': {
+  'iola.Placeholder': {
     'NativeBase.ListItem': {
       height: 72,
 

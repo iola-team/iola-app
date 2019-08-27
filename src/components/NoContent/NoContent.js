@@ -9,7 +9,7 @@ import Icon from '../Icon';
 const AnimatedView = Animated.createAnimatedComponent(View);
 const AnimatedText = Animated.createAnimatedComponent(Text);
 
-@withStyle('Sparkle.NoContent', {
+@withStyle('iola.NoContent', {
   flex: 1,
   alignItems: 'center',
   justifyContent: 'center',

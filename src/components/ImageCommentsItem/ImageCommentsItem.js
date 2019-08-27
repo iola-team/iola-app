@@ -26,7 +26,7 @@ const imageCommentsItemFragment = gql`
   ${UserAvatar.fragments.user}
 `;
 
-@styleSheet('Sparkle.ImageCommentsItem', {
+@styleSheet('iola.ImageCommentsItem', {
   container: {
     flexDirection: 'row',
     marginBottom: 8,

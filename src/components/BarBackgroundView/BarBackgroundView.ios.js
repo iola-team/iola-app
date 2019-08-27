@@ -4,7 +4,7 @@ import { VibrancyView } from "@react-native-community/blur";
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.BarBackgroundView', {
+@withStyle('iola.BarBackgroundView', {
   flex: 1,
   backgroundColor: '#FFFFFF',
   opacity: 0.8,

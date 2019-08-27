@@ -11,7 +11,7 @@ const iconTheme = {
   fontSize: 18,
 };
 
-export default withStyle('Sparkle.FieldItem', {
+export default withStyle('iola.FieldItem', {
   minHeight: 50,
   flex: 1,
   flexDirection: 'row',
@@ -41,7 +41,7 @@ export default withStyle('Sparkle.FieldItem', {
       paddingVertical: 10,
     },
 
-    'Sparkle.TouchableOpacity': {
+    'iola.TouchableOpacity': {
       flex: 1,
 
       'NativeBase.Text': {
@@ -59,7 +59,7 @@ export default withStyle('Sparkle.FieldItem', {
       height: 20,
     },
 
-    'Sparkle.TouchableOpacity': {
+    'iola.TouchableOpacity': {
       'NativeBase.Icon': {
         ...iconTheme,
 

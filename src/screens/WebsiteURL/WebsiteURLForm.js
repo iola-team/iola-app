@@ -10,7 +10,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import { FormTextInput, Spinner } from '~components';
 import { DEV_PLATFORM_URL, INTEGRATION_PATH } from 'react-native-dotenv';
 
-@styleSheet('Sparkle.WebsiteURLForm', {
+@styleSheet('iola.WebsiteURLForm', {
   row: {
     flexDirection: 'row',
   },

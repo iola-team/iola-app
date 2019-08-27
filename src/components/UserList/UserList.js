@@ -19,7 +19,7 @@ const edgeFragment = gql`
   ${UserListItem.fragments.user}
 `;
 
-@withStyleSheet('Sparkle.UserList')
+@withStyleSheet('iola.UserList')
 export default class UserList extends PureComponent {
   static fragments = {
     edge: edgeFragment,

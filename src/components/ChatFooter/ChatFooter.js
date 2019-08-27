@@ -8,7 +8,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import Icon from '../Icon';
 import TouchableOpacity from '../TouchableOpacity';
 
-@styleSheet('Sparkle.ChatFooter', {
+@styleSheet('iola.ChatFooter', {
   root: {
     flexDirection: 'row',
     alignItems: 'center',

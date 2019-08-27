@@ -4,7 +4,7 @@ import { Container } from 'native-base';
 import { withStyleSheet } from '~theme';
 import MyPhotosConnection from './MyPhotosConnection';
 
-@withStyleSheet('Sparkle.MyPhotosScreen', {
+@withStyleSheet('iola.MyPhotosScreen', {
   list: {
     paddingTop: 20,
     paddingHorizontal: 16,

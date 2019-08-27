@@ -5,10 +5,10 @@ import getTheme from 'native-base/src/theme/components';
 export default (variables => ({
   ...variables,
   ...merge(getTheme(variables), {
-    'Sparkle.LoadingScreen': {
+    'iola.LoadingScreen': {
       'NativeBase.Container': {
         'NativeBase.ViewNB': {
-          'Sparkle.Spinner': {
+          'iola.Spinner': {
             color: variables.brandPrimary,
           },
         },
@@ -19,7 +19,7 @@ export default (variables => ({
       backgroundColor: variables.backgroundColor,
     },
 
-    'Sparkle.TouchableOpacity': {
+    'iola.TouchableOpacity': {
       '.disabled': {
         opacity: 0.3,
       },
@@ -96,7 +96,7 @@ export default (variables => ({
       }
     },
 
-    'Sparkle.Thumbnail': {
+    'iola.Thumbnail': {
       width: 40,
       height: 40,
       borderRadius: variables.borderRadiusBase,
@@ -125,7 +125,7 @@ export default (variables => ({
       elevation: 0,
       height: 50,
 
-      'Sparkle.Spinner': {
+      'iola.Spinner': {
         position: 'absolute',
         right: variables.contentPadding,
         color: '#FFFFFF',
@@ -389,11 +389,11 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.Divider': {},
+    'iola.Divider': {},
 
-    'Sparkle.Shadow': {},
+    'iola.Shadow': {},
 
-    'Sparkle.ScreenHeader': {
+    'iola.ScreenHeader': {
       opaque: {
         backgroundColor: variables.foregroundColor,
       },
@@ -412,7 +412,7 @@ export default (variables => ({
         margin: 7,
       },
 
-      'Sparkle.TouchableOpacity': {
+      'iola.TouchableOpacity': {
         paddingHorizontal: variables.contentPadding,
 
         'NativeBase.Text': {
@@ -428,14 +428,14 @@ export default (variables => ({
     },
 
 
-    'Sparkle.SearchBar': {
+    'iola.SearchBar': {
       inputWrap: {
         backgroundColor: variables.toolbarInputColor,
       },
     },
 
-    'Sparkle.TabBar': {
-      'Sparkle.TouchableOpacity': {
+    'iola.TabBar': {
+      'iola.TouchableOpacity': {
         'NativeBase.ViewNB': {
           '.label': {
             'NativeBase.Text': {
@@ -454,18 +454,18 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.BottomTabBar': {
+    'iola.BottomTabBar': {
       activeTintColor: variables.brandPrimary,
       inactiveTintColor: variables.toolbarBtnTextColor,
     },
 
-    'Sparkle.TabBarLabel': {
+    'iola.TabBarLabel': {
       'NativeBase.Text': {
         color: variables.brandPrimary,
       },
     },
 
-    'Sparkle.ChatFooter': {
+    'iola.ChatFooter': {
       root: {
         backgroundColor: variables.foregroundColor,
       },
@@ -479,7 +479,7 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.NoContent': {
+    'iola.NoContent': {
       'NativeBase.ViewNB': {
         backgroundColor: variables.placeholderColor,
       },
@@ -495,8 +495,8 @@ export default (variables => ({
      * Placeholders
      * TODO: Think of a better approach ( more generic - less hardcoded )
      */
-    'Sparkle.ChatListItem': {
-      'Sparkle.Placeholder': {
+    'iola.ChatListItem': {
+      'iola.Placeholder': {
         'NativeBase.ListItem': {
           'NativeBase.Left': {
             'NativeBase.ViewNB': {
@@ -513,8 +513,8 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.FieldSection': {
-      'Sparkle.Placeholder': {
+    'iola.FieldSection': {
+      'iola.Placeholder': {
         'NativeBase.Card': {
           'NativeBase.CardItem': {
             '.header': {
@@ -533,39 +533,39 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.PhotoListItem': {
-      'Sparkle.Placeholder': {
+    'iola.PhotoListItem': {
+      'iola.Placeholder': {
         backgroundColor: variables.placeholderColor,
       },
     },
 
-    'Sparkle.UserAvatar': {
-      'Sparkle.Placeholder': {
+    'iola.UserAvatar': {
+      'iola.Placeholder': {
         backgroundColor: variables.placeholderColor,
       },
     },
 
-    'Sparkle.UserHeading': {
+    'iola.UserHeading': {
       'placeholder': {
         backgroundColor: variables.highlightColor,
       },
 
       'NativeBase.ViewNB': {
-        'Sparkle.UserAvatar': {
-          'Sparkle.Thumbnail': {
-            'Sparkle.Image': {
+        'iola.UserAvatar': {
+          'iola.Thumbnail': {
+            'iola.Image': {
               backgroundColor: variables.highlightColor,
             },
           },
-          'Sparkle.Placeholder': {
+          'iola.Placeholder': {
             backgroundColor: variables.highlightColor,
           },
         },
       },
     },
 
-    'Sparkle.UserListItem': {
-      'Sparkle.Placeholder': {
+    'iola.UserListItem': {
+      'iola.Placeholder': {
         'NativeBase.ListItem': {
           'NativeBase.Left': {
             'NativeBase.ViewNB': {
@@ -582,10 +582,10 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.UserList': {
+    'iola.UserList': {
       '.searchResult': {
-        'Sparkle.UserListItem': {
-          'Sparkle.Placeholder': {
+        'iola.UserListItem': {
+          'iola.Placeholder': {
             'NativeBase.ListItem': {
               'NativeBase.Left': {
                 'NativeBase.ViewNB': {
@@ -604,35 +604,35 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.UsersRowItem': {
-      'Sparkle.Placeholder': {
+    'iola.UsersRowItem': {
+      'iola.Placeholder': {
         'NativeBase.ViewNB': {
           backgroundColor: variables.highlightColor,
         },
       },
     },
 
-    'Sparkle.RefreshControl': {
+    'iola.RefreshControl': {
       color: variables.brandPrimary,
     },
 
-    'Sparkle.BarBackgroundView': {
+    'iola.BarBackgroundView': {
       backgroundColor: variables.foregroundColor,
     },
 
-    'Sparkle.AvatarInput': {
+    'iola.AvatarInput': {
       placeholder: {
         backgroundColor: variables.placeholderColor,
       },
     },
 
-    'Sparkle.ImageComments': {
+    'iola.ImageComments': {
       container: {
         backgroundColor: variables.backgroundColor,
       },
     },
 
-    'Sparkle.ImageCommentsItem': {
+    'iola.ImageCommentsItem': {
       placeholderContent: {
         backgroundColor: variables.placeholderColor,
       },
@@ -642,20 +642,20 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.MessageItem': {
-      'Sparkle.Placeholder': {
+    'iola.MessageItem': {
+      'iola.Placeholder': {
         'NativeBase.ViewNB': {
           backgroundColor: variables.placeholderColor,
         },
       },
     },
 
-    'Sparkle.FieldItem': {
+    'iola.FieldItem': {
       borderBottomColor: variables.listBorderColor,
     },
 
-    'Sparkle.BackdropHeader': {
-      'Sparkle.TouchableOpacity': {
+    'iola.BackdropHeader': {
+      'iola.TouchableOpacity': {
         'NativeBase.Text': {
           color: variables.brandPrimary,
         },
@@ -668,13 +668,13 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.BackButton': {
+    'iola.BackButton': {
       '.icon': {
         color: variables.toolbarBtnTextColor,
       },
     },
 
-    'Sparkle.ImageView': {
+    'iola.ImageView': {
       indicator: {
         color: variables.toolbarBtnTextColor,
       },
@@ -696,17 +696,17 @@ export default (variables => ({
       },
     },
 
-    'Sparkle.Image': {
+    'iola.Image': {
       backgroundColor: variables.placeholderColor,
     },
 
-    'Sparkle.ListPicker': {
+    'iola.ListPicker': {
       selectedColor: {
         color: variables.brandPrimary,
       },
     },
 
-    'Sparkle.ActionSheet': {
+    'iola.ActionSheet': {
       buttonText: {
         color: variables.brandPrimary,
       },

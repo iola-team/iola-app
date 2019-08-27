@@ -5,7 +5,7 @@ import { View, StyleSheet, BackHandler } from 'react-native';
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.Overlay', {
+@withStyle('iola.Overlay', {
   ...StyleSheet.absoluteFillObject,
 })
 export default class Overlay extends Component {

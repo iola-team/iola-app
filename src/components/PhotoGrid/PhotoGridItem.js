@@ -4,7 +4,7 @@ import { View } from 'react-native';
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.PhotoGridItem', {
+@withStyle('iola.PhotoGridItem', {
   flex: 1,
   overflow: 'hidden',
   borderRadius: 8,

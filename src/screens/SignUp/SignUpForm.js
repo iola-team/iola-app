@@ -41,7 +41,7 @@ const signUpUserMutation = gql`
     storeToken: token => mutate({ variables: { token } }),
   }),
 })
-@styleSheet('Sparkle.SignUpForm', {
+@styleSheet('iola.SignUpForm', {
   submit: {
     position: 'relative',
     marginTop: 40,

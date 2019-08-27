@@ -3,7 +3,7 @@ import { RefreshControl as RefreshControlRN, StyleSheet } from 'react-native';
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.RefreshControl', {
+@withStyle('iola.RefreshControl', {
   color: '#FFFFFF',
   zIndex: 1,
 })

@@ -5,7 +5,7 @@ import { BottomTabBar as BottomTabBarRN } from 'react-navigation-tabs';
 import { withStyleSheet as styleSheet } from '~theme';
 import BarBackgroundView from '../BarBackgroundView';
 
-@styleSheet('Sparkle.BottomTabBar', {
+@styleSheet('iola.BottomTabBar', {
   bar: {
     height: 60,
     elevation: 0,

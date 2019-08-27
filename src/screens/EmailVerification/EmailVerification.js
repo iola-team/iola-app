@@ -27,7 +27,7 @@ const sendEmailVerificationInstructionsMutation = gql`
   }
 `;
 
-@styleSheet('Sparkle.ForgotPasswordScreen', {
+@styleSheet('iola.ForgotPasswordScreen', {
   background: {
     ...StyleSheet.absoluteFillObject,
     height: Dimensions.get('window').height,

@@ -32,7 +32,7 @@ import { ProfileFieldsEdit, TouchableOpacity, AvatarEdit } from '~components';
 `, {
   name: 'avatarData',
 })
-@withStyleSheet('Sparkle.ProfileEditScreen', {
+@withStyleSheet('iola.ProfileEditScreen', {
   avatar: {
     marginTop: 15,
     marginBottom: 10,

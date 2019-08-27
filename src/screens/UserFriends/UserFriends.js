@@ -25,7 +25,7 @@ const userFriendsQuery = gql`
   ${UserList.fragments.edge}
 `;
 
-@withStyleSheet('Sparkle.UserFriendsScreen', {
+@withStyleSheet('iola.UserFriendsScreen', {
   list: {
     paddingTop: 8,
   },

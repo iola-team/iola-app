@@ -11,7 +11,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import WebsiteURLForm from './WebsiteURLForm';
 import logo from '../Launch/logo.png';
 
-@styleSheet('Sparkle.WebsiteURLScreen', {
+@styleSheet('iola.WebsiteURLScreen', {
   logo: {
     resizeMode: 'contain',
     position: 'absolute',

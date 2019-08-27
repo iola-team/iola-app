@@ -20,7 +20,7 @@ const readTokenQuery = gql`
   }
 `;
 
-@styleSheet('Sparkle.SignInForm', {
+@styleSheet('iola.SignInForm', {
   login: {
     marginBottom: 0,
     borderBottomLeftRadius: 0,

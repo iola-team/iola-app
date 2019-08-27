@@ -52,7 +52,7 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
   }
 `;
 
-@withStyleSheet('Sparkle.ImageComments', {
+@withStyleSheet('iola.ImageComments', {
   titleRow: {
     flexDirection: 'row',
   },

@@ -6,8 +6,8 @@ import { Text } from 'native-base';
 import { withStyle } from '~theme';
 import Placeholder from '../Placeholder';
 
-@withStyle('Sparkle.MessageListSectionHeader', {
-  'Sparkle.Placeholder': {
+@withStyle('iola.MessageListSectionHeader', {
+  'iola.Placeholder': {
     alignSelf: 'center',
     paddingVertical: 10,
     paddingHorizontal: 15,

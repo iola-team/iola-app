@@ -19,7 +19,7 @@ const AlreadyHaveAnAccountText = connectToStyleSheet('alreadyHaveAnAccountText',
 const ButtonSignIn = connectToStyleSheet('buttonSignIn', TouchableOpacity);
 const ButtonSignInText = connectToStyleSheet('buttonSignInText', Text);
 
-@styleSheet('Sparkle.SignUpScreen', {
+@styleSheet('iola.SignUpScreen', {
   content: {
     alignSelf: 'center',
     width: '100%',

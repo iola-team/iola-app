@@ -13,7 +13,7 @@ const Layer = connectToStyleSheet('layer', View);
 const Progress = connectToStyleSheet('progress', CircularProgress);
 const Background = connectToStyleSheet('background', ImageBackground);
 
-@styleSheet('Sparkle.ImageProgress', {
+@styleSheet('iola.ImageProgress', {
   layer: {
     ...StyleSheet.absoluteFillObject,
   },

@@ -17,7 +17,7 @@ import logoImage from './logo.png';
     fetchPolicy: 'cache-first',
   },
 })
-@styleSheet('Sparkle.Logo', {
+@styleSheet('iola.Logo', {
   logo: {
     alignSelf: 'center',
     width: 48,

@@ -4,7 +4,7 @@ import { Input } from 'native-base';
 import { withStyleSheet as styleSheet } from '~theme';
 import FieldInput from './FieldInput';
 
-@styleSheet('Sparkle.TextInput')
+@styleSheet('iola.TextInput')
 export default class TextInput extends Component {
   render() {
     const {

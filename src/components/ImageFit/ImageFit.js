@@ -9,7 +9,7 @@ import { withStyleSheet as styleSheet } from '~theme';
 import brokenImage from './broken.png';
 import Spinner from '../Spinner';
 
-@styleSheet('Sparkle.ImageFit', {
+@styleSheet('iola.ImageFit', {
   spinnerContainer: {
     justifyContent: 'center',
     alignItems: 'center',

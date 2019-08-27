@@ -29,7 +29,7 @@ const createOptimisticEdge = ({ id, url }) => ({
   },
 });
 
-@withStyleSheet('Sparkle.PhotoList', {
+@withStyleSheet('iola.PhotoList', {
   item: {
     width: `${100 / 3}%`,
     padding: 4,

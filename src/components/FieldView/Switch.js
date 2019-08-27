@@ -5,7 +5,7 @@ import { Text } from 'native-base';
 import { withStyle } from '~theme';
 import FieldView from './FieldView';
 
-@withStyle('Sparkle.SwitchView')
+@withStyle('iola.SwitchView')
 export default class SwitchView extends Component {
   render() {
     const {

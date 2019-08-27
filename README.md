@@ -33,7 +33,7 @@ TODO: Fill this section
 ### Troubleshooting
 1. How to debug the subscriptions:
    - Start the subscription in the app
-   - Run in the Postman (via GET): `*DEV_PLATFORM_URL*/*INTEGRATION_PATH*/subscriptions/*streamId value from the subscriptions table (ow_esapi_subscription)*` (for example: http://192.168.0.100/oxwall/everywhere/api/subscriptions/5f1e34db2cf318ae)
+   - Run in the Postman (via GET): `*DEV_PLATFORM_URL*/*INTEGRATION_PATH*/subscriptions/*streamId value from the subscriptions table (ow_esapi_subscription)*` (for example: http://192.168.0.100/oxwall/iola/api/subscriptions/5f1e34db2cf318ae)
    - Run mutation that triggers the subscription (for example from GraphiQL interface)
 2. How to debug Java errors:
   - `adb logcat *:E`

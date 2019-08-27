@@ -79,7 +79,7 @@ const createOptimisticEdge = ({
   },
 });
 
-@styleSheet('Sparkle.ImageView', {
+@styleSheet('iola.ImageView', {
   spinnerContainer: {
     margin: 'auto',
     width: '100%',

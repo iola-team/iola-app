@@ -10,7 +10,7 @@ const tabBarIconStyle = {
   fontSize: 35,
 };
 
-@withStyleSheet('Sparkle.UsersScreen', {
+@withStyleSheet('iola.UsersScreen', {
   listHeader: {
      /**
      * TODO: rethink

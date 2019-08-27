@@ -19,7 +19,7 @@ import Image from '../Image';
     '.topSection': {
       flex: 2,
 
-      'Sparkle.Image': {
+      'iola.Image': {
         width: 59,
         height: 54,
         marginBottom: 20,

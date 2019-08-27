@@ -7,10 +7,10 @@ import TouchableOpacity from '../TouchableOpacity';
 import FieldItem from '../FieldItem';
 import Icon from '../Icon';
 
-@withStyle('Sparkle.FieldItemInput', {
-  'Sparkle.FieldItem': {
+@withStyle('iola.FieldItemInput', {
+  'iola.FieldItem': {
     'NativeBase.Right': {
-      'Sparkle.TouchableOpacity': {
+      'iola.TouchableOpacity': {
         'NativeBase.Icon': {
           color: '#FF0000',
         },

@@ -4,7 +4,7 @@ import { StyleSheet, ActivityIndicator } from 'react-native';
 
 import { withStyle } from '~theme';
 
-@withStyle('Sparkle.Spinner')
+@withStyle('iola.Spinner')
 export default class Spinner extends Component {
   static propTypes = {
     style: PropTypes.any.isRequired,
