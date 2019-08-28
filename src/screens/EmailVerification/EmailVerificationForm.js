@@ -75,7 +75,7 @@ export default class ForgotPasswordForm extends Component {
   */
 
   render() {
-    const { styleSheet: styles, onSubmit, isSubmitting, navigation } = this.props;
+    const { styleSheet: styles, onSubmit, isSubmitting } = this.props;
 
     return (
       <Form>
