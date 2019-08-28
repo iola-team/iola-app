@@ -16,7 +16,7 @@ const edgeFragment = gql`
       ...MessageItem_message
     }
   }
-  
+
   ${MessageItem.fragments.message}
 `;
 
@@ -58,13 +58,13 @@ export default class MessageList extends PureComponent {
         createdAt.getFullYear(),
         createdAt.getMonth() + 1,
         createdAt.getDate(),
-      ].join('/');
+      ].join('-');
     });
 
     return map(grouped, (edges, time) => ({
       isSection: true,
-      key: time.toString(),
-      time: new Date(time).toISOString(),
+      key: time,
+      time,
       data: edges,
     }));
   };
@@ -74,10 +74,10 @@ export default class MessageList extends PureComponent {
     const { onRead } = this.props;
 
     const filterRead = ({ isViewable, item }) => (
-      isViewable 
-      && !item.isSection 
-      && item.node 
-      && item.node.status !== null 
+      isViewable
+      && !item.isSection
+      && item.node
+      && item.node.status !== null
       && item.node.status !== 'READ'
     );
 
