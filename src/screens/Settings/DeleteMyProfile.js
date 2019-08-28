@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { Button, Text, Toast } from 'native-base';
+import { withNavigation } from 'react-navigation';
 import { graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 
 import { withStyleSheet } from '~theme';
+import { ActionSheet } from '~components';
 import * as routes from '~screens/routeNames';
-import ActionSheet from '../ActionSheet';
 
 @withStyleSheet('iola.DeleteMyProfile', {
   button: {
@@ -35,14 +35,9 @@ import ActionSheet from '../ActionSheet';
   name: 'deleteUser',
 })
 @withApollo
+@withNavigation
 export default class DeleteMyProfile extends Component {
-  static propTypes = {
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func.isRequired,
-    }).isRequired,
-  };
-
-  // TODO: This method contains a lot of imperative logic. Think about external component or something like that
+  // TODO: This method contains a lot of imperative logic. Think about the external component or something like that
   onDeleteMyProfile = async () => {
     const {
       client,

@@ -92,7 +92,7 @@ export default class ForgotPasswordForm extends Component {
           <Text style={styles.buttonText}>Resend the Verification Code</Text>
         </TouchableOpacity>
 
-        <LogoutButton button bordered navigation={navigation} />
+        <LogoutButton button bordered />
       </Form>
     );
   }

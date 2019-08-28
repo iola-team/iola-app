@@ -1,3 +1,4 @@
+import ActionSheet from './ActionSheet';
 import AvatarEdit from './AvatarEdit';
 import Background from './Background';
 import BackButton from './BackButton';
@@ -56,6 +57,7 @@ import UserActions from './UserActions';
 import PhotoActions from './PhotoActions';
 
 export {
+  ActionSheet,
   AvatarEdit,
   Background,
   BackButton,

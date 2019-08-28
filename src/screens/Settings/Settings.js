@@ -3,6 +3,7 @@ import { Container } from 'native-base';
 
 import { withStyleSheet } from '~theme';
 import { SettingList } from '~components';
+import DeleteMyProfile from './DeleteMyProfile';
 
 @withStyleSheet('iola.SettingsScreen')
 export default class SettingsScreen extends Component {
@@ -11,11 +12,12 @@ export default class SettingsScreen extends Component {
   };
 
   render() {
-    const { screenProps, navigation } = this.props;
+    const { screenProps } = this.props;
 
     return (
       <Container>
-        <SettingList contentInset={{ ...screenProps.contentInset, bottom: 0 }} navigation={navigation} />
+        <SettingList contentInset={{ ...screenProps.contentInset, bottom: 0 }} />
+        <DeleteMyProfile />
       </Container>
     );
   }

@@ -10,10 +10,10 @@ export default (routes, config = {}) => createHeadingTabsNavigator(routes, {
   headerShrinkHeight: ScreenHeader.HEIGHT,
   headerHeight: ProfileHeading.HEIGHT,
 
-  navigationOptions: ({ navigation }) => ({
+  navigationOptions: {
     headerTransparent: true,
     headerBackground: null,
-    headerRight: <LogoutButton navigation={navigation} />,
+    headerRight: <LogoutButton />,
     tabBarIcon: props => <TabBarIcon {...props} />,
-  }),
+  },
 });

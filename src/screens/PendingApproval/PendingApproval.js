@@ -76,7 +76,7 @@ export default class EmailVerificationScreen extends Component {
   };
 
   render() {
-    const { styleSheet: styles, navigation } = this.props;
+    const { styleSheet: styles } = this.props;
 
     return (
       <Container>
@@ -91,7 +91,7 @@ export default class EmailVerificationScreen extends Component {
                 Please wait until the review is completed by administration.
               </Text>
             </View>
-            <LogoutButton button bordered navigation={navigation} />
+            <LogoutButton button bordered />
           </View>
         </SafeAreaView>
         <Query query={meQuery}>

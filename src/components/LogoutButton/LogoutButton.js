@@ -1,5 +1,4 @@
 import React, { Component, createRef } from 'react';
-import PropTypes from 'prop-types';
 import { graphql, withApollo } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withNavigation } from 'react-navigation';
@@ -17,15 +16,7 @@ import ActionSheet from '../ActionSheet';
 @withApollo
 @withNavigation
 export default class LogoutButton extends Component {
-  static propTypes = {
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func.isRequired,
-    }).isRequired,
-  };
-
-  actionSheet = createRef();
-
-  logout = async () => {
+  onLogout = async () => {
     const { mutate, navigation: { navigate }, client } = this.props;
 
     navigate(routes.LOADING);
@@ -42,7 +33,7 @@ export default class LogoutButton extends Component {
         options={['Cancel', 'Logout']}
         cancelButtonIndex={0}
         destructiveButtonIndex={1}
-        onPress={index => index && this.logout()}
+        onPress={index => index && this.onLogout()}
       >
         {show => (
           <TouchableOpacity secondary {...this.props} onPress={() => show()}>
