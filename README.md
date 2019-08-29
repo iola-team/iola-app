@@ -55,7 +55,9 @@ TODO: Fill this section
     - Fill the `FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD` in the .env file:
       - Go to https://appleid.apple.com/account/manage
       - Click "Generate Password…" link under the "APP-SPECIFIC PASSWORDS" section
-  - Android: `cp android/passwords.properties.sample android/passwords.properties` and fill it
+  - Android:
+    - passwords.properties: `cp android/passwords.properties.sample android/passwords.properties` and fill it
+    - debug.keystore: `cd android/app; keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000`
   - iOS:
     - Install [CocoaPods](https://guides.cocoapods.org/using/getting-started.html#installation)
     - `pod install`
