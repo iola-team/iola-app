@@ -13,6 +13,7 @@ import SignInForm from './SignInForm';
     flex: 1,
     width: '100%',
     minWidth: 320,
+    minHeight: 550, // TODO: this is a robust fix of weird SafeAreaView behaviour on Android, see the issue: https://gitlab.com/iola-team/iola/issues/415
     paddingHorizontal: '10%',
     paddingBottom: 30,
   },
@@ -92,16 +93,10 @@ export default class SignInScreen extends Component {
               onSubmit={(values, formikBag) => this.onSubmit(values, formikBag)}
               onForgotPassword={login => this.onForgotPassword(login)}
             />
-            <Button
-              style={styles.button}
-              onPress={() => navigate(routes.SIGN_UP)}
-              block
-              bordered
-              light
-            >
+            <Button block bordered light style={styles.button} onPress={() => navigate(routes.SIGN_UP)}>
               <Text>Sign up</Text>
             </Button>
-            <Button style={styles.changeWebsiteURLbutton} onPress={onApplicationReset} block bordered light>
+            <Button block bordered light style={styles.changeWebsiteURLbutton} onPress={onApplicationReset}>
               <Icon name="back" style={styles.icon} />
               <Text>Change Website URL</Text>
             </Button>
