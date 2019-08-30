@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Linking } from 'react-native';
-import { Text, List, ListItem, Right, Body, Icon } from 'native-base';
+import { Body, Icon, List, ListItem, Right, Text } from 'native-base';
 import { LICENSE_AGREEMENT_URL, PRIVACY_POLICY_URL } from 'react-native-dotenv';
 
 import { ScrollView } from '../TabNavigator';
@@ -15,12 +15,10 @@ export default class SettingList extends Component {
   };
 
   render() {
-    const { ...props } = this.props;
-
     return (
-      <ScrollView {...props}>
+      <ScrollView {...this.props}>
         <List>
-          <ListItem onPress={() => this.openUrl(PRIVACY_POLICY_URL)} icon button first>
+          <ListItem icon button first onPress={() => this.openUrl(PRIVACY_POLICY_URL)}>
             <Body>
               <Text>Privacy Policy</Text>
             </Body>
@@ -29,7 +27,7 @@ export default class SettingList extends Component {
             </Right>
           </ListItem>
 
-          <ListItem onPress={() => this.openUrl(LICENSE_AGREEMENT_URL)} icon button last>
+          <ListItem icon button last onPress={() => this.openUrl(LICENSE_AGREEMENT_URL)}>
             <Body>
               <Text>License Agreement</Text>
             </Body>

@@ -1,7 +1,5 @@
 import React from 'react';
-import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
-import { number, withKnobs } from '@storybook/addon-knobs';
+import { withKnobs } from '@storybook/addon-knobs';
 import { action } from '@storybook/addon-actions';
 import { storiesOf } from '@storybook/react-native';
 
@@ -15,4 +13,4 @@ stories.addDecorator(withKnobs);
 stories.addDecorator(getContentDecorator());
 
 // Stories
-stories.add('Default', () => <SettingList />);
+stories.add('Default', () => <SettingList navigation={mockedNavigation} />);

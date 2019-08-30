@@ -4,9 +4,9 @@ import gql from 'graphql-tag';
 import { withNavigation } from 'react-navigation';
 import { Text } from 'native-base';
 
+import * as routes from '~screens/routeNames';
 import TouchableOpacity from '../TouchableOpacity';
 import ActionSheet from '../ActionSheet';
-import * as routes from '../../screens/routeNames';
 
 @graphql(gql`
   mutation {
@@ -16,9 +16,7 @@ import * as routes from '../../screens/routeNames';
 @withApollo
 @withNavigation
 export default class LogoutButton extends Component {
-  actionSheet = createRef();
-
-  logout = async () => {
+  onLogout = async () => {
     const { mutate, navigation: { navigate }, client } = this.props;
 
     navigate(routes.LOADING);
@@ -35,7 +33,7 @@ export default class LogoutButton extends Component {
         options={['Cancel', 'Logout']}
         cancelButtonIndex={0}
         destructiveButtonIndex={1}
-        onPress={index => index && this.logout()}
+        onPress={index => index && this.onLogout()}
       >
         {show => (
           <TouchableOpacity secondary {...this.props} onPress={() => show()}>

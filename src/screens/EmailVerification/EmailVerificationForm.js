@@ -88,7 +88,7 @@ export default class ForgotPasswordForm extends Component {
         />
         */}
 
-        <TouchableOpacity onPress={onSubmit} disabled={isSubmitting} button bordered>
+        <TouchableOpacity button bordered onPress={onSubmit} disabled={isSubmitting}>
           <Text style={styles.buttonText}>Resend the Verification Code</Text>
         </TouchableOpacity>
 
