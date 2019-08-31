@@ -5,8 +5,8 @@ import { StyleSheet, Dimensions } from 'react-native';
 import { View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { Image } from '~components';
-import backgroundImage from './background.jpg';
+import defaultBackgroundImage from './defaultBackground.jpg';
+import Image from '../Image';
 
 @graphql(gql`
   query {
@@ -34,7 +34,7 @@ export default class Background extends Component {
   render() {
     const { data, styleSheet: styles } = this.props;
     const backgroundUrl = data?.config.backgroundUrl;
-    const source = backgroundUrl ? { uri: backgroundUrl } : backgroundImage;
+    const source = backgroundUrl ? { uri: backgroundUrl } : defaultBackgroundImage;
 
     return (
       <>

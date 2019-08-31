@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
+import { useLazyQuery } from "@apollo/react-hooks";
 import gql from 'graphql-tag';
 import FastImage from 'react-native-fast-image';
 import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet, ConfigurableTheme } from '~theme';
-import Splash from './Splash';
+import Error from './Error';
 import Loading from '../Loading';
+import Splash from './Splash';
 import * as routes from '../routeNames';
 
 const initQuery = gql`
@@ -41,7 +43,9 @@ export default class LaunchScreen extends Component {
   async componentDidUpdate(nextProps, prevState) {
     const { data, navigation: { navigate } } = this.props;
 
-    if (!data.loading) {
+    if (data.error) return;
+
+    if (!data.loading && nextProps.data.networkStatus !== data.networkStatus) {
       const {
         me,
         config: {
@@ -79,8 +83,19 @@ export default class LaunchScreen extends Component {
   }
 
   render() {
-    const { screenProps: { applicationInitWasTriggeredManually } } = this.props;
+    const {
+      data: {
+        error,
+        networkStatus,
+        refetch,
+      },
+      screenProps: {
+        applicationInitWasTriggeredManually,
+      },
+    } = this.props;
     const loading = applicationInitWasTriggeredManually || get(this.props, 'navigation.state.params.loading', false);
+
+    if (error) return <Error loading={networkStatus === 4} refetch={refetch} />;
 
     return loading ? <Loading /> : <Splash />;
   }

@@ -1,8 +1,9 @@
 import AvatarEdit from './AvatarEdit';
-import Background from './Background';
 import BackButton from './BackButton';
-import BottomTabBar from './BottomTabBar';
+import Background from './Background';
+import BackgroundWithAnimatedLogo from './BackgroundWithAnimatedLogo';
 import BarBackgroundView from './BarBackgroundView';
+import BottomTabBar from './BottomTabBar';
 import Chat from './Chat';
 import ChatList from './ChatList';
 import ConnectivityIndicator from './ConnectivityIndicator';
@@ -25,6 +26,7 @@ import KeyboardAvoidingView from './KeyboardAvoidingView';
 import Logo from './Logo';
 import LogoutButton from './LogoutButton';
 import NoContent from './NoContent';
+import PhotoActions from './PhotoActions';
 import PhotoEdit from './PhotoEdit';
 import PhotoList from './PhotoList';
 import ProfileFieldsEdit from './ProfileFieldsEdit';
@@ -38,9 +40,10 @@ import SettingList from './SettingList';
 import Shadow from './Shadow';
 import Spinner from './Spinner';
 import TabBar from './TabBar';
-import TabBarLabel from './TabBarLabel';
 import TabBarIcon from './TabBarIcon';
+import TabBarLabel from './TabBarLabel';
 import TouchableOpacity from './TouchableOpacity';
+import UserActions from './UserActions';
 import UserAvatar from './UserAvatar';
 import UserBriefCard from './UserBriefCard';
 import UserChats from './UserChats';
@@ -52,13 +55,12 @@ import UserPhotosCard from './UserPhotosCard';
 import UsersRow from './UsersRow';
 import UsersRowItem from './UsersRowItem';
 import UserUpdateSubscription from './UserUpdateSubscription';
-import UserActions from './UserActions';
-import PhotoActions from './PhotoActions';
 
 export {
   AvatarEdit,
-  Background,
   BackButton,
+  Background,
+  BackgroundWithAnimatedLogo,
   BarBackgroundView,
   Chat,
   ChatList,
@@ -81,9 +83,9 @@ export {
   Logo,
   LogoutButton,
   NoContent,
+  PhotoActions,
   PhotoEdit,
   PhotoList,
-  PhotoActions,
   ProfileFieldsEdit,
   ProfileFieldsView,
   Root,
@@ -93,9 +95,10 @@ export {
   SettingList,
   Shadow,
   Spinner,
-  TabBarLabel,
   TabBarIcon,
+  TabBarLabel,
   TouchableOpacity,
+  UserActions,
   UserAvatar,
   UserBriefCard,
   UserChats,
@@ -107,7 +110,6 @@ export {
   UsersRow,
   UsersRowItem,
   UserUpdateSubscription,
-  UserActions,
 
   // Navigation
   BottomTabBar,

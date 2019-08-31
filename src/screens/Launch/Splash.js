@@ -3,7 +3,7 @@ import { Animated, Easing } from 'react-native';
 import { Container, View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import logo from './logo.png';
+import logoImage from './logo.png';
 
 @styleSheet('iola.Splash', {
   content: {
@@ -14,8 +14,8 @@ import logo from './logo.png';
   },
 
   logo: {
-    width: 120,
-    height: 64,
+    width: 102,
+    height: 54,
     resizeMode: 'contain',
   },
 })
@@ -57,7 +57,7 @@ export default class Splash extends Component {
     return (
       <Container>
         <View style={styles.content}>
-          <Animated.Image style={[styles.logo, { opacity: opacityAnimatedValue }]} source={logo} />
+          <Animated.Image style={[styles.logo, { opacity: opacityAnimatedValue }]} source={logoImage} />
         </View>
       </Container>
     );

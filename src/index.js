@@ -111,8 +111,8 @@ class ApplicationRoot extends Component {
           >
             <Root>
               <Application
-                onReady={this.onApplicationReady}
-                onReset={this.onApplicationReset}
+                onApplicationReady={this.onApplicationReady}
+                onApplicationReset={this.onApplicationReset}
                 initWasTriggeredManually={initWasTriggeredManually}
               />
             </Root>
