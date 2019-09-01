@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Animated, Easing } from 'react-native';
 import { Container, View } from 'native-base';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import logoImage from './logo.png';
+import { LogoAnimated } from '~components';
 
 @styleSheet('iola.Splash', {
   content: {
@@ -12,52 +11,15 @@ import logoImage from './logo.png';
     alignItems: 'center',
     backgroundColor: '#5259FF',
   },
-
-  logo: {
-    width: 102,
-    height: 54,
-    resizeMode: 'contain',
-  },
 })
 export default class Splash extends Component {
-  logo = {
-    opacityAnimatedValue: new Animated.Value(1),
-    pulsingAnimationValue: 1,
-  };
-
-  componentDidMount() {
-    this.runPulsingAnimation();
-  }
-
-  runPulsingAnimation() {
-    const { opacityAnimatedValue, pulsingAnimationValue } = this.logo;
-
-    Animated.timing(opacityAnimatedValue, {
-      toValue: pulsingAnimationValue,
-      duration: 700,
-      easing: Easing.easeInEaseOut,
-      useNativeDriver: true,
-    }).start(::this.runPulsingAnimation);
-
-    this.logo.pulsingAnimationValue = pulsingAnimationValue === 0.3 ? 1 : 0.3;
-  }
-
-  runAnimation() {
-    this.animatedValue.setValue(300);
-    Animated.timing(this.animatedValue, {
-      toValue: -100,
-      duration: 3000,
-    }).start(() => this.runAnimation());
-  }
-
   render() {
     const { styleSheet: styles } = this.props;
-    const { opacityAnimatedValue } = this.logo;
 
     return (
       <Container>
         <View style={styles.content}>
-          <Animated.Image style={[styles.logo, { opacity: opacityAnimatedValue }]} source={logoImage} />
+          <LogoAnimated />
         </View>
       </Container>
     );

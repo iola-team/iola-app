@@ -82,11 +82,16 @@ export default class LaunchScreen extends Component {
     }
   }
 
+  onChangeWebsiteURL = () => {
+    const { screenProps: { onApplicationReset } } = this.props;
+
+    onApplicationReset();
+  };
+
   render() {
     const {
       data: {
         error,
-        networkStatus,
         refetch,
       },
       screenProps: {
@@ -95,7 +100,7 @@ export default class LaunchScreen extends Component {
     } = this.props;
     const loading = applicationInitWasTriggeredManually || get(this.props, 'navigation.state.params.loading', false);
 
-    if (error) return <Error loading={networkStatus === 4} refetch={refetch} />;
+    if (error) return <Error refetch={refetch} onChangeWebsiteURL={this.onChangeWebsiteURL} />;
 
     return loading ? <Loading /> : <Splash />;
   }

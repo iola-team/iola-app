@@ -5,14 +5,15 @@ import PropTypes from 'prop-types';
  */
 import { Animated, Easing, Dimensions } from 'react-native';
 import { Container, View } from 'native-base';
+import { isFunction } from 'lodash';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import logoImage from './logo.png';
+import LogoAnimated from '../LogoAnimated';
 
 @styleSheet('iola.BackgroundWithAnimatedLogo', {
   logo: {
-    resizeMode: 'contain',
     position: 'absolute',
+    alignSelf: 'center',
   },
 
   content: {
@@ -26,106 +27,106 @@ import logoImage from './logo.png';
 })
 export default class BackgroundWithAnimatedLogo extends Component {
   static propTypes = {
-    children: PropTypes.node.isRequired,
+    children: PropTypes.any.isRequired,
   };
 
   constructor() {
     super();
 
-    const { height: screenHeight, width: screenWidth } = Dimensions.get('window');
-    const logoTopFinishScale = 10.2 / 100;
-    const contentPaddingHorizontal = 0.1 * 2; // see content.paddingHorizontal in the styles
-    const contentWidth = screenWidth * (1 - contentPaddingHorizontal);
-    const logoWidth = 102;
-    const logoHeight = 54;
-    const logoLeft = contentWidth / 2 - logoWidth / 2;
-    const logoTop = screenHeight / 2 - logoHeight / 2;
-    const logoTranslateY = screenHeight / 2 - logoHeight / 2 - screenHeight * logoTopFinishScale;
-
-    this.logoSizeFinishScale = 0.7;
-    this.logo = {
-      width: logoWidth,
-      height: logoHeight,
-      left: logoLeft,
-      top: logoTop,
-      translateY: logoTranslateY,
-      positionAnimatedValue: new Animated.Value(0),
-      opacityAnimatedValue: new Animated.Value(1),
+    const { height: screenHeight } = Dimensions.get('window');
+    const logoHeight = 54; // TODO: this value is coupled with the LogoAnimated component height :(
+    const logo = {
+      animation: new Animated.Value(0),
+      translateY: screenHeight / 2 - screenHeight * 0.1 - logoHeight / 2,
+      scale: 0.7,
     };
+
+    this.logo = {
+      ...logo,
+      styles: {
+        top: screenHeight / 2 - logoHeight / 2,
+        transform: [
+          {
+            translateY: logo.animation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, -logo.translateY],
+            }),
+          },
+          {
+            scaleX: logo.animation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, logo.scale],
+            }),
+          },
+          {
+            scaleY: logo.animation.interpolate({
+              inputRange: [0, 1],
+              outputRange: [1, logo.scale],
+            }),
+          },
+        ],
+      },
+    };
+
     this.content = {
-      marginTop: logoTop - logoTranslateY + logoHeight + 65,
-      opacityAnimatedValue: new Animated.Value(0),
+      animation: new Animated.Value(0),
+      styles: {
+        marginTop: logoHeight + this.logo.styles.top - logo.translateY + 65,
+      },
+    };
+
+    this.state = {
+      currentAnimationName: null,
     };
   }
 
   componentDidMount() {
-    Animated.timing(this.logo.positionAnimatedValue, {
-      toValue: 1,
+    this.runAnimation();
+  }
+
+  getIsAnimationRunBack = () => {
+    const { currentAnimationName } = this.state;
+
+    return !currentAnimationName || currentAnimationName === 'run back';
+  };
+
+  runAnimation = (callback = () => null) => {
+    const isAnimationRunBack = this.getIsAnimationRunBack();
+
+    this.setState({ currentAnimationName: isAnimationRunBack ? 'run' : 'run back' });
+
+    Animated.timing(this.logo.animation, {
+      toValue: isAnimationRunBack ? 1 : 0,
       duration: 500,
       easing: Easing.ease,
       useNativeDriver: true,
     }).start();
 
-    Animated.timing(this.content.opacityAnimatedValue, {
-      toValue: 1,
-      duration: 800,
+    Animated.timing(this.content.animation, {
+      toValue: isAnimationRunBack ? 1 : 0,
+      duration: isAnimationRunBack ? 800 : 300,
       easing: Easing.ease,
       useNativeDriver: true,
     }).start();
-  }
+
+    setTimeout(callback, isAnimationRunBack ? 800 : 500);
+  };
 
   render() {
     const { children, styleSheet: styles } = this.props;
-    const {
-      width,
-      height,
-      left,
-      top,
-      translateY,
-      positionAnimatedValue,
-      opacityAnimatedValue,
-    } = this.logo;
-    const { marginTop } = this.content;
+    const isAnimationRunBack = this.getIsAnimationRunBack();
 
     return (
       <Container>
         <View style={styles.content}>
-          <View style={{ flexDirection: 'row' }}>
-            <Animated.Image
-              style={[styles.logo, {
-                position: 'absolute',
-                left,
-                top,
-                height,
-                width,
-                opacity: opacityAnimatedValue,
-                transform: [
-                  {
-                    translateY: positionAnimatedValue.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [1, -translateY],
-                    })
-                  },
-                  {
-                    scaleX: positionAnimatedValue.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [1, this.logoSizeFinishScale],
-                    })
-                  },
-                  {
-                    scaleY: positionAnimatedValue.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [1, this.logoSizeFinishScale],
-                    })
-                  }
-                ],
-              }]}
-              source={logoImage}
-            />
-          </View>
-
-          <Animated.View style={{ marginTop: marginTop, opacity: this.content.opacityAnimatedValue }}>
-            {children}
+          <Animated.View style={[styles.logo, this.logo.styles]}>
+            <LogoAnimated loading={isAnimationRunBack} />
+          </Animated.View>
+          <Animated.View
+            style={[this.content.styles, { opacity: this.content.animation }]}
+            pointerEvents={isAnimationRunBack ? 'none' : 'auto'}
+          >
+            {isFunction(children) ? children(this.runAnimation) : children}
           </Animated.View>
         </View>
       </Container>

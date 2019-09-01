@@ -24,6 +24,7 @@ import ImageProgress from './ImageProgress';
 import ImageView from './ImageView';
 import KeyboardAvoidingView from './KeyboardAvoidingView';
 import Logo from './Logo';
+import LogoAnimated from './LogoAnimated';
 import LogoutButton from './LogoutButton';
 import NoContent from './NoContent';
 import PhotoActions from './PhotoActions';
@@ -81,6 +82,7 @@ export {
   ImageView,
   KeyboardAvoidingView,
   Logo,
+  LogoAnimated,
   LogoutButton,
   NoContent,
   PhotoActions,
