@@ -18,7 +18,7 @@ import { BackgroundWithAnimatedLogo } from '~components';
     color: 'white',
   },
 
-  tryAgain: {
+  button: {
     marginBottom: 8,
     borderColor: 'rgba(255, 255, 255, 0.5)',
   },
@@ -49,10 +49,10 @@ export default class Error extends Component {
         {(runAnimation) => (
           <>
             <Text style={styles.text}>Oops! Something unexpectedly went wrong</Text>
-            <Button style={styles.tryAgain} onPress={() => this.onTryAgain(runAnimation)} block bordered light>
+            <Button style={styles.button} onPress={() => this.onTryAgain(runAnimation)} block bordered light>
               <Text>Try Again</Text>
             </Button>
-            <Button style={styles.tryAgain} onPress={onChangeWebsiteURL} block bordered light>
+            <Button style={styles.button} onPress={onChangeWebsiteURL} block bordered light>
               <Text>Change Website URL</Text>
             </Button>
           </>

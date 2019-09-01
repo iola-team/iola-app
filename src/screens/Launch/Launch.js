@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
-import { useLazyQuery } from "@apollo/react-hooks";
 import gql from 'graphql-tag';
 import FastImage from 'react-native-fast-image';
 import { get } from 'lodash';
@@ -82,11 +81,7 @@ export default class LaunchScreen extends Component {
     }
   }
 
-  onChangeWebsiteURL = () => {
-    const { screenProps: { onApplicationReset } } = this.props;
-
-    onApplicationReset();
-  };
+  onChangeWebsiteURL = () => this.props.screenProps.onApplicationReset();
 
   render() {
     const {
