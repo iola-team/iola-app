@@ -5,9 +5,9 @@ import FastImage from 'react-native-fast-image';
 import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet, ConfigurableTheme } from '~theme';
-import Error from './Error';
+import LaunchError from './LaunchError';
+import LaunchSplash from './LaunchSplash';
 import Loading from '../Loading';
-import Splash from './Splash';
 import * as routes from '../routeNames';
 
 const initQuery = gql`
@@ -95,8 +95,8 @@ export default class LaunchScreen extends Component {
     } = this.props;
     const loading = applicationInitWasTriggeredManually || get(this.props, 'navigation.state.params.loading', false);
 
-    if (error) return <Error refetch={refetch} onChangeWebsiteURL={this.onChangeWebsiteURL} />;
+    if (error) return <LaunchError refetch={refetch} onChangeWebsiteURL={this.onChangeWebsiteURL} />;
 
-    return loading ? <Loading /> : <Splash />;
+    return loading ? <Loading /> : <LaunchSplash />;
   }
 }

@@ -5,7 +5,7 @@ import { Button, Text } from 'native-base';
 import { withStyleSheet as styleSheet } from '~theme';
 import { BackgroundWithAnimatedLogo } from '~components';
 
-@styleSheet('iola.Error', {
+@styleSheet('iola.LaunchError', {
   text: {
     maxWidth: 230,
     marginTop: -17,
@@ -23,7 +23,7 @@ import { BackgroundWithAnimatedLogo } from '~components';
     borderColor: 'rgba(255, 255, 255, 0.5)',
   },
 })
-export default class Error extends Component {
+export default class LaunchError extends Component {
   static propTypes = {
     refetch: PropTypes.func.isRequired,
     onChangeWebsiteURL: PropTypes.func.isRequired,

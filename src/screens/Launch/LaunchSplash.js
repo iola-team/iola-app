@@ -4,7 +4,7 @@ import { Container, View } from 'native-base';
 import { withStyleSheet as styleSheet } from '~theme';
 import { LogoAnimated } from '~components';
 
-@styleSheet('iola.Splash', {
+@styleSheet('iola.LaunchSplash', {
   content: {
     flex: 1,
     justifyContent: 'center',
@@ -12,7 +12,7 @@ import { LogoAnimated } from '~components';
     backgroundColor: '#5259FF',
   },
 })
-export default class Splash extends Component {
+export default class LaunchSplash extends Component {
   render() {
     const { styleSheet: styles } = this.props;
 
