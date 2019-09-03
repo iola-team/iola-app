@@ -1,3 +1,3 @@
-import Background from './Logo';
+import Logo from './Logo';
 
-export default Background;
+export default Logo;
