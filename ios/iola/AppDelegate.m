@@ -16,6 +16,7 @@
 #import <AppCenterReactNative.h>
 #import <AppCenterReactNativeAnalytics.h>
 #import <AppCenterReactNativeCrashes.h>
+#import <AppCenterReactNativePush.h>
 
 @implementation AppDelegate
 
@@ -24,6 +25,7 @@
   [AppCenterReactNative register];
   [AppCenterReactNativeAnalytics registerWithInitiallyEnabled:true];
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];
+  [AppCenterReactNativePush register];
 
   NSMutableDictionary *initialProperties = [[NSMutableDictionary alloc] init];
   NSString *isStorybookValue = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"isStorybook"];
