@@ -1,3 +1,5 @@
+/* eslint max-classes-per-file: 0 */
+
 import { ApolloLink, Observable } from 'apollo-link';
 import { print } from 'graphql/language/printer';
 import URL from 'url-parse';
@@ -33,10 +35,11 @@ export class SubscriptionClient {
     return !!this.eventSource;
   }
 
-  async request(uri, method, body) {
+  async request(uri, method, body, headers = {}) {
     const res = await this.fetch(uri.toString(), {
       method,
       headers: {
+        ...headers,
         'Content-Type': 'application/json',
       },
       body: body && JSON.stringify(body),
@@ -68,9 +71,9 @@ export class SubscriptionClient {
       query === operation.query && isEqual(variables, operation.variables)
     ));
   }
-  
-  async createSubscription(operation, handlers = []) {
-    const { subscriptionId } = await this.request(this.uri, 'POST', operation);
+
+  async createSubscription(operation, handlers = [], headers = {}) {
+    const { subscriptionId } = await this.request(this.uri, 'POST', operation, headers);
     this.subscriptions[subscriptionId] = this.subscriptions[subscriptionId] || {
       subscriptionId,
       query: operation.query,
@@ -154,7 +157,7 @@ export class SubscriptionClient {
     return this;
   }
 
-  async subscribe(operation, handler) {
+  async subscribe(operation, handler, headers = {}) {
     const { query, variables, operationName } = operation;
 
     if (!query) {
@@ -177,7 +180,7 @@ export class SubscriptionClient {
     let subscription = this.getSubscription(operation);
 
     if (!subscription) {
-      const subscriptionPromise = this.createSubscription(operation, [ handler ]);
+      const subscriptionPromise = this.createSubscription(operation, [ handler ], headers);
       this.scheduleRestart(subscriptionPromise);
       subscription = await subscriptionPromise;
     } else {
@@ -187,7 +190,7 @@ export class SubscriptionClient {
     return subscription.subscriptionId;
   }
 
-  async unsubscribe(subscriptionId, handler) {
+  async unsubscribe(subscriptionId, handler, headers = {}) {
     const subscription = this.subscriptions[subscriptionId];
 
     if (!subscription) {
@@ -202,16 +205,10 @@ export class SubscriptionClient {
 
     delete this.subscriptions[subscriptionId];
 
-    const deletePromise = this.request(addPathPart(this.uri, [subscriptionId]), 'DELETE');
+    const sunscriptionUri = addPathPart(this.uri, [subscriptionId]);
+    const deletePromise = this.request(sunscriptionUri, 'DELETE', null, headers);
     this.scheduleRestart(deletePromise);
     await deletePromise;
-  }
-
-  async unsubscribeAll() {
-    await this.stop();
-    this.subscriptions = {};
-
-    await this.request(this.uri, 'DELETE');
   }
 }
 
@@ -222,19 +219,22 @@ export default class Sse extends ApolloLink {
     this.subscriptionClient = new SubscriptionClient(options);
   }
 
-  request(opertaion) {
+  request(operation) {
+    const { headers } = operation.getContext();
+
     return new Observable(observer => {
       const handler = data => observer.next({ data });
       const subscriptionPromise = this.subscriptionClient.subscribe(
         {
-          ...opertaion,
-          query: printQuery(opertaion.query),
+          ...operation,
+          query: printQuery(operation.query),
         },
         handler,
+        headers,
       );
 
       return () => subscriptionPromise.then(subscriptionId => (
-        this.subscriptionClient.unsubscribe(subscriptionId, handler)
+        this.subscriptionClient.unsubscribe(subscriptionId, handler, headers)
       ));
     });
   }
