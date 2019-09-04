@@ -54,11 +54,11 @@ export default class MessageList extends PureComponent {
     const grouped = groupBy(edges, ({ node }) => {
       const createdAt = new Date(node.createdAt);
 
-      return [
+      return new Date(
         createdAt.getFullYear(),
-        createdAt.getMonth() + 1,
+        createdAt.getMonth(),
         createdAt.getDate(),
-      ].join('-');
+      ).toISOString();
     });
 
     return map(grouped, (edges, time) => ({
