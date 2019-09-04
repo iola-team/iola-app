@@ -51,7 +51,6 @@ export default class DeleteMyProfile extends Component {
     } = this.props;
 
     navigate(routes.LOADING);
-    await client.resetStore();
 
     try {
       await deleteUser({
@@ -59,6 +58,8 @@ export default class DeleteMyProfile extends Component {
           id: me.id,
         },
       });
+
+      await client.resetStore();
 
       Toast.show({
         text: 'Your profile was successfully deleted.',
