@@ -90,16 +90,18 @@ export class SubscriptionClient {
     return this.subscriptions[subscriptionId];
   }
 
-  async start(lastEventId = null) {
+  async start(lastEventId = null, headers = {}) {
     this.lastEventId = lastEventId;
-    const headers = {};
+    const streamHeaders = {
+      ...headers,
+    };
 
     if (this.lastEventId) {
-      headers['Last-Event-ID'] = this.lastEventId;
+      streamHeaders['Last-Event-ID'] = this.lastEventId;
     }
 
     this.eventSource = new this.EventSource(this.uri, {
-      headers,
+      headers: streamHeaders,
     });
 
     await new Promise((resolve, reject) => {
@@ -128,12 +130,12 @@ export class SubscriptionClient {
   }
 
 
-  scheduleRestart(promise) {
+  scheduleRestart(promise, headers = {}) {
     this.restartQueue.push(promise);
-    this.delayedRestart();
+    this.delayedRestart(headers);
   };
 
-  delayedRestart = throttle(() => {
+  delayedRestart = throttle((headers = {}) => {
     if (!this.restartQueue) {
       return;
     }
@@ -141,17 +143,17 @@ export class SubscriptionClient {
     const [ ...promises ] = this.restartQueue;
     this.restartQueue = [];
 
-    Promise.all(promises).then(() => this.restart());
+    Promise.all(promises).then(() => this.restart(headers));
   }, 500, {
     leading: false,
     trailing: true,
   });
 
-  async restart() {
+  async restart(headers = {}) {
     const lastEventId = await this.stop();
 
     if (Object.keys(this.subscriptions).length) {
-      await this.start(lastEventId);
+      await this.start(lastEventId, headers);
     }
 
     return this;
@@ -181,7 +183,7 @@ export class SubscriptionClient {
 
     if (!subscription) {
       const subscriptionPromise = this.createSubscription(operation, [ handler ], headers);
-      this.scheduleRestart(subscriptionPromise);
+      this.scheduleRestart(subscriptionPromise, headers);
       subscription = await subscriptionPromise;
     } else {
       subscription.handlers.push(handler);
@@ -207,7 +209,7 @@ export class SubscriptionClient {
 
     const sunscriptionUri = addPathPart(this.uri, [subscriptionId]);
     const deletePromise = this.request(sunscriptionUri, 'DELETE', null, headers);
-    this.scheduleRestart(deletePromise);
+    this.scheduleRestart(deletePromise, headers);
     await deletePromise;
   }
 }
