@@ -5,7 +5,8 @@ import FastImage from 'react-native-fast-image';
 import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet, ConfigurableTheme } from '~theme';
-import Splash from './Splash';
+import LaunchError from './LaunchError';
+import LaunchSplash from './LaunchSplash';
 import Loading from '../Loading';
 import * as routes from '../routeNames';
 
@@ -41,7 +42,9 @@ export default class LaunchScreen extends Component {
   async componentDidUpdate(nextProps, prevState) {
     const { data, navigation: { navigate } } = this.props;
 
-    if (!data.loading) {
+    if (data.error) return;
+
+    if (!data.loading && nextProps.data.networkStatus !== data.networkStatus) {
       const {
         me,
         config: {
@@ -78,10 +81,22 @@ export default class LaunchScreen extends Component {
     }
   }
 
+  onChangeWebsiteURL = () => this.props.screenProps.onApplicationReset();
+
   render() {
-    const { screenProps: { applicationInitWasTriggeredManually } } = this.props;
+    const {
+      data: {
+        error,
+        refetch,
+      },
+      screenProps: {
+        applicationInitWasTriggeredManually,
+      },
+    } = this.props;
     const loading = applicationInitWasTriggeredManually || get(this.props, 'navigation.state.params.loading', false);
 
-    return loading ? <Loading /> : <Splash />;
+    if (error) return <LaunchError refetch={refetch} onChangeWebsiteURL={this.onChangeWebsiteURL} />;
+
+    return loading ? <Loading /> : <LaunchSplash />;
   }
 }

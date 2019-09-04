@@ -35,15 +35,15 @@ Moment.globalElement = Text;
 })
 export default class Application extends Component {
   static propTypes = {
-    onReady: PropTypes.func.isRequired,
-    onReset: PropTypes.func.isRequired,
+    onApplicationReady: PropTypes.func.isRequired,
+    onApplicationReset: PropTypes.func.isRequired,
     initWasTriggeredManually: PropTypes.bool.isRequired,
   };
 
   state = {
     isOnline: true,
     screenProps: {
-      onApplicationReset: this.props.onReset,
+      onApplicationReset: this.props.onApplicationReset,
       applicationInitWasTriggeredManually: this.props.initWasTriggeredManually,
       contentInset: {
         top: ScreenHeader.HEIGHT + getStatusBarHeight(true),
@@ -61,7 +61,7 @@ export default class Application extends Component {
   };
 
   componentDidMount() {
-    this.props.onReady();
+    this.props.onApplicationReady();
 
     NetInfo.isConnected.addEventListener('connectionChange', this.onConnectionChange);
     AppState.addEventListener('change', this.onAppStateChange);
