@@ -67,6 +67,7 @@ TODO: Fill this section
     2) Build the .apk file + install it on emulator/device: `yarn release:test:android`
   - iOS: `yarn fastlane:ios:beta`
 2) Build the release app version (build the apk file):
+  - Sometimes you'll need to `cd android && ./gradlew clean` before release
   - Android: `yarn release:build:android`
   - Get the new .aab (Android App Bundle) file here: `./android/app/build/outputs/bundle/applicationRelease`  
   - iOS: TODO
