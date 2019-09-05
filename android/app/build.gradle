@@ -91,8 +91,9 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
+    // clean and rebuild if changing
     entryFile: "index.js",
-    enableHermes: true,  // clean and rebuild if changing
+    enableHermes: false, // disabled due RN 0.60.5 issue: https://github.com/facebook/react-native/issues/26335
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
@@ -165,14 +166,14 @@ android {
 
     signingConfigs {
         release {
-            if (project.hasProperty("MYAPP_RELEASE_STORE_FILE")) {
+            if (project.hasProperty("MYAPP_UPLOAD_STORE_FILE")) {
                 Properties passwords = new Properties()
                 passwords.load(new FileInputStream("$project.rootDir/passwords.properties"))
 
-                storeFile file(MYAPP_RELEASE_STORE_FILE)
-                storePassword passwords.MYAPP_RELEASE_STORE_PASSWORD
-                keyAlias MYAPP_RELEASE_KEY_ALIAS
-                keyPassword passwords.MYAPP_RELEASE_KEY_PASSWORD
+                storeFile file(MYAPP_UPLOAD_STORE_FILE)
+                storePassword passwords.MYAPP_UPLOAD_STORE_PASSWORD
+                keyAlias MYAPP_UPLOAD_KEY_ALIAS
+                keyPassword passwords.MYAPP_UPLOAD_KEY_PASSWORD
             }
         }
         debug {
