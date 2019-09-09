@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "822879262510",
+    "firebase_url": "https://iola-d2cd0.firebaseio.com",
+    "project_id": "iola-d2cd0",
+    "storage_bucket": "iola-d2cd0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:822879262510:android:f1b26b53c1026807",
+        "android_client_info": {
+          "package_name": "team.iola.iola"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "822879262510-hi56subv67p09cu5tfhkphko9m2gkrvh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDetZ2vHo39-ifUqcs-uyHGdV-SxInB_Jk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "822879262510-hi56subv67p09cu5tfhkphko9m2gkrvh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
