@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Linking } from 'react-native';
+import { Button, Form, Text, View } from 'native-base';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, Form, Text } from 'native-base';
 import { graphql, ApolloConsumer, Mutation } from 'react-apollo';
 import gql from 'graphql-tag';
 import { debounce, get } from 'lodash';
+import { LICENSE_AGREEMENT_URL } from 'react-native-dotenv';
 
 import { withStyleSheet as styleSheet } from '~theme';
-import { FormTextInput, Spinner } from '~components';
+import { CheckBox, FormTextInput, Spinner, TouchableOpacity } from '~components';
 
 const validateEmailQuery = gql`
   query validateEmailQuery($email: String = "") {
@@ -42,9 +44,32 @@ const signUpUserMutation = gql`
   }),
 })
 @styleSheet('iola.SignUpForm', {
+  termsContainer: {
+    flexDirection: 'row',
+    marginTop: 16,
+    alignItems: 'center',
+  },
+
+  termsText: {
+    fontSize: 14,
+    lineHeight: 19,
+    color: '#FFFFFF',
+  },
+
+  termsButton: {
+    paddingHorizontal: 4,
+  },
+
+  termsButtonText: {
+    fontSize: 14,
+    lineHeight: 19,
+    textDecorationLine: 'underline',
+    color: '#FFFFFF',
+  },
+
   submit: {
     position: 'relative',
-    marginTop: 40,
+    marginTop: 20,
   },
 
   spinner: {
@@ -57,10 +82,13 @@ class SignUpForm extends Component {
     onSubmit: PropTypes.func.isRequired,
   };
 
-  state = { emailIsDuplicated: false };
+  state = {
+    emailIsDuplicated: false,
+    isAgreementChecked: false,
+  };
+
   emailInput = null;
   passwordInput = null;
-
   validateEmail = debounce(this.onValidateEmail, 200);
 
   async onValidateEmail(text, client) {
@@ -78,6 +106,14 @@ class SignUpForm extends Component {
   onChangeEmail(text, client) {
     this.validateEmail(text, client);
   }
+
+  openUrl = async (url) => {
+    const canOpen = await Linking.canOpenURL(url);
+
+    if (canOpen) {
+      Linking.openURL(url);
+    }
+  };
 
   async onSubmit(signUpUser) {
     const {
@@ -124,18 +160,17 @@ class SignUpForm extends Component {
 
   render() {
     const { styleSheet: styles, isSubmitting } = this.props;
-    const { emailIsDuplicated } = this.state;
+    const { emailIsDuplicated, isAgreementChecked } = this.state;
 
     return (
       <Mutation mutation={signUpUserMutation}>
         {signUpUser => (
           <Form>
             <FormTextInput
+              {...this.props}
               name="name"
               placeholder="Full Name"
               autoCapitalize="words"
-              {...this.props}
-
               textContentType="name"
               returnKeyType="next"
               blurOnSubmit={false}
@@ -145,6 +180,8 @@ class SignUpForm extends Component {
             <ApolloConsumer>
               {client => (
                 <FormTextInput
+                  {...this.props}
+                  useCheckmarkIconOnValidValue
                   ref={ref => this.emailInput = ref}
                   name="email"
                   placeholder="Email"
@@ -152,9 +189,6 @@ class SignUpForm extends Component {
                   secondaryErrorText={emailIsDuplicated && 'Email is taken'}
                   autoCapitalize="none"
                   keyboardType="email-address"
-                  useCheckmarkIconOnValidValue
-                  {...this.props}
-
                   textContentType="emailAddress"
                   returnKeyType="next"
                   blurOnSubmit={false}
@@ -164,23 +198,33 @@ class SignUpForm extends Component {
             </ApolloConsumer>
 
             <FormTextInput
+              {...this.props}
+              secureTextEntry
               ref={ref => this.passwordInput = ref}
               name="password"
               placeholder="Password"
               infoText="At least 4 characters"
-              secureTextEntry
-              {...this.props}
-
               textContentType="password"
               returnKeyType="go"
               onSubmitEditing={() => !emailIsDuplicated && this.onSubmit(signUpUser)}
             />
 
+            <View style={styles.termsContainer}>
+              <CheckBox
+                onPress={() => this.setState({ isAgreementChecked: !isAgreementChecked })}
+                checked={isAgreementChecked}
+              />
+              <Text style={styles.termsText}>I agree to the</Text>
+              <TouchableOpacity style={styles.termsButton} onPress={() => this.openUrl(LICENSE_AGREEMENT_URL)}>
+                <Text style={styles.termsButtonText}>License Agreement</Text>
+              </TouchableOpacity>
+            </View>
+
             <Button
+              block
               style={styles.submit}
               onPress={() => this.onSubmit(signUpUser)}
-              disabled={emailIsDuplicated}
-              block
+              disabled={emailIsDuplicated || !isAgreementChecked}
             >
               <Text>Sign up</Text>
               {isSubmitting && <Spinner style={styles.spinner} />}

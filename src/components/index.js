@@ -7,6 +7,7 @@ import BarBackgroundView from './BarBackgroundView';
 import BottomTabBar from './BottomTabBar';
 import Chat from './Chat';
 import ChatList from './ChatList';
+import CheckBox from './CheckBox';
 import ConnectivityIndicator from './ConnectivityIndicator';
 import createHeadingTabsNavigator from './TabNavigator';
 import DashboardHeading from './DashboardHeading';
@@ -67,6 +68,7 @@ export {
   BarBackgroundView,
   Chat,
   ChatList,
+  CheckBox,
   ConnectivityIndicator,
   DashboardHeading,
   ErrorBoundary,
