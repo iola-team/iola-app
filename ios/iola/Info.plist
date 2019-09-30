@@ -44,11 +44,11 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>to Capture Photos</string>
+	<string>This app requires access to your camera so you could take photos, share them or set as an avatar.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>for Image Sharing</string>
+	<string>This app requires access to your photos so you could share them or set as an avatar.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Roboto_medium.ttf</string>
