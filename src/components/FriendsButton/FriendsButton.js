@@ -175,7 +175,7 @@ export default class FriendsButton extends PureComponent {
           <Text style={{ opacity: showLoading ? 0 : 1 }}>
             Friends
           </Text>
-          {hasIcon && <Icon name='check' />}
+          {hasIcon && <Icon name="check" />}
         </Button>
         {friendshipType && this.renderActionSheet(friendshipType)}
       </Fragment>
