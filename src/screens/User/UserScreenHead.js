@@ -8,14 +8,36 @@ import { UserHeading, FriendsButton } from '~components';
 import * as routes from '../routeNames';
 
 const userQuery = gql`
-  query UserDetailsQuery($userId: ID!) {
+  query UserDetailsQuery($userId: ID!, $meId: ID!) {
+    me {
+      id
+    }
+
     user: node(id: $userId) {
       id
+      ... on User {
+        isBlocked(by: $meId)
+      }
+
       ...UserHeading_user
     }
   }
 
   ${UserHeading.fragments.user}
+`;
+
+const unBlockUserMutation = gql`
+  mutation UserActionsUnBlockUser($userId: ID!, $blockedUserId: ID!) {
+    unBlockUser(input: {
+      userId: $userId
+      blockedUserId: $blockedUserId
+    }) {
+      unBlockedUser {
+        id
+        isBlocked(by: $userId)
+      }
+    }
+  }
 `;
 
 @withStyleSheet('iola.UserScreenHead', {
@@ -30,13 +52,17 @@ const userQuery = gql`
     marginHorizontal: 5,
   }
 })
+@graphql(gql`query { me { id } }`, { options: { fetchPolicy: 'cache-first' } })
 @graphql(userQuery, {
-  options: ({ navigation }) => ({
+  skip: ({ data: { me } }) => !me?.id,
+  options: ({ navigation, data: { me } }) => ({
     variables: {
+      meId: me.id,
       userId: navigation.state.params.id,
     },
   }),
 })
+@graphql(unBlockUserMutation, { name: 'unBlockUser' })
 export default class UserScreenHead extends PureComponent {
   static HEIGHT = UserHeading.HEIGHT;
 
@@ -45,6 +71,23 @@ export default class UserScreenHead extends PureComponent {
 
     addListener('refetch', () => data.refetch());
   }
+
+  unBlockUser = async () => {
+    const { unBlockUser, data: { me, user } } = this.props;
+
+    await unBlockUser({
+      variables: { userId: me.id, blockedUserId: user.id },
+      optimisticResponse: {
+        unBlockUser: {
+          __typename: 'UnBlockUserPayload',
+          unBlockedUser: {
+            ...user,
+            isBlocked: false,
+          },
+        },
+      },
+    });
+  };
 
   render() {
     const {
@@ -64,18 +107,33 @@ export default class UserScreenHead extends PureComponent {
       ...props
     } = this.props;
 
+    const buttons = user?.isBlocked ? (
+      <Button
+        block
+        secondary
+        style={styles.button}
+        onPress={this.unBlockUser}
+      >
+        <Text>Unblock</Text>
+      </Button>
+    ) : (
+      <>
+        <Button
+          block
+          style={styles.button}
+          onPress={() => navigate(routes.CHANNEL, { userId })}
+        >
+          <Text>Chat</Text>
+        </Button>
+
+        <FriendsButton block style={styles.button} userId={userId} />
+      </>
+    );
+
     return (
       <UserHeading {...props} loading={loading} user={user}>
         <View style={styles.buttons}>
-          <Button
-            block
-            style={styles.button}
-            onPress={() => navigate(routes.CHANNEL, { userId })}
-          >
-            <Text>Chat</Text>
-          </Button>
-
-          <FriendsButton block style={styles.button} userId={userId} />
+          {user && buttons}
         </View>
       </UserHeading>
     );
