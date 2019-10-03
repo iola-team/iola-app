@@ -11,6 +11,7 @@ const userQuery = gql`
   query UserDetailsQuery($userId: ID!, $meId: ID!) {
     me {
       id
+      isBlocked(by: $userId)
     }
 
     user: node(id: $userId) {
@@ -50,7 +51,11 @@ const unBlockUserMutation = gql`
     width: '30%',
     alignSelf: 'center',
     marginHorizontal: 5,
-  }
+  },
+
+  blockedLabel: {
+    marginTop: 20,
+  },
 })
 @graphql(gql`query { me { id } }`, { options: { fetchPolicy: 'cache-first' } })
 @graphql(userQuery, {
@@ -95,6 +100,7 @@ export default class UserScreenHead extends PureComponent {
       data: {
         loading,
         user,
+        me,
       },
       navigation: {
         navigate,
@@ -133,7 +139,9 @@ export default class UserScreenHead extends PureComponent {
     return (
       <UserHeading {...props} loading={loading} user={user}>
         <View style={styles.buttons}>
-          {user && buttons}
+          {(user && !me?.isBlocked) ? buttons : (
+            <Text style={styles.blockedLabel}>This user chooses not to interact with you</Text>
+          )}
         </View>
       </UserHeading>
     );
