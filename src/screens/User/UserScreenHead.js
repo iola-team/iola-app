@@ -139,9 +139,9 @@ export default class UserScreenHead extends PureComponent {
     return (
       <UserHeading {...props} loading={loading} user={user}>
         <View style={styles.buttons}>
-          {(user && !me?.isBlocked) ? buttons : (
+          {user && (!me.isBlocked ? buttons : (
             <Text style={styles.blockedLabel}>This user chooses not to interact with you</Text>
-          )}
+          ))}
         </View>
       </UserHeading>
     );

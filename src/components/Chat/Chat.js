@@ -46,6 +46,7 @@ const connectionFragment = gql`
 
 const chatQuery = gql`
   query ChatMessagesQuery(
+    $meId: ID!
     $chatId: ID
     $recipientId: ID
     $first: Int
@@ -57,6 +58,7 @@ const chatQuery = gql`
       id
       chat(id: $chatId, recipientId: $recipientId) {
         id
+        isBlocked(for: $meId)
         messages(last: $last after: $after first: $first before: $before) @connection(key: "ChatMessagesConnection") {
           ...Chat_messages
         }
@@ -64,7 +66,7 @@ const chatQuery = gql`
           id
         }
       }
-      
+
       ...UserAvatar_user
     }
   }
@@ -91,7 +93,7 @@ const startChatMutation = gql`
       }
     }
   }
-  
+
   ${connectionFragment}
 `;
 
@@ -195,9 +197,11 @@ const messageAddSubscription = gql`
   ${chatMessagesEdgeFragment}
 `;
 
+@graphql(gql`query { me { id } }`, { options: { fetchPolicy: 'cache-first' } })
 @graphql(chatQuery, {
-  options: ({ chatId, recipientId }) => ({
+  options: ({ chatId, recipientId, data: { me } }) => ({
     variables: {
+      meId: me?.id,
       chatId,
       recipientId,
       first: 50,
@@ -228,10 +232,6 @@ const messageAddSubscription = gql`
   },
 })
 export default class Chat extends Component {
-  static propTypes = {
-
-  };
-
   getConnection() {
     const chat = get(this.props, 'data.me.chat');
 
@@ -519,7 +519,7 @@ export default class Chat extends Component {
           initialNumToRender={20}
         />
 
-        <ChatFooter disabled={!me} style={styles.footer} onSend={this.onSend} />
+        <ChatFooter disabled={!me || me.chat.isBlocked} style={styles.footer} onSend={this.onSend} />
         {me && <MessageUpdateSubscription userId={me.id} />}
       </View>
     );
