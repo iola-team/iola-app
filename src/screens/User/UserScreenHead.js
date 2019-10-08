@@ -54,8 +54,8 @@ const unBlockUserMutation = gql`
   },
 
   blockedLabel: {
-    marginTop: 20,
     color: '#F95356',
+    textAlign: 'center',
   },
 })
 @graphql(gql`query { me { id } }`, { name: 'meData', options: { fetchPolicy: 'cache-first' } })
@@ -145,8 +145,13 @@ export default class UserScreenHead extends PureComponent {
           {
             user && me &&
               (me.isBlocked
-                ? <Text style={styles.blockedLabel}>This user chooses not to interact with you</Text>
-                : renderButtons(user.isBlocked)
+                ? (
+                  <Text style={styles.blockedLabel}>
+                    This user chooses not
+                    {'\n'}
+                    to interact with you
+                  </Text>
+                ) : renderButtons(user.isBlocked)
               )
           }
         </View>

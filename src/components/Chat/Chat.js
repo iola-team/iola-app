@@ -607,7 +607,11 @@ export default class Chat extends Component {
             </Button>
           </>
         ) : (
-          <Text style={styles.systemMessageText}>This user chooses not to interact with you</Text>
+          <Text style={styles.systemMessageText}>
+            This user chooses not
+            {'\n'}
+            to interact with you
+          </Text>
         )}
       </View>
     );
