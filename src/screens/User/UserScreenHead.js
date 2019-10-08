@@ -15,12 +15,12 @@ const userQuery = gql`
     }
 
     user: node(id: $userId) {
-      id
       ... on User {
+        id
         isBlocked(by: $meId)
-      }
 
-      ...UserHeading_user
+        ...UserHeading_user
+      }
     }
   }
 
@@ -55,12 +55,13 @@ const unBlockUserMutation = gql`
 
   blockedLabel: {
     marginTop: 20,
+    color: '#F95356',
   },
 })
-@graphql(gql`query { me { id } }`, { options: { fetchPolicy: 'cache-first' } })
+@graphql(gql`query { me { id } }`, { name: 'meData', options: { fetchPolicy: 'cache-first' } })
 @graphql(userQuery, {
-  skip: ({ data: { me } }) => !me?.id,
-  options: ({ navigation, data: { me } }) => ({
+  skip: ({ meData: { me } }) => !me?.id,
+  options: ({ navigation, meData: { me } }) => ({
     variables: {
       meId: me.id,
       userId: navigation.state.params.id,
@@ -113,35 +114,41 @@ export default class UserScreenHead extends PureComponent {
       ...props
     } = this.props;
 
-    const buttons = user?.isBlocked ? (
-      <Button
-        block
-        secondary
-        style={styles.button}
-        onPress={this.unBlockUser}
-      >
-        <Text>Unblock</Text>
-      </Button>
-    ) : (
-      <>
+    const renderButtons = (isBlocked) => (
+      isBlocked ? (
         <Button
           block
+          secondary
           style={styles.button}
-          onPress={() => navigate(routes.CHANNEL, { userId })}
+          onPress={this.unBlockUser}
         >
-          <Text>Chat</Text>
+          <Text>Unblock</Text>
         </Button>
+      ) : (
+        <>
+          <Button
+            block
+            style={styles.button}
+            onPress={() => navigate(routes.CHANNEL, { userId })}
+          >
+            <Text>Chat</Text>
+          </Button>
 
-        <FriendsButton block style={styles.button} userId={userId} />
-      </>
+          <FriendsButton block style={styles.button} userId={userId} />
+        </>
+      )
     );
 
     return (
       <UserHeading {...props} loading={loading} user={user}>
         <View style={styles.buttons}>
-          {user && (!me.isBlocked ? buttons : (
-            <Text style={styles.blockedLabel}>This user chooses not to interact with you</Text>
-          ))}
+          {
+            user && me &&
+              (me.isBlocked
+                ? <Text style={styles.blockedLabel}>This user chooses not to interact with you</Text>
+                : renderButtons(user.isBlocked)
+              )
+          }
         </View>
       </UserHeading>
     );

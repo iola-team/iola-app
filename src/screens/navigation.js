@@ -34,6 +34,7 @@ import UserInfo from './UserInfo';
 import UserPhotos from './UserPhotos';
 import UserSearch from './UserSearch';
 import Users from './Users';
+import BlockedUsers from './BlockedUsers';
 
 import createUserNavigator from './User';
 import createProfileNavigator from './Profile';
@@ -105,6 +106,7 @@ const RootNavigator = createSwitchNavigator({
 
     [routes.PROFILE_EDIT]: ProfileEdit,
     [routes.SETTINGS]: Settings,
+    [routes.BLOCKED_USERS]: BlockedUsers,
 
     [routes.CHANNEL]: Channel,
     [routes.USER_SEARCH]: { screen: UserSearch, params: { isSearch: true } },
