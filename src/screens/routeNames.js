@@ -30,3 +30,4 @@ export const PROFILE_EDIT = 'profileEdit';
 export const SETTINGS = 'settings';
 export const USER_SEARCH = 'userSearch';
 export const CHAT_SEARCH = 'chatSearch';
+export const BLOCKED_USERS = 'blockedUsers';

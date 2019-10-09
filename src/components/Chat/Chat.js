@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import update from 'immutability-helper';
 import uuid from 'uuid';
-import { View } from 'native-base';
+import { View, Text, Button } from 'native-base';
 import { get } from 'lodash';
 
 import { withStyleSheet as styleSheet } from '~theme';
@@ -46,6 +46,7 @@ const connectionFragment = gql`
 
 const chatQuery = gql`
   query ChatMessagesQuery(
+    $meId: ID!
     $chatId: ID
     $recipientId: ID
     $first: Int
@@ -57,14 +58,16 @@ const chatQuery = gql`
       id
       chat(id: $chatId, recipientId: $recipientId) {
         id
+        isBlocked(for: $meId)
         messages(last: $last after: $after first: $first before: $before) @connection(key: "ChatMessagesConnection") {
           ...Chat_messages
         }
         participants {
           id
+          isBlocked(by: $meId)
         }
       }
-      
+
       ...UserAvatar_user
     }
   }
@@ -78,26 +81,35 @@ const startChatMutation = gql`
     $input: MessageInput!
     $chatId: ID
     $recipientId: ID
+    $meId: ID!
   ) {
     addMessage(input: $input) {
       user {
         id
         chat(id: $chatId, recipientId: $recipientId) {
           id
+          isBlocked(for: $meId)
           messages(first: 20) @connection(key: "ChatMessagesConnection") {
             ...Chat_messages
+          }
+
+          participants {
+            id
+            isBlocked(by: $meId)
           }
         }
       }
     }
   }
-  
+
   ${connectionFragment}
 `;
 
 const createOptimisticChat = (messageEdges = []) => ({
   __typename: 'Chat',
   id: uuid(),
+  isBlocked: false,
+  participants: [],
   messages: {
     __typename: 'ChatMessagesConnection',
     pageInfo: {
@@ -177,6 +189,20 @@ const markMessagesAsReadMutation = gql`
   }
 `;
 
+const unBlockUserMutation = gql`
+  mutation UserActionsUnBlockUser($userId: ID!, $blockedUserId: ID!) {
+    unBlockUser(input: {
+      userId: $userId
+      blockedUserId: $blockedUserId
+    }) {
+      unBlockedUser {
+        id
+        isBlocked(by: $userId)
+      }
+    }
+  }
+`;
+
 const messageAddSubscription = gql`
   subscription ChatMessageAddSubscription($chatId: ID!) {
     onMessageAdd(chatId: $chatId) {
@@ -195,9 +221,12 @@ const messageAddSubscription = gql`
   ${chatMessagesEdgeFragment}
 `;
 
+
+@graphql(gql`query { me { id } }`, { options: { fetchPolicy: 'cache-first' } })
 @graphql(chatQuery, {
-  options: ({ chatId, recipientId }) => ({
+  options: ({ chatId, recipientId, data: { me } }) => ({
     variables: {
+      meId: me?.id,
       chatId,
       recipientId,
       first: 50,
@@ -207,6 +236,9 @@ const messageAddSubscription = gql`
 })
 @graphql(startChatMutation, {
   name: 'startChatMutation',
+})
+@graphql(unBlockUserMutation, {
+  name: 'unBlockMutation',
 })
 @graphql(addMessageMutation, {
   name: 'addMessageMutation',
@@ -226,12 +258,26 @@ const messageAddSubscription = gql`
   footer: {
 
   },
+
+  systemMessage: {
+    alignItems: 'center',
+    justifyContnet: 'center',
+    paddingTop: 20,
+    paddingBottom: 25,
+    paddingHorizontal: 16,
+  },
+
+  systemMessageText: {
+    color: '#F95356',
+    textAlign: 'center',
+  },
+
+  unblockButton: {
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
 })
 export default class Chat extends Component {
-  static propTypes = {
-
-  };
-
   getConnection() {
     const chat = get(this.props, 'data.me.chat');
 
@@ -256,6 +302,7 @@ export default class Chat extends Component {
 
     const variables = {
       chatId,
+      meId: me.id,
       recipientId,
       input: {
         recipientIds: [recipientId],
@@ -493,6 +540,83 @@ export default class Chat extends Component {
     });
   };
 
+  unBlockUser = async (user) => {
+    const { unBlockMutation, data: { me } } = this.props;
+
+    await unBlockMutation({
+      variables: { userId: me.id, blockedUserId: user.id },
+      optimisticResponse: {
+        unBlockUser: {
+          __typename: 'UnBlockUserPayload',
+          unBlockedUser: {
+            ...user,
+            isBlocked: false,
+          },
+        },
+      },
+    });
+  };
+
+  getBlockedParticipant = () => {
+    const { data: { me } } = this.props;
+
+    return me?.chat?.participants.find(({ id, isBlocked }) => (
+      id !== me.id && isBlocked
+    ));
+  };
+
+  isSendBlocked = () => {
+    const { data: { me, loading } } = this.props;
+
+    if (loading || !me) {
+      return true;
+    }
+
+    const isChatBlocked = me.chat?.isBlocked || false;
+    const blockedParticipant = this.getBlockedParticipant();
+
+    return isChatBlocked || !!blockedParticipant;
+  };
+
+  renderSystemMessage = () => {
+    const { styleSheet: styles, data: { me } } = this.props;
+
+    if (!me) {
+      return null;
+    }
+
+    const isChatBlocked = me.chat?.isBlocked || false;
+    const blockedParticipant = this.getBlockedParticipant();
+
+    if (!isChatBlocked && !blockedParticipant) {
+      return null;
+    }
+
+    return (
+      <View style={styles.systemMessage}>
+        {blockedParticipant ? (
+          <>
+            <Text style={styles.systemMessageText}>You blocked this user</Text>
+            <Button
+              secondary
+              bordered
+              style={styles.unblockButton}
+              onPress={() => this.unBlockUser(blockedParticipant)}
+            >
+              <Text>Unblock</Text>
+            </Button>
+          </>
+        ) : (
+          <Text style={styles.systemMessageText}>
+            This user chooses not
+            {'\n'}
+            to interact with you
+          </Text>
+        )}
+      </View>
+    );
+  };
+
   render() {
     const {
       style,
@@ -508,6 +632,7 @@ export default class Chat extends Component {
       <View style={[styles.root, style]}>
         <MessageList
           {...props}
+
           edges={edges}
           loading={loading}
           loadingMore={hasMore}
@@ -517,9 +642,11 @@ export default class Chat extends Component {
           inverted
           onEndReachedThreshold={2} // Two screens
           initialNumToRender={20}
+
+          ListHeaderComponent={this.renderSystemMessage}
         />
 
-        <ChatFooter disabled={!me} style={styles.footer} onSend={this.onSend} />
+        <ChatFooter disabled={this.isSendBlocked()} style={styles.footer} onSend={this.onSend} />
         {me && <MessageUpdateSubscription userId={me.id} />}
       </View>
     );
