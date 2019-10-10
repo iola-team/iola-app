@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FlatList } from 'react-native';
+import { View, Text, Button } from 'native-base';
 import gql from 'graphql-tag';
 import { propType as fragmentProp } from 'graphql-anywhere';
 import { range } from 'lodash';
 
+import { withStyleSheet as styleSheet } from '~theme';
 import ImageCommentsItem from '../ImageCommentsItem';
 import NoContent from '../NoContent';
-import RefreshControl from '../RefreshControl';
 
 const edgeFragment = gql`
   fragment ImageCommentsList_edge on CommentEdge {
@@ -20,6 +21,25 @@ const edgeFragment = gql`
   ${ImageCommentsItem.fragments.comment}
 `;
 
+@styleSheet('iola.ImageCommentsList', {
+  systemMessage: {
+    alignItems: 'center',
+    justifyContnet: 'center',
+    paddingTop: 20,
+    paddingBottom: 25,
+    paddingHorizontal: 16,
+  },
+
+  systemMessageText: {
+    color: '#F95356',
+    textAlign: 'center',
+  },
+
+  unblockButton: {
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+})
 export default class ImageCommentsList extends Component {
   static propTypes = {
     onItemPress: PropTypes.func,
@@ -29,6 +49,9 @@ export default class ImageCommentsList extends Component {
     loading: PropTypes.bool.isRequired,
     subscribeToNewComments: PropTypes.func.isRequired,
     listRef: PropTypes.object.isRequired,
+    isBlockedByMe: PropTypes.bool.isRequired,
+    isBlockedForMe: PropTypes.bool.isRequired,
+    unblockUser: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -44,9 +67,13 @@ export default class ImageCommentsList extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const { edges, loading } = this.props;
+    const { edges, loading, isBlockedByMe } = this.props;
 
-    return edges.length !== nextProps.edges.length || loading !== nextProps.loading;
+    return (
+      edges.length !== nextProps.edges.length
+      || loading !== nextProps.loading
+      || isBlockedByMe !== nextProps.isBlockedByMe
+    );
   }
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -62,6 +89,31 @@ export default class ImageCommentsList extends Component {
     return <ImageCommentsItem comment={node} />;
   }
 
+  renderSystemMessage = () => {
+    const { isBlockedByMe, isBlockedForMe, unblockUser, styleSheet: styles } = this.props;
+
+    if (!isBlockedByMe && !isBlockedForMe) return null;
+
+    return (
+      <View style={styles.systemMessage}>
+        {isBlockedByMe ? (
+          <>
+            <Text style={styles.systemMessageText}>You blocked this user</Text>
+            <Button secondary bordered style={styles.unblockButton} onPress={unblockUser}>
+              <Text>Unblock</Text>
+            </Button>
+          </>
+        ) : (
+          <Text style={styles.systemMessageText}>
+            This user chooses not
+            {'\n'}
+            to interact with you
+          </Text>
+        )}
+      </View>
+    );
+  };
+
   render() {
     const { edges, loading, listRef, ...listProps } = this.props;
     const data = edges.length ? edges : (loading ? this.getPlaceholders() : edges);
@@ -75,9 +127,10 @@ export default class ImageCommentsList extends Component {
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 15 }}
-        ListEmptyComponent={<NoContent icon="comments-empty-state" text={emptyStateText} inverted />}
-        removeClippedSubviews // "Sometimes image doesn't show (only Android)" issue: https://github.com/facebook/react-native/issues/17096
         inverted={loading || edges.length}
+        ListEmptyComponent={<NoContent icon="comments-empty-state" text={emptyStateText} inverted />}
+        ListHeaderComponent={this.renderSystemMessage}
+        removeClippedSubviews // "Sometimes image doesn't show (only Android)" issue: https://github.com/facebook/react-native/issues/17096
       />
     );
   }

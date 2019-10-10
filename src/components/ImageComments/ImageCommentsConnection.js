@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Query, subscribeToMore } from 'react-apollo';
 import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
 import { propType as graphqlPropType } from 'graphql-anywhere';
 import { get, noop, range } from 'lodash';
 import update from 'immutability-helper';
@@ -17,11 +18,29 @@ const meQuery = gql`
   }
 `;
 
+const userIsBlockedQuery = gql`
+  query userIsBlockedQuery($meId: ID!, $userId: ID!) {
+    user: node(id: $meId) {
+      ...on User {
+        id
+        isBlocked(by: $userId)
+      }
+    }
+  }
+`;
+
 const photoCommentsQuery = gql`
-  query PhotoCommentsQuery($id: ID!, $cursor: Cursor = null) {
+  query PhotoCommentsQuery($id: ID!, $meId: ID!, $cursor: Cursor = null) {
     photo: node(id: $id) {
       ...on Photo {
         id
+        isBlocked(for: $meId)
+        
+        user {
+          id
+          isBlocked(by: $meId)
+        }
+        
         comments(first: 10 after: $cursor) @connection(key: "PhotoCommentsConnection") {
           totalCount
 
@@ -59,6 +78,21 @@ const photoCommentAddSubscription = gql`
   ${ImageCommentsList.fragments.edge}
 `;
 
+const unblockUserMutation = gql`
+  mutation UserActionsUnblockUser($userId: ID!, $blockedUserId: ID!) {
+    unblockUser(input: {
+      userId: $userId
+      blockedUserId: $blockedUserId
+    }) {
+      unblockedUser {
+        id
+        isBlocked(by: $userId)
+      }
+    }
+  }
+`;
+
+@graphql(unblockUserMutation, { name: 'unblockUserMutation' })
 export default class ImageCommentsConnection extends Component {
   static propTypes = {
     photoId: PropTypes.string.isRequired,
@@ -75,7 +109,7 @@ export default class ImageCommentsConnection extends Component {
     photoCommentsQuery,
   };
 
-  handleLoadMore({ photo: { comments: { pageInfo } } }, fetchMore) {
+  handleLoadMore({ comments: { pageInfo } }, fetchMore) {
     if (!pageInfo.hasNextPage) return;
 
     this.fetchMorePromise = this.fetchMorePromise || fetchMore({
@@ -108,16 +142,39 @@ export default class ImageCommentsConnection extends Component {
     });
   }
 
+  unblockUser = async (me, photo) => {
+    const { unblockUserMutation } = this.props;
+    const user = get(photo, 'user');
+
+    if (!user) return;
+
+    await unblockUserMutation({
+      variables: { userId: me.id, blockedUserId: user.id },
+      optimisticResponse: {
+        unblockUser: {
+          __typename: 'UnblockUserPayload',
+          unblockedUser: {
+            ...user,
+            isBlocked: false,
+          },
+        },
+      },
+    });
+  };
+
   render() {
     const { photoId, onItemPress, listRef } = this.props;
 
     return (
       <Query query={meQuery}>
         {({ data: { me } }) => (
-          <Query query={photoCommentsQuery} variables={{ id: photoId }}>
-            {({ loading, data, fetchMore, networkStatus, subscribeToMore }) => {
-              const edges = get(data, 'photo.comments.edges', []);
-              const onEndReached = () => loading ? null : this.handleLoadMore(data, fetchMore);
+          <Query query={photoCommentsQuery} variables={{ id: photoId, meId: me.id }}>
+            {({ loading, data: { photo }, fetchMore, subscribeToMore }) => {
+              const edges = get(photo, 'comments.edges', []);
+              const isBlockedByMe = get(photo, 'user.isBlocked', false);
+              const isBlockedForMe = get(photo, 'isBlocked', false);
+              const onEndReached = () => loading ? null : this.handleLoadMore(photo, fetchMore);
+
               const subscribeToNewComments = () => subscribeToMore({
                 document: photoCommentAddSubscription,
                 variables: { photoId },
@@ -160,6 +217,9 @@ export default class ImageCommentsConnection extends Component {
                   onEndReached={onEndReached}
                   onEndReachedThreshold={2}
                   subscribeToNewComments={subscribeToNewComments}
+                  isBlockedByMe={isBlockedByMe}
+                  isBlockedForMe={isBlockedForMe}
+                  unblockUser={() => this.unblockUser(me, photo)}
                 />
               );
             }}

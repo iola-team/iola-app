@@ -189,13 +189,13 @@ const markMessagesAsReadMutation = gql`
   }
 `;
 
-const unBlockUserMutation = gql`
-  mutation UserActionsUnBlockUser($userId: ID!, $blockedUserId: ID!) {
-    unBlockUser(input: {
+const unblockUserMutation = gql`
+  mutation UserActionsUnblockUser($userId: ID!, $blockedUserId: ID!) {
+    unblockUser(input: {
       userId: $userId
       blockedUserId: $blockedUserId
     }) {
-      unBlockedUser {
+      unblockedUser {
         id
         isBlocked(by: $userId)
       }
@@ -237,8 +237,8 @@ const messageAddSubscription = gql`
 @graphql(startChatMutation, {
   name: 'startChatMutation',
 })
-@graphql(unBlockUserMutation, {
-  name: 'unBlockMutation',
+@graphql(unblockUserMutation, {
+  name: 'unblockMutation',
 })
 @graphql(addMessageMutation, {
   name: 'addMessageMutation',
@@ -540,15 +540,15 @@ export default class Chat extends Component {
     });
   };
 
-  unBlockUser = async (user) => {
-    const { unBlockMutation, data: { me } } = this.props;
+  unblockUser = async (user) => {
+    const { unblockMutation, data: { me } } = this.props;
 
-    await unBlockMutation({
+    await unblockMutation({
       variables: { userId: me.id, blockedUserId: user.id },
       optimisticResponse: {
-        unBlockUser: {
-          __typename: 'UnBlockUserPayload',
-          unBlockedUser: {
+        unblockUser: {
+          __typename: 'UnblockUserPayload',
+          unblockedUser: {
             ...user,
             isBlocked: false,
           },
@@ -601,7 +601,7 @@ export default class Chat extends Component {
               secondary
               bordered
               style={styles.unblockButton}
-              onPress={() => this.unBlockUser(blockedParticipant)}
+              onPress={() => this.unblockUser(blockedParticipant)}
             >
               <Text>Unblock</Text>
             </Button>

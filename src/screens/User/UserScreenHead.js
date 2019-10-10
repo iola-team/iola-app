@@ -27,13 +27,13 @@ const userQuery = gql`
   ${UserHeading.fragments.user}
 `;
 
-const unBlockUserMutation = gql`
-  mutation UserActionsUnBlockUser($userId: ID!, $blockedUserId: ID!) {
-    unBlockUser(input: {
+const unblockUserMutation = gql`
+  mutation UserActionsUnblockUser($userId: ID!, $blockedUserId: ID!) {
+    unblockUser(input: {
       userId: $userId
       blockedUserId: $blockedUserId
     }) {
-      unBlockedUser {
+      unblockedUser {
         id
         isBlocked(by: $userId)
       }
@@ -68,7 +68,7 @@ const unBlockUserMutation = gql`
     },
   }),
 })
-@graphql(unBlockUserMutation, { name: 'unBlockUser' })
+@graphql(unblockUserMutation, { name: 'unblockUser' })
 export default class UserScreenHead extends PureComponent {
   static HEIGHT = UserHeading.HEIGHT;
 
@@ -78,15 +78,15 @@ export default class UserScreenHead extends PureComponent {
     addListener('refetch', () => data.refetch());
   }
 
-  unBlockUser = async () => {
-    const { unBlockUser, data: { me, user } } = this.props;
+  unblockUser = async () => {
+    const { unblockUser, data: { me, user } } = this.props;
 
-    await unBlockUser({
+    await unblockUser({
       variables: { userId: me.id, blockedUserId: user.id },
       optimisticResponse: {
-        unBlockUser: {
-          __typename: 'UnBlockUserPayload',
-          unBlockedUser: {
+        unblockUser: {
+          __typename: 'UnblockUserPayload',
+          unblockedUser: {
             ...user,
             isBlocked: false,
           },
@@ -120,7 +120,7 @@ export default class UserScreenHead extends PureComponent {
           block
           secondary
           style={styles.button}
-          onPress={this.unBlockUser}
+          onPress={this.unblockUser}
         >
           <Text>Unblock</Text>
         </Button>
