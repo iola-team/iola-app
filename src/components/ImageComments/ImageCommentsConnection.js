@@ -18,17 +18,6 @@ const meQuery = gql`
   }
 `;
 
-const userIsBlockedQuery = gql`
-  query userIsBlockedQuery($meId: ID!, $userId: ID!) {
-    user: node(id: $meId) {
-      ...on User {
-        id
-        isBlocked(by: $userId)
-      }
-    }
-  }
-`;
-
 const photoCommentsQuery = gql`
   query PhotoCommentsQuery($id: ID!, $meId: ID!, $cursor: Cursor = null) {
     photo: node(id: $id) {
@@ -143,12 +132,11 @@ export default class ImageCommentsConnection extends Component {
   }
 
   unblockUser = async (me, photo) => {
-    const { unblockUserMutation } = this.props;
     const user = get(photo, 'user');
 
     if (!user) return;
 
-    await unblockUserMutation({
+    await this.props.unblockUserMutation({
       variables: { userId: me.id, blockedUserId: user.id },
       optimisticResponse: {
         unblockUser: {
