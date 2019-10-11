@@ -5,7 +5,7 @@ import { NetworkStatus } from 'apollo-client';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 import { propType as graphqlPropType } from 'graphql-anywhere';
-import { get, noop, range } from 'lodash';
+import { noop, range } from 'lodash';
 import update from 'immutability-helper';
 
 import ImageCommentsList from '../ImageCommentsList';
@@ -23,11 +23,11 @@ const photoCommentsQuery = gql`
     photo: node(id: $id) {
       ...on Photo {
         id
-        isBlocked(for: $meId)
         
         user {
           id
           isBlocked(by: $meId)
+          hasBlocked(for: $meId)
         }
         
         comments(first: 10 after: $cursor) @connection(key: "PhotoCommentsConnection") {
@@ -132,7 +132,7 @@ export default class ImageCommentsConnection extends Component {
   }
 
   unblockUser = async (me, photo) => {
-    const user = get(photo, 'user');
+    const user = photo?.user;
 
     if (!user) return;
 
@@ -158,11 +158,6 @@ export default class ImageCommentsConnection extends Component {
         {({ data: { me } }) => (
           <Query query={photoCommentsQuery} variables={{ id: photoId, meId: me.id }}>
             {({ loading, data: { photo }, fetchMore, subscribeToMore }) => {
-              const edges = get(photo, 'comments.edges', []);
-              const isBlockedByMe = get(photo, 'user.isBlocked', false);
-              const isBlockedForMe = get(photo, 'isBlocked', false);
-              const onEndReached = () => loading ? null : this.handleLoadMore(photo, fetchMore);
-
               const subscribeToNewComments = () => subscribeToMore({
                 document: photoCommentAddSubscription,
                 variables: { photoId },
@@ -200,13 +195,13 @@ export default class ImageCommentsConnection extends Component {
                   photoId={photoId}
                   onItemPress={onItemPress}
                   loading={loading}
-                  edges={edges}
+                  edges={photo?.comments.edges || []}
                   listRef={listRef}
-                  onEndReached={onEndReached}
+                  onEndReached={() => loading ? null : this.handleLoadMore(photo, fetchMore)}
                   onEndReachedThreshold={2}
                   subscribeToNewComments={subscribeToNewComments}
-                  isBlockedByMe={isBlockedByMe}
-                  isBlockedForMe={isBlockedForMe}
+                  isBlockedByMe={photo?.user.isBlocked || false}
+                  isBlockedForMe={photo?.user.hasBlocked || false}
                   unblockUser={() => this.unblockUser(me, photo)}
                 />
               );
