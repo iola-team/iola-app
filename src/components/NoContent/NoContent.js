@@ -78,11 +78,14 @@ export default class NoContent extends Component {
       }]
     };
 
+    // Looks like the font character comments-empty-state is broken... brief review in the iola-font repo didn't give any results
+    const sorryForThisKostyl = icon === 'comments-empty-state' ? { paddingLeft: 18 } : {};
+
     return (
       <Animated.View {...props}>
         {icon && (
           <AnimatedView style={iconContainerStyle}>
-            <Icon name={icon} />
+            <Icon name={icon} style={sorryForThisKostyl} />
           </AnimatedView>
         )}
         {text && <AnimatedText style={labelStyle}>{text}</AnimatedText>}

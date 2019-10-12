@@ -49,9 +49,7 @@ export default class ImageCommentsList extends Component {
     loading: PropTypes.bool.isRequired,
     subscribeToNewComments: PropTypes.func.isRequired,
     listRef: PropTypes.object.isRequired,
-    isBlockedByMe: PropTypes.bool.isRequired,
     isBlockedForMe: PropTypes.bool.isRequired,
-    unblockUser: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -67,13 +65,9 @@ export default class ImageCommentsList extends Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    const { edges, loading, isBlockedByMe } = this.props;
+    const { edges, loading } = this.props;
 
-    return (
-      edges.length !== nextProps.edges.length
-      || loading !== nextProps.loading
-      || isBlockedByMe !== nextProps.isBlockedByMe
-    );
+    return edges.length !== nextProps.edges.length || loading !== nextProps.loading;
   }
 
   extractItemKey = ({ node, key }) => key || node.id;
@@ -90,26 +84,17 @@ export default class ImageCommentsList extends Component {
   }
 
   renderSystemMessage = () => {
-    const { isBlockedByMe, isBlockedForMe, unblockUser, styleSheet: styles } = this.props;
-
-    if (!isBlockedByMe && !isBlockedForMe) return null;
+    const { isBlockedForMe, styleSheet: styles } = this.props;
 
     return (
       <View style={styles.systemMessage}>
-        {isBlockedByMe ? (
-          <>
-            <Text style={styles.systemMessageText}>You blocked this user</Text>
-            <Button secondary bordered style={styles.unblockButton} onPress={unblockUser}>
-              <Text>Unblock</Text>
-            </Button>
-          </>
-        ) : (
+        {isBlockedForMe ? (
           <Text style={styles.systemMessageText}>
             This user chooses not
             {'\n'}
             to interact with you
           </Text>
-        )}
+        ) : null}
       </View>
     );
   };

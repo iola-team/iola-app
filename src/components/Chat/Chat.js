@@ -189,20 +189,6 @@ const markMessagesAsReadMutation = gql`
   }
 `;
 
-const unblockUserMutation = gql`
-  mutation UserActionsUnblockUser($userId: ID!, $blockedUserId: ID!) {
-    unblockUser(input: {
-      userId: $userId
-      blockedUserId: $blockedUserId
-    }) {
-      unblockedUser {
-        id
-        isBlocked(by: $userId)
-      }
-    }
-  }
-`;
-
 const messageAddSubscription = gql`
   subscription ChatMessageAddSubscription($chatId: ID!) {
     onMessageAdd(chatId: $chatId) {
@@ -236,9 +222,6 @@ const messageAddSubscription = gql`
 })
 @graphql(startChatMutation, {
   name: 'startChatMutation',
-})
-@graphql(unblockUserMutation, {
-  name: 'unblockMutation',
 })
 @graphql(addMessageMutation, {
   name: 'addMessageMutation',
@@ -540,79 +523,32 @@ export default class Chat extends Component {
     });
   };
 
-  unblockUser = async (user) => {
-    const { unblockMutation, data: { me } } = this.props;
-
-    await unblockMutation({
-      variables: { userId: me.id, blockedUserId: user.id },
-      optimisticResponse: {
-        unblockUser: {
-          __typename: 'UnblockUserPayload',
-          unblockedUser: {
-            ...user,
-            isBlocked: false,
-          },
-        },
-      },
-    });
-  };
-
-  getBlockedParticipant = () => {
-    const { data: { me } } = this.props;
-
-    return me?.chat?.participants.find(({ id, isBlocked }) => (
-      id !== me.id && isBlocked
-    ));
-  };
-
   isSendBlocked = () => {
     const { data: { me, loading } } = this.props;
 
-    if (loading || !me) {
-      return true;
-    }
+    if (loading || !me) return true;
 
     const isChatBlocked = me.chat?.isBlocked || false;
-    const blockedParticipant = this.getBlockedParticipant();
 
-    return isChatBlocked || !!blockedParticipant;
+    return isChatBlocked;
   };
 
   renderSystemMessage = () => {
     const { styleSheet: styles, data: { me } } = this.props;
 
-    if (!me) {
-      return null;
-    }
+    if (!me) return null;
 
     const isChatBlocked = me.chat?.isBlocked || false;
-    const blockedParticipant = this.getBlockedParticipant();
-
-    if (!isChatBlocked && !blockedParticipant) {
-      return null;
-    }
 
     return (
       <View style={styles.systemMessage}>
-        {blockedParticipant ? (
-          <>
-            <Text style={styles.systemMessageText}>You blocked this user</Text>
-            <Button
-              secondary
-              bordered
-              style={styles.unblockButton}
-              onPress={() => this.unblockUser(blockedParticipant)}
-            >
-              <Text>Unblock</Text>
-            </Button>
-          </>
-        ) : (
+        {isChatBlocked ? (
           <Text style={styles.systemMessageText}>
             This user chooses not
             {'\n'}
             to interact with you
           </Text>
-        )}
+        ) : null}
       </View>
     );
   };
@@ -621,7 +557,6 @@ export default class Chat extends Component {
     const {
       style,
       styleSheet: styles,
-      children,
       data: { me, loading },
       ...props
     } = this.props;
