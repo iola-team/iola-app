@@ -24,13 +24,13 @@ const blockUserMutation = gql`
   }
 `;
 
-const unBlockUserMutation = gql`
-  mutation UserActionsUnBlockUser($userId: ID!, $blockedUserId: ID!) {
-    unBlockUser(input: {
+const unblockUserMutation = gql`
+  mutation UserActionsUnblockUser($userId: ID!, $blockedUserId: ID!) {
+    unblockUser(input: {
       userId: $userId
       blockedUserId: $blockedUserId
     }) {
-      unBlockedUser {
+      unblockedUser {
         id
         isBlocked(by: $userId)
       }
@@ -71,7 +71,7 @@ const blockStateQuery = gql`
   })
 })
 @graphql(blockUserMutation, { name: 'blockUser' })
-@graphql(unBlockUserMutation, { name: 'unBlockUser' })
+@graphql(unblockUserMutation, { name: 'unblockUser' })
 export default class UserActions extends Component {
   static propTypes = {
     userId: PropTypes.string.isRequired,
@@ -93,7 +93,7 @@ export default class UserActions extends Component {
     const actions = [
       noop,
       showReport,
-      isBlocked ? this.unBlockUser: this.blockUser,
+      isBlocked ? this.unblockUser: this.blockUser,
     ];
 
     return (
@@ -124,15 +124,15 @@ export default class UserActions extends Component {
     });
   };
 
-  unBlockUser = async () => {
-    const { blockData: { user }, unBlockUser, data: { me } } = this.props;
+  unblockUser = async () => {
+    const { blockData: { user }, unblockUser, data: { me } } = this.props;
 
-    await unBlockUser({
+    await unblockUser({
       variables: { userId: me.id, blockedUserId: user.id },
       optimisticResponse: {
-        unBlockUser: {
-          __typename: 'UnBlockUserPayload',
-          unBlockedUser: {
+        unblockUser: {
+          __typename: 'UnblockUserPayload',
+          unblockedUser: {
             ...user,
             isBlocked: false,
           },

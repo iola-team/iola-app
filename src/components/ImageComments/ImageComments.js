@@ -2,14 +2,14 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { View, Dimensions } from 'react-native';
 import { Text } from 'native-base';
-import { graphql, Mutation } from 'react-apollo';
+import { graphql, Mutation, Query, subscribeToMore } from 'react-apollo';
 import gql from 'graphql-tag';
-import { isFunction, isUndefined, noop } from 'lodash';
+import { isFunction, isUndefined, noop, range } from 'lodash';
 import update from 'immutability-helper';
 import uuid from 'uuid/v4';
 
 import { withStyleSheet } from '~theme';
-import ImageCommentsConnection from './ImageCommentsConnection';
+import ImageCommentsList from '../ImageCommentsList';
 import Avatar from '../UserAvatar';
 import Backdrop from '../Backdrop';
 import TouchableOpacity from '../TouchableOpacity';
@@ -18,12 +18,61 @@ import ChatFooter from '../ChatFooter';
 const meQuery = gql`
   query meQuery {
     me {
+      id
       name
       ...UserAvatar_user
     }
   }
 
   ${Avatar.fragments.user}
+`;
+
+const photoCommentsQuery = gql`
+  query PhotoCommentsQuery($id: ID!, $meId: ID!, $cursor: Cursor = null) {
+    photo: node(id: $id) {
+      ...on Photo {
+        id
+        
+        user {
+          id
+          hasBlocked(id: $meId)
+        }
+        
+        comments(first: 10 after: $cursor) @connection(key: "PhotoCommentsConnection") {
+          totalCount
+
+          edges {
+            ...ImageCommentsList_edge
+          }
+
+          pageInfo {
+            hasNextPage
+            endCursor
+          }
+        }
+      }
+    }
+  }
+
+  ${ImageCommentsList.fragments.edge}
+`;
+
+const photoCommentAddSubscription = gql`
+  subscription PhotoCommentAddSubscription($photoId: ID!) {
+    onPhotoCommentAdd(photoId: $photoId) {
+      node {
+        id
+        text
+        createdAt
+      }
+
+      edge {
+        ...ImageCommentsList_edge
+      }
+    }
+  }
+
+  ${ImageCommentsList.fragments.edge}
 `;
 
 const addPhotoCommentMutation = gql`
@@ -44,6 +93,12 @@ const updateCachePhotoCommentsTotalCountQuery = gql`
     photo: node(id: $id) {
       ...on Photo {
         id
+        
+        user {
+          id
+          hasBlocked(id: $meId)
+        }
+        
         comments @connection(key: "PhotoCommentsConnection") {
           totalCount
         }
@@ -138,7 +193,6 @@ export default class ImageComments extends Component {
 
   onCommentSend = async (text, mutate) => {
     const { photoId, totalCount, data: { me } } = this.props;
-    const { queries: { photoCommentsQuery } } = ImageCommentsConnection;
 
     mutate({
       variables: {
@@ -174,7 +228,7 @@ export default class ImageComments extends Component {
       update: (cache, { data: { addPhotoComment } }) => {
         const data = cache.readQuery({
           query: photoCommentsQuery,
-          variables: { id: photoId },
+          variables: { id: photoId, meId: me.id },
         });
         const newCommentEdge = {
           __typename: 'CommentEdge',
@@ -187,7 +241,7 @@ export default class ImageComments extends Component {
 
         cache.writeQuery({
           query: photoCommentsQuery,
-          variables: { id: photoId },
+          variables: { id: photoId, meId: me.id },
           data: update(data, {
             photo: {
               comments: {
@@ -201,17 +255,16 @@ export default class ImageComments extends Component {
 
         cache.writeQuery({
           query: updateCachePhotoCommentsTotalCountQuery,
-          variables: { id: photoId },
-          data: {
+          variables: { id: photoId, meId: me.id },
+          data: update(data, {
             photo: {
-              __typename: 'Photo',
-              id: photoId,
               comments: {
-                __typename: 'PhotoCommentsConnection',
-                totalCount: totalCount + 1,
+                totalCount: {
+                  $set: totalCount + 1,
+                },
               },
             },
-          },
+          }),
         });
       },
     });
@@ -219,6 +272,39 @@ export default class ImageComments extends Component {
     if (this.listRef.current && totalCount) {
       this.listRef.current.scrollToIndex({ animated: true, index: 0 });
     }
+  };
+
+  handleLoadMore = ({ comments: { pageInfo } }, fetchMore) => {
+    if (!pageInfo.hasNextPage) return;
+
+    this.fetchMorePromise = this.fetchMorePromise || fetchMore({
+        variables: {
+          cursor: pageInfo.endCursor,
+        },
+
+        updateQuery: (prev, { fetchMoreResult: { photo } }) => {
+          const { comments } = photo;
+
+          if (!comments || !comments.edges.length) {
+            return prev;
+          }
+
+          return update(prev, {
+            photo: {
+              comments: {
+                edges: {
+                  $push: comments.edges,
+                },
+                pageInfo: {
+                  $merge: comments.pageInfo,
+                }
+              },
+            },
+          });
+        }
+      }).then(() => {
+        this.fetchMorePromise = null;
+      });
   };
 
   renderTitle() {
@@ -233,16 +319,8 @@ export default class ImageComments extends Component {
     );
   }
 
-  renderFooter() {
-    return (
-      <Mutation mutation={addPhotoCommentMutation}>
-        {mutate => <ChatFooter onSend={text => this.onCommentSend(text, mutate)} />}
-      </Mutation>
-    );
-  }
-
   renderModal() {
-    const { photoId, styleSheet: styles } = this.props;
+    const { photoId, styleSheet: styles, data: { me } } = this.props;
     const { isVisible } = this.state;
 
     return (
@@ -258,12 +336,63 @@ export default class ImageComments extends Component {
           </TouchableOpacity>
         )}
       >
-        <>
-          <View style={styles.container}>
-            <ImageCommentsConnection photoId={photoId} listRef={this.listRef} />
-          </View>
-          {this.renderFooter()}
-        </>
+        <Query query={photoCommentsQuery} variables={{ id: photoId, meId: me.id }}>
+          {({ loading, data: { photo }, fetchMore, subscribeToMore }) => {
+            const subscribeToNewComments = () => subscribeToMore({
+              document: photoCommentAddSubscription,
+              variables: { photoId },
+              shouldResubscribe: true,
+
+              updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) return prev;
+                const { onPhotoCommentAdd: payload } = subscriptionData.data;
+
+                /**
+                 * Skip messages of current user
+                 * TODO: Case when currently logged in user sends messages from web
+                 */
+                if (payload.edge.node.user.id === me.id) {
+                  return prev;
+                }
+
+                return update(prev, {
+                  photo: {
+                    comments: {
+                      totalCount: {
+                        $set: prev.photo.comments.totalCount + 1,
+                      },
+                      edges: {
+                        $unshift: [payload.edge],
+                      },
+                    },
+                  },
+                });
+              },
+            });
+            const isBlockedForMe = photo?.user.hasBlocked || false;
+
+            return (
+              <>
+                <View style={styles.container}>
+                  <ImageCommentsList
+                    photoId={photoId}
+                    onItemPress={() => null}
+                    loading={loading}
+                    edges={photo?.comments.edges || []}
+                    listRef={this.listRef}
+                    onEndReached={() => loading ? null : this.handleLoadMore(photo, fetchMore)}
+                    onEndReachedThreshold={2}
+                    subscribeToNewComments={subscribeToNewComments}
+                    isBlockedForMe={isBlockedForMe}
+                  />
+                </View>
+                <Mutation mutation={addPhotoCommentMutation}>
+                  {mutate => <ChatFooter onSend={text => this.onCommentSend(text, mutate)} disabled={isBlockedForMe} />}
+                </Mutation>
+              </>
+            );
+          }}
+        </Query>
       </Backdrop>
     );
   }

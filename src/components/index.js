@@ -19,7 +19,6 @@ import FriendsTabBarLabel from './FriendsTabBarLabel';
 import Icon from './Icon';
 import Image from './Image';
 import ImageComments from './ImageComments';
-import ImageCommentsConnection from './ImageComments/ImageCommentsConnection';
 import ImageCommentsList from './ImageCommentsList';
 import ImagePicker from './ImagePicker';
 import ImageProgress from './ImageProgress';
@@ -79,7 +78,6 @@ export {
   Icon,
   Image,
   ImageComments,
-  ImageCommentsConnection,
   ImageCommentsList,
   ImagePicker,
   ImageProgress,
