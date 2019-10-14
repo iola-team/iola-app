@@ -83,6 +83,14 @@ export default class ImageCommentsList extends Component {
     return <ImageCommentsItem comment={node} />;
   }
 
+  renderEmptyState = () => this.props.isBlockedForMe ? null : (
+    <NoContent
+      inverted
+      icon="comments-empty-state"
+      text={`No comments yet${'\n'}Be the first to comment`}
+    />
+  );
+
   renderSystemMessage = () => {
     const { isBlockedForMe, styleSheet: styles } = this.props;
 
@@ -100,9 +108,9 @@ export default class ImageCommentsList extends Component {
   };
 
   render() {
-    const { edges, loading, listRef, ...listProps } = this.props;
+    const { edges, loading, listRef, isBlockedForMe, ...listProps } = this.props;
     const data = edges.length ? edges : (loading ? this.getPlaceholders() : edges);
-    const emptyStateText = 'No comments yet\nBe the first to comment'; // For \n symbol work keep the text in the var
+    const inverted = loading || edges.length || (isBlockedForMe && !edges.length);
 
     return (
       <FlatList
@@ -112,8 +120,8 @@ export default class ImageCommentsList extends Component {
         keyExtractor={this.extractItemKey}
         renderItem={this.renderItem}
         contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 15 }}
-        inverted={loading || edges.length}
-        ListEmptyComponent={<NoContent icon="comments-empty-state" text={emptyStateText} inverted />}
+        inverted={inverted}
+        ListEmptyComponent={this.renderEmptyState}
         ListHeaderComponent={this.renderSystemMessage}
         removeClippedSubviews // "Sometimes image doesn't show (only Android)" issue: https://github.com/facebook/react-native/issues/17096
       />
