@@ -536,19 +536,17 @@ export default class Chat extends Component {
   renderSystemMessage = () => {
     const { styleSheet: styles, data: { me } } = this.props;
 
-    if (!me) return null;
-
-    const isChatBlocked = me.chat?.isBlocked || false;
+    if (!me?.chat?.isBlocked) {
+      return null;
+    }
 
     return (
       <View style={styles.systemMessage}>
-        {isChatBlocked ? (
-          <Text style={styles.systemMessageText}>
-            This user chooses not
-            {'\n'}
-            to interact with you
-          </Text>
-        ) : null}
+        <Text style={styles.systemMessageText}>
+          This user chooses not
+          {'\n'}
+          to interact with you
+        </Text>
       </View>
     );
   };
