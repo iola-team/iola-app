@@ -9,6 +9,7 @@ import { ScrollView } from '../TabNavigator';
 export default class SettingList extends Component {
   static propTypes = {
     onBlockedUsersPress: PropTypes.func.isRequired,
+    onLicenseAgreementPress: PropTypes.func.isRequired,
   };
 
   openUrl = async (url) => {
@@ -20,7 +21,7 @@ export default class SettingList extends Component {
   };
 
   render() {
-    const { onBlockedUsersPress } = this.props;
+    const { onBlockedUsersPress, onLicenseAgreementPress } = this.props;
 
     return (
       <ScrollView {...this.props}>
@@ -43,7 +44,7 @@ export default class SettingList extends Component {
             </Right>
           </ListItem>
 
-          <ListItem icon button last onPress={() => this.openUrl(LICENSE_AGREEMENT_URL)}>
+          <ListItem icon button last onPress={onLicenseAgreementPress}>
             <Body>
               <Text>License Agreement</Text>
             </Body>

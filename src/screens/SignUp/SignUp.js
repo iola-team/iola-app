@@ -5,7 +5,7 @@ import { Container, Content, Text, View } from 'native-base';
 import { withStyleSheet as styleSheet, connectToStyleSheet } from '~theme';
 import { Background, Logo, TouchableOpacity } from '~components';
 import SignUpForm from './SignUpForm';
-import { LAUNCH } from '../routeNames';
+import { EULA, LAUNCH } from '../routeNames';
 
 const Title = connectToStyleSheet('title', Text);
 const AlreadyHaveAnAccountContainer = connectToStyleSheet('alreadyHaveAnAccountContainer', View);
@@ -66,7 +66,10 @@ export default class SignUpScreen extends Component {
           <Content contentContainerStyle={styles.content}>
             <Logo />
             <Title>Please sign up</Title>
-            <SignUpForm onSubmit={() => navigate(LAUNCH, { loading: true })} />
+            <SignUpForm
+              onSubmit={() => navigate(LAUNCH, { loading: true })}
+              onLicenseAgreementPress={() => navigate(EULA)}
+            />
             <AlreadyHaveAnAccountContainer>
               <AlreadyHaveAnAccountText>Already have an account?</AlreadyHaveAnAccountText>
               <ButtonSignIn onPress={() => goBack()}>
