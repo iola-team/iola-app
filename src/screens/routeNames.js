@@ -8,6 +8,7 @@ export const SIGN_UP = 'signUp';
 export const FORGOT_PASSWORD = 'forgotPassword';
 export const PENDING_APPROVAL = 'pendingApproval';
 export const EMAIL_VERIFICATION = 'emailVerification';
+export const EULA = 'EULA';
 export const USER = 'user';
 
 export const DASHBOARD = 'dashboard';

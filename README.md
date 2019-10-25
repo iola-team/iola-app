@@ -69,6 +69,7 @@ TODO: Fill this section
 2) Build the release app version (build the apk file):
   - Sometimes you'll need to `cd android && ./gradlew clean` before release
   - Android: `yarn release:build:android`
+    - See: `https://github.com/react-native-community/react-native-blur/issues/310#issuecomment-503816482`
   - Get the new .aab (Android App Bundle) file here: `./android/app/build/outputs/bundle/applicationRelease`  
   - iOS: TODO
 

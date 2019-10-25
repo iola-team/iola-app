@@ -19,6 +19,7 @@ import Channels from './Channels';
 import ChatSearch from './ChatSearch';
 import PendingApproval from './PendingApproval';
 import EmailVerification from './EmailVerification';
+import EULA from './EULA';
 import ForgotPassword from './ForgotPassword';
 import Launch from './Launch';
 import Loading from './Loading';
@@ -73,10 +74,13 @@ const RootNavigator = createSwitchNavigator({
     [routes.FORGOT_PASSWORD]: ForgotPassword,
     [routes.PENDING_APPROVAL]: PendingApproval,
     [routes.EMAIL_VERIFICATION]: EmailVerification,
+    [routes.EULA]: EULA,
   }, {
     initialRouteName: routes.SIGN_IN,
     defaultNavigationOptions: {
-      header: null,
+      header: props => props.scene.route.routeName === routes.EULA ? <ScreenHeader {...props} /> : null,
+      headerTransparent: true,
+      headerBackTitle: null,
     },
   }),
 
@@ -107,6 +111,7 @@ const RootNavigator = createSwitchNavigator({
     [routes.PROFILE_EDIT]: ProfileEdit,
     [routes.SETTINGS]: Settings,
     [routes.BLOCKED_USERS]: BlockedUsers,
+    [routes.EULA]: EULA,
 
     [routes.CHANNEL]: Channel,
     [routes.USER_SEARCH]: { screen: UserSearch, params: { isSearch: true } },

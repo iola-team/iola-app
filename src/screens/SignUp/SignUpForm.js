@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Linking } from 'react-native';
 import { Button, Form, Text, View } from 'native-base';
 import { withFormik } from 'formik';
 import * as yup from 'yup';
@@ -79,6 +78,7 @@ const signUpUserMutation = gql`
 })
 class SignUpForm extends Component {
   static propTypes = {
+    onLicenseAgreementPress: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
   };
 
@@ -106,14 +106,6 @@ class SignUpForm extends Component {
   onChangeEmail(text, client) {
     this.validateEmail(text, client);
   }
-
-  openUrl = async (url) => {
-    const canOpen = await Linking.canOpenURL(url);
-
-    if (canOpen) {
-      Linking.openURL(url);
-    }
-  };
 
   async onSubmit(signUpUser) {
     const {
@@ -159,7 +151,7 @@ class SignUpForm extends Component {
   }
 
   render() {
-    const { styleSheet: styles, isSubmitting } = this.props;
+    const { styleSheet: styles, onLicenseAgreementPress, isSubmitting } = this.props;
     const { emailIsDuplicated, isAgreementChecked } = this.state;
 
     return (
@@ -215,7 +207,7 @@ class SignUpForm extends Component {
                 checked={isAgreementChecked}
               />
               <Text style={styles.termsText}>I agree to the</Text>
-              <TouchableOpacity style={styles.termsButton} onPress={() => this.openUrl(LICENSE_AGREEMENT_URL)}>
+              <TouchableOpacity style={styles.termsButton} onPress={onLicenseAgreementPress}>
                 <Text style={styles.termsButtonText}>License Agreement</Text>
               </TouchableOpacity>
             </View>
