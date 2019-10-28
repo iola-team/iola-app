@@ -111,7 +111,7 @@ export default class SearchResult extends Component {
         variables={{ key: historyKey }}
       >
         {({ data }) => renderBlank({
-          recentIds: data.me?.recentIds || [],
+          recentIds: data?.me.recentIds || [],
           onItemPress: this.onItemPress,
         })}
       </Query>
