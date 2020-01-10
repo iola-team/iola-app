@@ -20,7 +20,6 @@ import createApiClient from '~graph';
 import { Theme, ConfigurableTheme } from '~theme';
 import Application from '~application';
 import { Root, ErrorBoundary } from '~components';
-import Storybook from '~storybook/UI';
 import LaunchSplash from '~screens/Launch/LaunchSplash';
 import Loading from '~screens/Loading';
 import WebsiteURLScreen from '~screens/WebsiteURL/WebsiteURL';
@@ -64,9 +63,9 @@ class ApplicationRoot extends Component {
 
     const url = `${__DEV__ ? DEV_PLATFORM_URL : platformURL}/${INTEGRATION_PATH}`;
     const apiURL = `${url}/graphql${__DEV__ ? DEV_URL_PARAMETERS_FOR_API : ''}`;
-    const subscriptionsURL = (
-      `${url}/subscriptions${__DEV__ ? DEV_URL_PARAMETERS_FOR_SUBSCRIPTIONS : ''}`
-    );
+    const subscriptionsURL = `${url}/subscriptions${
+      __DEV__ ? DEV_URL_PARAMETERS_FOR_SUBSCRIPTIONS : ''
+    }`;
 
     this.apiClient = await createApiClient({ apiURL, subscriptionsURL });
     this.setState({ isReady: true });
@@ -94,12 +93,14 @@ class ApplicationRoot extends Component {
   render() {
     const { isReady, initWasLaunched, initWasTriggeredManually } = this.state;
     const LoadingScreenComponent = initWasTriggeredManually ? <Loading /> : <LaunchSplash />;
-    const displayOnNotReady = (initWasLaunched)
-      ? LoadingScreenComponent
+    const displayOnNotReady = initWasLaunched ? (
+      LoadingScreenComponent
+    ) : (
       /**
        * TODO: Think of how to not use screens directly
        */
-      : <WebsiteURLScreen onSubmit={this.init} />;
+      <WebsiteURLScreen onSubmit={this.init} />
+    );
 
     return isReady ? (
       <ApolloProvider client={this.apiClient}>
@@ -119,34 +120,10 @@ class ApplicationRoot extends Component {
           </ErrorBoundary>
         </ConfigurableTheme>
       </ApolloProvider>
-    ) : <Theme>{displayOnNotReady}</Theme>;
-  }
-}
-
-class StorybookRoot extends Component {
-  componentDidMount() {
-    SplashScreen.hide();
-  }
-
-  render() {
-    return (
-      <Theme>
-        <Storybook />
-      </Theme>
+    ) : (
+      <Theme>{displayOnNotReady}</Theme>
     );
   }
 }
 
-export default class extends Component {
-  render() {
-    const { isStorybook } = this.props;
-
-    return (
-      isStorybook ? (
-        <StorybookRoot />
-      ) : (
-        <ApplicationRoot />
-      )
-    );
-  }
-}
+export default ApplicationRoot;

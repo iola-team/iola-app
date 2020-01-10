@@ -1,14 +1,14 @@
 import { AppRegistry, NativeModules, Platform, YellowBox } from 'react-native';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
-import Application from './src/App';
+import Storybook from './src/Storybook';
 
 if (Platform.OS === 'android') {
   if (NativeModules.UIManager.setLayoutAnimationEnabledExperimental)
     NativeModules.UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-AppRegistry.registerComponent('iola', () => gestureHandlerRootHOC(Application));
+AppRegistry.registerComponent('iola', () => gestureHandlerRootHOC(Storybook));
 
 /**
  * TODO: Remove when it will be possible
